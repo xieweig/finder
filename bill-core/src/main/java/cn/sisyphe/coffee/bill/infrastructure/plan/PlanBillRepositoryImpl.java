@@ -1,5 +1,9 @@
 package cn.sisyphe.coffee.bill.infrastructure.plan;
 
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,5 +12,18 @@ import org.springframework.stereotype.Repository;
  * @description
  */
 @Repository
-public class PlanBillRepositoryImpl implements PlanBillRepository {
+public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> implements PlanBillRepository {
+
+    @Autowired
+    private JPAPlanBillRepository jpaPlanBillRepository;
+
+    @Override
+    public void save(PlanBill bill) {
+        jpaPlanBillRepository.save(bill);
+    }
+
+    @Override
+    public PlanBill findOne(Long id) {
+        return jpaPlanBillRepository.findOne(id);
+    }
 }

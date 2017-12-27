@@ -23,11 +23,33 @@ public class CargoDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
+    private String cargoName;
+
+    @Column
+    private String cargoCode;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCargoName() {
+        return cargoName;
+    }
+
+    public void setCargoName(String cargoName) {
+        this.cargoName = cargoName;
+    }
+
+    public String getCargoCode() {
+        return cargoCode;
+    }
+
+    public void setCargoCode(String cargoCode) {
+        this.cargoCode = cargoCode;
     }
 }
