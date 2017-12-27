@@ -30,4 +30,15 @@ public class PurchaseBillManager {
         purchaseBillService.dispose(purposeBehavior);
     }
 
+    /**
+     * 保存进货单
+     * @param purchaseBill
+     */
+    public void submitBill(PurchaseBill purchaseBill) {
+        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
+        PurposeBehavior purposeBehavior = new PurposeBehavior();
+        purposeBehavior.submitPurposeBill();
+        purchaseBillService.dispose(purposeBehavior);
+    }
+
 }

@@ -36,7 +36,7 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/submitPurchaseBill", method = RequestMethod.POST)
     public ResponseResult submitPurchaseBill(@RequestBody PurchaseBill purchaseBill) {
         ResponseResult responseResult = new ResponseResult();
-
+        purchaseBillManager.submitBill(purchaseBill);
         return responseResult;
     }
 
