@@ -4,16 +4,14 @@ import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 
 import java.io.Serializable;
 
-
 /**
- * 运单跟踪分页查询
+ * 运单跟踪分页查询返回DTO
  *
  * @author yichuan
  * @company 西西弗文化传播
- * @Date 2017/12/27 11:22
+ * @Date 2017/12/27 14:21
  **/
-public class ConditionQueryWayBill extends BaseConditionQuery implements Serializable {
-
+public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable {
     /**
      * 运单号
      */
@@ -177,6 +175,5 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
     }
-
 
 }
