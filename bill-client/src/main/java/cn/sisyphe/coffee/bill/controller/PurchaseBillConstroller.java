@@ -23,7 +23,7 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/savePurchaseBill", method = RequestMethod.POST)
     public ResponseResult savePurchaseBill(@RequestBody PurchaseBill purchaseBill) {
         ResponseResult responseResult = new ResponseResult();
-
+        purchaseBillManager.saveBill(purchaseBill);
         return responseResult;
     }
 

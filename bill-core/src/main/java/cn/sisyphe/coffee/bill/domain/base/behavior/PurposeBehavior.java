@@ -21,4 +21,14 @@ public class PurposeBehavior extends AbstractBillBehavior {
         Bill bill = getBillService().getBill();
         bill.setBillState(BillStateEnum.SUBMITTED);
     }
+
+    /**
+     * 保存进货单据
+     */
+    public void savePurposeBill(){
+        getBillService().getBillPurpose().handle();
+
+        Bill bill = getBillService().getBill();
+        bill.setBillState(BillStateEnum.SAVED);
+    }
 }
