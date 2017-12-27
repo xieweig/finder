@@ -2,11 +2,11 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 运货单
@@ -20,14 +20,18 @@ public class WayBill extends Bill<WayBillDetail> {
     /**
      * 发货时间
      */
-    @Column
-    private String deliveryTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Column(nullable = false)
+    private Date deliveryTime;
 
     /**
      * 预计到货时间
      */
-    @Column
-    private String planArrivalTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Column(nullable = false)
+    private Date planArrivalTime;
 
     /**
      * 物流公司名称
@@ -61,19 +65,20 @@ public class WayBill extends Bill<WayBillDetail> {
     @Column
     private String memo;
 
-    public String getDeliveryTime() {
+
+    public Date getDeliveryTime() {
         return deliveryTime;
     }
 
-    public void setDeliveryTime(String deliveryTime) {
+    public void setDeliveryTime(Date deliveryTime) {
         this.deliveryTime = deliveryTime;
     }
 
-    public String getPlanArrivalTime() {
+    public Date getPlanArrivalTime() {
         return planArrivalTime;
     }
 
-    public void setPlanArrivalTime(String planArrivalTime) {
+    public void setPlanArrivalTime(Date planArrivalTime) {
         this.planArrivalTime = planArrivalTime;
     }
 
