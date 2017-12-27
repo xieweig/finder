@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
 /**
  * Created by heyong on 2017/12/19 17:22
  * Description: 单据种类
+ *
  * @author heyong
  */
 public enum BillTypeEnum {
@@ -27,6 +28,11 @@ public enum BillTypeEnum {
      * 退库
      */
     RESTOCK,
+
+    /**
+     * 运单
+     */
+    TRANSMIT,
     /**
      * 退货
      */
