@@ -1,11 +1,16 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 运单
  */
-@Controller
+
+@RequestMapping("/api/bill/waybill")
+@RestController
+@CrossOrigin(origins = "*")
 public class WayBillController {
 
     /**
@@ -27,7 +32,6 @@ public class WayBillController {
     public void deleteWayBill() {
 
     }
-
 
 
 }
