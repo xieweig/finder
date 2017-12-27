@@ -29,6 +29,11 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     private String createEndTime;
 
     /**
+     * 运货件数
+     */
+    private Integer amountOfPackages;
+
+    /**
      * 发货开始时间
      */
 
@@ -59,6 +64,16 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
      * 单据状态
      */
     private String wayBillStatus;
+
+
+    public Integer getAmountOfPackages() {
+
+        return amountOfPackages;
+    }
+
+    public void setAmountOfPackages(Integer amountOfPackages) {
+        this.amountOfPackages = amountOfPackages;
+    }
 
     public String getWayBillCode() {
         return wayBillCode;
