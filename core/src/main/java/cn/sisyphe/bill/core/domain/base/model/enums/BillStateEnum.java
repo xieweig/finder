@@ -15,7 +15,21 @@ public enum BillStateEnum {
      */
     SUBMITTED,
     /**
-     * 完成
+     * 审核中
+     */
+    AUDITING,
+
+    /**
+     * 审核失败
+     */
+    AUDITFAILURE,
+
+    /**
+     * 审核成功
+     */
+    AUDITSUCCESS,
+    /**
+     * 出入库完成
      */
     DONE,
 }
