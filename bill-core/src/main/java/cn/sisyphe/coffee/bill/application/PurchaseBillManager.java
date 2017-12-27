@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author XiongJing
  */
+@Service
 public class PurchaseBillManager {
 
     @Autowired

@@ -1,12 +1,16 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.plan.enums.PlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -34,7 +38,7 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
     @Enumerated(value = EnumType.STRING)
-    private PlanTypeEnum planType;
+    private BillTypeEnum billType;
 
     //创建人名称
     @Column
@@ -48,7 +52,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     //完成度
     @Column
     private BigDecimal progress;
-
 
 
     public String getPlanName() {
@@ -75,12 +78,14 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.basicEnum = basicEnum;
     }
 
-    public PlanTypeEnum getPlanType() {
-        return planType;
+    @Override
+    public BillTypeEnum getBillType() {
+        return billType;
     }
 
-    public void setPlanType(PlanTypeEnum planType) {
-        this.planType = planType;
+    @Override
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
     }
 
     public String getCreatorName() {

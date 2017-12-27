@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -29,15 +31,6 @@ public class PlanBillDetail extends BillDetail {
 
     @Column
     private String outStationName;
-
-    //不做级联操作，创建的时候先创建货物明细在手动建立关系
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "material_detail_id")
-    private RawMaterialDetail rawMaterialDetail;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cargo_detail_id")
-    private CargoDetail cargoDetail;
 
     public String getInStationName() {
         return inStationName;
@@ -69,21 +62,5 @@ public class PlanBillDetail extends BillDetail {
 
     public void setOutStationId(Long outStationId) {
         this.outStationId = outStationId;
-    }
-
-    public RawMaterialDetail getRawMaterialDetail() {
-        return rawMaterialDetail;
-    }
-
-    public void setRawMaterialDetail(RawMaterialDetail rawMaterialDetail) {
-        this.rawMaterialDetail = rawMaterialDetail;
-    }
-
-    public CargoDetail getCargoDetail() {
-        return cargoDetail;
-    }
-
-    public void setCargoDetail(CargoDetail cargoDetail) {
-        this.cargoDetail = cargoDetail;
     }
 }
