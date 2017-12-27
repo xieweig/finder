@@ -23,9 +23,9 @@ public class ItemPayload {
     private Station inStation;
     private Station outStation;
     private BasicEnum basicEnum;
-    private CastableStrategy castableStrategy;
-
     private List<AbstractGoods> goods = new ArrayList<>();
+
+    private CastableStrategy castableStrategy;
 
 
     public BillTypeEnum getBillType() {
