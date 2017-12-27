@@ -17,7 +17,7 @@ public class PurchaseBillService extends AbstractBillService {
      */
     @Override
     public void beforeDispose() {
-        
+        // TODO: 2017/12/27 在操作之前的一些事情
     }
 
     /**
@@ -25,6 +25,6 @@ public class PurchaseBillService extends AbstractBillService {
      */
     @Override
     public void afterDispose() {
-
+        // TODO: 2017/12/27 在操作之后的一些事情
     }
 }

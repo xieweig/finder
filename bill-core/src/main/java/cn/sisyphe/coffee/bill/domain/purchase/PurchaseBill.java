@@ -13,10 +13,12 @@ import javax.persistence.Table;
  * @author heyong
  */
 @Entity
-@Table
+@Table(name = "purchase_bill")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public final class PurchaseBill extends Bill<PurchaseBillDetail> {
+
+
 
     public PurchaseBill() {
         setBillType(BillTypeEnum.PURCHASE);

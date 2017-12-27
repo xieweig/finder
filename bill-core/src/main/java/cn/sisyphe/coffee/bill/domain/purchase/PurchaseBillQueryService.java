@@ -13,8 +13,20 @@ import org.springframework.data.domain.Page;
  */
 public interface PurchaseBillQueryService {
 
-    Page<PurchaseBill> findByConditions (ConditionQueryPurchaseBill conditionQueryPurchaseBill);
+    /**
+     * 多条件查询进货单数据
+     *
+     * @param conditionQueryPurchaseBill 查询条件
+     * @return
+     */
+    Page<PurchaseBill> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill);
 
+    /**
+     * 根据进货单据编码查询进货单据信息
+     *
+     * @param billCode 进货单据编码
+     * @return
+     */
     PurchaseBill findByBillCode(String billCode);
 
 }
