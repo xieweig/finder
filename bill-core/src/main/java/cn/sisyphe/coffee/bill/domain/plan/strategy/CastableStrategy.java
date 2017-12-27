@@ -10,6 +10,11 @@ import cn.sisyphe.coffee.bill.domain.plan.ItemPayload;
 public interface CastableStrategy {
 
 
-    //将计划单进行切分
+    /**
+     * 将计划单根据不同的策略进行切分
+     *
+     * @param itemPayload 数据载体
+     */
+
     void cast(ItemPayload itemPayload);
 }

@@ -1,12 +1,12 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author ncmao
@@ -62,5 +62,9 @@ public class PlanBillDetail extends BillDetail {
 
     public void setOutStationId(Long outStationId) {
         this.outStationId = outStationId;
+    }
+
+    public String getOutInStation() {
+        return inStationName + outStationName;
     }
 }

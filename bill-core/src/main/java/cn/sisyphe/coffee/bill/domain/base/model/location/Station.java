@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base.model.location;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+
 /**
  * Created by heyong on 2017/12/21 10:11
  * Description: 站点
@@ -21,7 +23,7 @@ public class Station extends AbstractLocation {
     /**
      * 站点类型
      */
-    private String stationType;
+    private StationType stationType;
 
     /**
      * 库房
@@ -48,11 +50,11 @@ public class Station extends AbstractLocation {
         this.stationName = stationName;
     }
 
-    public String getStationType() {
+    public StationType getStationType() {
         return stationType;
     }
 
-    public void setStationType(String stationType) {
+    public void setStationType(StationType stationType) {
         this.stationType = stationType;
     }
 

@@ -2,17 +2,20 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 
 /**
  * Created by heyong on 2017/12/25 18:21
  * Description: 单据工厂类
+ *
  * @author heyong
  */
 public class BillFactory {
 
     /**
      * 创建单据
+     *
      * @param billType
      * @return
      */
@@ -25,6 +28,9 @@ public class BillFactory {
                 break;
             case DELIVERY:
                 bill = new DeliveryBill();
+                break;
+            case PLAN:
+                bill = new PlanBill();
                 break;
             default:
                 break;

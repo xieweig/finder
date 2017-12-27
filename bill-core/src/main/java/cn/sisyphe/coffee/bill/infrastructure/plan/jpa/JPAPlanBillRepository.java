@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JPAPlanBillRepository extends JpaRepository<PlanBill, Long>, JpaSpecificationExecutor<PlanBill> {
+
+    PlanBill findByBillCode(String billCode);
 }

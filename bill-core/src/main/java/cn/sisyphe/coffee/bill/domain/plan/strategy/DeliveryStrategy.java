@@ -47,6 +47,13 @@ public class DeliveryStrategy implements CastableStrategy {
 
     }
 
+    /**
+     * 将ItemPayload包装成一个Bill
+     *
+     * @param itemPayload 数据包
+     * @return DeliveryBill
+     */
+
     private DeliveryBill pack(ItemPayload itemPayload) {
         DeliveryBill deliveryBill = (DeliveryBill) new BillFactory().createBill(BillTypeEnum.DELIVERY);
         //出站站点

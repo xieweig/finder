@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.CastableStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class ItemPayload {
     private Station inStation;
     private Station outStation;
     private BasicEnum basicEnum;
+    private CastableStrategy castableStrategy;
 
     private List<AbstractGoods> goods = new ArrayList<>();
 
@@ -92,5 +94,17 @@ public class ItemPayload {
 
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
+    }
+
+    public CastableStrategy getCastableStrategy() {
+        return castableStrategy;
+    }
+
+    public void setCastableStrategy(CastableStrategy castableStrategy) {
+        this.castableStrategy = castableStrategy;
+    }
+
+    public void doCast() {
+        this.castableStrategy.cast(this);
     }
 }
