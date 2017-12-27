@@ -1,6 +1,6 @@
-package cn.sisyphe.coffee.bill.infrastructure.headquarters.jpa;
+package cn.sisyphe.coffee.bill.infrastructure.plan.jpa;
 
-import cn.sisyphe.coffee.bill.domain.headquarters.HeadQuarterBill;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface JPAHeadQuartersBillRepository extends JpaRepository<HeadQuarterBill, Long>, JpaSpecificationExecutor<HeadQuarterBill> {
+public interface JPAPlanBillRepository extends JpaRepository<PlanBill, Long>, JpaSpecificationExecutor<PlanBill> {
 }

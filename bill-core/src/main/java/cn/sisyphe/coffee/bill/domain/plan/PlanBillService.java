@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.headquarters;
+package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
@@ -8,14 +8,14 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
  * @Date 2017/12/25 18:14
  * @description
  */
-public class HeadQuarterBillService extends AbstractBillService {
+public class PlanBillService extends AbstractBillService {
 
     /**
      * 构造方法
      *
      * @param bill
      */
-    public HeadQuarterBillService(Bill bill) {
+    public PlanBillService(Bill bill) {
         super(bill);
     }
 

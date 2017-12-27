@@ -2,7 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
-import cn.sisyphe.coffee.bill.domain.headquarters.HeadQuarterBillService;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
 
 /**
@@ -31,7 +31,7 @@ public class BillServiceFactory {
                 billService = new DeliveryBillService(bill);
                 break;
             case PLAN:
-                billService = new HeadQuarterBillService(bill);
+                billService = new PlanBillService(bill);
                 break;
             default:
                 break;

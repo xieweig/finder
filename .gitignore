@@ -1,7 +1,6 @@
 .idea
 *.iml
 /target
-/*.iml
 /bill-client/*.iml
 /bill-core/target
 /bill-client/target

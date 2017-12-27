@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.headquarters;
+package cn.sisyphe.coffee.bill.domain.plan;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 /**
  * @author ncmao
- * @Date 2017/12/25 18:00
+ * @Date 2017/12/25 17:59
  * @description
  */
 
@@ -15,7 +15,8 @@ import javax.persistence.*;
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class RawMaterialDetail {
+public class CargoDetail {
+
 
     @Id
     @Column(name = "id")

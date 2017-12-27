@@ -1,8 +1,8 @@
-package cn.sisyphe.coffee.bill.domain.headquarters;
+package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.headquarters.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.headquarters.enums.PlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.PlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class HeadQuarterBill extends Bill<HeadQuarterBillDetail> {
+public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
     private String planName;

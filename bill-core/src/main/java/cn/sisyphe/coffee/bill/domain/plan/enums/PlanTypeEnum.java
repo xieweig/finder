@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.headquarters.enums;
+package cn.sisyphe.coffee.bill.domain.plan.enums;
 
 /**
  * @author ncmao
