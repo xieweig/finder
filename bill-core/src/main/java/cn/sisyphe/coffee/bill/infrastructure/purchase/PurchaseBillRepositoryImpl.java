@@ -4,6 +4,9 @@ import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.purchase.jpa.JPAPurchaseBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 
@@ -22,5 +25,10 @@ public class PurchaseBillRepositoryImpl extends AbstractBillRepository<PurchaseB
     @Override
     public PurchaseBill findOneByBillCode(String billCode) {
         return jpaPurchaseBillRepository.findOneByBillCode(billCode);
+    }
+
+    @Override
+    public Page<PurchaseBill> findAll(Specification<PurchaseBill> ta, Pageable pageable) {
+        return jpaPurchaseBillRepository.findAll(ta, pageable);
     }
 }

@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by heyong on 2017/12/19 17:19
@@ -11,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
  *
  * @author heyong
  */
+@Service
 public class BillServiceFactory {
 
 

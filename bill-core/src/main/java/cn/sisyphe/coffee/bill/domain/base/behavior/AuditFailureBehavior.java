@@ -4,23 +4,19 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 
 /**
- * Created by heyong on 2017/12/19 12:03
- * Description: 保存单据动作
+ * Created by XiongJing on 2017/12/27.
+ * remark：单据审核失败动作
+ * version: 1.0
  *
- * @author heyong
+ * @author XiongJing
  */
-public class SaveBehavior extends AbstractBillBehavior {
-
+public class AuditFailureBehavior extends AbstractBillBehavior {
     /**
      * 执行动作
      */
     @Override
     public void doAction() {
-        // TODO 判断状态
-        // ....
         Bill bill = getBillService().getBill();
-        bill.setBillState(BillStateEnum.SAVED);
+        bill.setBillState(BillStateEnum.AUDITFAILURE);
     }
-
-
 }

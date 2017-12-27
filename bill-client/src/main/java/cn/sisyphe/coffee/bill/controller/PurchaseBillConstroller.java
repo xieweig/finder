@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/bill/purchase")
@@ -49,7 +50,8 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
     public ResponseResult findByConditions(@RequestBody ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         ResponseResult responseResult = new ResponseResult();
-
+        Page<PurchaseBill> billPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
+        responseResult.put("content", billPage);
         return responseResult;
     }
 
@@ -62,7 +64,8 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/findByPurchaseBillCode", method = RequestMethod.GET)
     public ResponseResult findByPurchaseBillCode(@RequestParam String purchaseBillCode) {
         ResponseResult responseResult = new ResponseResult();
-
+        PurchaseBill purchaseBill = purchaseBillManager.auditingBill(purchaseBillCode);
+        responseResult.put("purchaseBill", purchaseBill);
         return responseResult;
     }
 
@@ -75,7 +78,6 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/updatePurchaseBill", method = RequestMethod.POST)
     public ResponseResult updatePurchaseBill(@RequestBody PurchaseBill purchaseBill) {
         ResponseResult responseResult = new ResponseResult();
-
         return responseResult;
     }
 
@@ -88,7 +90,7 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(@RequestParam String purchaseBillCode) {
         ResponseResult responseResult = new ResponseResult();
-
+        purchaseBillManager.auditFailureBill(purchaseBillCode);
         return responseResult;
     }
 
@@ -101,7 +103,7 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
     public ResponseResult auditSuccess(@RequestParam String purchaseBillCode) {
         ResponseResult responseResult = new ResponseResult();
-
+        purchaseBillManager.AuditSuccessBill(purchaseBillCode);
         return responseResult;
     }
 }

@@ -14,7 +14,8 @@ public class InStoragePurpose extends AbstractBillPurpose {
      */
     @Override
     public void handle() {
-
+        // 入库操作
+        // 发消息到库存冲减中
     }
 
     /**
