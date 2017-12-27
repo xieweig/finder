@@ -1,4 +1,4 @@
-package cn.sisyphe.bill.client.constroller;
+package cn.sisyphe.bill.controller;
 
 /**
  * Created by XiongJing on 2017/12/27.

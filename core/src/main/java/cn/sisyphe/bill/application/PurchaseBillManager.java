@@ -1,4 +1,4 @@
-package cn.sisyphe.bill.core.application;
+package cn.sisyphe.bill.application;
 
 /**
  * Created by XiongJing on 2017/12/27.

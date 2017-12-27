@@ -1,6 +1,6 @@
-package cn.sisyphe.bill.core.application;
+package cn.sisyphe.bill.application;
 
-import cn.sisyphe.bill.core.domain.base.behavior.BehaviorEvent;
+import cn.sisyphe.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
