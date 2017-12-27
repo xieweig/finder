@@ -8,7 +8,7 @@ package cn.sisyphe.coffee.bill.domain.transmit.enums;
  * @company 西西弗文化传播
  * @Date 2017/12/27 16:15
  **/
-public enum PackAgeType {
+public enum PackAgeTypeEnum {
 
     //一单多包
     ONE_BILL_TO_MANY_PACKAGE,
@@ -17,5 +17,8 @@ public enum PackAgeType {
     ONE_BILL_TO_ONE_PACKAGE,
 
     //多单一包
-    MANY_BILL_TO_ONE_PACKAGE
+    MANY_BILL_TO_ONE_PACKAGE,
+
+    //默认
+    DEFAULT
 }
