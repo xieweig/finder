@@ -4,6 +4,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,6 +36,12 @@ public class BillServiceFactory {
                 break;
             case PLAN:
                 billService = new PlanBillService(bill);
+                break;
+            case RETURNED:
+                billService = new ReturnedBillService(bill);
+                break;
+            case RESTOCK:
+                billService = new RestockBillService(bill);
                 break;
             default:
                 break;

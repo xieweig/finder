@@ -12,6 +12,9 @@ public enum StationType {
     STORE,
 
     //物流
-    LOGISTICS
+    LOGISTICS,
+
+    //供应商
+    SUPPLIER
 
 }

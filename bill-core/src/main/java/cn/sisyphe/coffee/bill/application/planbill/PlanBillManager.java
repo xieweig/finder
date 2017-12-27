@@ -43,7 +43,6 @@ public class PlanBillManager {
         billService.setBillRepository(planBillRepository);
         billService.save();
 
-//        Group<TradeRecord> groupInOutFlag = group(currentTradeRecords, by(on(TradeRecord.class).getInOutFlag()));
 
     }
 

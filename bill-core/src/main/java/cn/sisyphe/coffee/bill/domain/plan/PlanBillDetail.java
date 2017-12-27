@@ -1,12 +1,18 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author ncmao
@@ -19,52 +25,78 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PlanBillDetail extends BillDetail {
 
-    @Column
-    private Long inStationId;
+    /**
+     * 出库位置
+     */
+    @Transient
+    private AbstractLocation outLocation;
 
-    @Column
-    private Long outStationId;
+    /**
+     * 入库位置
+     */
+    @Transient
+    private AbstractLocation inLocation;
 
 
-    @Column
-    private String inStationName;
+    /**
+     * 数据库位置储存
+     */
+    private DbStation dbStation = new DbStation();
 
-    @Column
-    private String outStationName;
+    /**
+     * 更新前
+     */
+    @PrePersist
+    @PreUpdate
+    public void planBillUpdate() {
+        if (inLocation != null) {
+            dbStation.setInLocation(inLocation);
+        }
 
-    public String getInStationName() {
-        return inStationName;
+        if (outLocation != null) {
+            dbStation.setOutLocation(outLocation);
+        }
     }
 
-    public void setInStationName(String inStationName) {
-        this.inStationName = inStationName;
+    /**
+     * 载入
+     */
+    @PostLoad
+    @PostPersist
+    public void planBillUpload() {
+        if (dbStation == null) {
+            return;
+        }
+
+        inLocation = dbStation.getInLocation();
+        outLocation = dbStation.getOutLocation();
     }
 
-    public String getOutStationName() {
-        return outStationName;
+    public AbstractLocation getOutLocation() {
+        return outLocation;
     }
 
-    public void setOutStationName(String outStationName) {
-        this.outStationName = outStationName;
+    public void setOutLocation(AbstractLocation outLocation) {
+        this.outLocation = outLocation;
     }
 
-    public Long getInStationId() {
-        return inStationId;
+    public AbstractLocation getInLocation() {
+        return inLocation;
     }
 
-    public void setInStationId(Long inStationId) {
-        this.inStationId = inStationId;
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
     }
 
-    public Long getOutStationId() {
-        return outStationId;
+    public DbStation getDbStation() {
+        return dbStation;
     }
 
-    public void setOutStationId(Long outStationId) {
-        this.outStationId = outStationId;
+    public void setDbStation(DbStation dbStation) {
+        this.dbStation = dbStation;
     }
 
-    public String getOutInStation() {
-        return inStationName + outStationName;
+    public String getInOutStationCode() {
+        return inLocation.code() + outLocation.code();
     }
 }
