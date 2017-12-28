@@ -44,20 +44,20 @@ public class WayBill extends Bill<WayBillDetail> {
     /**
      * 物流公司名称
      */
-    @Column
+    @Column(nullable = false)
     private String logisticsCompanyName;
 
     /**
      * 目的地
      */
-    @Column
+    @Column(nullable = false)
     private String destination;
 
 
     /**
      * 运货件数
      */
-    @Column
+    @Column(nullable = false)
     private Integer amountOfPackages;
 
 

@@ -62,7 +62,7 @@ public class WayBillDetail extends BillDetail {
      */
     @Column
     @Enumerated(value = EnumType.STRING)
-    private PackAgeTypeEnum packAgeTypeEnum = PackAgeTypeEnum.DEFAULT;
+    private PackAgeTypeEnum packAgeTypeEnum;
 
 
     /**

@@ -4,6 +4,8 @@ import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/bill/waybill")
 @RestController
 @CrossOrigin(origins = "*")
+@Api(description = "运单信息相关操作")
 public class WayBillController {
 
     @Autowired
@@ -24,6 +27,7 @@ public class WayBillController {
     /**
      * 创建运单
      */
+    @ApiOperation(value = "创建运单")
     @RequestMapping(path = "/createWayBill", method = RequestMethod.POST)
     public ResponseResult createWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
 
@@ -36,6 +40,7 @@ public class WayBillController {
     /**
      * 修改运单
      */
+    @ApiOperation(value = "修改运单")
     @RequestMapping(path = "/updateWayBill", method = RequestMethod.POST)
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
@@ -46,6 +51,7 @@ public class WayBillController {
     /**
      * 删除单个运单(不同权限的操作)
      */
+    @ApiOperation(value = "删除单个运单，不同权限的操作")
     @RequestMapping(path = "/deleteWayBillById", method = RequestMethod.POST)
     public ResponseResult deleteWayBillById(@RequestParam String wayBillCode) {
         ResponseResult responseResult = new ResponseResult();
@@ -56,6 +62,7 @@ public class WayBillController {
     /**
      * 批量删除运单(不同权限的操作)
      */
+    @ApiOperation(value = "批量删除运单，不同权限的操作")
     @RequestMapping(path = "/deleteWayBillByIds", method = RequestMethod.POST)
     public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillCodes) {
         ResponseResult responseResult = new ResponseResult();
@@ -69,10 +76,11 @@ public class WayBillController {
      *
      * @return
      */
+    @ApiOperation(value = "运单多条件分页查询")
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
     public ResponseResult findWayBillByConditions(ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
-
+        responseResult.put("wayBillList", null);
         return responseResult;
     }
 

@@ -21,7 +21,6 @@ public class EditWayBillDTO implements Serializable {
     /**
      * 运单明细
      */
-
     private List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
 
     /**

@@ -1,10 +1,17 @@
 package cn.sisyphe.coffee.bill.application.transmit;
 
 
-import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
+import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
+import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
+import cn.sisyphe.coffee.bill.domain.base.behavior.WayBillSaveBehavior;
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
+import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -16,6 +23,7 @@ import org.springframework.util.StringUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * 运货单
@@ -28,7 +36,8 @@ public class WayBillManager {
 
 
     @Autowired
-    private IWayBillService iWayBillService;
+    private WayBillRepository wayBillRepository;
+
 
     /**
      * @param editWayBillDTO
@@ -41,6 +50,10 @@ public class WayBillManager {
         ///
         WayBill wayBill = convertDtoToWayBill(editWayBillDTO);
 
+        if (StringUtils.isEmpty(wayBill.getBillCode())) {//
+            //test
+            wayBill.setBillCode(UUID.randomUUID().toString());
+        }
         this.createWayBill(wayBill);
 
         return editWayBillDTO;
@@ -61,6 +74,7 @@ public class WayBillManager {
         wayBill.setBillCode(editWayBillDTO.getWayBillCode());
         //
         wayBill.setDestination(editWayBillDTO.getDestination());//目的地
+        wayBill.setLogisticsCompanyName(editWayBillDTO.getLogisticsCompanyName());// 快递公司名称
         wayBill.setPlanArrivalTime(editWayBillDTO.getPlanArrivalTime());//到达时间
         wayBill.setDeliveryTime(editWayBillDTO.getDeliveryTime());//发货时间
         wayBill.setTotalWeight(editWayBillDTO.getTotalWeight());//总总量
@@ -103,7 +117,7 @@ public class WayBillManager {
             wayBillDetail.setOperatorName(item.getOperatorName());//添加人
 
             //如果没有打包方式
-            if (StringUtils.isEmpty(item.getPackageType())) {
+            if (!StringUtils.isEmpty(item.getPackageType())) {
                 wayBillDetail.setPackAgeTypeEnum(PackAgeTypeEnum.DEFAULT);
             }
             billDetails.add(wayBillDetail);
@@ -143,11 +157,27 @@ public class WayBillManager {
      */
     public void createWayBill(WayBill wayBill) throws DataException {
 
-        //
-        iWayBillService.createWayBill(wayBill);
-        //
-        System.out.println(wayBill);
+        //工厂
+        new BillFactory().createBill(BillTypeEnum.TRANSMIT);
+        // 单据用途
+        wayBill.setBillPurpose(BillPurposeEnum.OutStorage);
 
+
+        BillServiceFactory serviceFactory = new BillServiceFactory();
+        AbstractBillService billService = serviceFactory.createBillService(wayBill);
+        // 4.处理保存动作
+        wayBill.setBillState(BillStateEnum.SAVED);// 单据状态
+        wayBill.setBillState(BillStateEnum.DONE);// 单据状态
+
+        // 自定义保存动作
+        billService.dispose(new WayBillSaveBehavior());
+        //状态
+
+        // 5.设置数据仓库和保存单据
+        billService.setBillRepository(wayBillRepository);
+        billService.save();
+        billService.afterDispose();///
+        applicationEventPublisher.publishEvent(wayBill);
 
     }
 

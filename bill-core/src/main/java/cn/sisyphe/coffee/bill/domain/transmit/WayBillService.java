@@ -13,6 +13,14 @@ import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
 
 public class WayBillService extends AbstractBillService {
 
+    //1自定义的rspository
+
+    //2.实现方法
+
+    //3在本类调用
+
+    //4在manager 通过对象访问成员函数
+
     /**
      * 构造方法
      *
@@ -25,14 +33,21 @@ public class WayBillService extends AbstractBillService {
 
     }
 
+    /**
+     * 调用处理前的方法
+     */
     @Override
     public void beforeDispose() {
-
+        System.out.println("处理前。。。。。。。。");
     }
 
+    /**
+     * 调用处理后的方法
+     */
     @Override
     public void afterDispose() {
 
+        System.out.println("处理后。。。。。。。。");
     }
 
 

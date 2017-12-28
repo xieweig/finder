@@ -6,5 +6,4 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 
 public interface IWayBillService {
 
-    void createWayBill(WayBill wayBill);
 }

@@ -23,6 +23,7 @@ public class SaveBehavior extends AbstractBillBehavior {
                     || bill.getBillState().equals(BillStateEnum.OPEN.name())) {
                 bill.setBillState(BillStateEnum.SAVED);
             } else {
+
                 throw new DataException("20001", "当前状态不能保存");
             }
         } else {

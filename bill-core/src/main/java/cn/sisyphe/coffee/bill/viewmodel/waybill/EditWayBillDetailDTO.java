@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,9 +16,16 @@ public class EditWayBillDetailDTO implements Serializable {
      */
     private EditWayBillDTO editWayBillDTO;
 
+    /**
+     * 明细code
+     */
+    @Transient
+    private String billDetailCode;
+
+
     public EditWayBillDetailDTO(EditWayBillDTO editWayBillDTO) {
         this.editWayBillDTO = editWayBillDTO;
-
+        billDetailCode = editWayBillDTO.getWayBillCode();//
     }
 
     /**
@@ -69,6 +77,13 @@ public class EditWayBillDetailDTO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStorageTime;
 
+    public String getBillDetailCode() {
+        return billDetailCode;
+    }
+
+    public void setBillDetailCode(String billDetailCode) {
+        this.billDetailCode = billDetailCode;
+    }
 
     public String getOperatorName() {
         return operatorName;

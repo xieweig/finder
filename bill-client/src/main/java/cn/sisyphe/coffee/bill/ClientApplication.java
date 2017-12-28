@@ -6,29 +6,31 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
  * @author heyong
  */
+@EnableSwagger2
 @SpringBootApplication
 public class ClientApplication implements CommandLineRunner {
 
 
-	@Autowired
-	private PurchaseBillRepository purchaseBillRepository;
+    @Autowired
+    private PurchaseBillRepository purchaseBillRepository;
 
-	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
-	public static void main(String[] args) {
-		SpringApplication.run(ClientApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ClientApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
-	}
+    }
 
 //	@Override
 //	public void run(String... strings) {
