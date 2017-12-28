@@ -44,9 +44,11 @@ public class PlanBillIntegrationTest {
     @Test
     public void test1() {
         PlanBill planBill = new PlanBill();
-        planBill.setBillType(BillTypeEnum.DELIVERY);
+        planBill.setBillType(BillTypeEnum.PLAN);
+        planBill.setSpecificBillType(BillTypeEnum.DELIVERY);
         planBill.setBillPurpose(BillPurposeEnum.Plan);
         planBill.setHqBill(true);
+        planBill.setBillCode("testcode3");
 
         PlanBillDetail planBillDetail = new PlanBillDetail();
         Station inLocation = new Station("CQ00");
@@ -54,19 +56,30 @@ public class PlanBillIntegrationTest {
         planBillDetail.setInLocation(inLocation);
         Station outLocation = new Station("CQ01");
         planBillDetail.setOutLocation(outLocation);
+        planBillDetail.setAmount(2);
         planBill.setInLocation(inLocation);
         planBill.setOutLocation(outLocation);
 
         RawMaterial rawMaterial1 = new RawMaterial("YLCODE1");
-        RawMaterial rawMaterial2 = new RawMaterial("YLCODE2");
         planBillDetail.setGoods(rawMaterial1);
+
+
+        PlanBillDetail planBillDetail1 = new PlanBillDetail();
+        planBillDetail1.setInLocation(inLocation);
+        planBillDetail1.setOutLocation(outLocation);
+        planBillDetail1.setGoods(new RawMaterial("YLCODE2"));
+        planBillDetail1.setAmount(10);
         Set<PlanBillDetail> planBillDetailSet = new HashSet<>();
         planBillDetailSet.add(planBillDetail);
+        planBillDetailSet.add(planBillDetail1);
+
         planBill.setBillDetails(planBillDetailSet);
+
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
         billService.dispose(new PurposeBehavior());
         billService.save();
+        System.out.println(planBillRepository.findByBillCode("testcode3").getBillDetails().size());
     }
 
 }

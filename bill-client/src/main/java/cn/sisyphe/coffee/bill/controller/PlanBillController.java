@@ -3,6 +3,8 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/bill/planbill")
+@Api(description = "总部计划中心")
 @CrossOrigin(origins = "*")
 public class PlanBillController {
 
@@ -25,6 +28,7 @@ public class PlanBillController {
     private PlanBillManager planBillManager;
 
 
+    @ApiOperation(value = "新建总部计划")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public ResponseResult createProduct(@RequestBody PlanBillDTO planBillDTO) throws Exception {
         planBillManager.create(planBillDTO);

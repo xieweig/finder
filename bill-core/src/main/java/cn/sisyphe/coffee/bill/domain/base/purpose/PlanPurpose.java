@@ -1,18 +1,18 @@
 package cn.sisyphe.coffee.bill.domain.base.purpose;
 
+import ch.lambdaj.function.closure.Switcher;
 import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.ItemPayload;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
+import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayloadDetail;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.DeliveryStrategy;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.ReturnedStrategy;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static ch.lambdaj.Lambda.group;
@@ -27,10 +27,6 @@ import static ch.lambdaj.group.Groups.by;
  */
 public class PlanPurpose extends AbstractBillPurpose {
 
-    private final Map<BillTypeEnum, AbstractCastableStrategy> BILL_TYPE_ENUM_CASTABLE_STRATEGY_MAP = ImmutableMap.of(
-            BillTypeEnum.DELIVERY, new DeliveryStrategy(), BillTypeEnum.RETURNED, new ReturnedStrategy());
-
-
     /**
      * 用途处理器
      */
@@ -39,26 +35,37 @@ public class PlanPurpose extends AbstractBillPurpose {
         PlanBill bill = (PlanBill) getBillService().getBill();
         //将详情安装出入站点名字进行分组
         Group<PlanBillDetail> groupedPlanBillDetail = group(bill.getBillDetails(), by(on(PlanBillDetail.class).getInOutStationCode()));
-        Set<ItemPayload> payloads = new HashSet<>();
+        Set<PlanBillPayload> payloads = new HashSet<>();
 
         for (String head : groupedPlanBillDetail.keySet()) {
-            ItemPayload itemPayload = new ItemPayload();
+            PlanBillPayload planBillPayload = new PlanBillPayload();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-            itemPayload.setOutLocation(firstPlanBillDetail.getOutLocation());
-            itemPayload.setInLocation(firstPlanBillDetail.getInLocation());
-            itemPayload.setCastableStrategy(BILL_TYPE_ENUM_CASTABLE_STRATEGY_MAP.get(bill.getBillType()));
+            planBillPayload.setOutLocation(firstPlanBillDetail.getOutLocation());
+            planBillPayload.setInLocation(firstPlanBillDetail.getInLocation());
+            planBillPayload.setCastableStrategy(getSpecStrategy(bill.getSpecificBillType()));
             for (PlanBillDetail planBillDetail : planBillDetails) {
-                itemPayload.addGood(planBillDetail.getGoods());
+                PlanBillPayloadDetail planBillPayloadDetail = new PlanBillPayloadDetail();
+                planBillPayloadDetail.setAmount(planBillDetail.getAmount());
+                planBillPayloadDetail.setGoods(planBillDetail.getGoods());
+                planBillPayload.addGoodsDetail(planBillPayloadDetail);
             }
-            payloads.add(itemPayload);
+            payloads.add(planBillPayload);
 
         }
 
-        for (ItemPayload payload : payloads) {
+        for (PlanBillPayload payload : payloads) {
             payload.doCast(getBillService().getBillRepository());
         }
 
+    }
+
+    private AbstractCastableStrategy getSpecStrategy(BillTypeEnum billTypeEnum) {
+        Switcher<AbstractCastableStrategy> switcher = new Switcher<AbstractCastableStrategy>()
+                .addCase(BillTypeEnum.DELIVERY, new DeliveryStrategy())
+                .addCase(BillTypeEnum.RETURNED, new ReturnedStrategy());
+
+        return switcher.exec(billTypeEnum);
     }
 
 }
