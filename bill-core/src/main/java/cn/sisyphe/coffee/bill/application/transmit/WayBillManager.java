@@ -61,11 +61,10 @@ public class WayBillManager {
         wayBill.setBillCode(editWayBillDTO.getWayBillCode());
         //
         wayBill.setDestination(editWayBillDTO.getDestination());//目的地
-
         wayBill.setPlanArrivalTime(editWayBillDTO.getPlanArrivalTime());//到达时间
         wayBill.setDeliveryTime(editWayBillDTO.getDeliveryTime());//发货时间
-
-        wayBill.setAmountOfPackages(editWayBillDTO.getAmountOfPackages());//打包件数
+        wayBill.setTotalWeight(editWayBillDTO.getTotalWeight());//总总量
+        wayBill.setAmountOfPackages(editWayBillDTO.getAmountOfPackages());//运货件数
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
 
         //添加明细
@@ -92,12 +91,16 @@ public class WayBillManager {
             //2运单明细
             WayBillDetail wayBillDetail = new WayBillDetail();
 
+            wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量
             wayBillDetail.setPackageCode(item.getPackageNumbers());//包号
 
             wayBillDetail.setInStationCode(item.getInStationCode());//入库站点
             wayBillDetail.setOutStationCode(item.getOutStationCode());//出库站点
             wayBillDetail.setOutStorageTime(item.getOutStorageTime());//出库时间
+
+            wayBillDetail.setOperatorName(item.getOperatorName());//添加人
+
             //如果没有打包方式
             if (StringUtils.isEmpty(item.getPackageType())) {
                 wayBillDetail.setPackAgeTypeEnum(PackAgeTypeEnum.DEFAULT);
@@ -105,8 +108,6 @@ public class WayBillManager {
             billDetails.add(wayBillDetail);
         }
         return billDetails;
-
-
     }
 
 
@@ -115,11 +116,9 @@ public class WayBillManager {
      * @throws DataException
      */
     private void checkParams(EditWayBillDTO editWayBillDTO) throws DataException {
-
         if (editWayBillDTO == null) {
             throw new DataException("", "参数为空");
         }
-
         if (StringUtils.isEmpty(editWayBillDTO.getWayBillCode())) {
             throw new DataException("", "单据号为空");
         }
