@@ -28,8 +28,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private String planName;
 
-    @Column
-    private String planCode;
 
     @Column
     @Enumerated(value = EnumType.STRING)
@@ -38,7 +36,7 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
     @Enumerated(value = EnumType.STRING)
-    private BillTypeEnum billType;
+    private BillTypeEnum specificBillType;
 
     //创建人名称
     @Column
@@ -48,10 +46,17 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private String auditorName;
 
+    @Column
+    private Boolean hqBill;
+
 
     //完成度
     @Column
     private BigDecimal progress;
+
+    public PlanBill() {
+        setBillType(BillTypeEnum.PLAN);
+    }
 
 
     public String getPlanName() {
@@ -62,13 +67,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.planName = planName;
     }
 
-    public String getPlanCode() {
-        return planCode;
-    }
-
-    public void setPlanCode(String planCode) {
-        this.planCode = planCode;
-    }
 
     public BasicEnum getBasicEnum() {
         return basicEnum;
@@ -78,14 +76,12 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.basicEnum = basicEnum;
     }
 
-    @Override
-    public BillTypeEnum getBillType() {
-        return billType;
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
     }
 
-    @Override
-    public void setBillType(BillTypeEnum billType) {
-        this.billType = billType;
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
     }
 
     public String getCreatorName() {
@@ -110,5 +106,13 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
+    }
+
+    public Boolean getHqBill() {
+        return hqBill;
+    }
+
+    public void setHqBill(Boolean hqBill) {
+        this.hqBill = hqBill;
     }
 }

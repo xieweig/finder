@@ -1,21 +1,17 @@
 package cn.sisyphe.coffee.bill.domain.plan.strategy;
 
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.ItemPayload;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.StationType.LOGISTICS;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.StationType.STORE;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.OutStorage;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RETURNED;
 
 
 /**
@@ -24,36 +20,27 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.StationType.STORE;
  */
 
 @Service
-public class ReturnedStrategy implements CastableStrategy {
+public class ReturnedStrategy extends AbstractCastableStrategy {
 
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void cast(ItemPayload itemPayload) {
-
-
-    }
-
-    public ReturnedBill pack(ItemPayload itemPayload) {
+    public void cast(ItemPayload itemPayload, BillRepository billRepository) {
         //出站点为物流则直接生成退货单
-        if (LOGISTICS.equals(itemPayload.getOutStation().getStationType())) {
-            ReturnedBill returnedBill = (ReturnedBill) new BillFactory().createBill(BillTypeEnum.RETURNED);
-            returnedBill.setInLocation(itemPayload.getInStation());
-            returnedBill.setOutLocation(itemPayload.getOutStation());
-            returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
-            Set<ReturnedBillDetail> billDetails = new HashSet<>();
-            for (AbstractGoods goods : itemPayload.getGoods()) {
-                ReturnedBillDetail returnedBillDetail = new ReturnedBillDetail();
-                returnedBillDetail.setGoods(goods);
-                billDetails.add(returnedBillDetail);
-            }
-            returnedBill.setBillDetails(billDetails);
-            return returnedBill;
+        AbstractLocation outLocation = itemPayload.getOutLocation();
+        if (outLocation instanceof Station && StationType.LOGISTICS.equals(((Station) outLocation).getStationType())) {
+            PlanBill returnedBill = generatePlanBill(itemPayload, RETURNED, OutStorage);
+            billRepository.save(returnedBill);
+            return;
         }
-        //出站点为门店则先生成退库单，再生成退货单
-        if (STORE.equals(itemPayload.getOutStation().getStationType())) {
+        //出站点为门店则先生成退库计划，再生成退货计划
+        if (outLocation instanceof Station && StationType.STORE.equals(((Station) outLocation).getStationType())) {
+            PlanBill restockBill = generatePlanBill(itemPayload, BillTypeEnum.RESTOCK, OutStorage);
+            billRepository.save(restockBill);
 
+            PlanBill returnedBill = generatePlanBill(itemPayload, BillTypeEnum.RETURNED, OutStorage);
+            billRepository.save(returnedBill);
         }
-
         throw new DataException("123456", "站点选择有错误!");
     }
 }

@@ -1,10 +1,16 @@
 package cn.sisyphe.coffee.bill;
 
 
+import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
+import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
+import cn.sisyphe.coffee.bill.domain.base.behavior.PurposeBehavior;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
-import cn.sisyphe.coffee.bill.domain.plan.ItemPayload;
-import cn.sisyphe.coffee.bill.domain.plan.strategy.DeliveryStrategy;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
 import org.junit.Test;
@@ -12,6 +18,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author ncmao
@@ -26,9 +35,6 @@ public class PlanBillIntegrationTest {
 
 
     @Autowired
-    private DeliveryStrategy deliveryStrategy;
-
-    @Autowired
     private JPAPlanBillRepository jpaPlanBillRepository;
 
     @Autowired
@@ -36,17 +42,31 @@ public class PlanBillIntegrationTest {
 
 
     @Test
-    public void createSuccess() {
-        ItemPayload itemPayload = new ItemPayload();
-        itemPayload.setBillName("总部调剂计划");
-        itemPayload.setBillCode("code");
-        itemPayload.setBillType(BillTypeEnum.DELIVERY);
-        itemPayload.setMemo("beizhu");
+    public void test1() {
+        PlanBill planBill = new PlanBill();
+        planBill.setBillType(BillTypeEnum.DELIVERY);
+        planBill.setBillPurpose(BillPurposeEnum.Plan);
+        planBill.setHqBill(true);
 
-        Cargo cargo = new Cargo("cargocode");
-        itemPayload.addGood(cargo);
-        deliveryStrategy.cast(itemPayload);
+        PlanBillDetail planBillDetail = new PlanBillDetail();
+        Station inLocation = new Station("CQ00");
+        inLocation.setStationType(StationType.STORE);
+        planBillDetail.setInLocation(inLocation);
+        Station outLocation = new Station("CQ01");
+        planBillDetail.setOutLocation(outLocation);
+        planBill.setInLocation(inLocation);
+        planBill.setOutLocation(outLocation);
 
+        RawMaterial rawMaterial1 = new RawMaterial("YLCODE1");
+        RawMaterial rawMaterial2 = new RawMaterial("YLCODE2");
+        planBillDetail.setGoods(rawMaterial1);
+        Set<PlanBillDetail> planBillDetailSet = new HashSet<>();
+        planBillDetailSet.add(planBillDetail);
+        planBill.setBillDetails(planBillDetailSet);
+        AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
+        billService.setBillRepository(planBillRepository);
+        billService.dispose(new PurposeBehavior());
+        billService.save();
     }
 
 }

@@ -2,9 +2,10 @@ package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.plan.strategy.CastableStrategy;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
+import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,12 @@ public class ItemPayload {
     private String billName;
     private String billCode;
     private String memo;
-    private Station inStation;
-    private Station outStation;
+    private AbstractLocation inLocation;
+    private AbstractLocation outLocation;
     private BasicEnum basicEnum;
     private List<AbstractGoods> goods = new ArrayList<>();
 
-    private CastableStrategy castableStrategy;
+    private AbstractCastableStrategy castableStrategy;
 
 
     public BillTypeEnum getBillType() {
@@ -60,20 +61,20 @@ public class ItemPayload {
         this.memo = memo;
     }
 
-    public Station getInStation() {
-        return inStation;
+    public AbstractLocation getInLocation() {
+        return inLocation;
     }
 
-    public void setInStation(Station inStation) {
-        this.inStation = inStation;
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
     }
 
-    public Station getOutStation() {
-        return outStation;
+    public AbstractLocation getOutLocation() {
+        return outLocation;
     }
 
-    public void setOutStation(Station outStation) {
-        this.outStation = outStation;
+    public void setOutLocation(AbstractLocation outLocation) {
+        this.outLocation = outLocation;
     }
 
     public List<AbstractGoods> getGoods() {
@@ -96,15 +97,15 @@ public class ItemPayload {
         this.basicEnum = basicEnum;
     }
 
-    public CastableStrategy getCastableStrategy() {
+    public AbstractCastableStrategy getCastableStrategy() {
         return castableStrategy;
     }
 
-    public void setCastableStrategy(CastableStrategy castableStrategy) {
+    public void setCastableStrategy(AbstractCastableStrategy castableStrategy) {
         this.castableStrategy = castableStrategy;
     }
 
-    public void doCast() {
-        this.castableStrategy.cast(this);
+    public void doCast(BillRepository billRepository) {
+        this.castableStrategy.cast(this, billRepository);
     }
 }
