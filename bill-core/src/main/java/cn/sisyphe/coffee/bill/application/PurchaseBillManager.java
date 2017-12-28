@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.*;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillQueryService;
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
+import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class PurchaseBillManager {
     public PurchaseBill auditingBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        purchaseBillService.dispose(new AuditingBehavior());
+        purchaseBillService.dispose(new OpenBehavior());
         purchaseBillService.setBillRepository(purchaseBillRepository);
         purchaseBillService.save();
         return purchaseBill;
@@ -91,7 +92,8 @@ public class PurchaseBillManager {
     public void auditFailureBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        purchaseBillService.dispose(new AuditFailureBehavior());
+
+        purchaseBillService.dispose(new AuditBehavior(purchaseBillService, Constant.AUDIT_FAILURE_VALUE));
         purchaseBillService.setBillRepository(purchaseBillRepository);
         purchaseBillService.save();
         // 发送事件
@@ -106,7 +108,7 @@ public class PurchaseBillManager {
     public void AuditSuccessBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        purchaseBillService.dispose(new AuditSuccessBehavior());
+        purchaseBillService.dispose(new AuditBehavior(purchaseBillService, Constant.AUDIT_SUCCESS_VALUE));
         purchaseBillService.dispose(new PurposeBehavior());
         purchaseBillService.setBillRepository(purchaseBillRepository);
         purchaseBillService.save();

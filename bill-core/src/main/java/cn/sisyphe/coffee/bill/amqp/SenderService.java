@@ -37,7 +37,7 @@ public class SenderService {
      * @param bill
      */
     public void sendBillToStockOffsetRabbitMQ(Bill bill) {
-
+        System.err.println("单据审核成功，发送到库存冲减"+bill);
         ResponseResult responseResult = new ResponseResult();
         responseResult.setCommandName("bill-stock-done");
         responseResult.put("bill", bill);

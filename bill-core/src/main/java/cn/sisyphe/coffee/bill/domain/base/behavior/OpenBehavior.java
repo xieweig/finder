@@ -5,28 +5,26 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.framework.web.exception.DataException;
 
 /**
- * Created by heyong on 2017/12/19 12:03
- * Description: 保存单据动作
+ * Created by XiongJing on 2017/12/27.
+ * remark：单据审核中动作
+ * version: 1.0
  *
- * @author heyong
+ * @author XiongJing
  */
-public class SaveBehavior extends AbstractBillBehavior {
-
-    /**
-     * 执行动作
-     */
+public class OpenBehavior extends AbstractBillBehavior {
     @Override
     public void doAction() {
+        // TODO 判断状态
         Bill bill = getBillService().getBill();
         if (bill != null) {
-            if (bill.getBillState().equals(BillStateEnum.SAVED.name())
-                    || bill.getBillState().equals(BillStateEnum.OPEN.name())) {
-                bill.setBillState(BillStateEnum.SAVED);
+            if (bill.getBillState().equals(BillStateEnum.OPEN)) {
+                bill.setBillState(BillStateEnum.OPEN);
             } else {
-                throw new DataException("20001", "当前状态不能保存");
+                throw new DataException("20003", "当前状态不能更改为打开状态");
             }
         } else {
             throw new DataException("20404", "单据为空");
         }
+
     }
 }

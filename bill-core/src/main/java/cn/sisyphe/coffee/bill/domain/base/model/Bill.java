@@ -31,10 +31,12 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据种类
      */
+    @Enumerated(EnumType.STRING)
     private BillTypeEnum billType;
     /**
      * 单据作用
      */
+    @Enumerated(EnumType.STRING)
     private BillPurposeEnum billPurpose;
 
     /**
@@ -87,6 +89,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据状态
      */
+    @Enumerated(EnumType.STRING)
     private BillStateEnum billState;
 
 

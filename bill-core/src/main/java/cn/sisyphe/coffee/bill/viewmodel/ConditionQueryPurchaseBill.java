@@ -10,7 +10,7 @@ package cn.sisyphe.coffee.bill.viewmodel;
 public class ConditionQueryPurchaseBill extends BaseConditionQuery {
 
     /**
-     * 录单名称
+     * 录单人名称
      */
     private String operatorName;
     /**

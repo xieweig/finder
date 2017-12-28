@@ -17,7 +17,7 @@ public enum BillStateEnum {
     /**
      * 审核中
      */
-    AUDITING,
+    OPEN,
     /**
      * 审核失败
      */

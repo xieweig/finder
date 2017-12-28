@@ -50,7 +50,7 @@ public class PurchaseBillEventProcessor {
     }
 
     /**
-     * 审核失败事件
+     * 审核成功事件
      *
      * @param event
      */
