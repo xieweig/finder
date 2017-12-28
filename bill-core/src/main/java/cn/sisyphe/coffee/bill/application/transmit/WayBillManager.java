@@ -91,6 +91,8 @@ public class WayBillManager {
             //2运单明细
             WayBillDetail wayBillDetail = new WayBillDetail();
 
+            wayBillDetail.setOutStorageBillCode(item.getOutStorageBillCode());//出库单号
+
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量
             wayBillDetail.setPackageCode(item.getPackageNumbers());//包号
@@ -98,7 +100,6 @@ public class WayBillManager {
             wayBillDetail.setInStationCode(item.getInStationCode());//入库站点
             wayBillDetail.setOutStationCode(item.getOutStationCode());//出库站点
             wayBillDetail.setOutStorageTime(item.getOutStorageTime());//出库时间
-
             wayBillDetail.setOperatorName(item.getOperatorName());//添加人
 
             //如果没有打包方式
@@ -119,10 +120,18 @@ public class WayBillManager {
         if (editWayBillDTO == null) {
             throw new DataException("", "参数为空");
         }
-        if (StringUtils.isEmpty(editWayBillDTO.getWayBillCode())) {
-            throw new DataException("", "单据号为空");
+        if (StringUtils.isEmpty(editWayBillDTO.getLogisticsCompanyName())) {
+            throw new DataException("", "物流公司名称不能为空");
         }
-
+        if (editWayBillDTO.getDeliveryTime() == null) {
+            throw new DataException("", "发货时间不能为空");
+        }
+        if (StringUtils.isEmpty(editWayBillDTO.getDestination())) {
+            throw new DataException("", "目的地不能为空");
+        }
+        if (editWayBillDTO.getAmountOfPackages() == null || editWayBillDTO.getAmountOfPackages() == 0) {
+            throw new DataException("", "运货数量必须大于0");
+        }
     }
 
 
@@ -134,7 +143,7 @@ public class WayBillManager {
      */
     public void createWayBill(WayBill wayBill) throws DataException {
 
-
+        //
         iWayBillService.createWayBill(wayBill);
         //
         System.out.println(wayBill);
