@@ -67,7 +67,7 @@ public class IWayBillServiceImpl implements IWayBillService {
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
                 expressions.add(cb.like(root.<String>get("logisticsCompanyName"), "%" + conditionQueryWayBill.getLogisticsCompanyName() + "%"));
             }
-            //操作人
+            //操作人姓名
             if (!StringUtils.isEmpty(conditionQueryWayBill.getOperatorName())) {
                 expressions.add(cb.like(root.<String>get("operatorName"), "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
@@ -81,11 +81,10 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getCreateStartTime(),
                         conditionQueryWayBill.getCreateEndTime()));
             }
-
             // 发货时间
             if (conditionQueryWayBill.getDeliverTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
-                expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getDeliveryStartTime(),
+                expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
                         conditionQueryWayBill.getDeliveryEndTime()));
             }
 

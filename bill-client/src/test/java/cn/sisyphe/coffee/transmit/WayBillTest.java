@@ -4,14 +4,17 @@ import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDetailDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -29,6 +32,24 @@ public class WayBillTest {
     @Autowired
     private WayBillManager wayBillManager;
 
+    @Autowired
+    private IWayBillService iWayBillService;
+
+    @Test
+    public void testFindByPage() {
+
+        ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
+        conditionQueryWayBill.setOperatorName("test");
+        conditionQueryWayBill.setInStationCode("jd");
+        conditionQueryWayBill.setPageSize(100);
+        conditionQueryWayBill.setPage(1);
+        Page<WayBill> billPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
+        if (billPage != null) {
+            System.out.println(billPage.getContent());
+        }
+
+    }
+
 
     @Test
     public void testCreateDto() {
@@ -40,6 +61,7 @@ public class WayBillTest {
         editWayBillDTO.setAmountOfPackages(122);
         editWayBillDTO.setDeliveryTime(new Date());
         editWayBillDTO.setDestination("重庆");
+        editWayBillDTO.setOperatorName("小明");
         editWayBillDTO.setLogisticsCompanyName("jd快递");
         editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间
         editWayBillDTO.setAmountOfPackages(155);

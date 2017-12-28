@@ -80,7 +80,8 @@ public class WayBillManager {
         wayBill.setTotalWeight(editWayBillDTO.getTotalWeight());//总总量
         wayBill.setAmountOfPackages(editWayBillDTO.getAmountOfPackages());//运货件数
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
-
+        wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
+        wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
         //添加明细
         wayBill.setBillDetails(addBillItem(editWayBillDTO));
         return wayBill;

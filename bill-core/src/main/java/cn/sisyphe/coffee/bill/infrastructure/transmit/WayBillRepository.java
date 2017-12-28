@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 /**
  * 运单JPA
  *
@@ -21,6 +23,15 @@ public interface WayBillRepository extends BillRepository<WayBill> {
 
 
     Page<WayBill> findAll(Specification<WayBill> ta, Pageable pageable);
+
+
+    /**
+     * 多条件查询集合
+     *
+     * @param ta
+     * @return
+     */
+    List<WayBill> findAllByCondition(Specification<WayBill> ta);
 
 }
 

@@ -73,6 +73,21 @@ public class EditWayBillDTO implements Serializable {
      */
     private Long totalWeight;
 
+    //user code
+    private String operatorCode;
+    /**
+     *
+     */
+    private String operatorName;
+
+    public String getOperatorName() {
+
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
 
     public Date getPlanArrivalTime() {
         return planArrivalTime;
@@ -145,6 +160,14 @@ public class EditWayBillDTO implements Serializable {
 
     public void setEditWayBillDetailDTOList(List<EditWayBillDetailDTO> editWayBillDetailDTOList) {
         this.editWayBillDetailDTOList = editWayBillDetailDTOList;
+    }
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
     }
 
     public Long getTotalWeight() {

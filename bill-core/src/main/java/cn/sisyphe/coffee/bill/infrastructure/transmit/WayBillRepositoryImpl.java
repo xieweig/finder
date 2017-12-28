@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 运单JPA
  * Created by Administrator on 2017/12/27.
@@ -42,6 +44,11 @@ public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
     @Override
     public Page<WayBill> findAll(Specification<WayBill> ta, Pageable pageable) {
         return jpaWayBillRepository.findAll(ta, pageable);
+    }
+
+    @Override
+    public List<WayBill> findAllByCondition(Specification<WayBill> ta) {
+        return null;
     }
 
 

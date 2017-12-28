@@ -1,8 +1,10 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -25,14 +27,24 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
      */
     private String outStorageBillCode;//
 
+
     /**
      * 录单开始时间
      */
-    private String createStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
+
+
+    /**
+     * 录单开始时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createStartTime;
     /**
      * 录单结束时间
      */
-    private String createEndTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createEndTime;
 
     /**
      * 运货件数
@@ -40,16 +52,23 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     private Integer amountOfPackages;
 
     /**
+     * 发货时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date deliverTime;//
+
+
+    /**
      * 发货开始时间
      */
-
-    private String deliveryStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date deliveryStartTime;
 
     /**
      * 发货结束时间
      */
-
-    private String deliveryEndTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date deliveryEndTime;
 
     /**
      * 物流公司名称
@@ -89,6 +108,14 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
         return outStorageBillCode;
     }
 
+    public Date getDeliverTime() {
+        return deliverTime;
+    }
+
+    public void setDeliverTime(Date deliverTime) {
+        this.deliverTime = deliverTime;
+    }
+
     public void setOutStorageBillCode(String outStorageBillCode) {
         this.outStorageBillCode = outStorageBillCode;
     }
@@ -105,35 +132,35 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
         this.wayBillCode = wayBillCode;
     }
 
-    public String getCreateStartTime() {
+    public Date getCreateStartTime() {
         return createStartTime;
     }
 
-    public void setCreateStartTime(String createStartTime) {
+    public void setCreateStartTime(Date createStartTime) {
         this.createStartTime = createStartTime;
     }
 
-    public String getCreateEndTime() {
+    public Date getCreateEndTime() {
         return createEndTime;
     }
 
-    public void setCreateEndTime(String createEndTime) {
+    public void setCreateEndTime(Date createEndTime) {
         this.createEndTime = createEndTime;
     }
 
-    public String getDeliveryStartTime() {
+    public Date getDeliveryStartTime() {
         return deliveryStartTime;
     }
 
-    public void setDeliveryStartTime(String deliveryStartTime) {
+    public void setDeliveryStartTime(Date deliveryStartTime) {
         this.deliveryStartTime = deliveryStartTime;
     }
 
-    public String getDeliveryEndTime() {
+    public Date getDeliveryEndTime() {
         return deliveryEndTime;
     }
 
-    public void setDeliveryEndTime(String deliveryEndTime) {
+    public void setDeliveryEndTime(Date deliveryEndTime) {
         this.deliveryEndTime = deliveryEndTime;
     }
 
@@ -143,6 +170,14 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
 
     public void setLogisticsCompanyName(String logisticsCompanyName) {
         this.logisticsCompanyName = logisticsCompanyName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getInStationCode() {

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * 运货单
@@ -18,11 +17,8 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class WayBill extends Bill<WayBillDetail> {
 
-
-    @Transient
-    Set<WayBillDetail> wayBillDetailSet;
-
     public WayBill() {
+        //设置单据为运货单
         this.setBillType(BillTypeEnum.TRANSMIT);//
     }
 
@@ -73,14 +69,11 @@ public class WayBill extends Bill<WayBillDetail> {
     @Column
     private String memo;
 
+    /**
+     * 操作人姓名
+     */
+    private String operatorName;
 
-    public Set<WayBillDetail> getWayBillDetailSet() {
-        return wayBillDetailSet;
-    }
-
-    public void setWayBillDetailSet(Set<WayBillDetail> wayBillDetailSet) {
-        this.wayBillDetailSet = wayBillDetailSet;
-    }
 
     public Date getDeliveryTime() {
         return deliveryTime;
@@ -136,5 +129,27 @@ public class WayBill extends Bill<WayBillDetail> {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    @Override
+    public String toString() {
+        return "WayBill{" +
+                "deliveryTime=" + deliveryTime +
+                ", planArrivalTime=" + planArrivalTime +
+                ", logisticsCompanyName='" + logisticsCompanyName + '\'' +
+                ", destination='" + destination + '\'' +
+                ", amountOfPackages=" + amountOfPackages +
+                ", totalWeight=" + totalWeight +
+                ", memo='" + memo + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                '}';
     }
 }
