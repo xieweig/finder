@@ -1,7 +1,12 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,8 +22,13 @@ public class EditWayBillDTO implements Serializable {
      * 运单明细
      */
 
-    private List<EditWayBillDetailDTO> editWayBillDetailDTOList;
+    private List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
 
+    /**
+     * id
+     */
+    @JsonIgnore
+    private Long billId;
     /**
      * 运单号
      */
@@ -27,12 +37,14 @@ public class EditWayBillDTO implements Serializable {
     /**
      * 发货时间
      */
-    private String deliveryTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date deliveryTime;
 
     /**
      * 预计到货时间
      */
-    private String planArrivalTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date planArrivalTime;
 
     /**
      * 物流公司名称
@@ -63,6 +75,22 @@ public class EditWayBillDTO implements Serializable {
     private Long totalWeight;
 
 
+    public Date getPlanArrivalTime() {
+        return planArrivalTime;
+    }
+
+    public void setPlanArrivalTime(Date planArrivalTime) {
+        this.planArrivalTime = planArrivalTime;
+    }
+
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
+    }
+
     public Integer getAmountOfPackages() {
         return amountOfPackages;
     }
@@ -79,20 +107,13 @@ public class EditWayBillDTO implements Serializable {
         this.wayBillCode = wayBillCode;
     }
 
-    public String getDeliveryTime() {
+
+    public Date getDeliveryTime() {
         return deliveryTime;
     }
 
-    public void setDeliveryTime(String deliveryTime) {
+    public void setDeliveryTime(Date deliveryTime) {
         this.deliveryTime = deliveryTime;
-    }
-
-    public String getPlanArrivalTime() {
-        return planArrivalTime;
-    }
-
-    public void setPlanArrivalTime(String planArrivalTime) {
-        this.planArrivalTime = planArrivalTime;
     }
 
     public String getLogisticsCompanyName() {

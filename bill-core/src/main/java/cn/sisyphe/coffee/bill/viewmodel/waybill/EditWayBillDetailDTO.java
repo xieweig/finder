@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 /**
  * 运单编辑(添加，修改明细DTO)
@@ -32,7 +34,7 @@ public class EditWayBillDetailDTO implements Serializable {
     /**
      * 包号
      */
-    private List<Long> packageNumbers;
+    private String packageNumbers;
 
 
     /**
@@ -64,7 +66,8 @@ public class EditWayBillDetailDTO implements Serializable {
     /**
      * 出库时间
      */
-    private String outStorageTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outStorageTime;
 
 
     public String getOperatorName() {
@@ -83,11 +86,11 @@ public class EditWayBillDetailDTO implements Serializable {
         this.editWayBillDTO = editWayBillDTO;
     }
 
-    public List<Long> getPackageNumbers() {
+    public String getPackageNumbers() {
         return packageNumbers;
     }
 
-    public void setPackageNumbers(List<Long> packageNumbers) {
+    public void setPackageNumbers(String packageNumbers) {
         this.packageNumbers = packageNumbers;
     }
 
@@ -139,11 +142,12 @@ public class EditWayBillDetailDTO implements Serializable {
         this.outStationCode = outStationCode;
     }
 
-    public String getOutStorageTime() {
+
+    public Date getOutStorageTime() {
         return outStorageTime;
     }
 
-    public void setOutStorageTime(String outStorageTime) {
+    public void setOutStorageTime(Date outStorageTime) {
         this.outStorageTime = outStorageTime;
     }
 }

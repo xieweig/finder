@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * 运货单
@@ -17,6 +18,9 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class WayBill extends Bill<WayBillDetail> {
 
+
+    @Transient
+    Set<WayBillDetail> wayBillDetailSet;
 
     public WayBill() {
         this.setBillType(BillTypeEnum.TRANSMIT);//
@@ -69,6 +73,14 @@ public class WayBill extends Bill<WayBillDetail> {
     @Column
     private String memo;
 
+
+    public Set<WayBillDetail> getWayBillDetailSet() {
+        return wayBillDetailSet;
+    }
+
+    public void setWayBillDetailSet(Set<WayBillDetail> wayBillDetailSet) {
+        this.wayBillDetailSet = wayBillDetailSet;
+    }
 
     public Date getDeliveryTime() {
         return deliveryTime;

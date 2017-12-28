@@ -4,7 +4,7 @@ import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
-import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/12/27.
@@ -21,18 +22,36 @@ import java.util.Date;
 public class WayBillTest {
 
     @Autowired
-    private WayBillRepository wayBillRepository;
-
-    @Autowired
     private WayBillManager wayBillManager;
+
+
+    @Test
+    public void testCreateDto() {
+        UUID uuid = UUID.randomUUID();
+        EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
+        editWayBillDTO.setMemo("test");
+        editWayBillDTO.setAmountOfPackages(122);
+        editWayBillDTO.setDeliveryTime(new Date());
+        editWayBillDTO.setDestination("重庆");
+        //id
+        editWayBillDTO.setWayBillCode(uuid.toString());
+
+        editWayBillDTO.setEditWayBillDetailDTOList(null);
+        //
+        wayBillManager.createWayBillWithDTO(editWayBillDTO);
+
+
+    }
 
 
     @Test
     public void testCreate() {
         WayBill wayBill = new WayBill();
 
-        //
-        wayBill.setBillCode("aaaasdfsfsfaaaaaa");
+        //   UUID uuid = UUID.randomUUID();
+
+        UUID uuid = UUID.randomUUID();
+        wayBill.setBillCode(uuid.toString().toUpperCase());
         wayBill.setBillId(11L);
         wayBill.setAmountOfPackages(12);
         wayBill.setDeliveryTime(new Date());

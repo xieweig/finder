@@ -21,7 +21,7 @@ public class WayBillDetail extends BillDetail {
     /**
      * 出库单号
      */
-    @Column
+    @Column(length = 255)
     private String outStorageBillCode;//
 
     /**
@@ -45,6 +45,19 @@ public class WayBillDetail extends BillDetail {
 
 
     /**
+     * 入库站点
+     */
+    @Column(length = 255)
+    private String inStationCode;
+
+    /**
+     * 出库站点
+     */
+    @Column(length = 255)
+    private String outStationCode;
+
+
+    /**
      * 打包方式
      */
     @Column
@@ -60,6 +73,23 @@ public class WayBillDetail extends BillDetail {
     @Column(nullable = false)
     private Date outStorageTime;
 
+
+    public String getInStationCode() {
+
+        return inStationCode;
+    }
+
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
+    }
+
+    public String getOutStationCode() {
+        return outStationCode;
+    }
+
+    public void setOutStationCode(String outStationCode) {
+        this.outStationCode = outStationCode;
+    }
 
     public String getOutStorageBillCode() {
         return outStorageBillCode;
