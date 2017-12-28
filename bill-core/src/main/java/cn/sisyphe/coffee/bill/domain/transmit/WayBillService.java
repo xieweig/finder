@@ -3,7 +3,10 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -65,6 +68,15 @@ public class WayBillService extends AbstractBillService {
     public List<WayBill> findByConditions(WayBill wayBill) {
 
         return iWayBillService.findByConditions(wayBill);
+    }
+
+    /**
+     * @param conditionQueryWayBill
+     * @return
+     * @throws DataException
+     */
+    Page<WayBill> findPageByCondition(ConditionQueryWayBill conditionQueryWayBill) throws DataException {
+        return iWayBillService.findPageByCondition(conditionQueryWayBill);
     }
 
 
