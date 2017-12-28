@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.infrastructure.transmit;
 
 
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
+import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,7 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
  * @company 西西弗文化传播
  * @Date 2017/12/27 17:08
  **/
-public interface WayBillRepository {
+public interface WayBillRepository extends BillRepository<WayBill> {
 
 
     WayBill findOneByCode(String billCode);

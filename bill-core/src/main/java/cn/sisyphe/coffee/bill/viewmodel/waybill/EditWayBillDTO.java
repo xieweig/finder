@@ -12,6 +12,13 @@ import java.util.List;
  * @Date 2017/12/27 11:08
  **/
 public class EditWayBillDTO implements Serializable {
+
+    /**
+     * 运单明细
+     */
+
+    private List<EditWayBillDetailDTO> editWayBillDetailDTOList;
+
     /**
      * 运单号
      */
@@ -54,11 +61,7 @@ public class EditWayBillDTO implements Serializable {
      * 总重量
      */
     private Long totalWeight;
-    /**
-     * 运单明细
-     */
 
-    private List<EditWayBillDetailDTO> editWayBillDetailDTOList;
 
     public Integer getAmountOfPackages() {
         return amountOfPackages;

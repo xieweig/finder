@@ -1,9 +1,13 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 运单
@@ -14,14 +18,21 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class WayBillController {
 
+    @Autowired
+    private WayBillManager wayBillManager;
+
     /**
      * 创建运单
      */
     @RequestMapping(path = "/createWayBill", method = RequestMethod.POST)
     public ResponseResult createWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
+
         ResponseResult responseResult = new ResponseResult();
 
+        // responseResult.put("wayBill", wayBillManager.createWayBill(editWayBillDTO));
+
         return responseResult;
+
     }
 
     /**
@@ -48,7 +59,7 @@ public class WayBillController {
      * 批量删除运单(不同权限的操作)
      */
     @RequestMapping(path = "/deleteWayBillByIds", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillByIds(@RequestParam String wayBillCode) {
+    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillCodes) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;

@@ -16,6 +16,8 @@ public class WayBillService extends AbstractBillService {
         super(bill);
     }
 
+
+
     @Override
     public void beforeDispose() {
 

@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,6 +18,10 @@ import java.util.Date;
 public class WayBill extends Bill<WayBillDetail> {
 
 
+    public WayBill() {
+        this.setBillType(BillTypeEnum.TRANSMIT);//
+    }
+
     /**
      * 发货时间
      */
@@ -30,7 +35,6 @@ public class WayBill extends Bill<WayBillDetail> {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(nullable = false)
     private Date planArrivalTime;
 
     /**

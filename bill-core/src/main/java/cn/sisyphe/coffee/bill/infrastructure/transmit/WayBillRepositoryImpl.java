@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.infrastructure.transmit;
 
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
+import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.jpa.JPAWayBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,21 +14,12 @@ import org.springframework.stereotype.Service;
  * Created by Administrator on 2017/12/27.
  */
 @Service
-public class WayBillRepositoryImpl implements WayBillRepository {
+public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
+        implements WayBillRepository {
 
     @Autowired
     private JPAWayBillRepository jpaWayBillRepository;
 
-//
-//    /**保存运单
-//     * @param wayBill
-//     * @return
-//     */
-//    @Override
-//    public WayBill saveWayBill(WayBill wayBill) {
-//
-//        return jpaWayBillRepository.save(wayBill);
-//    }
 
     /**
      * 查找单个
@@ -53,4 +45,12 @@ public class WayBillRepositoryImpl implements WayBillRepository {
     }
 
 
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public WayBill findOne(Long id) {
+        return jpaWayBillRepository.findOne(id);
+    }
 }
