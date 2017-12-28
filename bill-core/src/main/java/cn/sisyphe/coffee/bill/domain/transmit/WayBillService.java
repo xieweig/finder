@@ -3,6 +3,9 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 
 /**
@@ -12,6 +15,9 @@ import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
  **/
 
 public class WayBillService extends AbstractBillService {
+
+    @Autowired
+    private IWayBillService iWayBillService;
 
     //1自定义的rspository
 
@@ -48,6 +54,17 @@ public class WayBillService extends AbstractBillService {
     public void afterDispose() {
 
         System.out.println("处理后。。。。。。。。");
+    }
+
+    /**
+     * 多条件查询
+     *
+     * @param wayBill
+     * @return
+     */
+    public List<WayBill> findByConditions(WayBill wayBill) {
+
+        return iWayBillService.findByConditions(wayBill);
     }
 
 
