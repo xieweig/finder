@@ -219,12 +219,12 @@ public class WayBillManager {
         temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
         temp.setWayBillCode(wayBill.getBillCode());//bill code
         temp.setOperatorName(wayBill.getOperatorName());//
-//        temp.setWayBillCode(wayBill.getOperatorCode());
+        temp.setWayBillCode(wayBill.getOperatorCode());
         temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
         temp.setCreateTime(wayBill.getCreateTime());//
         temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
-        //temp.setWayBillStatus(wayBill.getBillState().name());// 状态
 
+//        temp.setWayBillStatus(wayBill.getReceivedStatus().name());//收货状态
         temp.setInStationCode(wayBill.getInStationCode());//入库站点
         temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
         return temp;
