@@ -31,6 +31,11 @@ public enum BillStateEnum {
      * 出库中
      */
     OUTSTORAGING,
+
+    /**
+     * 入库中
+     */
+    INSTORAGING,
     /**
      * 完成
      */

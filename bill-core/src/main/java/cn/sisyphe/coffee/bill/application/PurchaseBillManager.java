@@ -8,9 +8,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
@@ -53,7 +51,7 @@ public class PurchaseBillManager {
     BillFactory billFactory = new BillFactory();
 
     /**
-     *  目的
+     *  用途
      * @param bill
      */
     public void purpose(Bill bill){
@@ -418,7 +416,6 @@ public class PurchaseBillManager {
     public void auditFailureBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-
         purchaseBillService.dispose(new AuditBehavior(purchaseBillService, Constant.AUDIT_FAILURE_VALUE));
         purchaseBillService.setBillRepository(purchaseBillRepository);
         purchaseBillService.save();
@@ -435,6 +432,7 @@ public class PurchaseBillManager {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
         purchaseBillService.dispose(new AuditBehavior(purchaseBillService, Constant.AUDIT_SUCCESS_VALUE));
+        purchaseBillService.setBillRepository(purchaseBillRepository);
         purchaseBillService.save();
         // 发送事件
         purchaseBillService.sendEvent(applicationEventPublisher);
@@ -603,22 +601,6 @@ public class PurchaseBillManager {
         billDTO.setBillDetails(detailDTOList);
 
         return billDTO;
-    }
-
-    /**
-     * 前端传递站点信息
-     *
-     * @param station
-     * @return
-     */
-    // TODO: 2017/12/29 备用
-    private AbstractLocation getLocation(Station station) {
-        if (StationType.SUPPLIER.equals(station.getStationType())) {
-            Supplier supplier = new Supplier(station.getStationCode());
-            supplier.setSupplierName(station.getStationName());
-            return supplier;
-        }
-        return station;
     }
 
 }

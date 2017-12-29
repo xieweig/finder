@@ -52,6 +52,7 @@ public class PurchaseBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'PURCHASE' and #event.billState.toString() == 'AUDITSUCCESS'")
     public void billSuccess(BehaviorEvent event) {
+        System.err.println("AUDITSUCCESS:" + event.getBill());
         purchaseBillManager.purpose(event.getBill());
     }
 
