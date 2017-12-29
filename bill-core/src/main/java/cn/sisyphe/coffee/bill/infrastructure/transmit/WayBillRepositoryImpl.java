@@ -22,6 +22,15 @@ public class WayBillRepositoryImpl implements WayBillRepository {
 
 
     /**
+     * @param wayBill
+     * @return
+     */
+    @Override
+    public WayBill save(WayBill wayBill) {
+        return jpaWayBillRepository.save(wayBill);
+    }
+
+    /**
      * 查找单个
      *
      * @param billCode
@@ -31,6 +40,16 @@ public class WayBillRepositoryImpl implements WayBillRepository {
     public WayBill findOneByCode(String billCode) {
 
         return jpaWayBillRepository.findOneByBillCode(billCode);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+
+    @Override
+    public WayBill findOne(Long id) {
+        return jpaWayBillRepository.findOne(id);
     }
 
     /**

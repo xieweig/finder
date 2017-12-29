@@ -18,8 +18,11 @@ import java.util.List;
 public interface WayBillRepository {
 
 
+    WayBill save(WayBill wayBill);
+
     WayBill findOneByCode(String billCode);
 
+    WayBill findOne(Long id);
 
     WayBill createBill(WayBill wayBill);
 

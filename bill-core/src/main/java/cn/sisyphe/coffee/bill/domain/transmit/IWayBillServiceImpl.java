@@ -24,8 +24,14 @@ import java.util.List;
 @Service
 public class IWayBillServiceImpl implements IWayBillService {
 
+
     @Autowired
     private WayBillRepository wayBillRepository;
+
+    @Override
+    public WayBill findOne(Long id) {
+        return wayBillRepository.findOne(id);
+    }
 
 
     /**
@@ -111,6 +117,43 @@ public class IWayBillServiceImpl implements IWayBillService {
     public WayBill createBill(WayBill wayBill) {
         return wayBillRepository.createBill(wayBill);
     }
+
+    /**
+     * 修改运单
+     *
+     * @param wayBill
+     * @return
+     */
+    @Override
+    public WayBill updateBill(WayBill wayBill) {
+
+        // TODO: 2017/12/29  修改方法实现
+        //1先查询一条数据库里的内容
+        WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        //2设置值
+        //公司名称
+        if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
+            wayBillDB.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());
+
+        }
+        //备注
+        if (!StringUtils.isEmpty(wayBill.getMemo())) {
+            wayBillDB.setMemo(wayBill.getMemo());
+        }
+        if (!StringUtils.isEmpty(wayBill.getPlanArrivalTime())) {
+            wayBillDB.setPlanArrivalTime(wayBill.getPlanArrivalTime());
+
+        }
+        //发货时间
+        if (!StringUtils.isEmpty(wayBill.getDeliveryTime())) {
+            wayBillDB.setDeliveryTime(wayBill.getDeliveryTime());
+
+        }
+        //3保存
+        wayBillDB = wayBillRepository.save(wayBillDB);
+        return wayBillDB;
+    }
+
 
     /**
      * 条件查询

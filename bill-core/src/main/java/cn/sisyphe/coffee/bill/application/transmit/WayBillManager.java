@@ -86,8 +86,6 @@ public class WayBillManager {
     private WayBill convertDtoToWayBill(EditWayBillDTO editWayBillDTO) throws DataException {
         WayBill wayBill = new WayBill();
 
-//        wayBill.setBillId(editWayBillDTO.getBillId());
-//        wayBill.setBillCode(editWayBillDTO.getWayBillCode());//
         wayBill.setDestination(editWayBillDTO.getDestination());//目的地
         wayBill.setLogisticsCompanyName(editWayBillDTO.getLogisticsCompanyName());// 快递公司名称
         wayBill.setPlanArrivalTime(editWayBillDTO.getPlanArrivalTime());//到达时间
@@ -97,7 +95,6 @@ public class WayBillManager {
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
         // wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
-
         //添加明细
         wayBill.setWayBillDetailSet(addBillItem(editWayBillDTO, wayBill));
         return wayBill;
@@ -175,16 +172,8 @@ public class WayBillManager {
      */
     public void updateWayBill(WayBill wayBill) throws DataException {
 
-        // TODO: 2017/12/29  修改方法实现
-        //1先查询一条数据库里的内容
-
-        //2设置值
-
-        //3保存
-        iWayBillService.createBill(wayBill);
-
-        applicationEventPublisher.publishEvent(wayBill);
-
+        WayBill wayBillTemp = iWayBillService.updateBill(wayBill);
+        applicationEventPublisher.publishEvent(wayBillTemp);
 
     }
 
