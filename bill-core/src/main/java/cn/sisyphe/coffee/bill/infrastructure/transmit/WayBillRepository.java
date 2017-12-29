@@ -17,7 +17,6 @@ import java.util.List;
  **/
 public interface WayBillRepository {
 
-
     WayBill save(WayBill wayBill);
 
     WayBill findOneByCode(String billCode);
@@ -26,7 +25,13 @@ public interface WayBillRepository {
 
     WayBill createBill(WayBill wayBill);
 
-
+    /**
+     * 分页查询
+     *
+     * @param ta
+     * @param pageable
+     * @return
+     */
     Page<WayBill> findAll(Specification<WayBill> ta, Pageable pageable);
 
 
