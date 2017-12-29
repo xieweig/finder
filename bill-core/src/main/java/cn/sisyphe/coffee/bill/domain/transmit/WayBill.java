@@ -1,26 +1,46 @@
 package cn.sisyphe.coffee.bill.domain.transmit;
 
 
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 运货单
  */
 @Entity
 @Table
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class WayBill extends Bill<WayBillDetail> {
+public class WayBill<T extends WayBillDetail> extends BaseEntity {
 
-    public WayBill() {
-        //设置单据为运货单
-        this.setBillType(BillTypeEnum.TRANSMIT);//
-    }
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
+    private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long billId;
+
+
+    @Column(length = 255, nullable = false)
+    private String billCode;
+
+
+    /**
+     * 出库站点
+     */
+    @Column(length = 255, insertable = false, unique = false)
+    private String outStationCode;
+
+    /**
+     * 入库站点
+     */
+    @Column(length = 255, insertable = false, unique = false)
+    private String inStationCode;
 
     /**
      * 发货时间
@@ -56,7 +76,6 @@ public class WayBill extends Bill<WayBillDetail> {
     @Column(nullable = false)
     private Integer amountOfPackages;
 
-
     /**
      * 总重量
      */
@@ -75,8 +94,53 @@ public class WayBill extends Bill<WayBillDetail> {
     private String operatorName;
 
 
+    /**
+     * 收货状态
+     */
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private ReceivedStatusEnum receivedStatus;
+
+
+    /**
+     * 运货件数
+     *
+     * @return
+     */
+    private int calcTotalPackageAmoumt() {
+        int totalAmount = 0;
+        if (wayBillDetailSet == null) {
+            return 0;
+        }
+        for (WayBillDetail wayBillDetail : wayBillDetailSet) {
+            //
+            if (!wayBillDetail.getPackageCode().equals("")) {
+                totalAmount += 1;
+            }
+        }
+        return totalAmount;
+    }
+
+
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
+    }
+
     public Date getDeliveryTime() {
         return deliveryTime;
+    }
+
+
+    public String getInStationCode() {
+        return inStationCode;
+    }
+
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
     }
 
     public void setDeliveryTime(Date deliveryTime) {
@@ -137,6 +201,39 @@ public class WayBill extends Bill<WayBillDetail> {
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
+    }
+
+
+    public Set<WayBillDetail> getWayBillDetailSet() {
+        return wayBillDetailSet;
+    }
+
+    public void setWayBillDetailSet(Set<WayBillDetail> wayBillDetailSet) {
+        this.wayBillDetailSet = wayBillDetailSet;
+    }
+
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
+    }
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
+
+    public String getOutStationCode() {
+        return outStationCode;
+    }
+
+    public void setOutStationCode(String outStationCode) {
+        this.outStationCode = outStationCode;
     }
 
     @Override

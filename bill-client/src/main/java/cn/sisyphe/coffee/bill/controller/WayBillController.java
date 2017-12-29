@@ -45,6 +45,8 @@ public class WayBillController {
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
+        responseResult.put("wayBill", wayBillManager.updateWayBillWithDTO(editWayBillDTO));
+
         return responseResult;
     }
 
@@ -53,7 +55,7 @@ public class WayBillController {
      */
     @ApiOperation(value = "删除单个运单，不同权限的操作")
     @RequestMapping(path = "/deleteWayBillById", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillById(@RequestParam String wayBillCode) {
+    public ResponseResult deleteWayBillById(@RequestParam String wayBillItemId) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;
@@ -64,7 +66,7 @@ public class WayBillController {
      */
     @ApiOperation(value = "批量删除运单，不同权限的操作")
     @RequestMapping(path = "/deleteWayBillByIds", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillCodes) {
+    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillItemIds) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;
@@ -80,7 +82,7 @@ public class WayBillController {
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
     public ResponseResult findWayBillByConditions(ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("wayBillList", null);
+        responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }
 

@@ -2,8 +2,6 @@ package cn.sisyphe.coffee.transmit;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
@@ -39,8 +37,8 @@ public class WayBillTest {
     public void testFindByPage() {
 
         ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
-        conditionQueryWayBill.setOperatorName("test");
-        conditionQueryWayBill.setInStationCode("jd");
+        conditionQueryWayBill.setOperatorName("小明");
+        //conditionQueryWayBill.setInStationCode("jd");
         conditionQueryWayBill.setPageSize(100);
         conditionQueryWayBill.setPage(1);
         Page<WayBill> billPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
@@ -62,16 +60,15 @@ public class WayBillTest {
         editWayBillDTO.setDeliveryTime(new Date());
         editWayBillDTO.setDestination("重庆");
         editWayBillDTO.setOperatorName("小明");
-        editWayBillDTO.setLogisticsCompanyName("jd快递");
+        editWayBillDTO.setLogisticsCompanyName("韵达快递");
         editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间
         editWayBillDTO.setAmountOfPackages(155);
         //id
         editWayBillDTO.setWayBillCode(uuid.toString());
 
-
         List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             EditWayBillDetailDTO editWayBillDetailDTO = new EditWayBillDetailDTO(editWayBillDTO);
 
             editWayBillDetailDTO.setOutStorageTime(new Date());
@@ -98,19 +95,19 @@ public class WayBillTest {
         WayBill wayBill = new WayBill();
 
         UUID uuid = UUID.randomUUID();
-        wayBill.setBillCode(uuid.toString().toUpperCase());
-        wayBill.setBillId(11L);
+//        wayBill.setBillCode(uuid.toString().toUpperCase());
+//        wayBill.setBillId(11L);
         wayBill.setAmountOfPackages(12);
         wayBill.setDeliveryTime(new Date());
         wayBill.setPlanArrivalTime(new Date());
         wayBill.setDestination("重庆");
-        wayBill.setSourceCode("ssss");
+        //  wayBill.setSourceCode("ssss");
         wayBill.setLogisticsCompanyName("test");
         // 运单类型
-        wayBill.setBillType(BillTypeEnum.TRANSMIT);///
+        //  wayBill.setBillType(BillTypeEnum.TRANSMIT);///
         //
-        wayBill.setBillState(BillStateEnum.SAVED);
-        wayBill.setBillDetails(null);
+        // wayBill.setBillState(BillStateEnum.SAVED);
+        // wayBill.setBillDetails(null);
 
         wayBillManager.createWayBill(wayBill);
     }

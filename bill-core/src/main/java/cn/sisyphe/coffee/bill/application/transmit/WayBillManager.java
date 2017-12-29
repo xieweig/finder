@@ -1,22 +1,18 @@
 package cn.sisyphe.coffee.bill.application.transmit;
 
 
-import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
-import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
-import cn.sisyphe.coffee.bill.domain.base.behavior.WayBillSaveBehavior;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
-import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ReturnWayBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -31,12 +27,33 @@ import java.util.UUID;
 @Service
 public class WayBillManager {
 
+
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-
     @Autowired
-    private WayBillRepository wayBillRepository;
+    private IWayBillService iWayBillService;
+
+
+    /**
+     * 修改运单
+     *
+     * @param editWayBillDTO
+     * @return
+     * @throws DataException
+     */
+
+    public EditWayBillDTO updateWayBillWithDTO(EditWayBillDTO editWayBillDTO) throws DataException {
+
+        //参数检查
+        this.checkParams(editWayBillDTO);
+        WayBill wayBill = convertDtoToWayBill(editWayBillDTO);
+        //
+        this.updateWayBill(wayBill);
+
+        // 再查询一次, 返回结果
+        return null;
+    }
 
 
     /**
@@ -55,7 +72,7 @@ public class WayBillManager {
             wayBill.setBillCode(UUID.randomUUID().toString());
         }
         this.createWayBill(wayBill);
-
+        //
         return editWayBillDTO;
     }
 
@@ -69,10 +86,8 @@ public class WayBillManager {
     private WayBill convertDtoToWayBill(EditWayBillDTO editWayBillDTO) throws DataException {
         WayBill wayBill = new WayBill();
 
-        wayBill.setBillId(editWayBillDTO.getBillId());
-        //
-        wayBill.setBillCode(editWayBillDTO.getWayBillCode());
-        //
+//        wayBill.setBillId(editWayBillDTO.getBillId());
+//        wayBill.setBillCode(editWayBillDTO.getWayBillCode());//
         wayBill.setDestination(editWayBillDTO.getDestination());//目的地
         wayBill.setLogisticsCompanyName(editWayBillDTO.getLogisticsCompanyName());// 快递公司名称
         wayBill.setPlanArrivalTime(editWayBillDTO.getPlanArrivalTime());//到达时间
@@ -81,9 +96,10 @@ public class WayBillManager {
         wayBill.setAmountOfPackages(editWayBillDTO.getAmountOfPackages());//运货件数
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
-        wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
+        // wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
+
         //添加明细
-        wayBill.setBillDetails(addBillItem(editWayBillDTO));
+        wayBill.setWayBillDetailSet(addBillItem(editWayBillDTO, wayBill));
         return wayBill;
     }
 
@@ -93,7 +109,7 @@ public class WayBillManager {
      * @param editWayBillDTO
      * @return
      */
-    private Set<WayBillDetail> addBillItem(EditWayBillDTO editWayBillDTO) {
+    private Set<WayBillDetail> addBillItem(EditWayBillDTO editWayBillDTO, WayBill wayBill) {
 
         Set<WayBillDetail> billDetails = new HashSet<WayBillDetail>();
         //取DTO
@@ -106,6 +122,7 @@ public class WayBillManager {
             //2运单明细
             WayBillDetail wayBillDetail = new WayBillDetail();
 
+            wayBillDetail.setWayBill(wayBill);
             wayBillDetail.setOutStorageBillCode(item.getOutStorageBillCode());//出库单号
 
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
@@ -151,6 +168,27 @@ public class WayBillManager {
 
 
     /**
+     * 修改方法
+     *
+     * @param wayBill
+     * @throws DataException
+     */
+    public void updateWayBill(WayBill wayBill) throws DataException {
+
+        // TODO: 2017/12/29  修改方法实现
+        //1先查询一条数据库里的内容
+
+        //2设置值
+
+        //3保存
+        iWayBillService.createBill(wayBill);
+
+        applicationEventPublisher.publishEvent(wayBill);
+
+
+    }
+
+    /**
      * 创建运货单
      *
      * @param wayBill
@@ -158,28 +196,50 @@ public class WayBillManager {
      */
     public void createWayBill(WayBill wayBill) throws DataException {
 
-        //工厂
-        new BillFactory().createBill(BillTypeEnum.TRANSMIT);
-        // 单据用途
-        wayBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        iWayBillService.createBill(wayBill);
 
-
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService billService = serviceFactory.createBillService(wayBill);
-        // 4.处理保存动作
-        wayBill.setBillState(BillStateEnum.SAVED);// 单据状态
-        wayBill.setBillState(BillStateEnum.DONE);// 单据状态
-
-        // 自定义保存动作
-        billService.dispose(new WayBillSaveBehavior());
-        //状态
-
-        // 5.设置数据仓库和保存单据
-        billService.setBillRepository(wayBillRepository);
-        billService.save();
-        billService.afterDispose();///
         applicationEventPublisher.publishEvent(wayBill);
 
     }
+
+    /**
+     * @param conditionQueryWayBill
+     * @return
+     * @throws DataException
+     */
+    public Page<ReturnWayBillDTO> findPageByCondition(ConditionQueryWayBill conditionQueryWayBill) throws DataException {
+
+        //1 根据具体的运单号查询,只有唯一的显示，显示一条
+        //2 根据配送出库查询可能会有多条
+        //3 所有都是模糊匹配
+        //所有的产品表中的数据
+        Page<WayBill> wayBillPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
+        return wayBillPage.map(this::convertToDTO);
+    }
+
+
+    /**
+     * 转换为DTO
+     *
+     * @param
+     * @return
+     */
+    private ReturnWayBillDTO convertToDTO(WayBill wayBill) {
+        //
+        ReturnWayBillDTO temp = new ReturnWayBillDTO();
+        temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
+        temp.setWayBillCode(wayBill.getBillCode());//bill code
+        temp.setOperatorName(wayBill.getOperatorName());//
+//        temp.setWayBillCode(wayBill.getOperatorCode());
+        temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
+        temp.setCreateTime(wayBill.getCreateTime());//
+        temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
+        //temp.setWayBillStatus(wayBill.getBillState().name());// 状态
+
+        temp.setInStationCode(wayBill.getInStationCode());//入库站点
+        temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
+        return temp;
+    }
+
 
 }

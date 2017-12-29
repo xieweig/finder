@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.transmit;
 
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
-import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.jpa.JPAWayBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,8 +15,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/27.
  */
 @Service
-public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
-        implements WayBillRepository {
+public class WayBillRepositoryImpl implements WayBillRepository {
 
     @Autowired
     private JPAWayBillRepository jpaWayBillRepository;
@@ -31,7 +29,17 @@ public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
      */
     @Override
     public WayBill findOneByCode(String billCode) {
+
         return jpaWayBillRepository.findOneByBillCode(billCode);
+    }
+
+    /**
+     * @param wayBill
+     * @return
+     */
+    @Override
+    public WayBill createBill(WayBill wayBill) {
+        return jpaWayBillRepository.save(wayBill);
     }
 
     /**
@@ -52,12 +60,4 @@ public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
     }
 
 
-    /**
-     * @param id
-     * @return
-     */
-    @Override
-    public WayBill findOne(Long id) {
-        return jpaWayBillRepository.findOne(id);
-    }
 }

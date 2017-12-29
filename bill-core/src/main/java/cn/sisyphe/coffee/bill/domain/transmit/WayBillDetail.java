@@ -1,10 +1,10 @@
 package cn.sisyphe.coffee.bill.domain.transmit;
 
 
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,9 +14,19 @@ import java.util.Date;
  */
 @Entity
 @Table
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class WayBillDetail extends BillDetail {
+public class WayBillDetail extends BaseEntity {
 
+
+    //
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long billDetailId;
+
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
+    @JsonIgnore
+    @JoinColumn(name = "parent_id")//外键名称
+    private WayBill wayBill;
 
     /**
      * 出库单号
@@ -24,12 +34,21 @@ public class WayBillDetail extends BillDetail {
     @Column(length = 255)
     private String outStorageBillCode;//
 
+    @Column(length = 255)
+    private String cargoCode;
+
+
+    @Column(length = 255)
+    private String rawMaterialCode;
+
+
+    private String packageCode;
+
     /**
      * 录单人
      */
     @Column
     private String operatorName;
-
 
     /**
      * 品种数
@@ -50,12 +69,28 @@ public class WayBillDetail extends BillDetail {
     @Column(length = 255)
     private String inStationCode;
 
+
+    @Column(length = 255)
+    private String inStationName;
+
     /**
      * 出库站点
      */
     @Column(length = 255)
     private String outStationCode;
 
+
+    @Column(length = 255)
+    private String outStationName;
+
+
+    public Long getBillDetailId() {
+        return billDetailId;
+    }
+
+    public void setBillDetailId(Long billDetailId) {
+        this.billDetailId = billDetailId;
+    }
 
     /**
      * 打包方式
@@ -77,6 +112,55 @@ public class WayBillDetail extends BillDetail {
     public String getInStationCode() {
 
         return inStationCode;
+    }
+
+    public String getInStationName() {
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
+    public String getOutStationName() {
+        return outStationName;
+    }
+
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
+    }
+
+    public WayBill getWayBill() {
+        return wayBill;
+    }
+
+    public void setWayBill(WayBill wayBill) {
+        this.wayBill = wayBill;
+    }
+
+
+    public String getCargoCode() {
+        return cargoCode;
+    }
+
+    public void setCargoCode(String cargoCode) {
+        this.cargoCode = cargoCode;
+    }
+
+    public String getRawMaterialCode() {
+        return rawMaterialCode;
+    }
+
+    public void setRawMaterialCode(String rawMaterialCode) {
+        this.rawMaterialCode = rawMaterialCode;
+    }
+
+    public String getPackageCode() {
+        return packageCode;
+    }
+
+    public void setPackageCode(String packageCode) {
+        this.packageCode = packageCode;
     }
 
     public void setInStationCode(String inStationCode) {

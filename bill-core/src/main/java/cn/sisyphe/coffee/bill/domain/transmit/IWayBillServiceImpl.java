@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.util.Date;
 import java.util.List;
@@ -58,22 +60,30 @@ public class IWayBillServiceImpl implements IWayBillService {
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
             Predicate predicate = cb.conjunction();
+            //左连接
+            Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
+            //
             List<Expression<Boolean>> expressions = predicate.getExpressions();
+
             //billCode
             if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
-                expressions.add(cb.like(root.<String>get("billCode"), "%" + conditionQueryWayBill.getWayBillCode() + "%"));
+                expressions.add(cb.like(root.<String>get("billCode"),
+                        "%" + conditionQueryWayBill.getWayBillCode() + "%"));
             }
             //物流公司名称
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
-                expressions.add(cb.like(root.<String>get("logisticsCompanyName"), "%" + conditionQueryWayBill.getLogisticsCompanyName() + "%"));
+                expressions.add(cb.like(root.<String>get("logisticsCompanyName"),
+                        "%" + conditionQueryWayBill.getLogisticsCompanyName() + "%"));
             }
             //操作人姓名
             if (!StringUtils.isEmpty(conditionQueryWayBill.getOperatorName())) {
-                expressions.add(cb.like(root.<String>get("operatorName"), "%" + conditionQueryWayBill.getOperatorName() + "%"));
+                expressions.add(cb.like(root.<String>get("operatorName"),
+                        "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
             //单据状态
             if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillStatus())) {
-                expressions.add(cb.equal(root.<String>get("billState"), "%" + conditionQueryWayBill.getWayBillStatus() + "%"));
+                expressions.add(cb.equal(root.<String>get("billState"),
+                        "%" + conditionQueryWayBill.getWayBillStatus() + "%"));
             }
             // 录单时间
             if (conditionQueryWayBill.getCreateTime() != null) {
@@ -87,11 +97,19 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
                         conditionQueryWayBill.getDeliveryEndTime()));
             }
-
+            //连接查询
+//            if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
+//                expressions.add(cb.equal(itemJoin.<String>get("billDetails"), conditionQueryWayBill.getWayBillCode()));
+//            }
             return predicate;
         }, pageable);
 
 
+    }
+
+    @Override
+    public WayBill createBill(WayBill wayBill) {
+        return wayBillRepository.createBill(wayBill);
     }
 
     /**
@@ -123,10 +141,10 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(criteriaBuilder.equal(root.get("id").as(Long.class), wayBill.getBillId()));
             }
             //单据状态
-            if (wayBill.getBillState() != null) {
-
-                expressions.add(criteriaBuilder.equal(root.get("billState").as(Long.class), wayBill.getBillState()));
-            }
+//            if (wayBill.getBillState() != null) {
+//
+//                expressions.add(criteriaBuilder.equal(root.get("billState").as(Long.class), wayBill.getBillState()));
+//            }
             return predicate;
 
         });

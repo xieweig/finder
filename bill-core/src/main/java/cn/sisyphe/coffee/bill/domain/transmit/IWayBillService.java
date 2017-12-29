@@ -13,6 +13,9 @@ import java.util.List;
 public interface IWayBillService {
 
 
+    WayBill createBill(WayBill wayBill);
+
+
     /**
      * 多条件查询运单
      *

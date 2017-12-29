@@ -4,6 +4,7 @@ package cn.sisyphe.coffee.bill.viewmodel.waybill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,10 +19,19 @@ import java.util.List;
  **/
 public class EditWayBillDTO implements Serializable {
 
+
     /**
      * 运单明细
      */
     private List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
+
+
+    /**
+     * 出库单号
+     */
+    @Column(length = 255)
+    private String outStorageBillCode;//
+
 
     /**
      * id
@@ -53,9 +63,7 @@ public class EditWayBillDTO implements Serializable {
     /**
      * 目的地
      */
-
     private String destination;
-
 
     /**
      * 运货件数
@@ -67,13 +75,12 @@ public class EditWayBillDTO implements Serializable {
 
     private String memo;
 
-
     /**
      * 总重量
      */
     private Long totalWeight;
 
-    //user code
+
     private String operatorCode;
     /**
      *
@@ -83,6 +90,14 @@ public class EditWayBillDTO implements Serializable {
     public String getOperatorName() {
 
         return operatorName;
+    }
+
+    public String getOutStorageBillCode() {
+        return outStorageBillCode;
+    }
+
+    public void setOutStorageBillCode(String outStorageBillCode) {
+        this.outStorageBillCode = outStorageBillCode;
     }
 
     public void setOperatorName(String operatorName) {

@@ -21,6 +21,7 @@ public interface JPAWayBillRepository extends JpaRepository<WayBill, Long>,
 
     /**
      * 通过code查询
+     *
      * @param billCode
      * @return
      */
