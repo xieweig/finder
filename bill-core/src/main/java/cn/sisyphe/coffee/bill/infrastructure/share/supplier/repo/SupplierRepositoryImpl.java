@@ -6,7 +6,9 @@ import cn.sisyphe.framework.web.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,5 +35,21 @@ public class SupplierRepositoryImpl implements SupplierRepository {
         Supplier supplier = new Supplier(properties.get("supplierCode"));
         supplier.setSupplierName(properties.get("supplierName"));
         return supplier;
+    }
+
+    /**
+     * 根据供应商名称模糊查询供应商编码
+     * @param supplierName
+     * @return
+     */
+    @Override
+    public List<String> findByLikeSupplierName(String supplierName) {
+        ResponseResult responseResult = supplierCloudRepository.findByLikeSupplierName(supplierName);
+        Map<String, Object> resultMap = responseResult.getResult();
+        if (!resultMap.containsKey("result")) {
+            return null;
+        }
+        List<String> supplierCodeList = (ArrayList)resultMap.get("result");
+        return supplierCodeList;
     }
 }

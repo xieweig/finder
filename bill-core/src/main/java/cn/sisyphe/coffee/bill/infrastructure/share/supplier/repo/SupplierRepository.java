@@ -1,7 +1,8 @@
 package cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo;
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
-import cn.sisyphe.framework.web.ResponseResult;
+
+import java.util.List;
 
 /**
  * @author ncmao
@@ -10,6 +11,19 @@ import cn.sisyphe.framework.web.ResponseResult;
  */
 public interface SupplierRepository {
 
-
+    /**
+     * 根据供应商编码查询供应商信息
+     *
+     * @param supplierCode 供应商编码
+     * @return
+     */
     Supplier findBySupplierCode(String supplierCode);
+
+    /**
+     * 根据供应商名称模糊查询供应商编码
+     *
+     * @param supplierName
+     * @return
+     */
+    List<String> findByLikeSupplierName(String supplierName);
 }

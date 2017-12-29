@@ -317,8 +317,8 @@ public class PurchaseBillManager {
      */
     public void auditBill(EditPurchaseBillDTO billDTO) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
-        // 判断单据，是否能够被修改
-        // TODO: 2017/12/29 暂未完成，条件拼接完成后再做 熊静
+        //
+        // TODO: 2017/12/29 暂未完成，判断单据，是否能够被修改
         if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
             throw new DataException("", "");
         }

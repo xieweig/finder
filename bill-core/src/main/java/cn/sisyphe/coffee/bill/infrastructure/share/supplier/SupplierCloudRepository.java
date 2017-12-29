@@ -16,4 +16,7 @@ public interface SupplierCloudRepository {
 
     @RequestMapping(path = "/api/v1/baseInfo/supplier/findBySupplierCode", method = RequestMethod.GET)
     ResponseResult findSupplierByCode(@RequestParam("supplierCode") String supplierCode);
+
+    @RequestMapping(path = "/api/v1/baseInfo/supplier/findByLikeSupplierName", method = RequestMethod.GET)
+    ResponseResult findByLikeSupplierName(@RequestParam("supplierName") String supplierCode);
 }
