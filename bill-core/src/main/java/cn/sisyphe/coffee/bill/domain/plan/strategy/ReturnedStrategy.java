@@ -46,6 +46,7 @@ public class ReturnedStrategy extends AbstractCastableStrategy {
                 planBill.setOutLocation(planBillPayload.getOutLocation());
             });
             billRepository.save(returnedBill);
+            return;
         }
         throw new DataException("123456", "站点选择有错误!");
     }
