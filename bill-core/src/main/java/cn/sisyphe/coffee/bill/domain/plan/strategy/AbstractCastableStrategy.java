@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan.strategy;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
@@ -35,6 +34,8 @@ public abstract class AbstractCastableStrategy {
         planBill.setOutLocation(planBillPayload.getOutLocation());
         planBill.setBillPurpose(Plan);
         planBill.setBasicEnum(planBillPayload.getBasicEnum());
+        planBill.setParentBillCode(planBillPayload.getParentBillCode());
+        planBill.setBillCode(planBillPayload.getBillCode());
         Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {
             PlanBillDetail planBillDetail = new PlanBillDetail();

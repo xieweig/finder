@@ -24,6 +24,7 @@ public class PlanBillPayload {
     private AbstractLocation outLocation;
     private AbstractLocation transferLocation;
     private BasicEnum basicEnum;
+    private String parentBillCode;
     private List<PlanBillPayloadDetail> goodDetails = new ArrayList<>();
 
     private AbstractCastableStrategy castableStrategy;
@@ -116,5 +117,13 @@ public class PlanBillPayload {
 
     public void setTransferLocation(AbstractLocation transferLocation) {
         this.transferLocation = transferLocation;
+    }
+
+    public String getParentBillCode() {
+        return parentBillCode;
+    }
+
+    public void setParentBillCode(String parentBillCode) {
+        this.parentBillCode = parentBillCode;
     }
 }

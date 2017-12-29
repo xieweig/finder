@@ -37,6 +37,7 @@ public class PlanPurpose extends AbstractBillPurpose {
         Group<PlanBillDetail> groupedPlanBillDetail = group(bill.getBillDetails(), by(on(PlanBillDetail.class).getInOutStationCode()));
         Set<PlanBillPayload> payloads = new HashSet<>();
 
+        int index = 0;
         for (String head : groupedPlanBillDetail.keySet()) {
             PlanBillPayload planBillPayload = new PlanBillPayload();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
@@ -46,6 +47,8 @@ public class PlanPurpose extends AbstractBillPurpose {
             planBillPayload.setCastableStrategy(getSpecStrategy(bill.getSpecificBillType()));
             planBillPayload.setBasicEnum(bill.getBasicEnum());
             planBillPayload.setMemo(bill.getMemo());
+            planBillPayload.setParentBillCode(bill.getBillCode());
+            planBillPayload.setBillCode(bill.getBillCode() + "_" + index);
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 PlanBillPayloadDetail planBillPayloadDetail = new PlanBillPayloadDetail();
                 planBillPayloadDetail.setAmount(planBillDetail.getAmount());
@@ -53,6 +56,7 @@ public class PlanPurpose extends AbstractBillPurpose {
                 planBillPayload.addGoodsDetail(planBillPayloadDetail);
             }
             payloads.add(planBillPayload);
+            index++;
 
         }
 
