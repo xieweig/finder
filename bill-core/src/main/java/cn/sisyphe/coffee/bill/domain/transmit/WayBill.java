@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table
-public class WayBill<T extends WayBillDetail> extends BaseEntity {
+public class WayBill extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
     private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
@@ -33,13 +33,13 @@ public class WayBill<T extends WayBillDetail> extends BaseEntity {
     /**
      * 出库站点
      */
-    @Column(length = 255, insertable = false, unique = false)
+    @Column(length = 255)
     private String outStationCode;
 
     /**
      * 入库站点
      */
-    @Column(length = 255, insertable = false, unique = false)
+    @Column(length = 255)
     private String inStationCode;
 
     /**
@@ -88,9 +88,13 @@ public class WayBill<T extends WayBillDetail> extends BaseEntity {
     @Column
     private String memo;
 
+    @Column
+    private String operatorCode;
+
     /**
      * 操作人姓名
      */
+    @Column
     private String operatorName;
 
 
@@ -121,6 +125,14 @@ public class WayBill<T extends WayBillDetail> extends BaseEntity {
         return totalAmount;
     }
 
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
+    }
 
     public ReceivedStatusEnum getReceivedStatus() {
         return receivedStatus;

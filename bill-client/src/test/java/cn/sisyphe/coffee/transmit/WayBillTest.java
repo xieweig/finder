@@ -33,13 +33,17 @@ public class WayBillTest {
     @Autowired
     private IWayBillService iWayBillService;
 
+    /**
+     *
+     */
     @Test
     public void testFindByPage() {
-
         ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
         conditionQueryWayBill.setOperatorName("小明");
-        //conditionQueryWayBill.setInStationCode("jd");
+        conditionQueryWayBill.setInStationCode("jd");
         conditionQueryWayBill.setPageSize(100);
+        conditionQueryWayBill.setLogisticsCompanyName("韵达");
+        conditionQueryWayBill.setInStationCode("cq12");
         conditionQueryWayBill.setPage(1);
         Page<WayBill> billPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
         if (billPage != null) {
@@ -58,7 +62,7 @@ public class WayBillTest {
         editWayBillDTO.setMemo("test");
         editWayBillDTO.setAmountOfPackages(122);
         editWayBillDTO.setDeliveryTime(new Date());
-        editWayBillDTO.setDestination("重庆");
+        editWayBillDTO.setDestination("北京");
         editWayBillDTO.setOperatorName("小明");
         editWayBillDTO.setLogisticsCompanyName("韵达快递");
         editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间

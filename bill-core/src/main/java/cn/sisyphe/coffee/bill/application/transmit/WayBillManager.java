@@ -94,7 +94,7 @@ public class WayBillManager {
         wayBill.setAmountOfPackages(editWayBillDTO.getAmountOfPackages());//运货件数
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
-        // wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
+        wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
         //添加明细
         wayBill.setWayBillDetailSet(addBillItem(editWayBillDTO, wayBill));
         return wayBill;

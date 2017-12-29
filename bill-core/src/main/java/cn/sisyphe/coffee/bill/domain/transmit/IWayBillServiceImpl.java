@@ -65,17 +65,30 @@ public class IWayBillServiceImpl implements IWayBillService {
     private Page<WayBill> pageCondition(final ConditionQueryWayBill conditionQueryWayBill,
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
+
+
             Predicate predicate = cb.conjunction();
             //左连接
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
             //
             List<Expression<Boolean>> expressions = predicate.getExpressions();
-
             //billCode
             if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
                 expressions.add(cb.like(root.<String>get("billCode"),
                         "%" + conditionQueryWayBill.getWayBillCode() + "%"));
             }
+
+            // 入库站点
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getInStationCode())) {
+                expressions.add(cb.equal(root.<String>get("inStationCode"),
+                        "" + conditionQueryWayBill.getInStationCode() + ""));
+            }
+            //出库站点
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStationCode())) {
+                expressions.add(cb.equal(root.<String>get("outStationCode"),
+                        "" + conditionQueryWayBill.getOutStationCode() + ""));
+            }
+
             //物流公司名称
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
                 expressions.add(cb.like(root.<String>get("logisticsCompanyName"),
@@ -103,10 +116,10 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
                         conditionQueryWayBill.getDeliveryEndTime()));
             }
-            //连接查询
-//            if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
-//                expressions.add(cb.equal(itemJoin.<String>get("billDetails"), conditionQueryWayBill.getWayBillCode()));
-//            }
+
+            //分组查询
+            query.groupBy(root.get("billCode"));
+            //
             return predicate;
         }, pageable);
 
@@ -136,10 +149,16 @@ public class IWayBillServiceImpl implements IWayBillService {
             wayBillDB.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());
 
         }
+        //目的地
+        if (!StringUtils.isEmpty(wayBill.getDestination())) {
+            wayBillDB.setDestination(wayBill.getDestination());
+        }
+
         //备注
         if (!StringUtils.isEmpty(wayBill.getMemo())) {
             wayBillDB.setMemo(wayBill.getMemo());
         }
+        //到货时间
         if (!StringUtils.isEmpty(wayBill.getPlanArrivalTime())) {
             wayBillDB.setPlanArrivalTime(wayBill.getPlanArrivalTime());
 
@@ -148,6 +167,14 @@ public class IWayBillServiceImpl implements IWayBillService {
         if (!StringUtils.isEmpty(wayBill.getDeliveryTime())) {
             wayBillDB.setDeliveryTime(wayBill.getDeliveryTime());
 
+        }
+        //总重量
+        if (!StringUtils.isEmpty(wayBill.getTotalWeight())) {
+            wayBillDB.setTotalWeight(wayBill.getTotalWeight());
+        }
+        //运货件数
+        if (wayBill.getAmountOfPackages() != null) {
+            wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
         }
         //3保存
         wayBillDB = wayBillRepository.save(wayBillDB);

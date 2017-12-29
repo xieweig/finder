@@ -34,14 +34,23 @@ public class WayBillDetail extends BaseEntity {
     @Column(length = 255)
     private String outStorageBillCode;//
 
+
+    /**
+     * 商品code
+     */
     @Column(length = 255)
     private String cargoCode;
 
-
+    /**
+     * 原料code
+     */
     @Column(length = 255)
     private String rawMaterialCode;
 
 
+    /**
+     * 包号
+     */
     private String packageCode;
 
     /**
@@ -70,6 +79,9 @@ public class WayBillDetail extends BaseEntity {
     private String inStationCode;
 
 
+    /**
+     * 入库站点名称
+     */
     @Column(length = 255)
     private String inStationName;
 
@@ -80,6 +92,9 @@ public class WayBillDetail extends BaseEntity {
     private String outStationCode;
 
 
+    /**
+     * 出库站点名称
+     */
     @Column(length = 255)
     private String outStationName;
 
