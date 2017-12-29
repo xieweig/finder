@@ -26,6 +26,11 @@ public enum BillStateEnum {
      * 审核成功
      */
     AUDITSUCCESS,
+
+    /**
+     * 出库中
+     */
+    OUTSTORAGING,
     /**
      * 完成
      */

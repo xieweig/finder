@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.application;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.*;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -51,6 +52,16 @@ public class PurchaseBillManager {
 
     BillFactory billFactory = new BillFactory();
 
+    /**
+     *  目的
+     * @param bill
+     */
+    public void purpose(Bill bill){
+        BillServiceFactory serviceFactory = new BillServiceFactory();
+        AbstractBillService billService = serviceFactory.createBillService(bill);
+
+        billService.dispose(new PurposeBehavior());
+    }
     /**
      * 保存进货单
      *
