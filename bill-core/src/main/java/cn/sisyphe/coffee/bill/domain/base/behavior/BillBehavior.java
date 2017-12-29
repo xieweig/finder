@@ -19,7 +19,7 @@ public interface BillBehavior {
     /**
      * 执行动作
      */
-    void doAction();
+    void doAction() throws ClassNotFoundException;
 
     /**
      * 发送完成事件

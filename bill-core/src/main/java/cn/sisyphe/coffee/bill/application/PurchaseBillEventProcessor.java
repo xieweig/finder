@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.application;
 
-import cn.sisyphe.coffee.bill.amqp.SenderService;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -16,9 +15,6 @@ import org.springframework.stereotype.Service;
 public class PurchaseBillEventProcessor {
     @Autowired
     PurchaseBillManager purchaseBillManager;
-
-    @Autowired
-    SenderService senderService;
     /**
      * 已创建事件
      *
@@ -56,9 +52,6 @@ public class PurchaseBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'PURCHASE' and #event.billState.toString() == 'AUDITSUCCESS'")
     public void billSuccess(BehaviorEvent event) {
-        System.err.println("AUDITSUCCESS:" + event.getBill());
-        // 发送消息到冲减系统
-        senderService.sendBillToStockOffsetRabbitMQ(event.getBill());
     }
 
     /**

@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base.purpose;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.framework.message.core.MessagingHelper;
 
 /**
  * Created by heyong on 2017/12/19 14:07
@@ -15,7 +16,15 @@ public class InStoragePurpose extends AbstractBillPurpose {
     @Override
     public void handle() {
         // 入库操作
+        try {
         // 发消息到库存冲减中
+        MessagingHelper.messaging().convertAndSend("cn_sisyphe_coffee_bill", "askcard.trade.2.2.Unprocessed", null);
+
+        }catch (Exception e){
+            // TODO: 2017/12/29
+
+        }
+
     }
 
     /**
