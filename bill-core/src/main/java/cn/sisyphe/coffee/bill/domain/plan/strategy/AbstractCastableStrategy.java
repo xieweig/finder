@@ -12,6 +12,8 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import java.util.HashSet;
 import java.util.Set;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.Plan;
+
 /**
  * @author ncmao
  * @Date 2017/12/28 12:24
@@ -24,12 +26,12 @@ public abstract class AbstractCastableStrategy {
     public abstract void cast(PlanBillPayload planBillPayload, BillRepository billRepository);
 
 
-    protected PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum, BillPurposeEnum billPurposeEnum) {
+    PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum) {
         PlanBill planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
         planBill.setSpecificBillType(billTypeEnum);
         planBill.setInLocation(planBillPayload.getInLocation());
         planBill.setOutLocation(planBillPayload.getOutLocation());
-        planBill.setBillPurpose(billPurposeEnum);
+        planBill.setBillPurpose(Plan);
         Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {
             PlanBillDetail planBillDetail = new PlanBillDetail();

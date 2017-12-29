@@ -49,6 +49,9 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private Boolean hqBill;
 
+    @Column
+    private String memo;
+
 
     //完成度
     @Column
@@ -114,5 +117,13 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setHqBill(Boolean hqBill) {
         this.hqBill = hqBill;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }

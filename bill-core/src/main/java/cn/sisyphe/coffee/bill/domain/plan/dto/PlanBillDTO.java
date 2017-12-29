@@ -1,6 +1,9 @@
 package cn.sisyphe.coffee.bill.domain.plan.dto;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+
+import java.util.List;
 
 /**
  * @author ncmao
@@ -15,6 +18,10 @@ public class PlanBillDTO {
     private BillTypeEnum billType;
 
     private String memo;
+
+    private BasicEnum basicEnum;
+
+    private List<PlanBillDetailDTO> planBillDetailDTOS;
 
     public String getBillCode() {
         return billCode;
@@ -46,5 +53,21 @@ public class PlanBillDTO {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public List<PlanBillDetailDTO> getPlanBillDetailDTOS() {
+        return planBillDetailDTOS;
+    }
+
+    public void setPlanBillDetailDTOS(List<PlanBillDetailDTO> planBillDetailDTOS) {
+        this.planBillDetailDTOS = planBillDetailDTOS;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
     }
 }

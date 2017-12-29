@@ -7,7 +7,22 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Transient;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -84,7 +99,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     @org.hibernate.annotations.ForeignKey(name = "none")
     // 设置子类的 billCode
     @JoinColumn(name = "billCode", referencedColumnName = "billCode")
-    private Set<T> billDetails;
+    private Set<T> billDetails = new HashSet<>();
 
     /**
      * 单据状态

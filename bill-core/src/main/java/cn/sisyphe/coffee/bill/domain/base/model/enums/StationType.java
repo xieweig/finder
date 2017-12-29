@@ -7,6 +7,10 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
  */
 public enum StationType {
 
+    /**
+     * 总部
+     */
+    HQ,
 
     //门店
     STORE,

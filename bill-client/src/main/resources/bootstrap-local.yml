@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: coffee-bill
+
+info:
+  name: 单据客户端
+
+
+logging:
+  file: target/${spring.application.name}.log
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://192.168.21.141:${eureka.port:8761}/eureka/ #5

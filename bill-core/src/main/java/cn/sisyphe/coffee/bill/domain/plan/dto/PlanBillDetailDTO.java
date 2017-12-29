@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class PlanBillDetailDTO {
 
     private String cargoCode;
     private String rawMaterialCode;
-    private List<PlanBillStation> planBillStations;
+    private List<PlanBillStationDTO> planBillStationDTOS = new ArrayList<>();
 
     public String getCargoCode() {
         return cargoCode;
@@ -29,11 +30,11 @@ public class PlanBillDetailDTO {
         this.rawMaterialCode = rawMaterialCode;
     }
 
-    public List<PlanBillStation> getPlanBillStations() {
-        return planBillStations;
+    public List<PlanBillStationDTO> getPlanBillStationDTOS() {
+        return planBillStationDTOS;
     }
 
-    public void setPlanBillStations(List<PlanBillStation> planBillStations) {
-        this.planBillStations = planBillStations;
+    public void setPlanBillStationDTOS(List<PlanBillStationDTO> planBillStationDTOS) {
+        this.planBillStationDTOS = planBillStationDTOS;
     }
 }

@@ -22,6 +22,7 @@ public class PlanBillPayload {
     private String memo;
     private AbstractLocation inLocation;
     private AbstractLocation outLocation;
+    private AbstractLocation transferLocation;
     private BasicEnum basicEnum;
     private List<PlanBillPayloadDetail> goodDetails = new ArrayList<>();
 
@@ -107,5 +108,13 @@ public class PlanBillPayload {
 
     public void addGoodsDetail(PlanBillPayloadDetail planBillPayloadDetail) {
         this.goodDetails.add(planBillPayloadDetail);
+    }
+
+    public AbstractLocation getTransferLocation() {
+        return transferLocation;
+    }
+
+    public void setTransferLocation(AbstractLocation transferLocation) {
+        this.transferLocation = transferLocation;
     }
 }

@@ -30,8 +30,15 @@ public class PlanBillController {
 
     @ApiOperation(value = "新建总部计划")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public ResponseResult createProduct(@RequestBody PlanBillDTO planBillDTO) throws Exception {
+    public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
         planBillManager.create(planBillDTO);
+        return null;
+    }
+
+    @ApiOperation(value = "提交总部计划")
+    @RequestMapping(path = "/submit", method = RequestMethod.POST)
+    public ResponseResult submitPlanBill(@RequestBody PlanBillDTO planBillDTO) {
+        planBillManager.submit(planBillDTO);
         return null;
     }
 }
