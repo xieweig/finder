@@ -1,38 +1,38 @@
-package cn.sisyphe.coffee.bill.domain.purchase;
+package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by heyong on 2017/12/21 11:55
- * Description: 进货单明细
+ * Created by XiongJing on 2017/12/28.
+ * remark：进货单明细DTO
+ * version: 1.0
  *
- * @author heyong
+ * @author XiongJing
  */
-@Entity
-@Table
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class PurchaseBillDetail extends BillDetail {
+public class BillDetailDTO {
+    /**
+     * 最小单位数量
+     */
+    private Integer amount;
+
+    /**
+     * 包号
+     */
+    private String packageCode;
 
     /**
      * 标准单位编码
      */
     private String standardUnitCode;
 
-
     /**
      * 规格编码
      */
     private String measurementCode;
-
 
     /**
      * 生产日期
@@ -48,22 +48,43 @@ public class PurchaseBillDetail extends BillDetail {
     /**
      * 实收数量
      */
-    private int actualNumber;
+    private Integer actualNumber;
 
     /**
      * 发货数量
      */
-    private int shippedNumber;
+    private Integer shippedNumber;
 
     /**
      * 数量差值
      */
-    private int differenceNumber;
+    private Integer differenceNumber;
 
     /**
      * 总价差值
      */
     private BigDecimal differencePrice;
+
+    /**
+     * 原料
+     */
+    private RawMaterial rawMaterial;
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public String getPackageCode() {
+        return packageCode;
+    }
+
+    public void setPackageCode(String packageCode) {
+        this.packageCode = packageCode;
+    }
 
     public String getStandardUnitCode() {
         return standardUnitCode;
@@ -97,27 +118,27 @@ public class PurchaseBillDetail extends BillDetail {
         this.unitPrice = unitPrice;
     }
 
-    public int getActualNumber() {
+    public Integer getActualNumber() {
         return actualNumber;
     }
 
-    public void setActualNumber(int actualNumber) {
+    public void setActualNumber(Integer actualNumber) {
         this.actualNumber = actualNumber;
     }
 
-    public int getShippedNumber() {
+    public Integer getShippedNumber() {
         return shippedNumber;
     }
 
-    public void setShippedNumber(int shippedNumber) {
+    public void setShippedNumber(Integer shippedNumber) {
         this.shippedNumber = shippedNumber;
     }
 
-    public int getDifferenceNumber() {
+    public Integer getDifferenceNumber() {
         return differenceNumber;
     }
 
-    public void setDifferenceNumber(int differenceNumber) {
+    public void setDifferenceNumber(Integer differenceNumber) {
         this.differenceNumber = differenceNumber;
     }
 
@@ -129,9 +150,19 @@ public class PurchaseBillDetail extends BillDetail {
         this.differencePrice = differencePrice;
     }
 
+    public RawMaterial getRawMaterial() {
+        return rawMaterial;
+    }
+
+    public void setRawMaterial(RawMaterial rawMaterial) {
+        this.rawMaterial = rawMaterial;
+    }
+
     @Override
     public String toString() {
-        return "PurchaseBillDetail{" +
+        return "BillDetailDTO{" +
+                "amount=" + amount +
+                ", packageCode='" + packageCode + '\'' +
                 ", standardUnitCode='" + standardUnitCode + '\'' +
                 ", measurementCode='" + measurementCode + '\'' +
                 ", dateInProduced=" + dateInProduced +
@@ -140,6 +171,7 @@ public class PurchaseBillDetail extends BillDetail {
                 ", shippedNumber=" + shippedNumber +
                 ", differenceNumber=" + differenceNumber +
                 ", differencePrice=" + differencePrice +
-                "} " + super.toString();
+                ", rawMaterial=" + rawMaterial +
+                '}';
     }
 }

@@ -90,7 +90,10 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      * 操作人代码
      */
     private String operatorCode;
-
+    /**
+     * 审核人编码
+     */
+    private String auditPersonCode;
     /**
      * 物品明细
      */
@@ -234,6 +237,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.billState = billState;
     }
 
+    public String getAuditPersonCode() {
+        return auditPersonCode;
+    }
+
+    public void setAuditPersonCode(String auditPersonCode) {
+        this.auditPersonCode = auditPersonCode;
+    }
+
     @Override
     public String toString() {
         return "Bill{" +
@@ -247,6 +258,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
                 ", dbStation=" + dbStation +
                 ", sourceCode='" + sourceCode + '\'' +
                 ", rootCode='" + rootCode + '\'' +
+                ", auditPersonCode='" + auditPersonCode + '\'' +
                 ", operatorCode='" + operatorCode + '\'' +
                 ", billState=" + billState +
                 "} " + super.toString();

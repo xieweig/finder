@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.purchase;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,7 +57,15 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
      */
     @Override
     public PurchaseBill findByBillCode(String billCode) {
-        return purchaseBillRepository.findOneByBillCode(billCode);
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("20011", "进货单编码为空");
+        }
+        PurchaseBill purchaseBill = purchaseBillRepository.findOneByBillCode(billCode);
+        if (purchaseBill != null) {
+            return purchaseBill;
+        } else {
+            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
+        }
     }
 
     /**
@@ -78,7 +87,10 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getBillCode())) {
                 expressions.add(cb.equal(root.get("billCode").as(String.class), conditionQueryPurchaseBill.getBillCode()));
             }
-            // TODO: 2017/12/27 拼接条件尚未完善......
+            /**
+             *
+             */
+
 
             return predicate;
         }, pageable);

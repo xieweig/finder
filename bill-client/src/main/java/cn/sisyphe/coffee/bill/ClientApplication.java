@@ -59,6 +59,10 @@ public class ClientApplication implements CommandLineRunner {
 //		Set<PurchaseBillDetail> billDetails = new HashSet<PurchaseBillDetail>();
 //		detail.setAmount(1111);
 //		detail.setPackageCode("000");
+//		Cargo cargo = new Cargo("ccc");
+//		RawMaterial  rawMaterial = new RawMaterial("xx");
+//		rawMaterial.setCargo(cargo);
+//		detail.setGoods(rawMaterial);
 //		billDetails.add(detail);
 //		bill.setBillDetails(billDetails);
 //

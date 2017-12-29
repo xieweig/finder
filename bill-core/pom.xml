@@ -16,6 +16,7 @@
             <artifactId>framework-ddd</artifactId>
             <version>1.0</version>
         </dependency>
+        <!--RabbitMQ-->
         <dependency>
             <groupId>cn.sisyphe.framework</groupId>
             <artifactId>framework-message-rabbit</artifactId>

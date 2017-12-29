@@ -17,7 +17,7 @@ public class OpenBehavior extends AbstractBillBehavior {
         // TODO 判断状态
         Bill bill = getBillService().getBill();
         if (bill != null) {
-            if (bill.getBillState().equals(BillStateEnum.OPEN)) {
+            if (bill.getBillState().equals(BillStateEnum.OPEN) || bill.getBillState().equals(BillStateEnum.SUBMITTED)) {
                 bill.setBillState(BillStateEnum.OPEN);
             } else {
                 throw new DataException("20003", "当前状态不能更改为打开状态");
