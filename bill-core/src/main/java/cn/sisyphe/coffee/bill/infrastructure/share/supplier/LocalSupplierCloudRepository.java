@@ -14,4 +14,9 @@ public class LocalSupplierCloudRepository implements SupplierCloudRepository {
     public ResponseResult findSupplierByCode(String supplierCode) {
         return new ResponseResult();
     }
+
+    @Override
+    public ResponseResult findByLikeSupplierName(String supplierCode) {
+        return new ResponseResult();
+    }
 }

@@ -24,7 +24,8 @@ public class DeliveryStrategy extends AbstractCastableStrategy {
     @SuppressWarnings("unchecked")
     @Override
     public void cast(PlanBillPayload planBillPayload, BillRepository billRepository) {
-        PlanBill planBill = generatePlanBill(planBillPayload, BillTypeEnum.DELIVERY);
+        PlanBill planBill = generatePlanBill(planBillPayload, BillTypeEnum.DELIVERY, planBill1 -> {
+        });
         billRepository.save(planBill);
     }
 }
