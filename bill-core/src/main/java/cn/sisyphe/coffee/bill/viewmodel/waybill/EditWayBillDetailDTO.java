@@ -70,6 +70,18 @@ public class EditWayBillDetailDTO implements Serializable {
      */
     private String outStationCode;
 
+    /**
+     * 是否单独打包
+     */
+    public Boolean singlePacking;
+
+    public Boolean getSinglePacking() {
+        return singlePacking;
+    }
+
+    public void setSinglePacking(Boolean singlePacking) {
+        this.singlePacking = singlePacking;
+    }
 
     /**
      * 出库时间
