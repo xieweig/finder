@@ -195,6 +195,12 @@ public class IWayBillServiceImpl implements IWayBillService {
         return wayBillRepository.findAllByCondition((root, criteriaQuery, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
+
+            //id
+            if (wayBill.getBillId() != null) {
+                //id
+                expressions.add(criteriaBuilder.equal(root.get("billId").as(Long.class), wayBill.getBillId()));
+            }
             // bill编码
             if (!StringUtils.isEmpty(wayBill.getBillCode())) {
                 expressions.add(criteriaBuilder.like(root.get("billCode").as(String.class),
@@ -205,16 +211,11 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(criteriaBuilder.like(root.get("logisticsCompanyName").as(String.class),
                         "%" + wayBill.getLogisticsCompanyName() + "%"));
             }
-            //id
-            if (wayBill.getBillId() != null) {
-                //id
-                expressions.add(criteriaBuilder.equal(root.get("id").as(Long.class), wayBill.getBillId()));
+            //单据收货状态
+            if (wayBill.getReceivedStatus() != null) {
+                expressions.add(criteriaBuilder.equal(root.get("receivedStatus")
+                        .as(Long.class), wayBill.getReceivedStatus()));
             }
-            //单据状态
-//            if (wayBill.getBillState() != null) {
-//
-//                expressions.add(criteriaBuilder.equal(root.get("billState").as(Long.class), wayBill.getBillState()));
-//            }
             return predicate;
 
         });

@@ -19,6 +19,10 @@ public interface WayBillRepository {
 
     WayBill save(WayBill wayBill);
 
+    /**
+     * @param billCode
+     * @return
+     */
     WayBill findOneByCode(String billCode);
 
     WayBill findOne(Long id);
