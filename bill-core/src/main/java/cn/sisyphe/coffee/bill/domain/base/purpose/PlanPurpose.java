@@ -44,6 +44,8 @@ public class PlanPurpose extends AbstractBillPurpose {
             planBillPayload.setOutLocation(firstPlanBillDetail.getOutLocation());
             planBillPayload.setInLocation(firstPlanBillDetail.getInLocation());
             planBillPayload.setCastableStrategy(getSpecStrategy(bill.getSpecificBillType()));
+            planBillPayload.setBasicEnum(bill.getBasicEnum());
+            planBillPayload.setMemo(bill.getMemo());
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 PlanBillPayloadDetail planBillPayloadDetail = new PlanBillPayloadDetail();
                 planBillPayloadDetail.setAmount(planBillDetail.getAmount());

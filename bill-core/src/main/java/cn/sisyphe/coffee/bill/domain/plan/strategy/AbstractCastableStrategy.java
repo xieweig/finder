@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.plan.strategy;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
@@ -28,10 +29,12 @@ public abstract class AbstractCastableStrategy {
 
     PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum, Executor executor) {
         PlanBill planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        planBill.setHqBill(false);
         planBill.setSpecificBillType(billTypeEnum);
         planBill.setInLocation(planBillPayload.getInLocation());
         planBill.setOutLocation(planBillPayload.getOutLocation());
         planBill.setBillPurpose(Plan);
+        planBill.setBasicEnum(planBillPayload.getBasicEnum());
         Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {
             PlanBillDetail planBillDetail = new PlanBillDetail();
@@ -40,6 +43,7 @@ public abstract class AbstractCastableStrategy {
             planBillDetails.add(planBillDetail);
         }
         planBill.setBillDetails(planBillDetails);
+        planBill.setBillState(BillStateEnum.SAVED);
         executor.exec(planBill);
         return planBill;
     }

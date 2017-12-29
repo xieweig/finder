@@ -21,6 +21,9 @@ public class PlanBillDTO {
 
     private BasicEnum basicEnum;
 
+    //审核意见
+    private String auditMemo;
+
     private List<PlanBillDetailDTO> planBillDetailDTOS;
 
     public String getBillCode() {
@@ -69,5 +72,13 @@ public class PlanBillDTO {
 
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
+    }
+
+    public String getAuditMemo() {
+        return auditMemo;
+    }
+
+    public void setAuditMemo(String auditMemo) {
+        this.auditMemo = auditMemo;
     }
 }

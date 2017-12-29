@@ -52,6 +52,9 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private String memo;
 
+    //审核意见
+    private String auditMemo;
+
 
     //完成度
     @Column
@@ -125,5 +128,13 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getAuditMemo() {
+        return auditMemo;
+    }
+
+    public void setAuditMemo(String auditMemo) {
+        this.auditMemo = auditMemo;
     }
 }
