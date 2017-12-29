@@ -141,7 +141,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
                 expressions.add(cb.equal(root.get("billState").as(String.class), conditionQueryPurchaseBill.getStatusCode()));
             }
 
-
             return predicate;
         }, pageable);
     }
