@@ -28,7 +28,7 @@ public class PlanBillController {
     private PlanBillManager planBillManager;
 
 
-    @ApiOperation(value = "新建总部计划")
+    @ApiOperation(value = "新建总部计划，暂存")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
         planBillManager.create(planBillDTO);

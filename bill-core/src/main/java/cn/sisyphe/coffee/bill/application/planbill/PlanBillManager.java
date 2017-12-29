@@ -65,6 +65,11 @@ public class PlanBillManager {
 
     }
 
+    /**
+     * 提交计划单进行审核
+     *
+     * @param planBillDTO 前端传过来的DTO
+     */
     public void submit(PlanBillDTO planBillDTO) {
         PlanBill planBill = planBillRepository.findByBillCode(planBillDTO.getBillCode());
         map(planBill, planBillDTO);
@@ -74,14 +79,17 @@ public class PlanBillManager {
         billService.save();
     }
 
+    //审核通过，然后进行计划单切片
     public void pass(PlanBillDTO planBillDTO) {
         PlanBill planBill = planBillRepository.findByBillCode(planBillDTO.getBillCode());
+        setTransferLocation(planBill);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.dispose(new PurposeBehavior());
         billService.setBillRepository(planBillRepository);
         billService.save();
     }
 
+    //将前端传过来的数据进行
     private void map(PlanBill planBill, PlanBillDTO planBillDTO) {
         planBill.getBillDetails().clear();
         planBill.setSpecificBillType(planBillDTO.getBillType());
@@ -115,5 +123,16 @@ public class PlanBillManager {
             return supplier;
         }
         return stationRepository.findByStationCode(station.getStationCode());
+    }
+
+    //TODO 如果出站站点是门店，并且入战站点是供应商，则需要将中转物流站点map到tranferLocation上面去
+    private void setTransferLocation(PlanBill planBill) {
+        for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
+            if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
+                    && planBillDetail.getOutLocation() instanceof Supplier) {
+                planBillDetail.setTransferLocation(supplierRepository.findBySupplierCode(planBillDetail.getOutLocation().code()));
+            }
+        }
+
     }
 }

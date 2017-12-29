@@ -26,7 +26,7 @@ public abstract class AbstractCastableStrategy {
     public abstract void cast(PlanBillPayload planBillPayload, BillRepository billRepository);
 
 
-    PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum) {
+    PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum, Executor executor) {
         PlanBill planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
         planBill.setSpecificBillType(billTypeEnum);
         planBill.setInLocation(planBillPayload.getInLocation());
@@ -40,6 +40,11 @@ public abstract class AbstractCastableStrategy {
             planBillDetails.add(planBillDetail);
         }
         planBill.setBillDetails(planBillDetails);
+        executor.exec(planBill);
         return planBill;
+    }
+
+    interface Executor {
+        void exec(PlanBill planBill);
     }
 }
