@@ -39,8 +39,7 @@ public class PlanBillIntegrationTest {
 
     @Autowired
     private PlanBillRepository planBillRepository;
-    //test
-    //测试类
+
     @Test
     public void test1() {
         PlanBill planBill = new PlanBill();
