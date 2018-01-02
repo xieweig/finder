@@ -304,11 +304,16 @@ public class WayBillManager {
         if (editWayBillDTO.getDeliveryTime() == null) {
             throw new DataException("40003", "发货时间不能为空");
         }
-//        if (StringUtils.isEmpty(editWayBillDTO.getDestination())) {
-//            throw new DataException("40004", "目的地不能为空");
-//        }
-        if (editWayBillDTO.getAmountOfPackages() == null || editWayBillDTO.getAmountOfPackages() == 0) {
-            throw new DataException("40005", "运货数量必须大于0");
+
+        if (editWayBillDTO.getOutStationCode() == null) {
+            throw new DataException("40004", "出库站点不能为空");
+        }
+        if (editWayBillDTO.getInStationCode() == null) {
+            throw new DataException("40005", "入库站点不能为空");
+        }
+        if (editWayBillDTO.getAmountOfPackages() == null
+                || editWayBillDTO.getAmountOfPackages() == 0) {
+            throw new DataException("40006", "运货数量必须大于0");
         }
 
     }
