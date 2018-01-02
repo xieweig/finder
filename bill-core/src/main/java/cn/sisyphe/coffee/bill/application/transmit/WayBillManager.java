@@ -1,9 +1,9 @@
 package cn.sisyphe.coffee.bill.application.transmit;
 
 
-import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
+import cn.sisyphe.coffee.bill.domain.transmit.WayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.*;
@@ -27,7 +27,7 @@ public class WayBillManager {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    private IWayBillService iWayBillService;
+    private WayBillService iWayBillService;
 
     /**
      * 根据多条件查询运单单据信息
