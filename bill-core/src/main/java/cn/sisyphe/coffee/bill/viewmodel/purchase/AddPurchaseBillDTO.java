@@ -49,15 +49,22 @@ public class AddPurchaseBillDTO {
      * 供应商信息
      */
     private Supplier supplier;
-//    /**
-//     * 单据状态
-//     */
-//    private BillStateEnum billState;
-
+    /**
+     * 单据编码
+     */
+    private String billCode;
     /**
      * 进货单明细信息
      */
     private List<BillDetailDTO> billDetails;
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
 
     public String getFreightCode() {
         return freightCode;
@@ -123,14 +130,6 @@ public class AddPurchaseBillDTO {
         this.supplier = supplier;
     }
 
-//    public BillStateEnum getBillState() {
-//        return billState;
-//    }
-//
-//    public void setBillState(BillStateEnum billState) {
-//        this.billState = billState;
-//    }
-
     public List<BillDetailDTO> getBillDetails() {
         return billDetails;
     }
@@ -150,7 +149,7 @@ public class AddPurchaseBillDTO {
                 ", storage=" + storage +
                 ", station=" + station +
                 ", supplier=" + supplier +
-//                ", billState=" + billState +
+                ", billCode='" + billCode + '\'' +
                 ", billDetails=" + billDetails +
                 '}';
     }

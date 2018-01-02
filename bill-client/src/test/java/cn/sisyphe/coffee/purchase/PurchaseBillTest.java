@@ -11,7 +11,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.EditPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,20 +74,14 @@ public class PurchaseBillTest {
         List<BillDetailDTO> billDetails = new ArrayList<>();
         BillDetailDTO detailDTO = new BillDetailDTO();
 
-        // 最小单位数量
-        detailDTO.setAmount(1000);
+        // 实收数量-最小单位数量
+        detailDTO.setAmount(88);
         // 包号
         detailDTO.setPackageCode("package001");
-        // 标准单位编码
-        detailDTO.setStandardUnitCode("bzdwbm001");
-        // 规格编码
-        detailDTO.setMeasurementCode("ggbm001");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
         detailDTO.setUnitPrice(new BigDecimal(10));
-        // 实收数量
-        detailDTO.setActualNumber(88);
         // 发货数量
         detailDTO.setShippedNumber(68);
         // 数量差值
@@ -149,19 +142,13 @@ public class PurchaseBillTest {
         BillDetailDTO detailDTO = new BillDetailDTO();
 
         // 最小单位数量
-        detailDTO.setAmount(2000);
+        detailDTO.setAmount(888);
         // 包号
         detailDTO.setPackageCode("package002");
-        // 标准单位编码
-        detailDTO.setStandardUnitCode("bzdwbm002");
-        // 规格编码
-        detailDTO.setMeasurementCode("ggbm002");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
         detailDTO.setUnitPrice(new BigDecimal(1));
-        // 实收数量
-        detailDTO.setActualNumber(888);
         // 发货数量
         detailDTO.setShippedNumber(688);
         // 数量差值
@@ -188,15 +175,16 @@ public class PurchaseBillTest {
     @Test
     public void openBill() {
         String billCode = "bill002";
-         purchaseBillManager.openBill(billCode);
+        purchaseBillManager.openBill(billCode);
     }
+
     /**
      * 修改单据--保存
      */
     @Test
     public void updatePurchaseBillToSave() {
         String billCode = "bill001";
-        EditPurchaseBillDTO saveDto = new EditPurchaseBillDTO();
+        AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         saveDto.setBillCode(billCode);
         // 货运单号
         saveDto.setFreightCode("hydh001");
@@ -229,19 +217,13 @@ public class PurchaseBillTest {
         BillDetailDTO detailDTO = new BillDetailDTO();
 
         // 最小单位数量
-        detailDTO.setAmount(1000);
+        detailDTO.setAmount(88);
         // 包号
         detailDTO.setPackageCode("package001-saved");
-        // 标准单位编码
-        detailDTO.setStandardUnitCode("bzdwbm001");
-        // 规格编码
-        detailDTO.setMeasurementCode("ggbm001");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
         detailDTO.setUnitPrice(new BigDecimal(10));
-        // 实收数量
-        detailDTO.setActualNumber(88);
         // 发货数量
         detailDTO.setShippedNumber(88);
         // 数量差值
@@ -259,15 +241,16 @@ public class PurchaseBillTest {
 
         billDetails.add(detailDTO);
         saveDto.setBillDetails(billDetails);
-        purchaseBillManager.updateBill(saveDto);
+        purchaseBillManager.updateBillToSave(saveDto);
     }
+
     /**
      * 修改单据--提交审核
      */
     @Test
     public void updatePurchaseBillToSubmit() {
         String billCode = "bill001";
-        EditPurchaseBillDTO saveDto = new EditPurchaseBillDTO();
+        AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         saveDto.setBillCode(billCode);
         // 货运单号
         saveDto.setFreightCode("hydh001");
@@ -299,20 +282,14 @@ public class PurchaseBillTest {
         List<BillDetailDTO> billDetails = new ArrayList<>();
         BillDetailDTO detailDTO = new BillDetailDTO();
 
-        // 最小单位数量
-        detailDTO.setAmount(1000);
+        // 实收数量-最小单位数量
+        detailDTO.setAmount(88);
         // 包号
         detailDTO.setPackageCode("package001-submit");
-        // 标准单位编码
-        detailDTO.setStandardUnitCode("bzdwbm001");
-        // 规格编码
-        detailDTO.setMeasurementCode("ggbm001");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
         detailDTO.setUnitPrice(new BigDecimal(10));
-        // 实收数量
-        detailDTO.setActualNumber(88);
         // 发货数量
         detailDTO.setShippedNumber(88);
         // 数量差值
@@ -330,8 +307,9 @@ public class PurchaseBillTest {
 
         billDetails.add(detailDTO);
         saveDto.setBillDetails(billDetails);
-        purchaseBillManager.updateBill(saveDto);
+        purchaseBillManager.updateBillToSubmit(saveDto);
     }
+
     /**
      * 测试审核失败单据
      */
@@ -349,6 +327,7 @@ public class PurchaseBillTest {
         String billCode = "bill001";
         purchaseBillManager.AuditSuccessBill(billCode);
     }
+
     /**
      * 测试多条件查询
      */

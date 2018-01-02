@@ -22,16 +22,6 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PurchaseBillDetail extends BillDetail {
 
-    // TODO: 2018/1/2  标准单位编码 和 规格编码 不需要保存数据库   查询到的货物里面存在这两个字段
-    /**
-     * 标准单位编码
-     */
-    private String standardUnitCode;
-    /**
-     * 规格编码
-     */
-    private String measurementCode;
-
     /**
      * 生产日期
      */
@@ -42,11 +32,6 @@ public class PurchaseBillDetail extends BillDetail {
      * 单位进价
      */
     private BigDecimal unitPrice;
-
-    /**
-     * 实收数量
-     */
-    private int actualNumber;
 
     /**
      * 发货数量
@@ -63,22 +48,6 @@ public class PurchaseBillDetail extends BillDetail {
      */
     private BigDecimal differencePrice;
 
-    public String getStandardUnitCode() {
-        return standardUnitCode;
-    }
-
-    public void setStandardUnitCode(String standardUnitCode) {
-        this.standardUnitCode = standardUnitCode;
-    }
-
-    public String getMeasurementCode() {
-        return measurementCode;
-    }
-
-    public void setMeasurementCode(String measurementCode) {
-        this.measurementCode = measurementCode;
-    }
-
     public Date getDateInProduced() {
         return dateInProduced;
     }
@@ -94,15 +63,6 @@ public class PurchaseBillDetail extends BillDetail {
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
-
-    public int getActualNumber() {
-        return actualNumber;
-    }
-
-    public void setActualNumber(int actualNumber) {
-        this.actualNumber = actualNumber;
-    }
-
     public int getShippedNumber() {
         return shippedNumber;
     }
@@ -130,11 +90,8 @@ public class PurchaseBillDetail extends BillDetail {
     @Override
     public String toString() {
         return "PurchaseBillDetail{" +
-                ", standardUnitCode='" + standardUnitCode + '\'' +
-                ", measurementCode='" + measurementCode + '\'' +
                 ", dateInProduced=" + dateInProduced +
                 ", unitPrice=" + unitPrice +
-                ", actualNumber=" + actualNumber +
                 ", shippedNumber=" + shippedNumber +
                 ", differenceNumber=" + differenceNumber +
                 ", differencePrice=" + differencePrice +

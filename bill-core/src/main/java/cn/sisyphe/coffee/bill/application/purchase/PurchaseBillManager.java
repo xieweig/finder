@@ -117,7 +117,7 @@ public class PurchaseBillManager {
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
-        purchaseBill.setBillCode("bill002");
+        purchaseBill.setBillCode("bill001");
         // 货运单号
         purchaseBill.setFreightCode(addPurchaseBillDTO.getFreightCode());
         // 发货件数
@@ -130,8 +130,6 @@ public class PurchaseBillManager {
         purchaseBill.setOperatorCode(addPurchaseBillDTO.getOperatorCode());
         // 归属站点
         purchaseBill.setBelongStationCode(addPurchaseBillDTO.getStation().getStationCode());
-//        // 单据状态
-//        purchaseBill.setBillState(addPurchaseBillDTO.getBillState());
         // 获取站点
         Station station = addPurchaseBillDTO.getStation();
         // 获取库房
@@ -165,20 +163,14 @@ public class PurchaseBillManager {
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             purchaseBillDetail.setGoods(rawMaterial);
-            // 最小单位数量
+            // 实收数量-最小单位数量
             purchaseBillDetail.setAmount(detail.getAmount());
             // 包号
             purchaseBillDetail.setPackageCode(detail.getPackageCode());
-            // 标准单位编码
-            purchaseBillDetail.setStandardUnitCode(detail.getStandardUnitCode());
-            // 规格编码
-            purchaseBillDetail.setMeasurementCode(detail.getMeasurementCode());
             // 生产日期
             purchaseBillDetail.setDateInProduced(detail.getDateInProduced());
             // 单位进价
             purchaseBillDetail.setUnitPrice(detail.getUnitPrice());
-            // 实收数量
-            purchaseBillDetail.setActualNumber(detail.getActualNumber());
             // 发货数量
             purchaseBillDetail.setShippedNumber(detail.getShippedNumber());
             // 数量差值
@@ -258,20 +250,14 @@ public class PurchaseBillManager {
             RawMaterial rawMaterial = (RawMaterial) detail.getGoods();
 
             detailDTO.setRawMaterial(rawMaterial);
-            // 最小单位数量
+            // 实收数量-最小单位数量
             detailDTO.setAmount(detail.getAmount());
             // 包号
             detailDTO.setPackageCode(detail.getPackageCode());
-            // 标准单位编码
-            detailDTO.setStandardUnitCode(detail.getStandardUnitCode());
-            // 规格编码
-            detailDTO.setMeasurementCode(detail.getMeasurementCode());
             // 生产日期
             detailDTO.setDateInProduced(detail.getDateInProduced());
             // 单位进价
             detailDTO.setUnitPrice(detail.getUnitPrice());
-            // 实收数量
-            detailDTO.setActualNumber(detail.getActualNumber());
             // 发货数量
             detailDTO.setShippedNumber(detail.getShippedNumber());
             // 数量差值
@@ -288,7 +274,7 @@ public class PurchaseBillManager {
      *
      * @param billDTO
      */
-    public void updateBillToSave(EditPurchaseBillDTO billDTO) {
+    public void updateBillToSave(AddPurchaseBillDTO billDTO) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
         purchaseBill.getBillDetails().clear();
         if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
@@ -314,7 +300,7 @@ public class PurchaseBillManager {
      *
      * @param billDTO
      */
-    public void updateBillToSubmit(EditPurchaseBillDTO billDTO) {
+    public void updateBillToSubmit(AddPurchaseBillDTO billDTO) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
         purchaseBill.getBillDetails().clear();
         if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
@@ -341,7 +327,7 @@ public class PurchaseBillManager {
      * @param editPurchaseBillDTO
      * @return
      */
-    private PurchaseBill dtoToMapPurchaseBillForEdit(EditPurchaseBillDTO editPurchaseBillDTO, PurchaseBill purchaseBill) {
+    private PurchaseBill dtoToMapPurchaseBillForEdit(AddPurchaseBillDTO editPurchaseBillDTO, PurchaseBill purchaseBill) {
 
         // 货运单号
         purchaseBill.setFreightCode(editPurchaseBillDTO.getFreightCode());
@@ -355,8 +341,6 @@ public class PurchaseBillManager {
         purchaseBill.setOperatorCode(editPurchaseBillDTO.getOperatorCode());
         // 归属站点
         purchaseBill.setBelongStationCode(editPurchaseBillDTO.getStation().getStationCode());
-//        // 单据状态
-//        purchaseBill.setBillState(editPurchaseBillDTO.getBillState());
         // 获取站点
         Station station = editPurchaseBillDTO.getStation();
         // 获取库房
@@ -491,11 +475,11 @@ public class PurchaseBillManager {
             BigDecimal differencePrice = BigDecimal.ZERO;
             for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetailSet) {
                 // 累加实收数量
-                actualNumber += purchaseBillDetail.getActualNumber();
+                actualNumber += purchaseBillDetail.getAmount();
                 // 累加数量差值
                 differenceNumber += purchaseBillDetail.getDifferenceNumber();
                 // 累加进货总价
-                inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getActualNumber())));
+                inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getAmount())));
                 // 累加差价总和
                 differencePrice = differencePrice.add(purchaseBillDetail.getDifferencePrice());
             }
