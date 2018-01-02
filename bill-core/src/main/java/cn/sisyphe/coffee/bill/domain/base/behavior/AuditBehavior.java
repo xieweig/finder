@@ -27,7 +27,7 @@ public class AuditBehavior extends AbstractBillBehavior {
                 if (bill.getBillState().equals(BillStateEnum.SUBMITTED) || bill.getBillState().equals(BillStateEnum.OPEN)) {
                     bill.setBillState(BillStateEnum.AUDITSUCCESS);
                 } else {
-                    throw new DataException("20004", "当前状态不能审核");
+                    throw new DataException("20004", "当前状态不能审核成功");
                 }
             }
             // 操作是需要审核失败，并且单据状态是提交或者打开状态，才能赋予审核失败状态
@@ -35,7 +35,7 @@ public class AuditBehavior extends AbstractBillBehavior {
                 if (bill.getBillState().equals(BillStateEnum.SUBMITTED) || bill.getBillState().equals(BillStateEnum.OPEN)) {
                     bill.setBillState(BillStateEnum.AUDITFAILURE);
                 } else {
-                    throw new DataException("20004", "当前状态不能审核");
+                    throw new DataException("20004", "当前状态不能审核失败");
                 }
             } else {
                 throw new DataException("20004", "没有具体操作类型--审核失败还是审核成功(behaviorType)");

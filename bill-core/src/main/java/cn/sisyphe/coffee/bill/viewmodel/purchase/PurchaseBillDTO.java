@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by XiongJing on 2017/12/28.
@@ -19,12 +20,12 @@ public class PurchaseBillDTO {
     /**
      * 入库时间-主表
      */
-    private String inWareHouseTime;
+    private Date inWareHouseTime;
 
     /**
      * 录单时间-主表
      */
-    private String createTime;
+    private Date createTime;
 
     /**
      * 录单人-主表
@@ -88,19 +89,19 @@ public class PurchaseBillDTO {
         this.billCode = billCode;
     }
 
-    public String getInWareHouseTime() {
+    public Date getInWareHouseTime() {
         return inWareHouseTime;
     }
 
-    public void setInWareHouseTime(String inWareHouseTime) {
+    public void setInWareHouseTime(Date inWareHouseTime) {
         this.inWareHouseTime = inWareHouseTime;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

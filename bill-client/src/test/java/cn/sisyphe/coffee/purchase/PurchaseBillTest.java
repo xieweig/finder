@@ -1,16 +1,18 @@
 package cn.sisyphe.coffee.purchase;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
-import cn.sisyphe.coffee.bill.application.PurchaseBillManager;
+import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.EditPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -365,5 +367,17 @@ public class PurchaseBillTest {
     public void AuditSuccessBill() {
         String billCode = "bill001";
         purchaseBillManager.AuditSuccessBill(billCode);
+    }
+    /**
+     * 测试多条件查询
+     */
+    @Test
+    public void queryByConditions() {
+        ConditionQueryPurchaseBill bill = new ConditionQueryPurchaseBill();
+        bill.setPage(1);
+        bill.setPageSize(1);
+        bill.setBillCode("bill001");
+        QueryPurchaseBillDTO dto = purchaseBillManager.findByConditions(bill);
+        System.out.println(dto.toString());
     }
 }

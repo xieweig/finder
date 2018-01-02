@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application;
+package cn.sisyphe.coffee.bill.application.purchase;
 
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
@@ -229,19 +229,17 @@ public class PurchaseBillManager {
         billDTO.setShippedAmount(purchaseBill.getShippedAmount());
         // 设置供应商名称
         Supplier supplier = (Supplier) purchaseBill.getOutLocation();
-        // TODO: 2018/1/2 供应商名称拿不到！！！！
-        billDTO.setSupplierName(supplier.getSupplierName());
+        billDTO.setSupplierCode(supplier.getSupplierCode());
 
         Station station = (Station) purchaseBill.getInLocation();
         // 库位名称
-        // TODO: 2018/1/2 库位名称拿不到！！！！
-        billDTO.setInStorageName(station.getStorage().getStorageName());
+        billDTO.setInStorageCode(station.getStorage().getStorageCode());
         // 转换进货单明细信息
         List<BillDetailDTO> detailDTOList = setDetailMapToListMapDetail(purchaseBill.getBillDetails());
 
         // 进货单明细信息
         billDTO.setBillDetails(detailDTOList);
-        System.err.println("查询到的进货单据信息："+billDTO.toString());
+        System.err.println("查询到的进货单据信息：" + billDTO.toString());
         return billDTO;
     }
 
@@ -433,9 +431,9 @@ public class PurchaseBillManager {
             // 进货单号-主表
             purchaseBillDTO.setBillCode(purchaseBill.getBillCode());
             // 入库时间-主表
-            purchaseBillDTO.setInWareHouseTime(purchaseBill.getInWareHouseTime().toString());
+            purchaseBillDTO.setInWareHouseTime(purchaseBill.getInWareHouseTime());
             // 录单时间-主表
-            purchaseBillDTO.setCreateTime(purchaseBill.getCreateTime().toString());
+            purchaseBillDTO.setCreateTime(purchaseBill.getCreateTime());
             // 录单人-主表
             purchaseBillDTO.setOperatorCode(purchaseBill.getOperatorCode());
             // 审核人-主表

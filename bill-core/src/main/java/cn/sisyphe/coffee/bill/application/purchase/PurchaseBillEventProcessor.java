@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application;
+package cn.sisyphe.coffee.bill.application.purchase;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.context.event.EventListener;
