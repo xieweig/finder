@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,6 +27,7 @@ public class ReturnWayBillDTO implements Serializable {
     /**
      * 录单时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
@@ -35,7 +38,7 @@ public class ReturnWayBillDTO implements Serializable {
     /**
      * 发货时间
      */
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date deliveryTime;
 
 
@@ -55,6 +58,7 @@ public class ReturnWayBillDTO implements Serializable {
      * 出库站点
      */
     private String outStationCode;
+
 
     private String outStationName;
     /**
@@ -169,5 +173,21 @@ public class ReturnWayBillDTO implements Serializable {
         this.outStationName = outStationName;
     }
 
-
+    @Override
+    public String toString() {
+        return "ReturnWayBillDTO{" +
+                "wayBillCode='" + wayBillCode + '\'' +
+                ", outStorageBillCode='" + outStorageBillCode + '\'' +
+                ", createTime=" + createTime +
+                ", amountOfPackages=" + amountOfPackages +
+                ", deliveryTime=" + deliveryTime +
+                ", logisticsCompanyName='" + logisticsCompanyName + '\'' +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", inStationName='" + inStationName + '\'' +
+                ", outStationCode='" + outStationCode + '\'' +
+                ", outStationName='" + outStationName + '\'' +
+                ", wayBillStatus='" + wayBillStatus + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                '}';
+    }
 }
