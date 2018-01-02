@@ -5,10 +5,7 @@ import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
-import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
-import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.waybill.ReturnWayBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,10 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 运货单
@@ -33,6 +27,32 @@ public class WayBillManager {
 
     @Autowired
     private IWayBillService iWayBillService;
+
+    /**
+     * 根据多条件查询运单单据信息
+     *
+     * @param conditionQueryWayBill
+     * @return
+     * @throws DataException
+     */
+    public QueryWayBillDTO findPageByCondition(ConditionQueryWayBill conditionQueryWayBill) throws DataException {
+        // TODO: 2018/1/2
+        //1 根据具体的运单号查询,只有唯一的显示，显示一条
+        //2 根据配送出库查询可能会有多条
+        //3 所有都是模糊匹配
+        //所有的产品表中的数据
+        Page<WayBill> wayBillPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
+
+        QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
+        // 转换
+        List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
+        queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
+
+        wayBillPage.getNumber();
+        queryWayBillDTO.setContent(wayBillDTOList);
+
+        return queryWayBillDTO;
+    }
 
 
     /**
@@ -218,21 +238,6 @@ public class WayBillManager {
 
     }
 
-    /**
-     * @param conditionQueryWayBill
-     * @return
-     * @throws DataException
-     */
-    public Page<ReturnWayBillDTO> findPageByCondition(ConditionQueryWayBill conditionQueryWayBill) throws DataException {
-
-        //1 根据具体的运单号查询,只有唯一的显示，显示一条
-        //2 根据配送出库查询可能会有多条
-        //3 所有都是模糊匹配
-        //所有的产品表中的数据
-        Page<WayBill> wayBillPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
-        return wayBillPage.map(this::convertToDTO);
-    }
-
 
     /**
      * 转换为DTO
@@ -240,20 +245,24 @@ public class WayBillManager {
      * @param
      * @return
      */
-    private ReturnWayBillDTO convertToDTO(WayBill wayBill) {
+    private List<ReturnWayBillDTO> convertToDTO(List<WayBill> wayBills) {
         //
+        List<ReturnWayBillDTO> wayBillDTOList = new ArrayList<>();
         ReturnWayBillDTO temp = new ReturnWayBillDTO();
-        temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
-        temp.setWayBillCode(wayBill.getBillCode());//bill code
-        temp.setOperatorName(wayBill.getOperatorName());//
-        temp.setWayBillCode(wayBill.getOperatorCode());
-        temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
-        temp.setCreateTime(wayBill.getCreateTime());//
-        temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
-//        temp.setWayBillStatus(wayBill.getReceivedStatus().name());//收货状态
-        temp.setInStationCode(wayBill.getInStationCode());//入库站点
-        temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
-        return temp;
+        for (WayBill wayBill : wayBills) {
+            temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
+            temp.setWayBillCode(wayBill.getBillCode());//bill code
+            temp.setOperatorName(wayBill.getOperatorName());//
+            temp.setWayBillCode(wayBill.getOperatorCode());
+            temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
+            temp.setCreateTime(wayBill.getCreateTime());//
+            temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
+            //temp.setWayBillStatus(wayBill.getReceivedStatus().name());//收货状态
+            temp.setInStationCode(wayBill.getInStationCode());//入库站点
+            temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
+            wayBillDTOList.add(temp);// 添加到集合
+        }
+        return wayBillDTOList;
     }
 
 
