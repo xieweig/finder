@@ -24,6 +24,13 @@ public class WayBill extends BaseEntity {
     private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
 
 
+    @Transient
+    private Set<WayBillDetail> wayBillDetailSetDelete = new HashSet<>();
+
+    @Transient
+    private Set<WayBillDetail> wayBillDetailSetAddOrUpdate = new HashSet<>();
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long billId;
@@ -114,26 +121,24 @@ public class WayBill extends BaseEntity {
     @Column(length = 255)
     private String memo;
 
-
     /**
      * @param wayBillDetail
      */
     public void removeItem(WayBillDetail wayBillDetail) {
 
-
-        System.out.println(" 需要删除的  id:" + wayBillDetail.getBillDetailId());/// all id
+        //System.out.println(" 需要删除的  id:" + wayBillDetail.getBillDetailId());/// all id
         if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
             return;
         }
         Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
         while (it.hasNext()) {
             WayBillDetail item = it.next();
-            System.out.println(" item  id:" + item.getBillDetailId());/// all id
+            //  System.out.println(" item  id:" + item.getBillDetailId());/// all id
 
             if (item != null && item.getBillDetailId() != null)
                 if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
                     //
-                    System.out.println("delete ............." + item.getBillDetailId());
+                    // System.out.println("delete ............." + item.getBillDetailId());
                     it.remove();
                 }
         }
@@ -159,6 +164,8 @@ public class WayBill extends BaseEntity {
                 }
         }
         System.out.println("add........" + wayBillDetail.getBillDetailId());
+        // TODO: 2018/1/2
+        wayBillDetail.setWayBill(this);// 添加主对象
         this.getWayBillDetailSet().add(wayBillDetail);
     }
 
@@ -303,6 +310,23 @@ public class WayBill extends BaseEntity {
 
     public void setOutStationCode(String outStationCode) {
         this.outStationCode = outStationCode;
+    }
+
+
+    public Set<WayBillDetail> getWayBillDetailSetDelete() {
+        return wayBillDetailSetDelete;
+    }
+
+    public void setWayBillDetailSetDelete(Set<WayBillDetail> wayBillDetailSetDelete) {
+        this.wayBillDetailSetDelete = wayBillDetailSetDelete;
+    }
+
+    public Set<WayBillDetail> getWayBillDetailSetAddOrUpdate() {
+        return wayBillDetailSetAddOrUpdate;
+    }
+
+    public void setWayBillDetailSetAddOrUpdate(Set<WayBillDetail> wayBillDetailSetAddOrUpdate) {
+        this.wayBillDetailSetAddOrUpdate = wayBillDetailSetAddOrUpdate;
     }
 
     @Override

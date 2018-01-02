@@ -53,6 +53,18 @@ public class WayBillTest {
     }
 
 
+    /**
+     * 修改
+     */
+    @Test
+    public void testUpdateWillBill() {
+
+    }
+
+
+    /**
+     * 添加
+     */
     @Test
     public void testCreateDto() {
 
@@ -67,20 +79,22 @@ public class WayBillTest {
         editWayBillDTO.setLogisticsCompanyName("韵达快递");
         editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间
         editWayBillDTO.setAmountOfPackages(155);
+        editWayBillDTO.setOutStationCode("cq12");
         //id
         editWayBillDTO.setWayBillCode(uuid.toString());
 
         List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             EditWayBillDetailDTO editWayBillDetailDTO = new EditWayBillDetailDTO(editWayBillDTO);
-
             editWayBillDetailDTO.setOutStorageTime(new Date());
             editWayBillDetailDTO.setInStationCode("cq11");
             editWayBillDetailDTO.setOutStationCode("cq12");
-            editWayBillDetailDTO.setPackageNumbers("8955");
+            editWayBillDetailDTO.setPackageNumbers("cq12xxxxxx");
             editWayBillDetailDTO.setOperatorName("小明");
             editWayBillDetailDTO.setTotalAmount(10);
+            //
+            editWayBillDetailDTO.setOutStorageBillCode("TH0001");// 出库单号
             editWayBillDetailDTO.setTotalCount(6);
             //
             editWayBillDetailDTO.setPackageType(PackAgeTypeEnum.ONE_BILL_TO_ONE_PACKAGE.name().toString());
@@ -94,26 +108,26 @@ public class WayBillTest {
     }
 
 
-    @Test
-    public void testCreate() {
-        WayBill wayBill = new WayBill();
-
-        UUID uuid = UUID.randomUUID();
-//        wayBill.setBillCode(uuid.toString().toUpperCase());
-//        wayBill.setBillId(11L);
-        wayBill.setAmountOfPackages(12);
-        wayBill.setDeliveryTime(new Date());
-        wayBill.setPlanArrivalTime(new Date());
-        wayBill.setDestination("重庆");
-        //  wayBill.setSourceCode("ssss");
-        wayBill.setLogisticsCompanyName("test");
-        // 运单类型
-        //  wayBill.setBillType(BillTypeEnum.TRANSMIT);///
-        //
-        // wayBill.setBillState(BillStateEnum.SAVED);
-        // wayBill.setBillDetails(null);
-
-        wayBillManager.createWayBill(wayBill);
-    }
+//    @Test
+//    public void testCreate() {
+//        WayBill wayBill = new WayBill();
+//
+//        UUID uuid = UUID.randomUUID();
+////        wayBill.setBillCode(uuid.toString().toUpperCase());
+////        wayBill.setBillId(11L);
+//        wayBill.setAmountOfPackages(12);
+//        wayBill.setDeliveryTime(new Date());
+//        wayBill.setPlanArrivalTime(new Date());
+//        wayBill.setDestination("重庆");
+//        //  wayBill.setSourceCode("ssss");
+//        wayBill.setLogisticsCompanyName("test");
+//        // 运单类型
+//        //  wayBill.setBillType(BillTypeEnum.TRANSMIT);///
+//        //
+//        // wayBill.setBillState(BillStateEnum.SAVED);
+//        // wayBill.setBillDetails(null);
+//
+//        wayBillManager.createWayBill(wayBill);
+//    }
 
 }

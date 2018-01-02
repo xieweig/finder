@@ -45,7 +45,7 @@ public class WayBillController {
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
-        responseResult.put("wayBill", wayBillManager.updateWayBillWithDTO(editWayBillDTO));
+        wayBillManager.updateWayBillWithDTO(editWayBillDTO);
 
         return responseResult;
     }
@@ -82,6 +82,7 @@ public class WayBillController {
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
     public ResponseResult findWayBillByConditions(ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
+        //findPageByCondition
         responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }

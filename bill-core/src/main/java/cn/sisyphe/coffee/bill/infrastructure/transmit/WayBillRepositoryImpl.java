@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 public class WayBillRepositoryImpl implements WayBillRepository {
 
+
     @Autowired
     private JPAWayBillRepository jpaWayBillRepository;
 
@@ -73,9 +74,15 @@ public class WayBillRepositoryImpl implements WayBillRepository {
         return jpaWayBillRepository.findAll(ta, pageable);
     }
 
+    /**
+     * 多条件查询
+     *
+     * @param ta
+     * @return
+     */
     @Override
     public List<WayBill> findAllByCondition(Specification<WayBill> ta) {
-        return null;
+        return jpaWayBillRepository.findAll(ta);
     }
 
 
