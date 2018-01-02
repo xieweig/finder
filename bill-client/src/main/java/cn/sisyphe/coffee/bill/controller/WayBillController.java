@@ -45,7 +45,7 @@ public class WayBillController {
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
-        responseResult.put("wayBill", wayBillManager.updateWayBillWithDTO(editWayBillDTO));
+        wayBillManager.updateWayBillWithDTO(editWayBillDTO);
 
         return responseResult;
     }
