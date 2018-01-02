@@ -94,7 +94,7 @@ public class WayBillController {
      */
     @ApiOperation(value = "运单多条件分页查询")
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
-    public ResponseResult findWayBillByConditions(ConditionQueryWayBill conditionQueryWayBill) {
+    public ResponseResult findWayBillByConditions(@RequestBody ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
         //findPageByCondition
         responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
