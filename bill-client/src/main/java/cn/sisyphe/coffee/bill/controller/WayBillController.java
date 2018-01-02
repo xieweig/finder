@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,11 @@ public class WayBillController {
     @RequestMapping(path = "/updateWayBill", method = RequestMethod.POST)
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        wayBillManager.updateWayBillWithDTO(editWayBillDTO);
+        try {
+            wayBillManager.updateWayBillWithDTO(editWayBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 
@@ -72,8 +77,29 @@ public class WayBillController {
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
     public ResponseResult findWayBillByConditions(@RequestBody ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
-        //findPageByCondition
+
         responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }
+
+
+    /**
+     * 确认收货
+     *
+     * @param billCode
+     * @return
+     */
+    @ApiOperation(value = "运单确认收货")
+    @RequestMapping(path = "/confirmReceiptBill", method = RequestMethod.POST)
+    public ResponseResult confirmReceiptBill(@RequestParam(required = false) String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            wayBillManager.confirmReceiptBill(billCode);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+
+        return responseResult;
+    }
+
 }
