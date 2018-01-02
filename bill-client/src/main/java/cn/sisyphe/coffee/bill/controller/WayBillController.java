@@ -82,6 +82,7 @@ public class WayBillController {
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
     public ResponseResult findWayBillByConditions(ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
+        //findPageByCondition
         responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }
