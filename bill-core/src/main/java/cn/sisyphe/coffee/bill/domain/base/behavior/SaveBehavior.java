@@ -19,13 +19,7 @@ public class SaveBehavior extends AbstractBillBehavior {
     public void doAction() {
         Bill bill = getBillService().getBill();
         if (bill != null) {
-            if (bill.getBillState().equals(BillStateEnum.SAVED)
-                    || bill.getBillState().equals(BillStateEnum.OPEN)) {
-                bill.setBillState(BillStateEnum.SAVED);
-            } else {
-
-                throw new DataException("20001", "当前状态不能保存");
-            }
+            bill.setBillState(BillStateEnum.SAVED);
         } else {
             throw new DataException("20404", "单据为空");
         }

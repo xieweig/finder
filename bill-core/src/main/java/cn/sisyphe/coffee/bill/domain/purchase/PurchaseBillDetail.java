@@ -22,17 +22,15 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PurchaseBillDetail extends BillDetail {
 
+    // TODO: 2018/1/2  标准单位编码 和 规格编码 不需要保存数据库   查询到的货物里面存在这两个字段
     /**
      * 标准单位编码
      */
     private String standardUnitCode;
-
-
     /**
      * 规格编码
      */
     private String measurementCode;
-
 
     /**
      * 生产日期

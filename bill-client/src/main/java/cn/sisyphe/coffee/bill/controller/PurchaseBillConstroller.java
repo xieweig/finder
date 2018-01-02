@@ -90,7 +90,7 @@ public class PurchaseBillConstroller {
     public ResponseResult updatePurchaseBillToSaved(@RequestBody EditPurchaseBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            purchaseBillManager.updateBill(billDTO);
+            purchaseBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -107,7 +107,7 @@ public class PurchaseBillConstroller {
     public ResponseResult updatePurchaseBillToSubmit(@RequestBody EditPurchaseBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            purchaseBillManager.updateBill(billDTO);
+            purchaseBillManager.updateBillToSubmit(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }
