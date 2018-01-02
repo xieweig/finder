@@ -81,8 +81,6 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
                         "%" + conditionQueryWayBill.getOutStorageBillCode() + "%"));
             }
-
-
             // 入库站点
             if (!StringUtils.isEmpty(conditionQueryWayBill.getInStationCode())) {
                 expressions.add(cb.equal(root.<String>get("inStationCode"),

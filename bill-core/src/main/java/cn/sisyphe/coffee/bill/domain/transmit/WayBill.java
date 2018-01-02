@@ -4,12 +4,10 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 运货单
@@ -171,22 +169,26 @@ public class WayBill extends BaseEntity {
 
 
     /**
-     * 运货件数
+     * 总运货件数
      *
      * @return
      */
-    private int calcTotalPackageAmoumt() {
-        int totalAmount = 0;
-        if (wayBillDetailSet == null) {
+    private int calcTotalPackageAmount() {
+        //包号
+        List<String> packAgesList = new ArrayList<>();
+        if (wayBillDetailSet == null|| wayBillDetailSet.isEmpty()) {
             return 0;
         }
         for (WayBillDetail wayBillDetail : wayBillDetailSet) {
-            //
-            if (!wayBillDetail.getPackageCode().equals("")) {
-                totalAmount += 1;
+            //包号不为空
+            if (!StringUtils.isEmpty(wayBillDetail.getPackageCode())) {
+                //
+                if (!packAgesList.contains(wayBillDetail.getPackageCode())) {
+                    packAgesList.add(wayBillDetail.getPackageCode());//
+                }
             }
         }
-        return totalAmount;
+        return packAgesList.size();
     }
 
 
@@ -247,7 +249,15 @@ public class WayBill extends BaseEntity {
         this.destination = destination;
     }
 
+    /**
+     * 计算运货件数
+     * @return
+     */
     public Integer getAmountOfPackages() {
+        if (!this.getWayBillDetailSet().isEmpty()) {
+
+            return this.calcTotalPackageAmount();
+        }
         return amountOfPackages;
     }
 
