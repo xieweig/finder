@@ -1,0 +1,18 @@
+package cn.sisyphe.coffee.bill.infrastructure.share.user;
+
+import cn.sisyphe.framework.web.ResponseResult;
+import org.springframework.web.bind.annotation.RequestParam;
+
+/**
+ * Created by XiongJing on 2018/1/2.
+ * remark：springCloud方式查询用户信息返回
+ * version: 1.0
+ *
+ * @author XiongJing
+ */
+public class LocalUserCloudRepository implements UserCloudRepository {
+    @Override
+    public ResponseResult findByLikeUserName(@RequestParam("userName") String supplierCode) {
+        return new ResponseResult();
+    }
+}
