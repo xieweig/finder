@@ -17,4 +17,10 @@ public final class Constant {
      */
     public static final String AUDIT_SUCCESS_VALUE = "Success";
 
+
+    /**
+     * RabbitMQ
+     */
+    public static final String BILL_EXCHANGE = "cn_sisyphe_coffee_bill";
+
 }

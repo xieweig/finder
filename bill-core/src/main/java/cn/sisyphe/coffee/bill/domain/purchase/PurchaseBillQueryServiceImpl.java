@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.purchase;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
+import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
     private PurchaseBillRepository purchaseBillRepository;
     @Autowired
     private SupplierRepository supplierRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * 多条件查询
@@ -45,10 +48,10 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
         List<String> supplierCodeList = supplierRepository.findByLikeSupplierName(conditionQueryPurchaseBill.getSupplierName());
         conditionQueryPurchaseBill.setSupplierCodeList(supplierCodeList);
         // SpringCloud调用查询录单人编码
-        // TODO: 2017/12/29 springCloud还没有编写
+        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
+        conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
 
-        Page<PurchaseBill> purchaseBillPage;
-        purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
+        Page<PurchaseBill> purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
 
         // 改变页码导致的页面为空时，获取最后一页
         if (purchaseBillPage.getContent().size() < 1 && purchaseBillPage.getTotalElements() > 0) {
@@ -100,7 +103,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 录单开始时间
              */
-            if(!StringUtils.isEmpty(conditionQueryPurchaseBill.getCreateStartTime())){
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getCreateStartTime())) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPurchaseBill.getCreateStartTime()));
             }
             /**
@@ -118,7 +121,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 入库开始时间
              */
-            if(!StringUtils.isEmpty(conditionQueryPurchaseBill.getInStartTime())){
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getInStartTime())) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPurchaseBill.getInStartTime()));
             }
             /**

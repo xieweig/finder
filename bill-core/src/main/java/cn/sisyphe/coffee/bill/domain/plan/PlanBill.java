@@ -52,10 +52,16 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private String memo;
 
+    //审核意见
+    private String auditMemo;
+
 
     //完成度
     @Column
     private BigDecimal progress;
+
+    @Column
+    private String parentBillCode;
 
     public PlanBill() {
         setBillType(BillTypeEnum.PLAN);
@@ -125,5 +131,21 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getAuditMemo() {
+        return auditMemo;
+    }
+
+    public void setAuditMemo(String auditMemo) {
+        this.auditMemo = auditMemo;
+    }
+
+    public String getParentBillCode() {
+        return parentBillCode;
+    }
+
+    public void setParentBillCode(String parentBillCode) {
+        this.parentBillCode = parentBillCode;
     }
 }

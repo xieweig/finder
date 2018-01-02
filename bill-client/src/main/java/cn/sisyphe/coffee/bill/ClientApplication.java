@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
+import cn.sisyphe.framework.message.core.annotation.EnableS2Messaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableEurekaClient
 @EnableFeignClients
+@EnableS2Messaging
 public class ClientApplication implements CommandLineRunner {
 
 
