@@ -11,9 +11,10 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillService;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
+
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -38,11 +39,8 @@ public class RestockTest {
     private ApplicationEventPublisher applicationEventPublisher;
     @Resource
     private RestockBillRepository restockBillRepository;
-    private Random random;
-    @BeforeClass
-    public void setUp(){
-        random = new Random();
-    }
+    private Random random = new Random();
+
     @Test
     public void Juice(){
         RestockBill restockBill = new RestockBill();
@@ -99,10 +97,13 @@ public class RestockTest {
 
         restockBill.setBillDetails(details);
 
+
+
         BillServiceFactory billServiceFactory = new BillServiceFactory();
-        ReturnedBillService billService =(ReturnedBillService) billServiceFactory.createBillService(restockBill);
+        RestockBillService billService =(RestockBillService) billServiceFactory.createBillService(restockBill);
         billService.dispose(new SaveBehavior());
 
+        billService.setBillRepository(restockBillRepository);
         billService.save();
         billService.sendEvent(applicationEventPublisher);
 
