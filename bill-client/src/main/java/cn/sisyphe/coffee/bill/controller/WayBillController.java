@@ -34,7 +34,6 @@ public class WayBillController {
         ResponseResult responseResult = new ResponseResult();
         responseResult.put("wayBill", wayBillManager.createWayBillWithDTO(editWayBillDTO));
         return responseResult;
-
     }
 
     /**

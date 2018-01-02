@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.QueryWayBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,43 @@ public class WayBillTest {
 
     @Autowired
     private IWayBillService iWayBillService;
+
+
+    /**
+     * 查找单个
+     */
+    @Test
+    public void testFindOneByConditions() {
+        WayBill wayBill = new WayBill();
+        wayBill.setBillId(2L);
+
+        List<WayBill> wayBills = iWayBillService.findByConditions(wayBill);
+        for (WayBill item : wayBills) {
+            System.out.println("" + item.toString());
+        }
+
+    }
+
+    /**
+     * 多条件分页查询
+     */
+    @Test
+    public void testFindByConditions() {
+
+        ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
+        conditionQueryWayBill.setOperatorName("小明");
+        // conditionQueryWayBill.setInStationCode("jd");
+        conditionQueryWayBill.setPageSize(100);
+        //conditionQueryWayBill.setLogisticsCompanyName("韵达");
+        //conditionQueryWayBill.setInStationCode("cq12");
+        conditionQueryWayBill.setPage(1);
+
+        QueryWayBillDTO queryWayBillDTO = wayBillManager.findPageByCondition(conditionQueryWayBill);
+
+
+        System.out.println("" + queryWayBillDTO.getContent());
+    }
+
 
     /**
      *
@@ -61,7 +99,6 @@ public class WayBillTest {
 
     }
 
-
     /**
      * 添加
      */
@@ -71,7 +108,7 @@ public class WayBillTest {
         //
         UUID uuid = UUID.randomUUID();
         EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
-        editWayBillDTO.setMemo("test");
+        editWayBillDTO.setMemo("ssssssssss");
         editWayBillDTO.setAmountOfPackages(122);
         editWayBillDTO.setDeliveryTime(new Date());
         editWayBillDTO.setDestination("北京");
@@ -80,6 +117,7 @@ public class WayBillTest {
         editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间
         editWayBillDTO.setAmountOfPackages(155);
         editWayBillDTO.setOutStationCode("cq12");
+        // 状态
         //id
         editWayBillDTO.setWayBillCode(uuid.toString());
 
@@ -90,11 +128,11 @@ public class WayBillTest {
             editWayBillDetailDTO.setOutStorageTime(new Date());
             editWayBillDetailDTO.setInStationCode("cq11");
             editWayBillDetailDTO.setOutStationCode("cq12");
-            editWayBillDetailDTO.setPackageNumbers("cq12xxxxxx");
+            editWayBillDetailDTO.setPackageNumbers("cq14");
             editWayBillDetailDTO.setOperatorName("小明");
             editWayBillDetailDTO.setTotalAmount(10);
             //
-            editWayBillDetailDTO.setOutStorageBillCode("TH0001");// 出库单号
+            editWayBillDetailDTO.setOutStorageBillCode("TH0002");// 出库单号
             editWayBillDetailDTO.setTotalCount(6);
             //
             editWayBillDetailDTO.setPackageType(PackAgeTypeEnum.ONE_BILL_TO_ONE_PACKAGE.name().toString());
@@ -103,31 +141,7 @@ public class WayBillTest {
         editWayBillDTO.setEditWayBillDetailDTOList(editWayBillDetailDTOList);
         //
         wayBillManager.createWayBillWithDTO(editWayBillDTO);
-
-
     }
 
-
-//    @Test
-//    public void testCreate() {
-//        WayBill wayBill = new WayBill();
-//
-//        UUID uuid = UUID.randomUUID();
-////        wayBill.setBillCode(uuid.toString().toUpperCase());
-////        wayBill.setBillId(11L);
-//        wayBill.setAmountOfPackages(12);
-//        wayBill.setDeliveryTime(new Date());
-//        wayBill.setPlanArrivalTime(new Date());
-//        wayBill.setDestination("重庆");
-//        //  wayBill.setSourceCode("ssss");
-//        wayBill.setLogisticsCompanyName("test");
-//        // 运单类型
-//        //  wayBill.setBillType(BillTypeEnum.TRANSMIT);///
-//        //
-//        // wayBill.setBillState(BillStateEnum.SAVED);
-//        // wayBill.setBillDetails(null);
-//
-//        wayBillManager.createWayBill(wayBill);
-//    }
 
 }

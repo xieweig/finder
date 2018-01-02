@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,15 +104,17 @@ public class WayBillManager {
         editWayBillDTO.setOperatorName(wayBill.getOperatorName());
 
         editWayBillDTO.setTotalWeight(wayBill.getTotalWeight());//总重量
+        //// TODO: 2018/1/2  运货件数验证 
         editWayBillDTO.setAmountOfPackages(wayBill.getAmountOfPackages());//运货件数
         editWayBillDTO.setDestination(wayBill.getDestination());//目的地
 
-        editWayBillDTO.setMemo(wayBill.getMemo());
+
+        editWayBillDTO.setMemo(wayBill.getMemo());// 备注
         //设置明细
         List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
         for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSet()) {
             EditWayBillDetailDTO wayBillDetailDTO = new EditWayBillDetailDTO();
-            //  WayBillDetail temp = wayBillDetail
+            //WayBillDetail temp = wayBillDetail
             wayBillDetailDTO.setBillDetailId(wayBillDetail.getBillDetailId());// id
             wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
             wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
@@ -159,11 +162,11 @@ public class WayBillManager {
         this.checkParams(editWayBillDTO);
         //
         WayBill wayBill = convertDtoToWayBill(editWayBillDTO);
-        // // TODO: 2017/12/29
+        //code
         if (StringUtils.isEmpty(wayBill.getBillCode())) {//
-            //test
-            wayBill.setBillCode(UUID.randomUUID().toString());
+            wayBill.setBillCode("YD" + UUID.randomUUID().toString());
         }
+        wayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);// 收货状态
         this.createWayBill(wayBill);
         //
         return editWayBillDTO;
@@ -186,9 +189,8 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
         //添加明细
-        Set<WayBillDetail> wayBillDetails = addBillItem(editWayBillDTO, wayBill);//
-
-//        wayBill.setWayBillDetailSetAddOrUpdate(wayBillDetails);// update
+        //Set<WayBillDetail> wayBillDetails = addBillItem(editWayBillDTO, wayBill);//
+        //wayBill.setWayBillDetailSetAddOrUpdate(wayBillDetails);// update
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
         return wayBill;
     }
@@ -214,6 +216,7 @@ public class WayBillManager {
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
+        wayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);//未收货
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());//出库站点code
         //添加明细
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
@@ -306,7 +309,6 @@ public class WayBillManager {
     public void createWayBill(WayBill wayBill) throws DataException {
 
         iWayBillService.createBill(wayBill);
-
         applicationEventPublisher.publishEvent(wayBill);
 
     }
@@ -322,6 +324,7 @@ public class WayBillManager {
         //
         List<ReturnWayBillDTO> wayBillDTOList = new ArrayList<>();
         ReturnWayBillDTO temp = new ReturnWayBillDTO();
+
         for (WayBill wayBill : wayBills) {
             temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
             temp.setWayBillCode(wayBill.getBillCode());//bill code
@@ -330,7 +333,9 @@ public class WayBillManager {
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
-            //temp.setWayBillStatus(wayBill.getReceivedStatus().name());//收货状态
+
+            temp.setReceivedStatus(wayBill.getReceivedStatus());//收货状态
+            //temp.setWayBillStatus(wayBill.getReceivedStatus().name());
             temp.setInStationCode(wayBill.getInStationCode());//入库站点
             temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
             wayBillDTOList.add(temp);// 添加到集合
