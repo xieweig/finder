@@ -47,6 +47,7 @@ public class IWayBillServiceImpl implements IWayBillService {
 
         Pageable pageable = new PageRequest(conditionQueryWayBill.getPage() - 1, conditionQueryWayBill.getPageSize());
         Page<WayBill> configurePage = pageCondition(conditionQueryWayBill, pageable);
+
         // 改变页码导致的页面为空时，获取最后一页
         if (configurePage.getContent().size() < 1 && configurePage.getTotalElements() > 0) {
             pageable = new PageRequest(configurePage.getTotalPages() - 1, conditionQueryWayBill.getPageSize());
@@ -73,7 +74,8 @@ public class IWayBillServiceImpl implements IWayBillService {
             List<Expression<Boolean>> expressions = predicate.getExpressions();
             //billCode
             if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
-                expressions.add(cb.like(root.<String>get("billCode"), "%" + conditionQueryWayBill.getWayBillCode() + "%"));
+                expressions.add(cb.like(root.<String>get("billCode"),
+                        "%" + conditionQueryWayBill.getWayBillCode() + "%"));
             }
 
             //出库单号
@@ -102,10 +104,10 @@ public class IWayBillServiceImpl implements IWayBillService {
                 expressions.add(cb.like(root.<String>get("operatorName"),
                         "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
-            //单据状态
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillStatus())) {
-                expressions.add(cb.equal(root.<String>get("billState"),
-                        "%" + conditionQueryWayBill.getWayBillStatus() + "%"));
+            //收货状态
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
+                expressions.add(cb.equal(root.<String>get("receivedStatus"),
+                        "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
             }
             // 录单时间
             if (conditionQueryWayBill.getCreateTime() != null) {
@@ -131,6 +133,10 @@ public class IWayBillServiceImpl implements IWayBillService {
 
     @Override
     public WayBill createBill(WayBill wayBill) {
+        // 运货件数
+        int totalPackAgeAmount = wayBill.getAmountOfPackages();
+        wayBill.setAmountOfPackages(totalPackAgeAmount);
+
         return wayBillRepository.createBill(wayBill);
     }
 
