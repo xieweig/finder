@@ -9,8 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 运单
  */
@@ -47,34 +45,13 @@ public class WayBillController {
         return responseResult;
     }
 
-    /**
-     * 删除单个运单(不同权限的操作)
-     */
-    @ApiOperation(value = "删除单个运单，不同权限的操作")
-    @RequestMapping(path = "/deleteWayBillById", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillById(@RequestParam String wayBillItemId) {
-        ResponseResult responseResult = new ResponseResult();
-
-        return responseResult;
-    }
 
     /**
-     * 批量删除运单(不同权限的操作)
-     */
-    @ApiOperation(value = "批量删除运单，不同权限的操作")
-    @RequestMapping(path = "/deleteWayBillByIds", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillItemIds) {
-        ResponseResult responseResult = new ResponseResult();
-
-        return responseResult;
-    }
-
-    /**
-     * 查询单个运单跟踪信息
-     *
-     * @param billCode
-     * @param billId
-     * @return
+     * * 查询单个运单跟踪信息
+     * *
+     * * @param billCode
+     * * @param billId
+     * * @return
      */
     @ApiOperation(value = "根据运单Id或者运单code查询单个运单跟踪信息")
     @RequestMapping(path = "/findOneWayBill", method = RequestMethod.GET)
@@ -99,6 +76,4 @@ public class WayBillController {
         responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }
-
-
 }
