@@ -120,18 +120,24 @@ public class WayBillServiceImpl implements WayBillService {
                         "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
             }
             // 录单时间
-            if (conditionQueryWayBill.getCreateTime() != null) {
+            if (conditionQueryWayBill.getCreateStartTime() != null &&
+                    conditionQueryWayBill.getCreateEndTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
                 expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getCreateStartTime(),
                         conditionQueryWayBill.getCreateEndTime()));
             }
             // 发货时间
-            if (conditionQueryWayBill.getDeliverTime() != null) {
+            if (conditionQueryWayBill.getDeliveryStartTime() != null &&
+                    conditionQueryWayBill.getDeliveryEndTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
                 expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
                         conditionQueryWayBill.getDeliveryEndTime()));
             }
-
+            //运货件数
+            if (conditionQueryWayBill.getAmountOfPackages() != null) {
+                expressions.add(cb.equal(root.<String>get("amountOfPackages"),
+                        "" + conditionQueryWayBill.getAmountOfPackages() + ""));
+            }
             //分组查询
             query.groupBy(root.get("billCode"));
             //

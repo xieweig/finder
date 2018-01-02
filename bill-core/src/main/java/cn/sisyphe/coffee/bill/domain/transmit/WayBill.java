@@ -69,7 +69,7 @@ public class WayBill extends BaseEntity {
     /**
      * 目的地
      */
-    @Column(length = 255, nullable = false)
+    @Column(length = 255)
     private String destination;
 
 

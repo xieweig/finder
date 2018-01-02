@@ -48,7 +48,9 @@ public class WayBillManager {
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
+        //  queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
+        //Long i = wayBillPage.getTotalElements();
         queryWayBillDTO.setContent(wayBillDTOList);
         return queryWayBillDTO;
     }
@@ -302,9 +304,9 @@ public class WayBillManager {
         if (editWayBillDTO.getDeliveryTime() == null) {
             throw new DataException("40003", "发货时间不能为空");
         }
-        if (StringUtils.isEmpty(editWayBillDTO.getDestination())) {
-            throw new DataException("40004", "目的地不能为空");
-        }
+//        if (StringUtils.isEmpty(editWayBillDTO.getDestination())) {
+//            throw new DataException("40004", "目的地不能为空");
+//        }
         if (editWayBillDTO.getAmountOfPackages() == null || editWayBillDTO.getAmountOfPackages() == 0) {
             throw new DataException("40005", "运货数量必须大于0");
         }
