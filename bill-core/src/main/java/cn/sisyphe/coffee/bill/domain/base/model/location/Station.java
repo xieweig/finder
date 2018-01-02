@@ -30,6 +30,9 @@ public class Station extends AbstractLocation {
      */
     private Storage storage;
 
+    public Station() {
+    }
+
     public Station(String stationCode) {
         this.stationCode = stationCode;
     }

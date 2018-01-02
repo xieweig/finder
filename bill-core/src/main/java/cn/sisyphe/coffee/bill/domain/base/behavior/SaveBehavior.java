@@ -19,8 +19,8 @@ public class SaveBehavior extends AbstractBillBehavior {
     public void doAction() {
         Bill bill = getBillService().getBill();
         if (bill != null) {
-            if (bill.getBillState().equals(BillStateEnum.SAVED.name())
-                    || bill.getBillState().equals(BillStateEnum.OPEN.name())) {
+            if (bill.getBillState().equals(BillStateEnum.SAVED)
+                    || bill.getBillState().equals(BillStateEnum.OPEN)) {
                 bill.setBillState(BillStateEnum.SAVED);
             } else {
 

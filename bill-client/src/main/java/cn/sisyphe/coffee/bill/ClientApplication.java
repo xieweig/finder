@@ -1,10 +1,13 @@
 package cn.sisyphe.coffee.bill;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
+import cn.sisyphe.framework.message.core.annotation.EnableS2Messaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.ApplicationEventPublisher;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -12,9 +15,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * @author heyong
  */
-@EnableSwagger2
 @SpringBootApplication
 @EnableSwagger2
+@EnableEurekaClient
+@EnableFeignClients
+@EnableS2Messaging
 public class ClientApplication implements CommandLineRunner {
 
 
@@ -56,6 +61,10 @@ public class ClientApplication implements CommandLineRunner {
 //		Set<PurchaseBillDetail> billDetails = new HashSet<PurchaseBillDetail>();
 //		detail.setAmount(1111);
 //		detail.setPackageCode("000");
+//		Cargo cargo = new Cargo("ccc");
+//		RawMaterial  rawMaterial = new RawMaterial("xx");
+//		rawMaterial.setCargo(cargo);
+//		detail.setGoods(rawMaterial);
 //		billDetails.add(detail);
 //		bill.setBillDetails(billDetails);
 //

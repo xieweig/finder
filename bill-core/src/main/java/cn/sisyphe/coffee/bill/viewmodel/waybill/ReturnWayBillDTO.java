@@ -1,8 +1,10 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
-import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 运单跟踪分页查询返回DTO
@@ -11,7 +13,7 @@ import java.io.Serializable;
  * @company 西西弗文化传播
  * @Date 2017/12/27 14:21
  **/
-public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable {
+public class ReturnWayBillDTO implements Serializable {
     /**
      * 运单号
      */
@@ -24,13 +26,10 @@ public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable
     private String outStorageBillCode;//
 
     /**
-     * 录单开始时间
+     * 录单时间
      */
-    private String createStartTime;
-    /**
-     * 录单结束时间
-     */
-    private String createEndTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
     /**
      * 运货件数
@@ -38,16 +37,11 @@ public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable
     private Integer amountOfPackages;
 
     /**
-     * 发货开始时间
+     * 发货时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date deliveryTime;
 
-    private String deliveryStartTime;
-
-    /**
-     * 发货结束时间
-     */
-
-    private String deliveryEndTime;
 
     /**
      * 物流公司名称
@@ -59,11 +53,15 @@ public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable
      */
     private String inStationCode;
 
+    private String inStationName;
+
     /**
      * 出库站点
      */
     private String outStationCode;
 
+
+    private String outStationName;
     /**
      * 单据状态
      */
@@ -87,6 +85,12 @@ public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable
         return outStorageBillCode;
     }
 
+    /**
+     * 收货状态
+     */
+    private ReceivedStatusEnum receivedStatus;
+
+
     public void setOutStorageBillCode(String outStorageBillCode) {
         this.outStorageBillCode = outStorageBillCode;
     }
@@ -103,36 +107,20 @@ public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable
         this.wayBillCode = wayBillCode;
     }
 
-    public String getCreateStartTime() {
-        return createStartTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateStartTime(String createStartTime) {
-        this.createStartTime = createStartTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getCreateEndTime() {
-        return createEndTime;
+    public Date getDeliveryTime() {
+        return deliveryTime;
     }
 
-    public void setCreateEndTime(String createEndTime) {
-        this.createEndTime = createEndTime;
-    }
-
-    public String getDeliveryStartTime() {
-        return deliveryStartTime;
-    }
-
-    public void setDeliveryStartTime(String deliveryStartTime) {
-        this.deliveryStartTime = deliveryStartTime;
-    }
-
-    public String getDeliveryEndTime() {
-        return deliveryEndTime;
-    }
-
-    public void setDeliveryEndTime(String deliveryEndTime) {
-        this.deliveryEndTime = deliveryEndTime;
+    public void setDeliveryTime(Date deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 
     public String getLogisticsCompanyName() {
@@ -176,4 +164,46 @@ public class ReturnWayBillDTO extends BaseConditionQuery implements Serializable
         this.operatorName = operatorName;
     }
 
+    public String getInStationName() {
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
+    public String getOutStationName() {
+        return outStationName;
+    }
+
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
+    }
+
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "ReturnWayBillDTO{" +
+                "wayBillCode='" + wayBillCode + '\'' +
+                ", outStorageBillCode='" + outStorageBillCode + '\'' +
+                ", createTime=" + createTime +
+                ", amountOfPackages=" + amountOfPackages +
+                ", deliveryTime=" + deliveryTime +
+                ", logisticsCompanyName='" + logisticsCompanyName + '\'' +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", inStationName='" + inStationName + '\'' +
+                ", outStationCode='" + outStationCode + '\'' +
+                ", outStationName='" + outStationName + '\'' +
+                ", wayBillStatus='" + wayBillStatus + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", receivedStatus=" + receivedStatus +
+                '}';
+    }
 }

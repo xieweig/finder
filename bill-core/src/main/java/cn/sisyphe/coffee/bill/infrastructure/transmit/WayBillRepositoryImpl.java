@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.transmit;
 
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
-import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.jpa.JPAWayBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,12 +15,21 @@ import java.util.List;
  * Created by Administrator on 2017/12/27.
  */
 @Service
-public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
-        implements WayBillRepository {
+public class WayBillRepositoryImpl implements WayBillRepository {
+
 
     @Autowired
     private JPAWayBillRepository jpaWayBillRepository;
 
+
+    /**
+     * @param wayBill
+     * @return
+     */
+    @Override
+    public WayBill save(WayBill wayBill) {
+        return jpaWayBillRepository.save(wayBill);
+    }
 
     /**
      * 查找单个
@@ -31,7 +39,27 @@ public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
      */
     @Override
     public WayBill findOneByCode(String billCode) {
+
         return jpaWayBillRepository.findOneByBillCode(billCode);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+
+    @Override
+    public WayBill findOne(Long id) {
+        return jpaWayBillRepository.findOne(id);
+    }
+
+    /**
+     * @param wayBill
+     * @return
+     */
+    @Override
+    public WayBill createBill(WayBill wayBill) {
+        return jpaWayBillRepository.save(wayBill);
     }
 
     /**
@@ -46,18 +74,16 @@ public class WayBillRepositoryImpl extends AbstractBillRepository<WayBill>
         return jpaWayBillRepository.findAll(ta, pageable);
     }
 
-    @Override
-    public List<WayBill> findAllByCondition(Specification<WayBill> ta) {
-        return null;
-    }
-
-
     /**
-     * @param id
+     * 多条件查询
+     *
+     * @param ta
      * @return
      */
     @Override
-    public WayBill findOne(Long id) {
-        return jpaWayBillRepository.findOne(id);
+    public List<WayBill> findAllByCondition(Specification<WayBill> ta) {
+        return jpaWayBillRepository.findAll(ta);
     }
+
+
 }

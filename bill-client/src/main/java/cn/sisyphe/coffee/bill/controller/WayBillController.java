@@ -34,7 +34,6 @@ public class WayBillController {
         ResponseResult responseResult = new ResponseResult();
         responseResult.put("wayBill", wayBillManager.createWayBillWithDTO(editWayBillDTO));
         return responseResult;
-
     }
 
     /**
@@ -44,7 +43,7 @@ public class WayBillController {
     @RequestMapping(path = "/updateWayBill", method = RequestMethod.POST)
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-
+        wayBillManager.updateWayBillWithDTO(editWayBillDTO);
         return responseResult;
     }
 
@@ -53,7 +52,7 @@ public class WayBillController {
      */
     @ApiOperation(value = "删除单个运单，不同权限的操作")
     @RequestMapping(path = "/deleteWayBillById", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillById(@RequestParam String wayBillCode) {
+    public ResponseResult deleteWayBillById(@RequestParam String wayBillItemId) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;
@@ -64,9 +63,25 @@ public class WayBillController {
      */
     @ApiOperation(value = "批量删除运单，不同权限的操作")
     @RequestMapping(path = "/deleteWayBillByIds", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillCodes) {
+    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillItemIds) {
         ResponseResult responseResult = new ResponseResult();
 
+        return responseResult;
+    }
+
+    /**
+     * 查询单个运单跟踪信息
+     *
+     * @param billCode
+     * @param billId
+     * @return
+     */
+    @ApiOperation(value = "根据运单Id或者运单code查询单个运单跟踪信息")
+    @RequestMapping(path = "/findOneWayBill", method = RequestMethod.GET)
+    public ResponseResult findOneWayBill(@RequestParam(required = false) String billCode
+            , @RequestParam(required = false) Long billId) {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.put("wayBill", wayBillManager.findOneWayBill(billId, billCode));
         return responseResult;
     }
 
@@ -78,9 +93,10 @@ public class WayBillController {
      */
     @ApiOperation(value = "运单多条件分页查询")
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
-    public ResponseResult findWayBillByConditions(ConditionQueryWayBill conditionQueryWayBill) {
+    public ResponseResult findWayBillByConditions(@RequestBody ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("wayBillList", null);
+        //findPageByCondition
+        responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }
 

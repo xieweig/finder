@@ -13,6 +13,18 @@ import java.util.List;
 public interface IWayBillService {
 
 
+    WayBill createBill(WayBill wayBill);
+
+
+    WayBill updateBill(WayBill wayBill);
+
+
+    /**
+     * @param id
+     * @return
+     */
+    WayBill findOne(Long id);
+
     /**
      * 多条件查询运单
      *

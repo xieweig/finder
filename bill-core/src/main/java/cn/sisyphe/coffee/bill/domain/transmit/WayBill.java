@@ -1,26 +1,58 @@
 package cn.sisyphe.coffee.bill.domain.transmit;
 
 
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 /**
  * 运货单
  */
 @Entity
 @Table
-@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class WayBill extends Bill<WayBillDetail> {
+public class WayBill extends BaseEntity {
 
-    public WayBill() {
-        //设置单据为运货单
-        this.setBillType(BillTypeEnum.TRANSMIT);//
-    }
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
+    // @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "wayBill")
+    @org.hibernate.annotations.ForeignKey(name = "none")
+    private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
+
+
+    @Transient
+    private Set<WayBillDetail> wayBillDetailSetDelete = new HashSet<>();
+
+    @Transient
+    private Set<WayBillDetail> wayBillDetailSetAddOrUpdate = new HashSet<>();
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long billId;
+
+
+    /**
+     * 单据code
+     * tip: 必须加name="bill_code" ,否则子类找不到外键
+     */
+    @Column(name = "bill_code", length = 255, nullable = false, unique = true)
+    private String billCode;
+
+
+    /**
+     * 出库站点
+     */
+    @Column(length = 255, nullable = false)
+    private String outStationCode;
+
+    /**
+     * 入库站点
+     */
+    @Column(length = 255)
+    private String inStationCode;
 
     /**
      * 发货时间
@@ -40,13 +72,13 @@ public class WayBill extends Bill<WayBillDetail> {
     /**
      * 物流公司名称
      */
-    @Column(nullable = false)
+    @Column(length = 255, nullable = false)
     private String logisticsCompanyName;
 
     /**
      * 目的地
      */
-    @Column(nullable = false)
+    @Column(length = 255, nullable = false)
     private String destination;
 
 
@@ -56,7 +88,6 @@ public class WayBill extends Bill<WayBillDetail> {
     @Column(nullable = false)
     private Integer amountOfPackages;
 
-
     /**
      * 总重量
      */
@@ -64,19 +95,130 @@ public class WayBill extends Bill<WayBillDetail> {
     private Long totalWeight;
 
     /**
-     * 备注
+     * 操作人code
      */
-    @Column
-    private String memo;
+    @Column(length = 255)
+    private String operatorCode;
 
     /**
      * 操作人姓名
      */
+    @Column(length = 255)
     private String operatorName;
 
+    /**
+     * 收货状态
+     */
+    @Column(length = 255)
+    @Enumerated(value = EnumType.STRING)
+    private ReceivedStatusEnum receivedStatus;
+
+    /**
+     * 备注
+     */
+    @Column(length = 255)
+    private String memo;
+
+    /**
+     * @param wayBillDetail
+     */
+    public void removeItem(WayBillDetail wayBillDetail) {
+
+        //System.out.println(" 需要删除的  id:" + wayBillDetail.getBillDetailId());/// all id
+        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
+            return;
+        }
+        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
+        while (it.hasNext()) {
+            WayBillDetail item = it.next();
+            //  System.out.println(" item  id:" + item.getBillDetailId());/// all id
+
+            if (item != null && item.getBillDetailId() != null)
+                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
+                    //
+                    // System.out.println("delete ............." + item.getBillDetailId());
+                    it.remove();
+                }
+        }
+    }
+
+    /**
+     * @param wayBillDetail
+     */
+    public void addOrUpdateItem(WayBillDetail wayBillDetail) {
+
+        System.out.println(" update : " + wayBillDetail);
+        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
+            return;
+        }
+        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
+        while (it.hasNext()) {
+            WayBillDetail item = it.next();
+            if (item != null && item.getBillDetailId() != null)
+                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
+                    //
+                    System.out.println("delete ............." + item.getBillDetailId());
+                    it.remove();
+                }
+        }
+        System.out.println("add........" + wayBillDetail.getBillDetailId());
+        // TODO: 2018/1/2
+        wayBillDetail.setWayBill(this);// 添加主对象
+        this.getWayBillDetailSet().add(wayBillDetail);
+    }
+
+
+    /**
+     * 总运货件数
+     *
+     * @return
+     */
+    private int calcTotalPackageAmount() {
+        //包号
+        List<String> packAgesList = new ArrayList<>();
+        if (wayBillDetailSet == null|| wayBillDetailSet.isEmpty()) {
+            return 0;
+        }
+        for (WayBillDetail wayBillDetail : wayBillDetailSet) {
+            //包号不为空
+            if (!StringUtils.isEmpty(wayBillDetail.getPackageCode())) {
+                //
+                if (!packAgesList.contains(wayBillDetail.getPackageCode())) {
+                    packAgesList.add(wayBillDetail.getPackageCode());//
+                }
+            }
+        }
+        return packAgesList.size();
+    }
+
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
+    }
+
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
+    }
 
     public Date getDeliveryTime() {
         return deliveryTime;
+    }
+
+
+    public String getInStationCode() {
+        return inStationCode;
+    }
+
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
     }
 
     public void setDeliveryTime(Date deliveryTime) {
@@ -107,7 +249,15 @@ public class WayBill extends Bill<WayBillDetail> {
         this.destination = destination;
     }
 
+    /**
+     * 计算运货件数
+     * @return
+     */
     public Integer getAmountOfPackages() {
+        if (!this.getWayBillDetailSet().isEmpty()) {
+
+            return this.calcTotalPackageAmount();
+        }
         return amountOfPackages;
     }
 
@@ -139,17 +289,73 @@ public class WayBill extends Bill<WayBillDetail> {
         this.operatorName = operatorName;
     }
 
+
+    public Set<WayBillDetail> getWayBillDetailSet() {
+        return wayBillDetailSet;
+    }
+
+    public void setWayBillDetailSet(Set<WayBillDetail> wayBillDetailSet) {
+        this.wayBillDetailSet = wayBillDetailSet;
+    }
+
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
+    }
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
+
+    public String getOutStationCode() {
+        return outStationCode;
+    }
+
+    public void setOutStationCode(String outStationCode) {
+        this.outStationCode = outStationCode;
+    }
+
+
+    public Set<WayBillDetail> getWayBillDetailSetDelete() {
+        return wayBillDetailSetDelete;
+    }
+
+    public void setWayBillDetailSetDelete(Set<WayBillDetail> wayBillDetailSetDelete) {
+        this.wayBillDetailSetDelete = wayBillDetailSetDelete;
+    }
+
+    public Set<WayBillDetail> getWayBillDetailSetAddOrUpdate() {
+        return wayBillDetailSetAddOrUpdate;
+    }
+
+    public void setWayBillDetailSetAddOrUpdate(Set<WayBillDetail> wayBillDetailSetAddOrUpdate) {
+        this.wayBillDetailSetAddOrUpdate = wayBillDetailSetAddOrUpdate;
+    }
+
     @Override
     public String toString() {
         return "WayBill{" +
-                "deliveryTime=" + deliveryTime +
+                ", billId=" + billId +
+                ", billCode='" + billCode + '\'' +
+                ", outStationCode='" + outStationCode + '\'' +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", deliveryTime=" + deliveryTime +
                 ", planArrivalTime=" + planArrivalTime +
                 ", logisticsCompanyName='" + logisticsCompanyName + '\'' +
                 ", destination='" + destination + '\'' +
                 ", amountOfPackages=" + amountOfPackages +
                 ", totalWeight=" + totalWeight +
-                ", memo='" + memo + '\'' +
+                ", operatorCode='" + operatorCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +
+                ", receivedStatus=" + receivedStatus +
+                ", memo='" + memo + '\'' +
                 '}';
     }
 }

@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.plan.strategy;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
@@ -11,6 +11,8 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.Plan;
 
 /**
  * @author ncmao
@@ -24,12 +26,16 @@ public abstract class AbstractCastableStrategy {
     public abstract void cast(PlanBillPayload planBillPayload, BillRepository billRepository);
 
 
-    protected PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum, BillPurposeEnum billPurposeEnum) {
+    PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum, Executor executor) {
         PlanBill planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        planBill.setHqBill(false);
         planBill.setSpecificBillType(billTypeEnum);
         planBill.setInLocation(planBillPayload.getInLocation());
         planBill.setOutLocation(planBillPayload.getOutLocation());
-        planBill.setBillPurpose(billPurposeEnum);
+        planBill.setBillPurpose(Plan);
+        planBill.setBasicEnum(planBillPayload.getBasicEnum());
+        planBill.setParentBillCode(planBillPayload.getParentBillCode());
+        planBill.setBillCode(planBillPayload.getBillCode());
         Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {
             PlanBillDetail planBillDetail = new PlanBillDetail();
@@ -38,6 +44,12 @@ public abstract class AbstractCastableStrategy {
             planBillDetails.add(planBillDetail);
         }
         planBill.setBillDetails(planBillDetails);
+        planBill.setBillState(BillStateEnum.SAVED);
+        executor.exec(planBill);
         return planBill;
+    }
+
+    interface Executor {
+        void exec(PlanBill planBill);
     }
 }

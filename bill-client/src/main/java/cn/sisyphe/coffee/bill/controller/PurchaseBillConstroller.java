@@ -1,13 +1,16 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import cn.sisyphe.coffee.bill.application.PurchaseBillManager;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
+import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.EditPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/bill/purchase")
@@ -21,28 +24,28 @@ public class PurchaseBillConstroller {
     /**
      * 保存进货单
      *
-     * @param purchaseBill
+     * @param addPurchaseBillDTO
      * @return
      */
     @ApiOperation(value = "保存进货单")
     @RequestMapping(path = "/savePurchaseBill", method = RequestMethod.POST)
-    public ResponseResult savePurchaseBill(@RequestBody PurchaseBill purchaseBill) {
+    public ResponseResult savePurchaseBill(@RequestBody AddPurchaseBillDTO addPurchaseBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.saveBill(purchaseBill);
+        purchaseBillManager.saveBill(addPurchaseBillDTO);
         return responseResult;
     }
 
     /**
      * 提交进货单
      *
-     * @param purchaseBill
+     * @param addPurchaseBillDTO
      * @return
      */
     @ApiOperation(value = "提交进货单")
     @RequestMapping(path = "/submitPurchaseBill", method = RequestMethod.POST)
-    public ResponseResult submitPurchaseBill(@RequestBody PurchaseBill purchaseBill) {
+    public ResponseResult submitPurchaseBill(@RequestBody AddPurchaseBillDTO addPurchaseBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.submitBill(purchaseBill);
+        purchaseBillManager.submitBill(addPurchaseBillDTO);
         return responseResult;
     }
 
@@ -56,7 +59,7 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
     public ResponseResult findByConditions(@RequestBody ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         ResponseResult responseResult = new ResponseResult();
-        Page<PurchaseBill> billPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
+        QueryPurchaseBillDTO billPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
         responseResult.put("content", billPage);
         return responseResult;
     }
@@ -71,21 +74,43 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/findByPurchaseBillCode", method = RequestMethod.GET)
     public ResponseResult findByPurchaseBillCode(@RequestParam String purchaseBillCode) {
         ResponseResult responseResult = new ResponseResult();
-        PurchaseBill purchaseBill = purchaseBillManager.auditingBill(purchaseBillCode);
-        responseResult.put("purchaseBill", purchaseBill);
+        QueryOnePurchaseBillDTO billDTO = purchaseBillManager.openBill(purchaseBillCode);
+        responseResult.put("purchaseBill", billDTO);
         return responseResult;
     }
 
     /**
      * 修改进货单据信息
      *
-     * @param purchaseBill
+     * @param billDTO
      * @return
      */
-    @ApiOperation(value = "修改进货单据信息")
-    @RequestMapping(path = "/updatePurchaseBill", method = RequestMethod.POST)
-    public ResponseResult updatePurchaseBill(@RequestBody PurchaseBill purchaseBill) {
+    @ApiOperation(value = "修改进货单据信息--保存")
+    @RequestMapping(path = "/updatePurchaseBillToSave", method = RequestMethod.POST)
+    public ResponseResult updatePurchaseBillToSaved(@RequestBody EditPurchaseBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
+        try {
+            purchaseBillManager.updateBill(billDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+    /**
+     * 修改进货单据信息
+     *
+     * @param billDTO
+     * @return
+     */
+    @ApiOperation(value = "修改进货单据信息--提交审核")
+    @RequestMapping(path = "/updatePurchaseBillToSubmit", method = RequestMethod.POST)
+    public ResponseResult updatePurchaseBillToSubmit(@RequestBody EditPurchaseBillDTO billDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            purchaseBillManager.updateBill(billDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 

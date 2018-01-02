@@ -37,6 +37,9 @@ public class PlanBillDetail extends BillDetail {
     @Transient
     private AbstractLocation inLocation;
 
+    @Transient
+    private AbstractLocation transferLocation;
+
 
     /**
      * 数据库位置储存
@@ -98,5 +101,13 @@ public class PlanBillDetail extends BillDetail {
 
     public String getInOutStationCode() {
         return inLocation.code() + outLocation.code();
+    }
+
+    public AbstractLocation getTransferLocation() {
+        return transferLocation;
+    }
+
+    public void setTransferLocation(AbstractLocation transferLocation) {
+        this.transferLocation = transferLocation;
     }
 }

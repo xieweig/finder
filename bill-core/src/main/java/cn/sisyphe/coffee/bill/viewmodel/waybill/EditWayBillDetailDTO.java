@@ -11,6 +11,12 @@ import java.util.Date;
  */
 public class EditWayBillDetailDTO implements Serializable {
 
+
+    /**
+     * 明细id
+     */
+    private Long billDetailId;
+
     /**
      * 运单
      */
@@ -22,6 +28,9 @@ public class EditWayBillDetailDTO implements Serializable {
     @Transient
     private String billDetailCode;
 
+
+    public EditWayBillDetailDTO() {
+    }
 
     public EditWayBillDetailDTO(EditWayBillDTO editWayBillDTO) {
         this.editWayBillDTO = editWayBillDTO;
@@ -70,6 +79,18 @@ public class EditWayBillDetailDTO implements Serializable {
      */
     private String outStationCode;
 
+    /**
+     * 是否单独打包
+     */
+    public Boolean singlePacking;
+
+    public Boolean getSinglePacking() {
+        return singlePacking;
+    }
+
+    public void setSinglePacking(Boolean singlePacking) {
+        this.singlePacking = singlePacking;
+    }
 
     /**
      * 出库时间
@@ -164,5 +185,13 @@ public class EditWayBillDetailDTO implements Serializable {
 
     public void setOutStorageTime(Date outStorageTime) {
         this.outStorageTime = outStorageTime;
+    }
+
+    public Long getBillDetailId() {
+        return billDetailId;
+    }
+
+    public void setBillDetailId(Long billDetailId) {
+        this.billDetailId = billDetailId;
     }
 }

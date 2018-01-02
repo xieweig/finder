@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -92,6 +93,12 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
 
 
     /**
+     * 收货状态
+     */
+    private ReceivedStatusEnum receivedStatus;
+
+
+    /**
      * 录单人
      */
     private String operatorName;
@@ -106,6 +113,14 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     public String getOutStorageBillCode() {
 
         return outStorageBillCode;
+    }
+
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
     }
 
     public Date getDeliverTime() {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,10 +29,38 @@ public class PlanBillController {
     private PlanBillManager planBillManager;
 
 
-    @ApiOperation(value = "新建总部计划")
+    @ApiOperation(value = "新建总部计划，暂存")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public ResponseResult createProduct(@RequestBody PlanBillDTO planBillDTO) throws Exception {
+    public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
         planBillManager.create(planBillDTO);
+        return null;
+    }
+
+    @ApiOperation(value = "提交总部计划")
+    @RequestMapping(path = "/submit", method = RequestMethod.POST)
+    public ResponseResult submitPlanBill(@RequestBody PlanBillDTO planBillDTO) {
+        planBillManager.submit(planBillDTO);
+        return null;
+    }
+
+    @ApiOperation(value = "审核总部计划")
+    @RequestMapping(path = "/open", method = RequestMethod.POST)
+    public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
+        planBillManager.open(billCode);
+        return null;
+    }
+
+    @ApiOperation(value = "审核不通过")
+    @RequestMapping(path = "/unpass", method = RequestMethod.GET)
+    public ResponseResult unpass(@RequestParam("billCode") String billCode) {
+        planBillManager.unPass(billCode);
+        return null;
+    }
+
+    @ApiOperation(value = "审核通过")
+    @RequestMapping(path = "/pass", method = RequestMethod.GET)
+    public ResponseResult pass(@RequestParam("billCode") String billCode) {
+        planBillManager.pass(billCode);
         return null;
     }
 }

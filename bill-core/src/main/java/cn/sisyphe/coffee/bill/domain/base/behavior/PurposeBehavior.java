@@ -14,8 +14,5 @@ public class PurposeBehavior extends AbstractBillBehavior {
     @Override
     public void doAction() {
         getBillService().getBillPurpose().handle();
-
-//        Bill bill = getBillService().getBill();
-//        bill.setBillState(BillStateEnum.DONE);
     }
 }

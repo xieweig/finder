@@ -1,9 +1,10 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,20 +19,44 @@ import java.util.List;
  **/
 public class EditWayBillDTO implements Serializable {
 
+
     /**
      * 运单明细
      */
     private List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
-
     /**
      * id
      */
-    @JsonIgnore
     private Long billId;
+
+
     /**
      * 运单号
      */
     private String wayBillCode;
+
+    /**
+     * 出库单号
+     */
+    @Column(length = 255)
+    private String outStorageBillCode;//
+
+
+    private String outStationCode;// 出库站点
+
+    private String outStationName;// 出库站点
+
+
+    /**
+     * 入库站点
+     */
+    private String inStationCode;
+
+    /**
+     * 入库站点名称
+     */
+    private String inStationName;
+
 
     /**
      * 发货时间
@@ -53,9 +78,7 @@ public class EditWayBillDTO implements Serializable {
     /**
      * 目的地
      */
-
     private String destination;
-
 
     /**
      * 运货件数
@@ -67,22 +90,70 @@ public class EditWayBillDTO implements Serializable {
 
     private String memo;
 
-
     /**
      * 总重量
      */
     private Long totalWeight;
 
-    //user code
+
     private String operatorCode;
     /**
      *
      */
     private String operatorName;
 
+
+    /**
+     * 收货状态
+     */
+    private ReceivedStatusEnum receivedStatus;
+
+
+
+    public String getInStationCode() {
+        return inStationCode;
+    }
+
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
+    }
+
+    public String getInStationName() {
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
     public String getOperatorName() {
 
         return operatorName;
+    }
+
+
+    public String getOutStationName() {
+        return outStationName;
+    }
+
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
+    }
+
+    public String getOutStationCode() {
+        return outStationCode;
+    }
+
+    public void setOutStationCode(String outStationCode) {
+        this.outStationCode = outStationCode;
+    }
+
+    public String getOutStorageBillCode() {
+        return outStorageBillCode;
+    }
+
+    public void setOutStorageBillCode(String outStorageBillCode) {
+        this.outStorageBillCode = outStorageBillCode;
     }
 
     public void setOperatorName(String operatorName) {
@@ -176,5 +247,13 @@ public class EditWayBillDTO implements Serializable {
 
     public void setTotalWeight(Long totalWeight) {
         this.totalWeight = totalWeight;
+    }
+
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
     }
 }

@@ -37,4 +37,19 @@ public class RestockBillDetail extends BillDetail {
 
         return Objects.hash(getBillDetailId());
     }
+
+    public Integer getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    /**
+     *
+     *notes :
+     *  配送总价
+     */
+    private Integer totalPrice;
 }
