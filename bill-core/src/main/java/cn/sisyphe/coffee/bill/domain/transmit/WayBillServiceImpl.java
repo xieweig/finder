@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/28.
  */
 @Service
-public class IWayBillServiceImpl implements IWayBillService {
+public class WayBillServiceImpl implements WayBillService {
 
 
     @Autowired
@@ -184,15 +184,6 @@ public class IWayBillServiceImpl implements IWayBillService {
         //运货件数
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
-        }
-        //
-        //添加 or Update 明细
-        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSetAddOrUpdate()) {
-            wayBillDB.addOrUpdateItem(wayBillDetail);
-        }
-        //删除 明细
-        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSetDelete()) {
-            wayBillDB.removeItem(wayBillDetail);
         }
         //3保存
         wayBillDB = wayBillRepository.save(wayBillDB);
