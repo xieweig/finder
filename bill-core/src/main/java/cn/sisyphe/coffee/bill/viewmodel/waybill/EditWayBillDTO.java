@@ -25,7 +25,6 @@ public class EditWayBillDTO implements Serializable {
      */
     private List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
 
-
     /**
      * 出库单号
      */
@@ -33,9 +32,22 @@ public class EditWayBillDTO implements Serializable {
     private String outStorageBillCode;//
 
 
-    private String outStaionCode;// 出库站点
+    private String outStationCode;// 出库站点
 
-    private String outStaionName;// 出库站点
+    private String outStationName;// 出库站点
+
+
+    /**
+     * 入库站点
+     */
+    private String inStationCode;
+
+    /**
+     * 入库站点名称
+     */
+    private String inStationName;
+
+
     /**
      * id
      */
@@ -90,26 +102,43 @@ public class EditWayBillDTO implements Serializable {
      */
     private String operatorName;
 
+
+    public String getInStationCode() {
+        return inStationCode;
+    }
+
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
+    }
+
+    public String getInStationName() {
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
     public String getOperatorName() {
 
         return operatorName;
     }
 
 
-    public String getOutStaionCode() {
-        return outStaionCode;
+    public String getOutStationName() {
+        return outStationName;
     }
 
-    public void setOutStaionCode(String outStaionCode) {
-        this.outStaionCode = outStaionCode;
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
     }
 
-    public String getOutStaionName() {
-        return outStaionName;
+    public String getOutStationCode() {
+        return outStationCode;
     }
 
-    public void setOutStaionName(String outStaionName) {
-        this.outStaionName = outStaionName;
+    public void setOutStationCode(String outStationCode) {
+        this.outStationCode = outStationCode;
     }
 
     public String getOutStorageBillCode() {
