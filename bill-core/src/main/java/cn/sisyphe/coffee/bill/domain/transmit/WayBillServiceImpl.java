@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.transmit;
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -136,6 +137,26 @@ public class WayBillServiceImpl implements WayBillService {
             //
             return predicate;
         }, pageable);
+
+
+    }
+
+
+    /**
+     * 收货确定
+     *
+     * @param billCode
+     */
+    @Override
+    public void confirmReceiptBill(String billCode) {
+
+        WayBill wayBill = wayBillRepository.findOneByCode(billCode);
+        if (wayBill == null) {
+            throw new DataException("50001", "单据不存在不能确认收货");
+        }
+        wayBill.setReceivedStatus(ReceivedStatusEnum.IS_RECEIVED);
+        //
+        wayBillRepository.save(wayBill);
 
 
     }

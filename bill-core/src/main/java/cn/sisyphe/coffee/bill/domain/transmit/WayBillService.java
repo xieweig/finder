@@ -13,6 +13,13 @@ import java.util.List;
 public interface WayBillService {
 
 
+    /**
+     * 收货
+     * @param billCode
+     */
+    void confirmReceiptBill(String billCode);
+
+
     WayBill createBill(WayBill wayBill);
 
 

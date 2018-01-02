@@ -2,9 +2,11 @@ package cn.sisyphe.coffee.transmit;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
-import cn.sisyphe.coffee.bill.domain.transmit.IWayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
+import cn.sisyphe.coffee.bill.domain.transmit.WayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
+import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDetailDTO;
@@ -32,8 +34,17 @@ public class WayBillTest {
     private WayBillManager wayBillManager;
 
     @Autowired
-    private IWayBillService iWayBillService;
+    private WayBillService iWayBillService;
 
+
+    @Autowired
+    WayBillRepository wayBillRepository;
+
+    @Test
+    public void testFindByCode() {
+
+        wayBillRepository.findOneByCode("a");
+    }
 
     /**
      * 查找单个
@@ -97,7 +108,70 @@ public class WayBillTest {
     @Test
     public void testUpdateWillBill() {
 
+        // UUID uuid = UUID.randomUUID();
+        EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
+        //
+        editWayBillDTO.setMemo("test");
+        editWayBillDTO.setBillId(2L);
+        editWayBillDTO.setAmountOfPackages(122);
+        editWayBillDTO.setDeliveryTime(new Date());
+        editWayBillDTO.setDestination("北京45");
+
+        editWayBillDTO.setOperatorName("小明2");
+        editWayBillDTO.setLogisticsCompanyName("韵达");
+        editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间
+        editWayBillDTO.setAmountOfPackages(155);
+        editWayBillDTO.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);//收货状态
+
+        editWayBillDTO.setMemo("修改了");
+        //id
+//        editWayBillDTO.setWayBillCode(uuid.toString());
+
+        List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
+        //List<EditWayBillDetailDTO> editWayBillRemoveDetailDTOList = new ArrayList<>();
+
+        //
+        EditWayBillDetailDTO wayBillDetailDTO1 = new EditWayBillDetailDTO(editWayBillDTO);
+
+        wayBillDetailDTO1.setBillDetailId(9L);
+        wayBillDetailDTO1.setPackageNumbers("sss");//包号
+        wayBillDetailDTO1.setOutStorageBillCode("kkkkk");
+        wayBillDetailDTO1.setOperatorName("sss");
+        wayBillDetailDTO1.setOutStationCode("cq12");
+        wayBillDetailDTO1.setSinglePacking(false);
+        wayBillDetailDTO1.setTotalAmount(10);
+
+        wayBillDetailDTO1.setTotalCount(55);
+        wayBillDetailDTO1.setOutStorageTime(new Date());
+        wayBillDetailDTO1.setEditWayBillDTO(editWayBillDTO);
+
+        // delete
+        EditWayBillDetailDTO wayBillDetailDTO2 = new EditWayBillDetailDTO(editWayBillDTO);
+        wayBillDetailDTO2.setBillDetailId(12L);
+
+        wayBillDetailDTO2.setEditWayBillDTO(editWayBillDTO);
+        //
+        EditWayBillDetailDTO wayBillDetailDTO3 = new EditWayBillDetailDTO(editWayBillDTO);
+
+        //wayBillDetailDTO1.setBillDetailId(1L);
+        wayBillDetailDTO3.setOutStorageBillCode("sxfsdfsdf");
+        wayBillDetailDTO3.setOperatorName("aaaaaaaaaaaaaa");
+        wayBillDetailDTO3.setOutStationCode("fsdfsdfsdfsdf");
+//        wayBillDetailDTO3
+
+        wayBillDetailDTO3.setSinglePacking(false);
+        wayBillDetailDTO3.setTotalAmount(10);
+        wayBillDetailDTO3.setPackageNumbers("aaaaaaaaaaaaaaa");//包号
+        wayBillDetailDTO3.setTotalCount(55);
+        wayBillDetailDTO3.setOutStorageTime(new Date());
+        wayBillDetailDTO3.setEditWayBillDTO(editWayBillDTO);
+
+        editWayBillDetailDTOList.add(wayBillDetailDTO1);//add
+        editWayBillDTO.setEditWayBillDetailDTOList(editWayBillDetailDTOList);// add
+        wayBillManager.updateWayBillWithDTO(editWayBillDTO);
+
     }
+
 
     /**
      * 添加

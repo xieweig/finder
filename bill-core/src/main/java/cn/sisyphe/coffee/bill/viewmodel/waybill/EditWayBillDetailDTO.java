@@ -83,6 +83,8 @@ public class EditWayBillDetailDTO implements Serializable {
      */
     public Boolean singlePacking;
 
+
+
     public Boolean getSinglePacking() {
         return singlePacking;
     }

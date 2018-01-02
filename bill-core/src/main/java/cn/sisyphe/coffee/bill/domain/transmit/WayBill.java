@@ -25,7 +25,6 @@ public class WayBill extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long billId;
 
-
     /**
      * 单据code
      * tip: 必须加name="bill_code" ,否则子类找不到外键
