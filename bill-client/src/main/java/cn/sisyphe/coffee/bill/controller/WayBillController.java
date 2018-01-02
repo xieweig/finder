@@ -58,12 +58,11 @@ public class WayBillController {
      * * @param billId
      * * @return
      */
-    @ApiOperation(value = "根据运单Id或者运单code查询单个运单跟踪信息")
+    @ApiOperation(value = "根据运单code查询单个运单跟踪信息")
     @RequestMapping(path = "/findOneWayBill", method = RequestMethod.GET)
-    public ResponseResult findOneWayBill(@RequestParam(required = false) String billCode
-            , @RequestParam(required = false) Long billId) {
+    public ResponseResult findOneWayBill(@RequestParam(required = false) String id) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("wayBill", wayBillManager.findOneWayBill(billId, billCode));
+        responseResult.put("wayBill", wayBillManager.findOneWayBill(id));
         return responseResult;
     }
 

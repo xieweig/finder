@@ -69,25 +69,20 @@ public class WayBillManager {
     /**
      * 条件查找单个运单
      *
-     * @param billId
      * @param billCode
      * @return
      */
-    public EditWayBillDTO findOneWayBill(Long billId, String billCode) {
-        EditWayBillDTO editWayBillDTO = null;
+    public EditWayBillDTO findOneWayBill(String billCode) {
 
-        WayBill wayBill = new WayBill();
-        wayBill.setBillId(billId);// id
-        wayBill.setBillCode(billCode);
-
-        List<WayBill> wayBills = iWayBillService.findByConditions(wayBill);
-        //
-        if (!wayBills.isEmpty() && wayBills.size() > 0) {
-            WayBill bill = wayBills.get(0);
-            //转换DTO
-            return billConvertTOEditWayBillDTO(bill);
+        WayBill wayBill = null;
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("50001", "参数为空");
         }
-        return editWayBillDTO;
+        wayBill = iWayBillService.findOneBillByCode(billCode);
+        //
+        //转换DTO
+        return billConvertTOEditWayBillDTO(wayBill);
+
     }
 
     /**
@@ -97,6 +92,9 @@ public class WayBillManager {
      * @return
      */
     private EditWayBillDTO billConvertTOEditWayBillDTO(WayBill wayBill) {
+        if (wayBill == null) {
+            return null;
+        }
         EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
 
         editWayBillDTO.setBillId(wayBill.getBillId());//id
@@ -132,7 +130,9 @@ public class WayBillManager {
             wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
             wayBillDetailDTO.setTotalAmount(wayBillDetail.getTotalAmount());// 数量
             wayBillDetailDTO.setTotalCount(wayBillDetail.getTotalCount());// 品种
-            wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
+            if (wayBillDetail.getPackAgeTypeEnum() != null) {
+                wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
+            }
             wayBillDetailDTO.setPackageNumbers(wayBillDetail.getPackageCode());//包号
             wayBillDetailDTO.setSinglePacking(wayBillDetail.getSinglePacking());//是否单独打包
 
@@ -348,13 +348,14 @@ public class WayBillManager {
     private List<ReturnWayBillDTO> convertToDTO(List<WayBill> wayBills) {
         //
         List<ReturnWayBillDTO> wayBillDTOList = new ArrayList<>();
-        ReturnWayBillDTO temp = new ReturnWayBillDTO();
 
         for (WayBill wayBill : wayBills) {
+            ReturnWayBillDTO temp = new ReturnWayBillDTO();
+
             temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
             temp.setWayBillCode(wayBill.getBillCode());//bill code
-            temp.setOperatorName(wayBill.getOperatorName());//
-            temp.setWayBillCode(wayBill.getOperatorCode());
+            temp.setOperatorName(wayBill.getOperatorName());// 操作人姓名
+
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
