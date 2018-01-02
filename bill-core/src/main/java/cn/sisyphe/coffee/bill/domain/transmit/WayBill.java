@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -112,6 +113,54 @@ public class WayBill extends BaseEntity {
      */
     @Column(length = 255)
     private String memo;
+
+
+    /**
+     * @param wayBillDetail
+     */
+    public void removeItem(WayBillDetail wayBillDetail) {
+
+
+        System.out.println(" 需要删除的  id:" + wayBillDetail.getBillDetailId());/// all id
+        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
+            return;
+        }
+        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
+        while (it.hasNext()) {
+            WayBillDetail item = it.next();
+            System.out.println(" item  id:" + item.getBillDetailId());/// all id
+
+            if (item != null && item.getBillDetailId() != null)
+                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
+                    //
+                    System.out.println("delete ............." + item.getBillDetailId());
+                    it.remove();
+                }
+        }
+    }
+
+    /**
+     * @param wayBillDetail
+     */
+    public void addOrUpdateItem(WayBillDetail wayBillDetail) {
+
+        System.out.println(" update : " + wayBillDetail);
+        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
+            return;
+        }
+        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
+        while (it.hasNext()) {
+            WayBillDetail item = it.next();
+            if (item != null && item.getBillDetailId() != null)
+                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
+                    //
+                    System.out.println("delete ............." + item.getBillDetailId());
+                    it.remove();
+                }
+        }
+        System.out.println("add........" + wayBillDetail.getBillDetailId());
+        this.getWayBillDetailSet().add(wayBillDetail);
+    }
 
 
     /**
