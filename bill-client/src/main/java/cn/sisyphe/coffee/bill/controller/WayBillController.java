@@ -44,9 +44,7 @@ public class WayBillController {
     @RequestMapping(path = "/updateWayBill", method = RequestMethod.POST)
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-
         wayBillManager.updateWayBillWithDTO(editWayBillDTO);
-
         return responseResult;
     }
 
@@ -69,6 +67,22 @@ public class WayBillController {
     public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillItemIds) {
         ResponseResult responseResult = new ResponseResult();
 
+        return responseResult;
+    }
+
+    /**
+     * 查询单个运单跟踪信息
+     *
+     * @param billCode
+     * @param billId
+     * @return
+     */
+    @ApiOperation(value = "根据运单Id或者运单code查询单个运单跟踪信息")
+    @RequestMapping(path = "/findOneWayBill", method = RequestMethod.GET)
+    public ResponseResult findOneWayBill(@RequestParam(required = false) String billCode
+            , @RequestParam(required = false) Long billId) {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.put("wayBill", wayBillManager.findOneWayBill(billId, billCode));
         return responseResult;
     }
 
