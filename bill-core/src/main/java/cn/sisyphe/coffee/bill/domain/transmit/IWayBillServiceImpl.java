@@ -181,6 +181,17 @@ public class IWayBillServiceImpl implements IWayBillService {
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
         }
+
+
+        //
+        //添加 or Update 明细
+        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSetAddOrUpdate()) {
+            wayBillDB.addOrUpdateItem(wayBillDetail);
+        }
+        //删除 明细
+        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSetDelete()) {
+            wayBillDB.removeItem(wayBillDetail);
+        }
         //3保存
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;

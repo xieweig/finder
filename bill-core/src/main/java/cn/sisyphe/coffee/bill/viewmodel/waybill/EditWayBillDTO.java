@@ -33,6 +33,9 @@ public class EditWayBillDTO implements Serializable {
     private String outStorageBillCode;//
 
 
+    private String outStaionCode;// 出库站点
+
+    private String outStaionName;// 出库站点
     /**
      * id
      */
@@ -90,6 +93,23 @@ public class EditWayBillDTO implements Serializable {
     public String getOperatorName() {
 
         return operatorName;
+    }
+
+
+    public String getOutStaionCode() {
+        return outStaionCode;
+    }
+
+    public void setOutStaionCode(String outStaionCode) {
+        this.outStaionCode = outStaionCode;
+    }
+
+    public String getOutStaionName() {
+        return outStaionName;
+    }
+
+    public void setOutStaionName(String outStaionName) {
+        this.outStaionName = outStaionName;
     }
 
     public String getOutStorageBillCode() {

@@ -64,9 +64,9 @@ public class WayBillManager {
 
         //参数检查
         this.checkParams(editWayBillDTO);
-        ///
+        //
         WayBill wayBill = convertDtoToWayBill(editWayBillDTO);
-
+        // // TODO: 2017/12/29
         if (StringUtils.isEmpty(wayBill.getBillCode())) {//
             //test
             wayBill.setBillCode(UUID.randomUUID().toString());
@@ -95,6 +95,8 @@ public class WayBillManager {
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
+
+        wayBill.setOutStationCode(editWayBillDTO.getOutStaionCode());//出库站点code
         //添加明细
         wayBill.setWayBillDetailSet(addBillItem(editWayBillDTO, wayBill));
         return wayBill;
@@ -120,8 +122,8 @@ public class WayBillManager {
             WayBillDetail wayBillDetail = new WayBillDetail();
 
             wayBillDetail.setWayBill(wayBill);
-            wayBillDetail.setOutStorageBillCode(item.getOutStorageBillCode());//出库单号
 
+            wayBillDetail.setSourceCode(item.getOutStorageBillCode());//出库单号
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量
             wayBillDetail.setPackageCode(item.getPackageNumbers());//包号
