@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
@@ -53,6 +54,10 @@ public class AddPurchaseBillDTO {
      * 供应商信息
      */
     private Supplier supplier;
+    /**
+     * 单据状态
+     */
+    private BillStateEnum billState;
 
     /**
      * 进货单明细信息
@@ -131,6 +136,14 @@ public class AddPurchaseBillDTO {
         this.supplier = supplier;
     }
 
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
+    }
+
     public List<BillDetailDTO> getBillDetails() {
         return billDetails;
     }
@@ -151,6 +164,7 @@ public class AddPurchaseBillDTO {
                 ", storage=" + storage +
                 ", station=" + station +
                 ", supplier=" + supplier +
+                ", billState=" + billState +
                 ", billDetails=" + billDetails +
                 '}';
     }

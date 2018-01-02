@@ -85,12 +85,29 @@ public class PurchaseBillConstroller {
      * @param billDTO
      * @return
      */
-    @ApiOperation(value = "修改进货单据信息")
-    @RequestMapping(path = "/updatePurchaseBill", method = RequestMethod.POST)
-    public ResponseResult updatePurchaseBill(@RequestBody EditPurchaseBillDTO billDTO) {
+    @ApiOperation(value = "修改进货单据信息--保存")
+    @RequestMapping(path = "/updatePurchaseBillToSave", method = RequestMethod.POST)
+    public ResponseResult updatePurchaseBillToSaved(@RequestBody EditPurchaseBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            purchaseBillManager.auditBill(billDTO);
+            purchaseBillManager.updateBill(billDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+    /**
+     * 修改进货单据信息
+     *
+     * @param billDTO
+     * @return
+     */
+    @ApiOperation(value = "修改进货单据信息--提交审核")
+    @RequestMapping(path = "/updatePurchaseBillToSubmit", method = RequestMethod.POST)
+    public ResponseResult updatePurchaseBillToSubmit(@RequestBody EditPurchaseBillDTO billDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            purchaseBillManager.updateBill(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }

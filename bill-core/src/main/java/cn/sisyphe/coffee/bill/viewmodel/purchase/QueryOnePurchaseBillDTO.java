@@ -33,6 +33,11 @@ public class QueryOnePurchaseBillDTO {
      * 供应商信息
      */
     private String supplierName;
+
+    /**
+     * 入库库位
+     */
+    private String inStorageName;
     /**
      * 进货单明细信息
      */
@@ -78,6 +83,14 @@ public class QueryOnePurchaseBillDTO {
         this.supplierName = supplierName;
     }
 
+    public String getInStorageName() {
+        return inStorageName;
+    }
+
+    public void setInStorageName(String inStorageName) {
+        this.inStorageName = inStorageName;
+    }
+
     public List<BillDetailDTO> getBillDetails() {
         return billDetails;
     }
@@ -94,6 +107,7 @@ public class QueryOnePurchaseBillDTO {
                 ", actualAmount=" + actualAmount +
                 ", memo='" + memo + '\'' +
                 ", supplierName='" + supplierName + '\'' +
+                ", inStorageName='" + inStorageName + '\'' +
                 ", billDetails=" + billDetails +
                 '}';
     }
