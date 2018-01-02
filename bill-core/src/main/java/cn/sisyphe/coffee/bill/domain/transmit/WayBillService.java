@@ -18,6 +18,13 @@ public interface WayBillService {
 
     WayBill updateBill(WayBill wayBill);
 
+    /**
+     * 通过code查找单据
+     *
+     * @param billCode
+     * @return
+     */
+    WayBill findOneBillByCode(String billCode);
 
     /**
      * @param id

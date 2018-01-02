@@ -35,6 +35,15 @@ public class WayBillServiceImpl implements WayBillService {
 
 
     /**
+     * @param billCode
+     * @return
+     */
+    @Override
+    public WayBill findOneBillByCode(String billCode) {
+        return wayBillRepository.findOneByCode(billCode);
+    }
+
+    /**
      * 分页查询运单
      *
      * @param conditionQueryWayBill
@@ -151,7 +160,8 @@ public class WayBillServiceImpl implements WayBillService {
 
         // TODO: 2017/12/29  修改方法实现
         //1先查询一条数据库里的内容
-        WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        // WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        WayBill wayBillDB = wayBillRepository.findOneByCode(wayBill.getBillCode());
         //2设置值
         //公司名称
         if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
@@ -189,6 +199,7 @@ public class WayBillServiceImpl implements WayBillService {
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;
     }
+
 
     /**
      * 条件查询
