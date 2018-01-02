@@ -4,7 +4,6 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,40 +22,28 @@ public class WayBillDetail extends BaseEntity {
     private Long billDetailId;
 
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
-    @JsonIgnore
-    @JoinColumn(name = "parent_id")//外键名称
+    //@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "bill_code")//外键名称
     private WayBill wayBill;
 
     /**
-     * 出库单号
+     * 出库单号(来源单号)
      */
-    @Column(length = 255)
-    private String outStorageBillCode;//
-
-
-    /**
-     * 商品code
-     */
-    @Column(length = 255)
-    private String cargoCode;
-
-    /**
-     * 原料code
-     */
-    @Column(length = 255)
-    private String rawMaterialCode;
+    @Column(name = "source_code", length = 255, nullable = false)
+    private String sourceCode;
 
 
     /**
      * 包号
      */
+    @Column(name = "package_code", length = 255)
     private String packageCode;
 
     /**
      * 录单人
      */
-    @Column
+    @Column(length = 255)
     private String operatorName;
 
     /**
@@ -99,18 +86,10 @@ public class WayBillDetail extends BaseEntity {
     private String outStationName;
 
 
-    public Long getBillDetailId() {
-        return billDetailId;
-    }
-
-    public void setBillDetailId(Long billDetailId) {
-        this.billDetailId = billDetailId;
-    }
-
     /**
      * 打包方式
      */
-    @Column
+    @Column(length = 255)
     @Enumerated(value = EnumType.STRING)
     private PackAgeTypeEnum packAgeTypeEnum;
 
@@ -127,6 +106,23 @@ public class WayBillDetail extends BaseEntity {
     public String getInStationCode() {
 
         return inStationCode;
+    }
+
+
+    public Long getBillDetailId() {
+        return billDetailId;
+    }
+
+    public void setBillDetailId(Long billDetailId) {
+        this.billDetailId = billDetailId;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
     }
 
     public String getInStationName() {
@@ -154,22 +150,6 @@ public class WayBillDetail extends BaseEntity {
     }
 
 
-    public String getCargoCode() {
-        return cargoCode;
-    }
-
-    public void setCargoCode(String cargoCode) {
-        this.cargoCode = cargoCode;
-    }
-
-    public String getRawMaterialCode() {
-        return rawMaterialCode;
-    }
-
-    public void setRawMaterialCode(String rawMaterialCode) {
-        this.rawMaterialCode = rawMaterialCode;
-    }
-
     public String getPackageCode() {
         return packageCode;
     }
@@ -188,14 +168,6 @@ public class WayBillDetail extends BaseEntity {
 
     public void setOutStationCode(String outStationCode) {
         this.outStationCode = outStationCode;
-    }
-
-    public String getOutStorageBillCode() {
-        return outStorageBillCode;
-    }
-
-    public void setOutStorageBillCode(String outStorageBillCode) {
-        this.outStorageBillCode = outStorageBillCode;
     }
 
     public String getOperatorName() {
@@ -236,5 +208,24 @@ public class WayBillDetail extends BaseEntity {
 
     public void setOutStorageTime(Date outStorageTime) {
         this.outStorageTime = outStorageTime;
+    }
+
+    @Override
+    public String toString() {
+        return "WayBillDetail{" +
+                "billDetailId=" + billDetailId +
+                ", wayBill=" + wayBill +
+                ", sourceCode='" + sourceCode + '\'' +
+                ", packageCode='" + packageCode + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", totalCount=" + totalCount +
+                ", totalAmount=" + totalAmount +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", inStationName='" + inStationName + '\'' +
+                ", outStationCode='" + outStationCode + '\'' +
+                ", outStationName='" + outStationName + '\'' +
+                ", packAgeTypeEnum=" + packAgeTypeEnum +
+                ", outStorageTime=" + outStorageTime +
+                '}';
     }
 }
