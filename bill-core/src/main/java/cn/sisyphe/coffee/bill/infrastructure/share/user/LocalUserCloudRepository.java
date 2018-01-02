@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.infrastructure.share.user;
 
 import cn.sisyphe.framework.web.ResponseResult;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author XiongJing
  */
+@Component
 public class LocalUserCloudRepository implements UserCloudRepository {
     @Override
     public ResponseResult findByLikeUserName(@RequestParam("userName") String supplierCode) {

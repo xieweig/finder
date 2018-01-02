@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.infrastructure.share.user.repo;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.UserCloudRepository;
 import cn.sisyphe.framework.web.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
  *
  * @author XiongJing
  */
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     @Autowired

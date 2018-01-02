@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.infrastructure.share.user.repo;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,7 @@ import java.util.List;
  *
  * @author XiongJing
  */
+@Repository
 public interface UserRepository {
 
     /**
