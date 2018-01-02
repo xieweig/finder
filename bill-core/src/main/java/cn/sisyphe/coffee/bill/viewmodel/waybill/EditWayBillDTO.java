@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import java.io.Serializable;
@@ -18,6 +17,18 @@ import java.util.List;
  * @Date 2017/12/27 11:08
  **/
 public class EditWayBillDTO implements Serializable {
+
+
+    /**
+     * id
+     */
+    private Long billId;
+
+
+    /**
+     * 运单号
+     */
+    private String wayBillCode;
 
 
     /**
@@ -47,16 +58,6 @@ public class EditWayBillDTO implements Serializable {
      */
     private String inStationName;
 
-
-    /**
-     * id
-     */
-    @JsonIgnore
-    private Long billId;
-    /**
-     * 运单号
-     */
-    private String wayBillCode;
 
     /**
      * 发货时间

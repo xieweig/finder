@@ -40,7 +40,7 @@ public class WayBill extends BaseEntity {
      * 单据code
      * tip: 必须加name="bill_code" ,否则子类找不到外键
      */
-    @Column(name = "bill_code", length = 255, nullable = false)
+    @Column(name = "bill_code", length = 255, nullable = false, unique = true)
     private String billCode;
 
 

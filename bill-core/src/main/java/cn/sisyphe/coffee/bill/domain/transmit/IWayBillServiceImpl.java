@@ -195,7 +195,6 @@ public class IWayBillServiceImpl implements IWayBillService {
         return wayBillDB;
     }
 
-
     /**
      * 条件查询
      *
@@ -204,7 +203,6 @@ public class IWayBillServiceImpl implements IWayBillService {
      */
     @Override
     public List<WayBill> findByConditions(WayBill wayBill) {
-
 
         return wayBillRepository.findAllByCondition((root, criteriaQuery, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();

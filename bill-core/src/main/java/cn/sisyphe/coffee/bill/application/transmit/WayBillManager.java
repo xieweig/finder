@@ -47,11 +47,84 @@ public class WayBillManager {
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
-
-        wayBillPage.getNumber();
+//        wayBillPage.getNumber();
         queryWayBillDTO.setContent(wayBillDTOList);
 
         return queryWayBillDTO;
+    }
+
+
+    /**
+     * 条件查找单个运单
+     *
+     * @param billId
+     * @param billCode
+     * @return
+     */
+    public EditWayBillDTO findOneWayBill(Long billId, String billCode) {
+        EditWayBillDTO editWayBillDTO = null;
+
+        WayBill wayBill = new WayBill();
+        wayBill.setBillId(billId);// id
+        wayBill.setBillCode(billCode);
+
+        List<WayBill> wayBills = iWayBillService.findByConditions(wayBill);
+        if (!wayBills.isEmpty() && wayBills.size() > 0) {
+            WayBill bill = wayBills.get(0);
+            //转换DTO
+            return billConvertTOEditWayBillDTO(bill);
+        }
+        return editWayBillDTO;
+    }
+
+    /**
+     * 单个查询的DTO转换
+     *
+     * @param wayBill
+     * @return
+     */
+    private EditWayBillDTO billConvertTOEditWayBillDTO(WayBill wayBill) {
+        EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
+
+        editWayBillDTO.setBillId(wayBill.getBillId());//id
+        editWayBillDTO.setWayBillCode(wayBill.getBillCode());//code
+        editWayBillDTO.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
+
+        editWayBillDTO.setInStationCode(wayBill.getInStationCode());
+        editWayBillDTO.setInStationName("");// 入库站点名称
+
+        editWayBillDTO.setOutStationCode(wayBill.getOutStationCode());
+        editWayBillDTO.setOutStationName("");// 出库站点名称
+
+
+        editWayBillDTO.setDeliveryTime(wayBill.getDeliveryTime());//
+        editWayBillDTO.setPlanArrivalTime(wayBill.getPlanArrivalTime());//计划到达时间
+        editWayBillDTO.setOperatorCode(wayBill.getOperatorCode());
+        editWayBillDTO.setOperatorName(wayBill.getOperatorName());
+
+        editWayBillDTO.setTotalWeight(wayBill.getTotalWeight());//总重量
+        editWayBillDTO.setAmountOfPackages(wayBill.getAmountOfPackages());//运货件数
+        editWayBillDTO.setDestination(wayBill.getDestination());//目的地
+
+        editWayBillDTO.setMemo(wayBill.getMemo());
+        //设置明细
+        List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
+        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSet()) {
+            EditWayBillDetailDTO wayBillDetailDTO = new EditWayBillDetailDTO();
+            //  WayBillDetail temp = wayBillDetail
+            wayBillDetailDTO.setBillDetailId(wayBillDetail.getBillDetailId());// id
+            wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
+            wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
+            wayBillDetailDTO.setTotalAmount(wayBillDetail.getTotalAmount());// 数量
+            wayBillDetailDTO.setTotalCount(wayBillDetail.getTotalCount());// 品种
+            wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
+            wayBillDetailDTO.setPackageNumbers(wayBillDetail.getPackageCode());//包号
+            editWayBillDetailDTOList.add(wayBillDetailDTO);// 设置dto
+        }
+        //
+        editWayBillDTO.setEditWayBillDetailDTOList(editWayBillDetailDTOList);
+
+        return editWayBillDTO;
     }
 
 

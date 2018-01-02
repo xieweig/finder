@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class QueryWayBillDTO implements Serializable {
     /**
      * 当前页
      */
+    @JsonIgnore
     private Long currentPage;
 
     /**
