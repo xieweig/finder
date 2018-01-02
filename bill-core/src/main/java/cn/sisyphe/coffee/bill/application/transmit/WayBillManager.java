@@ -48,9 +48,7 @@ public class WayBillManager {
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
-//        wayBillPage.getNumber();
         queryWayBillDTO.setContent(wayBillDTOList);
-
         return queryWayBillDTO;
     }
 
@@ -97,14 +95,13 @@ public class WayBillManager {
         editWayBillDTO.setOutStationCode(wayBill.getOutStationCode());
         editWayBillDTO.setOutStationName("");// 出库站点名称
 
-
         editWayBillDTO.setDeliveryTime(wayBill.getDeliveryTime());//
         editWayBillDTO.setPlanArrivalTime(wayBill.getPlanArrivalTime());//计划到达时间
         editWayBillDTO.setOperatorCode(wayBill.getOperatorCode());
         editWayBillDTO.setOperatorName(wayBill.getOperatorName());
 
         editWayBillDTO.setTotalWeight(wayBill.getTotalWeight());//总重量
-        //// TODO: 2018/1/2  运货件数验证 
+        //TODO: 2018/1/2  运货件数验证
         editWayBillDTO.setAmountOfPackages(wayBill.getAmountOfPackages());//运货件数
         editWayBillDTO.setDestination(wayBill.getDestination());//目的地
 
@@ -114,7 +111,8 @@ public class WayBillManager {
         List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
         for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSet()) {
             EditWayBillDetailDTO wayBillDetailDTO = new EditWayBillDetailDTO();
-            //WayBillDetail temp = wayBillDetail
+
+            wayBillDetailDTO.setOutStorageBillCode(wayBillDetail.getSourceCode());// 配送单号
             wayBillDetailDTO.setBillDetailId(wayBillDetail.getBillDetailId());// id
             wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
             wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
@@ -122,6 +120,8 @@ public class WayBillManager {
             wayBillDetailDTO.setTotalCount(wayBillDetail.getTotalCount());// 品种
             wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
             wayBillDetailDTO.setPackageNumbers(wayBillDetail.getPackageCode());//包号
+            wayBillDetailDTO.setSinglePacking(wayBillDetail.getSinglePacking());//是否单独打包
+
             editWayBillDetailDTOList.add(wayBillDetailDTO);// 设置dto
         }
         //
@@ -172,10 +172,20 @@ public class WayBillManager {
         return editWayBillDTO;
     }
 
+
+    /**
+     * 修改的DTO
+     *
+     * @param editWayBillDTO
+     * @return
+     * @throws DataException
+     */
     private WayBill convertUpdateDTOtoWayBill(EditWayBillDTO editWayBillDTO) throws DataException {
 
         WayBill wayBill = new WayBill();
         //bill code
+        wayBill.setBillId(editWayBillDTO.getBillId());// id
+        //
         wayBill.setBillCode(editWayBillDTO.getWayBillCode());
 
         wayBill.setDestination(editWayBillDTO.getDestination());//目的地
@@ -205,6 +215,7 @@ public class WayBillManager {
 
     private WayBill convertDtoToWayBill(EditWayBillDTO editWayBillDTO) throws DataException {
         WayBill wayBill = new WayBill();
+
 
         wayBill.setDestination(editWayBillDTO.getDestination());//目的地
         wayBill.setLogisticsCompanyName(editWayBillDTO.getLogisticsCompanyName());// 快递公司名称
@@ -240,22 +251,21 @@ public class WayBillManager {
         }
         for (EditWayBillDetailDTO item : editWayBillDetailDTOList) {
             //2运单明细
+
             WayBillDetail wayBillDetail = new WayBillDetail();
-
             wayBillDetail.setWayBill(wayBill);
-
             wayBillDetail.setSourceCode(item.getOutStorageBillCode());//出库单号
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量
-            wayBillDetail.setPackageCode(item.getPackageNumbers());//包号
-
+            //
+            wayBillDetail.setPackageCode(item.getPackageNumbers());// 多个包号
+            //
             wayBillDetail.setInStationCode(item.getInStationCode());//入库站点
             wayBillDetail.setOutStationCode(item.getOutStationCode());//出库站点
             wayBillDetail.setOutStorageTime(item.getOutStorageTime());//出库时间
             wayBillDetail.setOperatorName(item.getOperatorName());//添加人
-
             //如果没有打包方式
-            if (!StringUtils.isEmpty(item.getPackageType())) {
+            if (StringUtils.isEmpty(item.getPackageType())) {
                 wayBillDetail.setPackAgeTypeEnum(PackAgeTypeEnum.DEFAULT);
             }
             billDetails.add(wayBillDetail);
@@ -333,9 +343,8 @@ public class WayBillManager {
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
-
+            //
             temp.setReceivedStatus(wayBill.getReceivedStatus());//收货状态
-            //temp.setWayBillStatus(wayBill.getReceivedStatus().name());
             temp.setInStationCode(wayBill.getInStationCode());//入库站点
             temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
             wayBillDTOList.add(temp);// 添加到集合

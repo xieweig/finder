@@ -13,6 +13,11 @@ public class EditWayBillDetailDTO implements Serializable {
 
 
     /**
+     * 包号
+     */
+    private String packageNumbers;
+
+    /**
      * 明细id
      */
     private Long billDetailId;
@@ -46,12 +51,6 @@ public class EditWayBillDetailDTO implements Serializable {
      * 录单人
      */
     private String operatorName;
-
-
-    /**
-     * 包号
-     */
-    private String packageNumbers;
 
 
     /**
@@ -122,13 +121,6 @@ public class EditWayBillDetailDTO implements Serializable {
         this.editWayBillDTO = editWayBillDTO;
     }
 
-    public String getPackageNumbers() {
-        return packageNumbers;
-    }
-
-    public void setPackageNumbers(String packageNumbers) {
-        this.packageNumbers = packageNumbers;
-    }
 
     public String getOutStorageBillCode() {
         return outStorageBillCode;
@@ -193,5 +185,13 @@ public class EditWayBillDetailDTO implements Serializable {
 
     public void setBillDetailId(Long billDetailId) {
         this.billDetailId = billDetailId;
+    }
+
+    public String getPackageNumbers() {
+        return packageNumbers;
+    }
+
+    public void setPackageNumbers(String packageNumbers) {
+        this.packageNumbers = packageNumbers;
     }
 }
