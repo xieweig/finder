@@ -7,9 +7,7 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayloadDetail;
-import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
-import cn.sisyphe.coffee.bill.domain.plan.strategy.DeliveryStrategy;
-import cn.sisyphe.coffee.bill.domain.plan.strategy.ReturnedStrategy;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +61,9 @@ public class PlanPurpose extends AbstractBillPurpose {
     private AbstractCastableStrategy getSpecStrategy(BillTypeEnum billTypeEnum) {
         Switcher<AbstractCastableStrategy> switcher = new Switcher<AbstractCastableStrategy>()
                 .addCase(BillTypeEnum.DELIVERY, new DeliveryStrategy())
-                .addCase(BillTypeEnum.RETURNED, new ReturnedStrategy());
+                .addCase(BillTypeEnum.RETURNED, new ReturnedStrategy())
+                .addCase(BillTypeEnum.ADJUST, new AdjustStrategy())
+                .addCase(BillTypeEnum.RESTOCK, new RestockStrategy());
 
         return switcher.exec(billTypeEnum);
     }
