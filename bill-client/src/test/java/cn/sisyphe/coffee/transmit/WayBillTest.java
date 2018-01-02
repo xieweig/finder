@@ -53,6 +53,18 @@ public class WayBillTest {
     }
 
 
+    /**
+     * 修改
+     */
+    @Test
+    public void testUpdateWillBill() {
+
+    }
+
+
+    /**
+     * 添加
+     */
     @Test
     public void testCreateDto() {
 
@@ -67,7 +79,7 @@ public class WayBillTest {
         editWayBillDTO.setLogisticsCompanyName("韵达快递");
         editWayBillDTO.setPlanArrivalTime(new Date());//预计到达时间
         editWayBillDTO.setAmountOfPackages(155);
-        editWayBillDTO.setOutStaionCode("cq12");
+        editWayBillDTO.setOutStationCode("cq12");
         //id
         editWayBillDTO.setWayBillCode(uuid.toString());
 
@@ -75,7 +87,6 @@ public class WayBillTest {
 
         for (int i = 0; i < 5; i++) {
             EditWayBillDetailDTO editWayBillDetailDTO = new EditWayBillDetailDTO(editWayBillDTO);
-
             editWayBillDetailDTO.setOutStorageTime(new Date());
             editWayBillDetailDTO.setInStationCode("cq11");
             editWayBillDetailDTO.setOutStationCode("cq12");

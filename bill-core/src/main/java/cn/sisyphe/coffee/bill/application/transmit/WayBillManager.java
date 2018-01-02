@@ -43,20 +43,20 @@ public class WayBillManager {
      * @throws DataException
      */
 
-    public EditWayBillDTO updateWayBillWithDTO(EditWayBillDTO editWayBillDTO) throws DataException {
+    public void updateWayBillWithDTO(EditWayBillDTO editWayBillDTO) throws DataException {
 
         //参数检查
         this.checkParams(editWayBillDTO);
-        WayBill wayBill = convertDtoToWayBill(editWayBillDTO);
+        //修改转DTO
+        WayBill wayBill = convertUpdateDTOtoWayBill(editWayBillDTO);
         //
         this.updateWayBill(wayBill);
-
-        // 再查询一次, 返回结果
-        return null;
     }
 
 
     /**
+     * 添加运单
+     *
      * @param editWayBillDTO
      * @return
      */
@@ -75,6 +75,31 @@ public class WayBillManager {
         //
         return editWayBillDTO;
     }
+
+    private WayBill convertUpdateDTOtoWayBill(EditWayBillDTO editWayBillDTO) throws DataException {
+
+        WayBill wayBill = new WayBill();
+        //bill code
+        wayBill.setBillCode(editWayBillDTO.getWayBillCode());
+
+        wayBill.setDestination(editWayBillDTO.getDestination());//目的地
+        wayBill.setLogisticsCompanyName(editWayBillDTO.getLogisticsCompanyName());// 快递公司名称
+        wayBill.setPlanArrivalTime(editWayBillDTO.getPlanArrivalTime());//到达时间
+        wayBill.setDeliveryTime(editWayBillDTO.getDeliveryTime());//发货时间
+        wayBill.setTotalWeight(editWayBillDTO.getTotalWeight());//总总量
+        wayBill.setAmountOfPackages(editWayBillDTO.getAmountOfPackages());//运货件数
+        wayBill.setMemo(editWayBillDTO.getMemo());//备注
+        wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
+        wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
+
+        //添加明细
+        Set<WayBillDetail> wayBillDetails = addBillItem(editWayBillDTO, wayBill);//
+
+//        wayBill.setWayBillDetailSetAddOrUpdate(wayBillDetails);// update
+        wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
+        return wayBill;
+    }
+
 
     /**
      * DTO转换
@@ -96,9 +121,9 @@ public class WayBillManager {
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
-        wayBill.setOutStationCode(editWayBillDTO.getOutStaionCode());//出库站点code
+        wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());//出库站点code
         //添加明细
-        wayBill.setWayBillDetailSet(addBillItem(editWayBillDTO, wayBill));
+        wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
         return wayBill;
     }
 
@@ -225,7 +250,6 @@ public class WayBillManager {
         temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
         temp.setCreateTime(wayBill.getCreateTime());//
         temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
-
 //        temp.setWayBillStatus(wayBill.getReceivedStatus().name());//收货状态
         temp.setInStationCode(wayBill.getInStationCode());//入库站点
         temp.setOutStationCode(wayBill.getOutStationCode());//出库站点
