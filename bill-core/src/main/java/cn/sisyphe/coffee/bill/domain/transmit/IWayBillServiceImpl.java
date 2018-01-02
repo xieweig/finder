@@ -66,7 +66,6 @@ public class IWayBillServiceImpl implements IWayBillService {
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
 
-
             Predicate predicate = cb.conjunction();
             //左连接
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
@@ -74,9 +73,15 @@ public class IWayBillServiceImpl implements IWayBillService {
             List<Expression<Boolean>> expressions = predicate.getExpressions();
             //billCode
             if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
-                expressions.add(cb.like(root.<String>get("billCode"),
-                        "%" + conditionQueryWayBill.getWayBillCode() + "%"));
+                expressions.add(cb.like(root.<String>get("billCode"), "%" + conditionQueryWayBill.getWayBillCode() + "%"));
             }
+
+            //出库单号
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStorageBillCode())) {
+                expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
+                        "%" + conditionQueryWayBill.getOutStorageBillCode() + "%"));
+            }
+
 
             // 入库站点
             if (!StringUtils.isEmpty(conditionQueryWayBill.getInStationCode())) {

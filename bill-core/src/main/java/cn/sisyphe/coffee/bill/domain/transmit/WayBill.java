@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -18,6 +19,8 @@ import java.util.Set;
 public class WayBill extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
+    // @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "wayBill")
+    @org.hibernate.annotations.ForeignKey(name = "none")
     private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
 
 
@@ -26,14 +29,18 @@ public class WayBill extends BaseEntity {
     private Long billId;
 
 
-    @Column(length = 255, nullable = false)
+    /**
+     * 单据code
+     * tip: 必须加name="bill_code" ,否则子类找不到外键
+     */
+    @Column(name = "bill_code", length = 255, nullable = false)
     private String billCode;
 
 
     /**
      * 出库站点
      */
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String outStationCode;
 
     /**
@@ -60,13 +67,13 @@ public class WayBill extends BaseEntity {
     /**
      * 物流公司名称
      */
-    @Column(nullable = false)
+    @Column(length = 255, nullable = false)
     private String logisticsCompanyName;
 
     /**
      * 目的地
      */
-    @Column(nullable = false)
+    @Column(length = 255, nullable = false)
     private String destination;
 
 
@@ -83,27 +90,77 @@ public class WayBill extends BaseEntity {
     private Long totalWeight;
 
     /**
-     * 备注
+     * 操作人code
      */
-    @Column
-    private String memo;
-
-    @Column
+    @Column(length = 255)
     private String operatorCode;
 
     /**
      * 操作人姓名
      */
-    @Column
+    @Column(length = 255)
     private String operatorName;
-
 
     /**
      * 收货状态
      */
-    @Column
+    @Column(length = 255)
     @Enumerated(value = EnumType.STRING)
     private ReceivedStatusEnum receivedStatus;
+
+    /**
+     * 备注
+     */
+    @Column(length = 255)
+    private String memo;
+
+
+    /**
+     * @param wayBillDetail
+     */
+    public void removeItem(WayBillDetail wayBillDetail) {
+
+
+        System.out.println(" 需要删除的  id:" + wayBillDetail.getBillDetailId());/// all id
+        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
+            return;
+        }
+        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
+        while (it.hasNext()) {
+            WayBillDetail item = it.next();
+            System.out.println(" item  id:" + item.getBillDetailId());/// all id
+
+            if (item != null && item.getBillDetailId() != null)
+                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
+                    //
+                    System.out.println("delete ............." + item.getBillDetailId());
+                    it.remove();
+                }
+        }
+    }
+
+    /**
+     * @param wayBillDetail
+     */
+    public void addOrUpdateItem(WayBillDetail wayBillDetail) {
+
+        System.out.println(" update : " + wayBillDetail);
+        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
+            return;
+        }
+        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
+        while (it.hasNext()) {
+            WayBillDetail item = it.next();
+            if (item != null && item.getBillDetailId() != null)
+                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
+                    //
+                    System.out.println("delete ............." + item.getBillDetailId());
+                    it.remove();
+                }
+        }
+        System.out.println("add........" + wayBillDetail.getBillDetailId());
+        this.getWayBillDetailSet().add(wayBillDetail);
+    }
 
 
     /**
@@ -251,14 +308,20 @@ public class WayBill extends BaseEntity {
     @Override
     public String toString() {
         return "WayBill{" +
-                "deliveryTime=" + deliveryTime +
+                ", billId=" + billId +
+                ", billCode='" + billCode + '\'' +
+                ", outStationCode='" + outStationCode + '\'' +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", deliveryTime=" + deliveryTime +
                 ", planArrivalTime=" + planArrivalTime +
                 ", logisticsCompanyName='" + logisticsCompanyName + '\'' +
                 ", destination='" + destination + '\'' +
                 ", amountOfPackages=" + amountOfPackages +
                 ", totalWeight=" + totalWeight +
-                ", memo='" + memo + '\'' +
+                ", operatorCode='" + operatorCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +
+                ", receivedStatus=" + receivedStatus +
+                ", memo='" + memo + '\'' +
                 '}';
     }
 }
