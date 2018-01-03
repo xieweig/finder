@@ -227,7 +227,6 @@ public class WayBillServiceImpl implements WayBillService {
         }
 
         //
-
         if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
             throw new DataException("50003", "已经确定了收货不能修改");
         }
