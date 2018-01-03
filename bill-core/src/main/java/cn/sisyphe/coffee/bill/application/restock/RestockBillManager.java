@@ -4,11 +4,14 @@ import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
+import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.CargoDTO;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -36,27 +40,29 @@ public class RestockBillManager {
     private ApplicationEventPublisher applicationEventPublisher;
     @Resource
     private RestockBillRepository restockBillRepository;
-
+    //@config @bean @resource
     private BillFactory billFactory = new BillFactory();
 
     private BillServiceFactory billServiceFactory = new BillServiceFactory();
 
-    public void saveBySelf(SaveBySelfDTO saveBySelfDTO) {
-        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
-        BeanUtils.copyProperties(saveBySelfDTO, restockBill);
-        restockBill.setBillState(BillStateEnum.SAVED);
+    private void save_init(RestockBill restockBill){
+        //restockBill.setBillState(BillStateEnum.SAVED);这一步会在set Behavior中
+        // 初始化单据为：退库 出库单
         restockBill.setBillType(BillTypeEnum.RESTOCK);
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
-        // restockBill.setBillDetails(new HashSet<>());
-
+        //根据单据生成对应的BillServer;
         RestockBillService billService = (RestockBillService) billServiceFactory.createBillService(restockBill);
+        //会setBillBehavior;
         billService.setBillBehavior(new SaveBehavior());
         billService.setBillRepository(restockBillRepository);
         billService.save();
         billService.sendEvent(applicationEventPublisher);
 
-
-        //   BillServiceFactory factory = new
+    }
+    public void saveBySelf(SaveBySelfDTO saveBySelfDTO) {
+        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
+        BeanUtils.copyProperties(saveBySelfDTO, restockBill);
+        this.save_init(restockBill);
 
     }
 
@@ -65,6 +71,14 @@ public class RestockBillManager {
     }
 
     public void saveByRawMaterial(SaveByRawMaterialDTO saveByRawMaterialDTO) {
+        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
+        /**
+         *
+         *notes :BeanUtils.copyProperties(saveByRawMaterialDTO, restockBill);
+         *    内部转换属性方法
+         */
+        this.copyPropertiesFrom(saveByRawMaterialDTO, restockBill);
+        this.save_init(restockBill);
 
     }
 
@@ -72,6 +86,21 @@ public class RestockBillManager {
 
 
         return null;
+    }
+    private Set<RestockBillDetail> listToSet(List<RestockBillDetail> list){
+        return null;
+    }
+    private void copyPropertiesFrom(SaveByRawMaterialDTO saveByRawMaterialDTO, RestockBill restockBill){
+
+        restockBill.setBillCode(saveByRawMaterialDTO.getBillCode());
+        //下句不正确 应该是存取入库代码
+        restockBill.setRootCode(saveByRawMaterialDTO.getStorageCode());
+
+        restockBill.setRemarks(saveByRawMaterialDTO.getRemarks());
+
+        restockBill.setCreateTime(saveByRawMaterialDTO.getCreateTime());
+
+        //restockBill.setOutLocation();
     }
 
 
