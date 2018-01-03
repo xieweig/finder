@@ -26,7 +26,7 @@ import java.math.BigDecimal;
 public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
-    private String planName;
+    private String billName;
 
 
     @Column
@@ -68,12 +68,12 @@ public class PlanBill extends Bill<PlanBillDetail> {
     }
 
 
-    public String getPlanName() {
-        return planName;
+    public String getBillName() {
+        return billName;
     }
 
-    public void setPlanName(String planName) {
-        this.planName = planName;
+    public void setBillName(String billName) {
+        this.billName = billName;
     }
 
 

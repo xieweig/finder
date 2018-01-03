@@ -7,8 +7,14 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayloadDetail;
-import cn.sisyphe.coffee.bill.domain.plan.strategy.*;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.AdjustStrategy;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.DeliveryStrategy;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.RestockStrategy;
+import cn.sisyphe.coffee.bill.domain.plan.strategy.ReturnedStrategy;
+import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +52,7 @@ public class PlanPurpose extends AbstractBillPurpose {
             planBillPayload.setBasicEnum(bill.getBasicEnum());
             planBillPayload.setMemo(bill.getMemo());
             planBillPayload.setParentBillCode(bill.getBillCode());
+            //TODO 子计划单号的规则还会更新，原型还没有确定
             planBillPayload.setBillCode(bill.getBillCode() + "_" + index);
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 PlanBillPayloadDetail planBillPayloadDetail = new PlanBillPayloadDetail();
@@ -57,10 +64,11 @@ public class PlanPurpose extends AbstractBillPurpose {
             index++;
 
         }
-
+        List<PlanBill> splitedPlanBills = new ArrayList<>();
         for (PlanBillPayload payload : payloads) {
-            payload.doCast(getBillService().getBillRepository());
+            splitedPlanBills.addAll(payload.doCast());
         }
+        ((PlanBillRepository) getBillService().getBillRepository()).save(splitedPlanBills);
 
     }
 

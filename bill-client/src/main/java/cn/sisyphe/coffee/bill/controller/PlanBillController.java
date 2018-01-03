@@ -32,8 +32,13 @@ public class PlanBillController {
     @ApiOperation(value = "新建总部计划，暂存")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
-        planBillManager.create(planBillDTO);
-        return null;
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", planBillManager.create(planBillDTO));
+        } catch (Exception e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "提交总部计划")
@@ -60,6 +65,13 @@ public class PlanBillController {
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/pass", method = RequestMethod.GET)
     public ResponseResult pass(@RequestParam("billCode") String billCode) {
+        planBillManager.pass(billCode);
+        return null;
+    }
+
+    @ApiOperation(value = "总部计划查询")
+    @RequestMapping(path = "/pass", method = RequestMethod.GET)
+    public ResponseResult query( String billCode) {
         planBillManager.pass(billCode);
         return null;
     }
