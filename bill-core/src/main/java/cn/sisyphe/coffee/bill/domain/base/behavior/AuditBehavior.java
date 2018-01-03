@@ -58,6 +58,10 @@ public class AuditBehavior extends AbstractBillBehavior {
 
     }
 
+    public AuditBehavior(boolean isSuccess){
+
+    }
+
     /**
      * 执行具体操作类型
      */

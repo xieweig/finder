@@ -53,4 +53,14 @@ public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBil
         }, new PageRequest(conditions.getPage(), conditions.getPageSize()));
     }
 
+    /**
+     * 按单号查询
+     *
+     * @param billCode
+     * @return
+     */
+    @Override
+    public RestockBill findOneByBillCode(String billCode) {
+        return null;
+    }
 }

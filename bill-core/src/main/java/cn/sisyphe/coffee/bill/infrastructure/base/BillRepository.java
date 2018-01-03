@@ -19,11 +19,10 @@ public interface BillRepository<T extends Bill> {
     void save(T bill);
 
     /**
-     * 查询
-     * @param id
+     * 按单号查询
+     * @param billCode
      * @return
      */
-    T findOne(Long id);
-
+    T findOneByBillCode(String billCode);
 }
 

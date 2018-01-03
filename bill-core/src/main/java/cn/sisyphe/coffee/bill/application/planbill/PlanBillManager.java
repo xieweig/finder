@@ -77,7 +77,7 @@ public class PlanBillManager {
      * @param planBillDTO 前端传过来的DTO
      */
     public void submit(PlanBillDTO planBillDTO) {
-        PlanBill planBill = planBillRepository.findByBillCode(planBillDTO.getBillCode());
+        PlanBill planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
         map(planBill, planBillDTO);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
@@ -87,7 +87,7 @@ public class PlanBillManager {
 
     //查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
     public void open(String billCode) {
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
         billService.dispose(new OpenBehavior());
@@ -96,7 +96,7 @@ public class PlanBillManager {
 
     //审核不通过
     public void unPass(String billCode) {
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
         billService.dispose(new AuditBehavior(billService, Constant.AUDIT_FAILURE_VALUE));
@@ -105,7 +105,7 @@ public class PlanBillManager {
 
     //审核通过，然后进行计划单切片
     public void pass(String billCode) {
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         setTransferLocation(planBill);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);

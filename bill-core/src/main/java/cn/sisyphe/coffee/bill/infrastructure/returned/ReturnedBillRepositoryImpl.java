@@ -19,7 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReturnedBillRepositoryImpl extends AbstractBillRepository<ReturnedBill> implements ReturnedBillRepository {
 
-    @Autowired
-    private JPAReturnedBillRepository jpaReturnedBillRepository;
-
+    /**
+     * 按单号查询
+     *
+     * @param billCode
+     * @return
+     */
+    @Override
+    public ReturnedBill findOneByBillCode(String billCode) {
+        return null;
+    }
 }

@@ -22,13 +22,16 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
         jpaPlanBillRepository.save(bill);
     }
 
+    /**
+     * 按单号查询
+     *
+     * @param billCode
+     * @return
+     */
     @Override
-    public PlanBill findOne(Long id) {
-        return jpaPlanBillRepository.findOne(id);
-    }
-
-    @Override
-    public PlanBill findByBillCode(String billCode) {
+    public PlanBill findOneByBillCode(String billCode) {
         return jpaPlanBillRepository.findByBillCode(billCode);
     }
+
+
 }

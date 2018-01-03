@@ -10,5 +10,4 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
  */
 public interface PlanBillRepository extends BillRepository<PlanBill> {
 
-    PlanBill findByBillCode(String billCode);
 }

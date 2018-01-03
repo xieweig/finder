@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill;
 
+import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
+import cn.sisyphe.coffee.bill.application.purchase.PurchaseManager;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
@@ -42,41 +44,48 @@ public class CoreApplication implements CommandLineRunner {
 
     }
 
+
+    @Autowired
+    private PurchaseManager purchaseManager;
+
     @Override
     public void run(String... strings) {
 
-//        String billCode = new Date().toString();
-//
-//
-//
-//        // 1.创建进货单主表
-//        BillFactory billFactory = new BillFactory();
-//        PurchaseBill bill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
-//        bill.setBillCode(billCode);
-//        bill.setBillPurpose(BillPurposeEnum.InStorage);
-//
-//        // 设置站点
-//        Station station = new Station("CQ11");
-//        station.setStationName("三峡店");
-//        bill.setInLocation(station);
-//
-//
-//        // 2.进货单明细
-//        PurchaseBillDetail detail = new PurchaseBillDetail();
-//        Set<PurchaseBillDetail> billDetails = new HashSet<PurchaseBillDetail>();
-//
-//        // 2.1 设置原料和货物
-//        RawMaterial rawMaterial = new RawMaterial("R001");
-//        rawMaterial.setCargo(new Cargo("C002"));
-//        detail.setGoods(rawMaterial);
-//
-//        detail.setAmount(1111);
-//        detail.setPackageCode("000");
-//        billDetails.add(detail);
-//        bill.setBillDetails(billDetails);
-//
-//
-//        // 3.创建单据服务
+           // System.err.println(purchaseManager.findOne("Wed Jan 03 10:13:18 CST 2018"));
+
+        String billCode = new Date().toString();
+
+
+
+        // 1.创建进货单主表
+        BillFactory billFactory = new BillFactory();
+        PurchaseBill bill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
+        bill.setBillCode(billCode);
+        bill.setBillPurpose(BillPurposeEnum.InStorage);
+
+        // 设置站点
+        Station station = new Station("CQ11");
+        station.setStationName("三峡店");
+        bill.setInLocation(station);
+
+
+        // 2.进货单明细
+        PurchaseBillDetail detail = new PurchaseBillDetail();
+        Set<PurchaseBillDetail> billDetails = new HashSet<PurchaseBillDetail>();
+
+        // 2.1 设置原料和货物
+        RawMaterial rawMaterial = new RawMaterial("R001");
+        rawMaterial.setCargo(new Cargo("C002"));
+        detail.setGoods(rawMaterial);
+
+        detail.setAmount(1111);
+        detail.setPackageCode("000");
+        billDetails.add(detail);
+        bill.setBillDetails(billDetails);
+
+
+        // 3.创建单据服务
+        purchaseManager.save(bill);
 //        BillServiceFactory serviceFactory = new BillServiceFactory();
 //        AbstractBillService billService = serviceFactory.createBillService(bill);
 //        // 4.处理保存动作
@@ -93,8 +102,8 @@ public class CoreApplication implements CommandLineRunner {
 //
 //        // 6.发送事件
 //        billService.sendEvent(applicationEventPublisher);
-//
-//        System.err.println(purchaseBillRepository.findOneByBillCode(billCode).getBillDetails());
+
+        System.err.println(purchaseBillRepository.findOneByBillCode(billCode).getBillDetails());
     }
 }
 
