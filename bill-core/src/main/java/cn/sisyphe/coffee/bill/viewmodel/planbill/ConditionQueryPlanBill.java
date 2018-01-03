@@ -3,11 +3,14 @@ package cn.sisyphe.coffee.bill.viewmodel.planbill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author bifenglin
@@ -52,6 +55,8 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     private BillPurposeEnum billPurpose;
 
     private BillTypeEnum specificBillType;
+
+
 
     public BillStateEnum getBillState() {
         return billState;

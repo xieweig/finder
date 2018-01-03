@@ -9,6 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SubmitBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
@@ -24,10 +25,12 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.util.Constant;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
@@ -287,6 +290,10 @@ public class PlanBillManager {
             }
             queryPlanDetailBillDTO.setAmount(amount);
             /**
+             * 货物详情-从表
+             */
+            queryPlanDetailBillDTO.setBillDetails(planBill.getBillDetails());
+            /**
              * 规格品种--主表
              */
             queryPlanDetailBillDTO.setSpecies(billDetails.size());
@@ -318,5 +325,23 @@ public class PlanBillManager {
         return planBillDTOList;
     }
 
+    /**
+     * @param findPlanBillByBillCode
+     * @return
+     * @throws DataException
+     */
+    public PlanBill findPlanBillByBillCode(String planBillCode) {
+        PlanBill planBill = planBillQueryService.findByBillCode(planBillCode);
+/*
+        // 如果单据是打开状态，则直接返回转换后的进货单据信息
+        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
+            return mapOneToDTO(purchaseBill);
+        }
+*/
 
+        // 打开单据
+//        planBill = open(purchaseBill);
+
+        return planBill;
+    }
 }

@@ -79,4 +79,18 @@ public class PlanBillController {
         responseResult.put("content", billPage);
         return responseResult;
     }
+
+    /**
+     * 计划单据根据billCode查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "计划单据根据billCode查询")
+    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
+    public ResponseResult findPlanBillByBillCode(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        QueryPlanBillDTO billPage = planBillManager.findPlanBillByBillCode(conditionQueryPlanBill);
+        responseResult.put("content", billPage);
+        return responseResult;
+    }
 }
