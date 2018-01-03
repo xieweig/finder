@@ -40,7 +40,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据号
      */
-    @Column(unique = true)
+    @Column(unique = true, updatable = false)
     private String billCode;
 
     /**
