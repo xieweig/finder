@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -311,25 +312,26 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param billCode
      * @return
      */
-    public ResultPlanBillDTO findByBillCode(String billCode) throws DataException{
+    public ResultPlanBillDTO findByBillCode(String billCode) throws DataException {
         return planBillToResultPlanBillDTO(planBillRepository.findOneByBillCode(billCode));
     }
+
     /**
      * 将 PlanBill 转为 ResultPlanBillDTO
      *
      * @param planBill
      * @return
      */
-    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) throws DataException{
+    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) throws DataException {
         ResultPlanBillDTO resultPlanBillDTO = new ResultPlanBillDTO();
-        if(planBill==null){
+        if (planBill == null) {
             return resultPlanBillDTO;
         }
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
         resultPlanBillDTO.setBillType(planBill.getBillType());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
-        if(planBill.getBillDetails()!=null){
+        if (planBill.getBillDetails() != null) {
             Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
             for (String head : groupedPlanBillDetail.keySet()) {
                 ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
@@ -341,6 +343,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
                     ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
                     resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
                     resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
+                    resultPlanBillLocationDTO.setAmount(planBillDetail.getAmount());
                     resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
                 }
                 resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
@@ -351,7 +354,28 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return resultPlanBillDTO;
     }
 
-    private void checkSaveParam() {
-
+    /**
+     * 保存前的参数检查
+     *
+     * @param planBillDTO
+     * @throws DataException
+     */
+    private void checkCreateParam(PlanBillDTO planBillDTO) throws DataException {
+        if (StringUtils.isEmpty(planBillDTO.getBillName())) {
+            throw new DataException("", "单据名称不能为空");
+        }
+        if (StringUtils.isEmpty(planBillDTO.getBillType())) {
+            throw new DataException("", "单据类型不能为空");
+        }
+        //TODO 备注是否允许为空？ 字符长度是多少？
+        if (StringUtils.isEmpty(planBillDTO.getMemo())) {
+            throw new DataException("", "单据备注");
+        }
+        if (StringUtils.isEmpty(planBillDTO.getBasicEnum())) {
+            throw new DataException("", "计划类型不能为空");
+        }
+        if (StringUtils.isEmpty(planBillDTO.getPlanBillDetailDTOS()) || planBillDTO.getPlanBillDetailDTOS().size() <= 0) {
+            throw new DataException("", "单据明细不能为空");
+        }
     }
 }

@@ -21,7 +21,9 @@ public class PlanBillDTO {
 
     private BasicEnum basicEnum;
 
-    //审核意见
+    /**
+     * 审核意见---在审核时用
+     */
     private String auditMemo;
 
     private List<PlanBillDetailDTO> planBillDetailDTOS;
