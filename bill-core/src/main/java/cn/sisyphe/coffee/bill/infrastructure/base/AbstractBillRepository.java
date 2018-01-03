@@ -18,7 +18,7 @@ public abstract class AbstractBillRepository<T extends Bill> implements BillRepo
 
     //不能被重写，重写之后导致某些字段无法更新
     @Override
-    public final void save(T bill) {
+    public void save(T bill) {
 
         // 更新单据的关系
         bill.update();
