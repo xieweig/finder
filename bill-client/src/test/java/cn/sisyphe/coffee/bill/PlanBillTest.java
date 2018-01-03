@@ -37,7 +37,7 @@ public class PlanBillTest {
     public void findPlanBillByBillCode() {
         ConditionQueryPlanBill conditionQueryPlanBill = new ConditionQueryPlanBill();
         String billCode = "1";
-        planBillManager.findPlanBillByBillCode(billCode);
+        planBillManager.findByBillCode(billCode);
 
     }
 }

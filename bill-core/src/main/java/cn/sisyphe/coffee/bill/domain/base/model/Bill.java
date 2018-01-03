@@ -243,6 +243,10 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.auditPersonCode = auditPersonCode;
     }
 
+    public void addBillDetails(T billDetails) {
+        this.billDetails.add(billDetails);
+    }
+
     @Override
     public String toString() {
         return "Bill{" +

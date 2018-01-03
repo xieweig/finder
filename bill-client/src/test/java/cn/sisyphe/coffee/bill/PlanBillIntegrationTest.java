@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill;
 
 
+import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.PurposeBehavior;
@@ -13,12 +14,16 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,8 +45,19 @@ public class PlanBillIntegrationTest {
     @Autowired
     private PlanBillRepository planBillRepository;
 
+    @Autowired
+    private PlanBillManager planBillManager;
+
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
+
+
     @Test
     public void test1() {
+        //第一次 调剂计划单
+        //第二次 退库计划单
+        //第三次 配送计划单
         PlanBill planBill = new PlanBill();
         planBill.setBillType(BillTypeEnum.PLAN);
         planBill.setSpecificBillType(BillTypeEnum.DELIVERY);
@@ -77,7 +93,21 @@ public class PlanBillIntegrationTest {
         billService.setBillRepository(planBillRepository);
         billService.dispose(new PurposeBehavior());
         billService.save();
-        System.out.println(planBillRepository.findByBillCode("testcode3").getBillDetails().size());
+    }
+
+    @Test
+    public void findByConditionQuery() {
+        ConditionQueryPlanBill conditionQueryPlanBill = new ConditionQueryPlanBill();
+        conditionQueryPlanBill.setPage(1);
+        conditionQueryPlanBill.setPageSize(100);
+        planBillManager.findPageByCondition(conditionQueryPlanBill);
+    }
+
+    @Test
+    public void findByBillCode() {
+        String billCode = "ADJUST20180102173046";
+        ResultPlanBillDTO resultPlanBillDTO = planBillManager.findByBillCode(billCode);
+        System.out.println(resultPlanBillDTO);
     }
 
 }
