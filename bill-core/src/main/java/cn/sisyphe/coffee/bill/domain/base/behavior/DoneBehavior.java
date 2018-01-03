@@ -18,7 +18,7 @@ public class DoneBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillStateEnum[] allowableStates() {
-        return new BillStateEnum[]{BillStateEnum.AUDIT_SUCCESS};
+        return new BillStateEnum[]{BillStateEnum.IN_STORAGING, BillStateEnum.OUT_STORAGING};
     }
 
     /**

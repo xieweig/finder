@@ -143,6 +143,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(bill.getBillCode());
         // 设置入库时间
         purchaseBill.setInWareHouseTime(new Date());
+        // 处理完成
         done(bill);
     }
 
