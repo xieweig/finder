@@ -40,7 +40,6 @@ public class PlanBillIntegrationTest {
     @Autowired
     private PlanBillRepository planBillRepository;
 
-
     @Test
     public void test1() {
         PlanBill planBill = new PlanBill();
@@ -59,7 +58,6 @@ public class PlanBillIntegrationTest {
         planBillDetail.setAmount(2);
         planBill.setInLocation(inLocation);
         planBill.setOutLocation(outLocation);
-
         RawMaterial rawMaterial1 = new RawMaterial("YLCODE1");
         planBillDetail.setGoods(rawMaterial1);
 

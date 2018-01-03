@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class BillDetailDTO {
     /**
-     * 最小单位数量
+     * 实收数量-最小单位数量
      */
     private Integer amount;
 
@@ -23,16 +23,6 @@ public class BillDetailDTO {
      * 包号
      */
     private String packageCode;
-
-    /**
-     * 标准单位编码
-     */
-    private String standardUnitCode;
-
-    /**
-     * 规格编码
-     */
-    private String measurementCode;
 
     /**
      * 生产日期
@@ -44,11 +34,6 @@ public class BillDetailDTO {
      * 单位进价
      */
     private BigDecimal unitPrice;
-
-    /**
-     * 实收数量
-     */
-    private Integer actualNumber;
 
     /**
      * 发货数量
@@ -86,22 +71,6 @@ public class BillDetailDTO {
         this.packageCode = packageCode;
     }
 
-    public String getStandardUnitCode() {
-        return standardUnitCode;
-    }
-
-    public void setStandardUnitCode(String standardUnitCode) {
-        this.standardUnitCode = standardUnitCode;
-    }
-
-    public String getMeasurementCode() {
-        return measurementCode;
-    }
-
-    public void setMeasurementCode(String measurementCode) {
-        this.measurementCode = measurementCode;
-    }
-
     public Date getDateInProduced() {
         return dateInProduced;
     }
@@ -116,14 +85,6 @@ public class BillDetailDTO {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    public Integer getActualNumber() {
-        return actualNumber;
-    }
-
-    public void setActualNumber(Integer actualNumber) {
-        this.actualNumber = actualNumber;
     }
 
     public Integer getShippedNumber() {
@@ -163,11 +124,8 @@ public class BillDetailDTO {
         return "BillDetailDTO{" +
                 "amount=" + amount +
                 ", packageCode='" + packageCode + '\'' +
-                ", standardUnitCode='" + standardUnitCode + '\'' +
-                ", measurementCode='" + measurementCode + '\'' +
                 ", dateInProduced=" + dateInProduced +
                 ", unitPrice=" + unitPrice +
-                ", actualNumber=" + actualNumber +
                 ", shippedNumber=" + shippedNumber +
                 ", differenceNumber=" + differenceNumber +
                 ", differencePrice=" + differencePrice +

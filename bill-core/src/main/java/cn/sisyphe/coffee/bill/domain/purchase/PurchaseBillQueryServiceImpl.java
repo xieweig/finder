@@ -35,33 +35,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
     private UserRepository userRepository;
 
     /**
-     * 多条件查询
-     *
-     * @param conditionQueryPurchaseBill 查询条件
-     * @return
-     */
-    @Override
-    public Page<PurchaseBill> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
-        // 组装页面
-        Pageable pageable = new PageRequest(conditionQueryPurchaseBill.getPage() - 1, conditionQueryPurchaseBill.getPageSize());
-        // SpringCloud调用查询供应商编码
-        List<String> supplierCodeList = supplierRepository.findByLikeSupplierName(conditionQueryPurchaseBill.getSupplierName());
-        conditionQueryPurchaseBill.setSupplierCodeList(supplierCodeList);
-        // SpringCloud调用查询录单人编码
-        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
-        conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
-
-        Page<PurchaseBill> purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
-
-        // 改变页码导致的页面为空时，获取最后一页
-        if (purchaseBillPage.getContent().size() < 1 && purchaseBillPage.getTotalElements() > 0) {
-            pageable = new PageRequest(purchaseBillPage.getTotalPages() - 1, conditionQueryPurchaseBill.getPageSize());
-            purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
-        }
-        return purchaseBillPage;
-    }
-
-    /**
      * 根据单据编码查询单据信息
      *
      * @param billCode 单据编码
@@ -78,6 +51,30 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
         } else {
             throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
         }
+    }
+    
+    /**
+     * 多条件查询
+     *
+     * @param conditionQueryPurchaseBill 查询条件
+     * @return
+     */
+    @Override
+    public Page<PurchaseBill> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
+        // 组装页面
+        Pageable pageable = new PageRequest(conditionQueryPurchaseBill.getPage() - 1, conditionQueryPurchaseBill.getPageSize());
+        // SpringCloud调用查询录单人编码
+        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
+        conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
+
+        Page<PurchaseBill> purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
+
+        // 改变页码导致的页面为空时，获取最后一页
+        if (purchaseBillPage.getContent().size() < 1 && purchaseBillPage.getTotalElements() > 0) {
+            pageable = new PageRequest(purchaseBillPage.getTotalPages() - 1, conditionQueryPurchaseBill.getPageSize());
+            purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
+        }
+        return purchaseBillPage;
     }
 
     /**
@@ -133,9 +130,8 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 供应商
              */
-            if (conditionQueryPurchaseBill.getSupplierCodeList() != null
-                    && conditionQueryPurchaseBill.getSupplierCodeList().size() > 0) {
-                expressions.add(root.get("supplierCode").as(String.class).in(conditionQueryPurchaseBill.getSupplierCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getSupplierCode())){
+                expressions.add(cb.equal(root.get("supplierCode").as(String.class), conditionQueryPurchaseBill.getSupplierCode()));
             }
             /**
              * 拼接状态

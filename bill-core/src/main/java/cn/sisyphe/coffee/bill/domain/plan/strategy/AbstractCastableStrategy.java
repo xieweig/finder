@@ -7,9 +7,9 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayloadDetail;
-import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.Plan;
@@ -23,7 +23,7 @@ public abstract class AbstractCastableStrategy {
 
 
     @SuppressWarnings("unchecked")
-    public abstract void cast(PlanBillPayload planBillPayload, BillRepository billRepository);
+    public abstract List<PlanBill> cast(PlanBillPayload planBillPayload);
 
 
     PlanBill generatePlanBill(PlanBillPayload planBillPayload, BillTypeEnum billTypeEnum, Executor executor) {
@@ -34,7 +34,8 @@ public abstract class AbstractCastableStrategy {
         planBill.setOutLocation(planBillPayload.getOutLocation());
         planBill.setBillPurpose(Plan);
         planBill.setBasicEnum(planBillPayload.getBasicEnum());
-        planBill.setParentBillCode(planBillPayload.getParentBillCode());
+        planBill.setRootCode(planBillPayload.getParentBillCode());
+        planBill.setSourceCode(planBillPayload.getParentBillCode());
         planBill.setBillCode(planBillPayload.getBillCode());
         Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {

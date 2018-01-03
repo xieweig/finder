@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.transmit;
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -35,6 +36,15 @@ public class WayBillServiceImpl implements WayBillService {
 
 
     /**
+     * @param billCode
+     * @return
+     */
+    @Override
+    public WayBill findOneBillByCode(String billCode) {
+        return wayBillRepository.findOneByCode(billCode);
+    }
+
+    /**
      * 分页查询运单
      *
      * @param conditionQueryWayBill
@@ -66,6 +76,8 @@ public class WayBillServiceImpl implements WayBillService {
     private Page<WayBill> pageCondition(final ConditionQueryWayBill conditionQueryWayBill,
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
+            // 去重复
+            query.distinct(true);
 
             Predicate predicate = cb.conjunction();
             //左连接
@@ -77,7 +89,6 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.like(root.<String>get("billCode"),
                         "%" + conditionQueryWayBill.getWayBillCode() + "%"));
             }
-
             //出库单号
             if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStorageBillCode())) {
                 expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
@@ -93,7 +104,6 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.equal(root.<String>get("outStationCode"),
                         "" + conditionQueryWayBill.getOutStationCode() + ""));
             }
-
             //物流公司名称
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
                 expressions.add(cb.like(root.<String>get("logisticsCompanyName"),
@@ -110,23 +120,52 @@ public class WayBillServiceImpl implements WayBillService {
                         "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
             }
             // 录单时间
-            if (conditionQueryWayBill.getCreateTime() != null) {
+            if (conditionQueryWayBill.getCreateStartTime() != null &&
+                    conditionQueryWayBill.getCreateEndTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
                 expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getCreateStartTime(),
                         conditionQueryWayBill.getCreateEndTime()));
             }
             // 发货时间
-            if (conditionQueryWayBill.getDeliverTime() != null) {
+            if (conditionQueryWayBill.getDeliveryStartTime() != null &&
+                    conditionQueryWayBill.getDeliveryEndTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
                 expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
                         conditionQueryWayBill.getDeliveryEndTime()));
             }
-
+            //运货件数
+            if (conditionQueryWayBill.getAmountOfPackages() != null) {
+                expressions.add(cb.equal(root.<String>get("amountOfPackages"),
+                        "" + conditionQueryWayBill.getAmountOfPackages() + ""));
+            }
             //分组查询
             query.groupBy(root.get("billCode"));
-            //
             return predicate;
         }, pageable);
+
+
+    }
+
+
+    /**
+     * 收货确定
+     *
+     * @param billCode
+     */
+    @Override
+    public void confirmReceiptBill(String billCode) {
+
+        WayBill wayBill = wayBillRepository.findOneByCode(billCode);
+        if (wayBill == null) {
+            throw new DataException("50001", "单据不存在不能确认收货");
+        }
+        //
+        if (wayBill.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
+            throw new DataException("50002", "已经确定收货了");
+        }
+        wayBill.setReceivedStatus(ReceivedStatusEnum.IS_RECEIVED);
+        //
+        wayBillRepository.save(wayBill);
 
 
     }
@@ -151,7 +190,8 @@ public class WayBillServiceImpl implements WayBillService {
 
         // TODO: 2017/12/29  修改方法实现
         //1先查询一条数据库里的内容
-        WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        // WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        WayBill wayBillDB = wayBillRepository.findOneByCode(wayBill.getBillCode());
         //2设置值
         //公司名称
         if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
@@ -185,10 +225,16 @@ public class WayBillServiceImpl implements WayBillService {
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
         }
+
+        //
+        if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
+            throw new DataException("50003", "已经确定了收货不能修改");
+        }
         //3保存
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;
     }
+
 
     /**
      * 条件查询

@@ -20,13 +20,7 @@ public class SubmitBehavior extends AbstractBillBehavior {
     public void doAction() {
         Bill bill = getBillService().getBill();
         if (bill != null) {
-            if (bill.getBillState().equals(BillStateEnum.OPEN)
-                    || bill.getBillState().equals(BillStateEnum.SAVED)
-                    || bill.getBillState().equals(BillStateEnum.SUBMITTED)) {
-                bill.setBillState(BillStateEnum.SUBMITTED);
-            } else {
-                throw new DataException("20002", "当前状态不能提交");
-            }
+            bill.setBillState(BillStateEnum.SUBMITTED);
         } else {
             throw new DataException("20404", "单据为空");
         }

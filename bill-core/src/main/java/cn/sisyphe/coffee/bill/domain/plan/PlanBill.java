@@ -26,7 +26,7 @@ import java.math.BigDecimal;
 public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
-    private String planName;
+    private String billName;
 
 
     @Column
@@ -60,20 +60,17 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private BigDecimal progress;
 
-    @Column
-    private String parentBillCode;
-
     public PlanBill() {
         setBillType(BillTypeEnum.PLAN);
     }
 
 
-    public String getPlanName() {
-        return planName;
+    public String getBillName() {
+        return billName;
     }
 
-    public void setPlanName(String planName) {
-        this.planName = planName;
+    public void setBillName(String billName) {
+        this.billName = billName;
     }
 
 
@@ -139,13 +136,5 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setAuditMemo(String auditMemo) {
         this.auditMemo = auditMemo;
-    }
-
-    public String getParentBillCode() {
-        return parentBillCode;
-    }
-
-    public void setParentBillCode(String parentBillCode) {
-        this.parentBillCode = parentBillCode;
     }
 }

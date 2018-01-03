@@ -4,12 +4,11 @@ import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 运单
@@ -43,45 +42,27 @@ public class WayBillController {
     @RequestMapping(path = "/updateWayBill", method = RequestMethod.POST)
     public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        wayBillManager.updateWayBillWithDTO(editWayBillDTO);
+        try {
+            wayBillManager.updateWayBillWithDTO(editWayBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 
-    /**
-     * 删除单个运单(不同权限的操作)
-     */
-    @ApiOperation(value = "删除单个运单，不同权限的操作")
-    @RequestMapping(path = "/deleteWayBillById", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillById(@RequestParam String wayBillItemId) {
-        ResponseResult responseResult = new ResponseResult();
-
-        return responseResult;
-    }
 
     /**
-     * 批量删除运单(不同权限的操作)
+     * * 查询单个运单跟踪信息
+     * *
+     * * @param billCode
+     * * @param billId
+     * * @return
      */
-    @ApiOperation(value = "批量删除运单，不同权限的操作")
-    @RequestMapping(path = "/deleteWayBillByIds", method = RequestMethod.POST)
-    public ResponseResult deleteWayBillByIds(@RequestParam List<String> wayBillItemIds) {
-        ResponseResult responseResult = new ResponseResult();
-
-        return responseResult;
-    }
-
-    /**
-     * 查询单个运单跟踪信息
-     *
-     * @param billCode
-     * @param billId
-     * @return
-     */
-    @ApiOperation(value = "根据运单Id或者运单code查询单个运单跟踪信息")
+    @ApiOperation(value = "根据运单code查询单个运单跟踪信息")
     @RequestMapping(path = "/findOneWayBill", method = RequestMethod.GET)
-    public ResponseResult findOneWayBill(@RequestParam(required = false) String billCode
-            , @RequestParam(required = false) Long billId) {
+    public ResponseResult findOneWayBill(@RequestParam(required = false) String id) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("wayBill", wayBillManager.findOneWayBill(billId, billCode));
+        responseResult.put("wayBill", wayBillManager.findOneWayBill(id));
         return responseResult;
     }
 
@@ -95,10 +76,29 @@ public class WayBillController {
     @RequestMapping(path = "/findWayBillByConditions", method = RequestMethod.POST)
     public ResponseResult findWayBillByConditions(@RequestBody ConditionQueryWayBill conditionQueryWayBill) {
         ResponseResult responseResult = new ResponseResult();
-        //findPageByCondition
+
         responseResult.put("wayBillList", wayBillManager.findPageByCondition(conditionQueryWayBill));
         return responseResult;
     }
 
+
+    /**
+     * 确认收货
+     *
+     * @param wayBillCode
+     * @return
+     */
+    @ApiOperation(value = "运单确认收货")
+    @RequestMapping(path = "/confirmReceiptBill", method = RequestMethod.GET)
+    public ResponseResult confirmReceiptBill(@RequestParam String wayBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            wayBillManager.confirmReceiptBill(wayBillCode);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+
+        return responseResult;
+    }
 
 }

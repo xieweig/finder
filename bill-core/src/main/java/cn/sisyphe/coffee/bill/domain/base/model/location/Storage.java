@@ -17,6 +17,8 @@ public class Storage extends AbstractLocation {
      */
     private String storageName;
 
+    public Storage() {
+    }
 
     public Storage(String storageCode) {
         this.storageCode = storageCode;

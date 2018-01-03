@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -19,8 +20,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,6 +40,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据号
      */
+    @Column(unique = true)
     private String billCode;
 
     /**

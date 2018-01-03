@@ -7,17 +7,13 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
  */
 public enum StationType {
 
-    /**
-     * 总部
-     */
-    HQ,
-
     //门店
     STORE,
 
     //物流
     LOGISTICS,
 
+    //仅用入DTO的数据转换，请勿用于任何业务逻辑
     //供应商
     SUPPLIER
 

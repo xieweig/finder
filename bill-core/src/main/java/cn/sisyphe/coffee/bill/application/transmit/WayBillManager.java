@@ -29,6 +29,7 @@ public class WayBillManager {
     @Autowired
     private WayBillService iWayBillService;
 
+
     /**
      * 根据多条件查询运单单据信息
      *
@@ -47,33 +48,43 @@ public class WayBillManager {
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
+        //queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
+        // Long i = wayBillPage.getTotalElements();
         queryWayBillDTO.setContent(wayBillDTOList);
         return queryWayBillDTO;
     }
 
 
     /**
+     * 确认收货
+     *
+     * @param billCode
+     */
+    public void confirmReceiptBill(String billCode) {
+
+        // 修改运单状态
+        iWayBillService.confirmReceiptBill(billCode);
+    }
+
+
+    /**
      * 条件查找单个运单
      *
-     * @param billId
      * @param billCode
      * @return
      */
-    public EditWayBillDTO findOneWayBill(Long billId, String billCode) {
-        EditWayBillDTO editWayBillDTO = null;
+    public EditWayBillDTO findOneWayBill(String billCode) {
 
-        WayBill wayBill = new WayBill();
-        wayBill.setBillId(billId);// id
-        wayBill.setBillCode(billCode);
-
-        List<WayBill> wayBills = iWayBillService.findByConditions(wayBill);
-        if (!wayBills.isEmpty() && wayBills.size() > 0) {
-            WayBill bill = wayBills.get(0);
-            //转换DTO
-            return billConvertTOEditWayBillDTO(bill);
+        WayBill wayBill = null;
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("50001", "参数为空");
         }
-        return editWayBillDTO;
+        wayBill = iWayBillService.findOneBillByCode(billCode);
+        //
+        //转换DTO
+        return billConvertTOEditWayBillDTO(wayBill);
+
     }
 
     /**
@@ -83,6 +94,9 @@ public class WayBillManager {
      * @return
      */
     private EditWayBillDTO billConvertTOEditWayBillDTO(WayBill wayBill) {
+        if (wayBill == null) {
+            return null;
+        }
         EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
 
         editWayBillDTO.setBillId(wayBill.getBillId());//id
@@ -118,7 +132,9 @@ public class WayBillManager {
             wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
             wayBillDetailDTO.setTotalAmount(wayBillDetail.getTotalAmount());// 数量
             wayBillDetailDTO.setTotalCount(wayBillDetail.getTotalCount());// 品种
-            wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
+            if (wayBillDetail.getPackAgeTypeEnum() != null) {
+                wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
+            }
             wayBillDetailDTO.setPackageNumbers(wayBillDetail.getPackageCode());//包号
             wayBillDetailDTO.setSinglePacking(wayBillDetail.getSinglePacking());//是否单独打包
 
@@ -126,7 +142,7 @@ public class WayBillManager {
         }
         //
         editWayBillDTO.setEditWayBillDetailDTOList(editWayBillDetailDTOList);
-
+        //
         return editWayBillDTO;
     }
 
@@ -164,6 +180,7 @@ public class WayBillManager {
         WayBill wayBill = convertDtoToWayBill(editWayBillDTO);
         //code
         if (StringUtils.isEmpty(wayBill.getBillCode())) {//
+            //
             wayBill.setBillCode("YD" + UUID.randomUUID().toString());
         }
         wayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);// 收货状态
@@ -199,8 +216,6 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
         //添加明细
-        //Set<WayBillDetail> wayBillDetails = addBillItem(editWayBillDTO, wayBill);//
-        //wayBill.setWayBillDetailSetAddOrUpdate(wayBillDetails);// update
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
         return wayBill;
     }
@@ -245,19 +260,20 @@ public class WayBillManager {
         Set<WayBillDetail> billDetails = new HashSet<WayBillDetail>();
         //取DTO
         List<EditWayBillDetailDTO> editWayBillDetailDTOList = editWayBillDTO.getEditWayBillDetailDTOList();
-
         if (editWayBillDetailDTOList == null || editWayBillDetailDTOList.isEmpty()) {
             return billDetails;
         }
         for (EditWayBillDetailDTO item : editWayBillDetailDTOList) {
             //2运单明细
-
+            //
+            if (StringUtils.isEmpty(item.getOutStorageTime())) {
+                throw new DataException("40006", "出库时间不能为空");
+            }
             WayBillDetail wayBillDetail = new WayBillDetail();
             wayBillDetail.setWayBill(wayBill);
             wayBillDetail.setSourceCode(item.getOutStorageBillCode());//出库单号
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量
-            //
             wayBillDetail.setPackageCode(item.getPackageNumbers());// 多个包号
             //
             wayBillDetail.setInStationCode(item.getInStationCode());//入库站点
@@ -280,20 +296,26 @@ public class WayBillManager {
      */
     private void checkParams(EditWayBillDTO editWayBillDTO) throws DataException {
         if (editWayBillDTO == null) {
-            throw new DataException("", "参数为空");
+            throw new DataException("40001", "参数为空");
         }
         if (StringUtils.isEmpty(editWayBillDTO.getLogisticsCompanyName())) {
-            throw new DataException("", "物流公司名称不能为空");
+            throw new DataException("40002", "物流公司名称不能为空");
         }
         if (editWayBillDTO.getDeliveryTime() == null) {
-            throw new DataException("", "发货时间不能为空");
+            throw new DataException("40003", "发货时间不能为空");
         }
-        if (StringUtils.isEmpty(editWayBillDTO.getDestination())) {
-            throw new DataException("", "目的地不能为空");
+
+        if (editWayBillDTO.getOutStationCode() == null) {
+            throw new DataException("40004", "出库站点不能为空");
         }
-        if (editWayBillDTO.getAmountOfPackages() == null || editWayBillDTO.getAmountOfPackages() == 0) {
-            throw new DataException("", "运货数量必须大于0");
+        if (editWayBillDTO.getInStationCode() == null) {
+            throw new DataException("40005", "入库站点不能为空");
         }
+        if (editWayBillDTO.getAmountOfPackages() == null
+                || editWayBillDTO.getAmountOfPackages() == 0) {
+            throw new DataException("40006", "运货数量必须大于0");
+        }
+
     }
 
 
@@ -333,13 +355,14 @@ public class WayBillManager {
     private List<ReturnWayBillDTO> convertToDTO(List<WayBill> wayBills) {
         //
         List<ReturnWayBillDTO> wayBillDTOList = new ArrayList<>();
-        ReturnWayBillDTO temp = new ReturnWayBillDTO();
 
         for (WayBill wayBill : wayBills) {
+            ReturnWayBillDTO temp = new ReturnWayBillDTO();
+
             temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
             temp.setWayBillCode(wayBill.getBillCode());//bill code
-            temp.setOperatorName(wayBill.getOperatorName());//
-            temp.setWayBillCode(wayBill.getOperatorCode());
+            temp.setOperatorName(wayBill.getOperatorName());// 操作人姓名
+
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数

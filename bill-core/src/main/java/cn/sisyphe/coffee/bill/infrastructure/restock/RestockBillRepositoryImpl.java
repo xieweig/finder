@@ -1,9 +1,12 @@
 package cn.sisyphe.coffee.bill.infrastructure.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.jpa.JPARestockBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.restock.CargoDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -25,8 +28,9 @@ public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBil
     @Resource
     private JPARestockBillRepository jpaRestockBillRepository;
     // 外界调用从此门面类调用
-    public void ConditionSearch(ConditionQueryRestockBill conditions) {
-        jpaRestockBillRepository.findAll((root, query, cb) -> {
+
+    public Page<RestockBill> ConditionSearch(ConditionQueryRestockBill conditions) {
+        return jpaRestockBillRepository.findAll((root, query, cb) -> {
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
             //   if expressions.add()
@@ -52,6 +56,31 @@ public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBil
             return predicate;
         }, new PageRequest(conditions.getPage(), conditions.getPageSize()));
     }
+    public Page<RestockBill> cargoQuery(String cargoName, String cargoCode){
+
+        return jpaRestockBillRepository.findAll((root, query, cb) -> {
+            Predicate predicate = cb.conjunction();
+            List<Expression<Boolean>> expressions=predicate.getExpressions();
+            if(StringUtils.isEmpty(cargoCode)){
+                expressions.add(
+                        cb.equal(root.get("").as(String.class), cargoCode)
+                );
+            }
+            if(StringUtils.isEmpty(cargoName)){
+                expressions.add(
+                        cb.equal(root.get("").as(String.class), cargoName)
+                );
+            }
+
+            return predicate;
+        },new PageRequest(1,10));
+
+    }
+//    public Page<RestockBill> cargo(){
+//        return jpaRestockBillRepository.findAll((root, query, cb)->{
+//
+//        }, new PageRequest(1,10));
+//    }
 
     /**
      * 按单号查询

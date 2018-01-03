@@ -13,11 +13,25 @@ import java.util.List;
 public interface WayBillService {
 
 
+    /**
+     * 收货
+     * @param billCode
+     */
+    void confirmReceiptBill(String billCode);
+
+
     WayBill createBill(WayBill wayBill);
 
 
     WayBill updateBill(WayBill wayBill);
 
+    /**
+     * 通过code查找单据
+     *
+     * @param billCode
+     * @return
+     */
+    WayBill findOneBillByCode(String billCode);
 
     /**
      * @param id

@@ -63,4 +63,18 @@ public class PlanBillController {
         planBillManager.pass(billCode);
         return null;
     }
+
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "计划单据多条件分页查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        QueryPlanBillDTO billPage = planBillManager.findPageByCondition(conditionQueryPlanBill);
+        responseResult.put("content", billPage);
+        return responseResult;
+    }
 }

@@ -49,18 +49,13 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inEndTime;
     /**
-     * 供应商名称
+     * 供应商编码
      */
-    private String supplierName;
+    private String supplierCode;
     /**
      * 状态
      */
     private String statusCode;
-
-    /**
-     * 供应商编码集合
-     */
-    private List<String> supplierCodeList;
 
     /**
      * 录单人编码集合
@@ -115,12 +110,12 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
         this.inEndTime = inEndTime;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public String getSupplierCode() {
+        return supplierCode;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
     }
 
     public String getStatusCode() {
@@ -129,14 +124,6 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
-    }
-
-    public List<String> getSupplierCodeList() {
-        return supplierCodeList;
-    }
-
-    public void setSupplierCodeList(List<String> supplierCodeList) {
-        this.supplierCodeList = supplierCodeList;
     }
 
     public List<String> getOperatorCodeList() {
@@ -156,9 +143,8 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
                 ", billCode='" + billCode + '\'' +
                 ", inStartTime=" + inStartTime +
                 ", inEndTime=" + inEndTime +
-                ", supplierName='" + supplierName + '\'' +
+                ", supplierCode='" + supplierCode + '\'' +
                 ", statusCode='" + statusCode + '\'' +
-                ", supplierCodeList=" + supplierCodeList +
                 ", operatorCodeList=" + operatorCodeList +
                 "} " + super.toString();
     }
