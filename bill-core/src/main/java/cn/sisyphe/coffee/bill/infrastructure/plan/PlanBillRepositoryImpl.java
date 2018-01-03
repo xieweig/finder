@@ -29,8 +29,8 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
     }
 
     @Override
-    public PlanBill findOne(Long id) {
-        return jpaPlanBillRepository.findOne(id);
+    public PlanBill findOneByBillCode(String billCode) {
+        return jpaPlanBillRepository.findByBillCode(billCode);
     }
 
     @Override

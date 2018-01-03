@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
@@ -87,10 +88,10 @@ public class PlanBillController {
      */
     @ApiOperation(value = "计划单据根据billCode查询")
     @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
-    public ResponseResult findPlanBillByBillCode(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+    public ResponseResult findPlanBillByBillCode(@RequestBody String billCode) {
         ResponseResult responseResult = new ResponseResult();
-        QueryPlanBillDTO billPage = planBillManager.findPlanBillByBillCode(conditionQueryPlanBill);
-        responseResult.put("content", billPage);
+        PlanBill planBill = planBillManager.findPlanBillByBillCode(billCode);
+        responseResult.put("content", planBill);
         return responseResult;
     }
 }
