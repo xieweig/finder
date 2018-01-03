@@ -38,10 +38,6 @@ public class AddPurchaseBillDTO {
      */
     private String operatorCode;
     /**
-     * 归属站点
-     */
-    private String belongStationCode;
-    /**
      * 库房
      */
     private Storage storage;
@@ -53,11 +49,22 @@ public class AddPurchaseBillDTO {
      * 供应商信息
      */
     private Supplier supplier;
-
+    /**
+     * 单据编码
+     */
+    private String billCode;
     /**
      * 进货单明细信息
      */
     private List<BillDetailDTO> billDetails;
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
 
     public String getFreightCode() {
         return freightCode;
@@ -97,14 +104,6 @@ public class AddPurchaseBillDTO {
 
     public void setOperatorCode(String operatorCode) {
         this.operatorCode = operatorCode;
-    }
-
-    public String getBelongStationCode() {
-        return belongStationCode;
-    }
-
-    public void setBelongStationCode(String belongStationCode) {
-        this.belongStationCode = belongStationCode;
     }
 
     public Storage getStorage() {
@@ -147,10 +146,10 @@ public class AddPurchaseBillDTO {
                 ", actualAmount=" + actualAmount +
                 ", memo='" + memo + '\'' +
                 ", operatorCode='" + operatorCode + '\'' +
-                ", belongStationCode='" + belongStationCode + '\'' +
                 ", storage=" + storage +
                 ", station=" + station +
                 ", supplier=" + supplier +
+                ", billCode='" + billCode + '\'' +
                 ", billDetails=" + billDetails +
                 '}';
     }

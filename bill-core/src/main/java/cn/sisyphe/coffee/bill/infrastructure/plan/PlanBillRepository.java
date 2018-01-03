@@ -3,10 +3,10 @@ package cn.sisyphe.coffee.bill.infrastructure.plan;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 /**
  * @author ncmao
@@ -17,11 +17,8 @@ public interface PlanBillRepository extends BillRepository<PlanBill> {
 
     PlanBill findByBillCode(String billCode);
 
+    void save(List<PlanBill> planBills);
 
-    /**
-     * 根据条件返回信息
-     * @param ta
-     * @return
-     */
-    Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable);
+    Page<PlanBill> findByCondition(ConditionQueryPlanBill conditionQueryPlanBill);
+
 }

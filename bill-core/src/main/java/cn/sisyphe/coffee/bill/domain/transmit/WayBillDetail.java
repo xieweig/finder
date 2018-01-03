@@ -15,17 +15,16 @@ import java.util.Date;
 @Table
 public class WayBillDetail extends BaseEntity {
 
-
     //
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long billDetailId;
 
-
     //@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "bill_code")//外键名称
     private WayBill wayBill;
+
 
     /**
      * 出库单号(来源单号)
@@ -103,11 +102,26 @@ public class WayBillDetail extends BaseEntity {
     private Date outStorageTime;
 
 
+    /**
+     * 是否单独打包
+     */
+    @Column(name = "single_packing")
+    public Boolean singlePacking;
+
+
     public String getInStationCode() {
 
         return inStationCode;
     }
 
+
+    public Boolean getSinglePacking() {
+        return singlePacking;
+    }
+
+    public void setSinglePacking(Boolean singlePacking) {
+        this.singlePacking = singlePacking;
+    }
 
     public Long getBillDetailId() {
         return billDetailId;

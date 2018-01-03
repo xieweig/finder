@@ -1,8 +1,8 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import java.io.Serializable;
@@ -24,6 +24,16 @@ public class EditWayBillDTO implements Serializable {
      * 运单明细
      */
     private List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
+    /**
+     * id
+     */
+    private Long billId;
+
+
+    /**
+     * 运单号
+     */
+    private String wayBillCode;
 
     /**
      * 出库单号
@@ -47,16 +57,6 @@ public class EditWayBillDTO implements Serializable {
      */
     private String inStationName;
 
-
-    /**
-     * id
-     */
-    @JsonIgnore
-    private Long billId;
-    /**
-     * 运单号
-     */
-    private String wayBillCode;
 
     /**
      * 发货时间
@@ -101,6 +101,13 @@ public class EditWayBillDTO implements Serializable {
      *
      */
     private String operatorName;
+
+
+    /**
+     * 收货状态
+     */
+    private ReceivedStatusEnum receivedStatus;
+
 
 
     public String getInStationCode() {
@@ -240,5 +247,13 @@ public class EditWayBillDTO implements Serializable {
 
     public void setTotalWeight(Long totalWeight) {
         this.totalWeight = totalWeight;
+    }
+
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
     }
 }

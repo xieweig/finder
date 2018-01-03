@@ -6,8 +6,9 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
-import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.framework.web.exception.DataException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RETURNED;
 
@@ -19,10 +20,12 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RETURN
 
 public class ReturnedStrategy extends AbstractCastableStrategy {
 
+    //TODO 先切分，后面再批量保存
 
     @SuppressWarnings("unchecked")
     @Override
-    public void cast(PlanBillPayload planBillPayload, BillRepository billRepository) {
+    public List<PlanBill> cast(PlanBillPayload planBillPayload) {
+        List<PlanBill> planBills = new ArrayList<>();
         //出站点为物流则直接生成退货单
         AbstractLocation outLocation = planBillPayload.getOutLocation();
         if (outLocation instanceof Station && StationType.LOGISTICS.equals(((Station) outLocation).getStationType())) {
@@ -30,25 +33,23 @@ public class ReturnedStrategy extends AbstractCastableStrategy {
                 planBill.setInLocation(planBillPayload.getInLocation());
                 planBill.setOutLocation(planBillPayload.getOutLocation());
             });
-            billRepository.save(returnedBill);
-            return;
+            planBills.add(returnedBill);
         }
         //出站点为门店则先生成退库计划，再生成退货计划
         if (outLocation instanceof Station && StationType.STORE.equals(((Station) outLocation).getStationType())) {
             PlanBill restockBill = generatePlanBill(planBillPayload, BillTypeEnum.RESTOCK, planBill -> {
-                planBill.setInLocation(planBillPayload.getInLocation());
-                planBill.setOutLocation(planBillPayload.getTransferLocation());
+                planBill.setInLocation(planBillPayload.getTransferLocation());
+                planBill.setOutLocation(planBillPayload.getInLocation());
             });
-            billRepository.save(restockBill);
 
             PlanBill returnedBill = generatePlanBill(planBillPayload, BillTypeEnum.RETURNED, planBill -> {
-                planBill.setInLocation(planBillPayload.getTransferLocation());
-                planBill.setOutLocation(planBillPayload.getOutLocation());
+                planBill.setInLocation(planBillPayload.getOutLocation());
+                planBill.setOutLocation(planBillPayload.getTransferLocation());
             });
-            billRepository.save(returnedBill);
-            return;
+            planBills.add(restockBill);
+            planBills.add(returnedBill);
         }
-        throw new DataException("123456", "站点选择有错误!");
+        return planBills;
     }
 
 

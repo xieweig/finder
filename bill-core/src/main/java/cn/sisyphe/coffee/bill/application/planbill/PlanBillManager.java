@@ -71,7 +71,7 @@ public class PlanBillManager {
      * @param planBillDTO 计划单DTO
      */
 
-    public void create(PlanBillDTO planBillDTO) {
+    public PlanBill create(PlanBillDTO planBillDTO) {
         PlanBill planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
 
         map(planBill, planBillDTO);
@@ -81,6 +81,7 @@ public class PlanBillManager {
         billService.setBillRepository(planBillRepository);
         billService.dispose(new SaveBehavior());
         billService.save();
+        return planBillRepository.findByBillCode(planBillDTO.getBillCode());
 
     }
 
@@ -122,8 +123,8 @@ public class PlanBillManager {
         setTransferLocation(planBill);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
-        billService.dispose(new PurposeBehavior());
         billService.dispose(new AuditBehavior(billService, Constant.AUDIT_SUCCESS_VALUE));
+        billService.dispose(new PurposeBehavior());
         billService.save();
     }
 
@@ -131,7 +132,7 @@ public class PlanBillManager {
     private void map(PlanBill planBill, PlanBillDTO planBillDTO) {
         planBill.getBillDetails().clear();
         planBill.setSpecificBillType(planBillDTO.getBillType());
-        planBill.setPlanName(planBillDTO.getBillName());
+        planBill.setBillName(planBillDTO.getBillName());
         planBill.setBillCode(planBillDTO.getBillCode());
         planBill.setMemo(planBillDTO.getMemo());
         planBill.setHqBill(true);
@@ -162,7 +163,6 @@ public class PlanBillManager {
 
     private AbstractLocation getLocation(Station station) {
         if (StationType.SUPPLIER.equals(station.getStationType())) {
-            supplierRepository.findBySupplierCode(station.getStationCode());
             Supplier supplier = new Supplier(station.getStationCode());
             supplier.setSupplierName(station.getStationName());
             return supplier;

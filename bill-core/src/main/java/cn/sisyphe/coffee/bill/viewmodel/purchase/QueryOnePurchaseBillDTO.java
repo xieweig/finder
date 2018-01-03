@@ -32,7 +32,12 @@ public class QueryOnePurchaseBillDTO {
     /**
      * 供应商信息
      */
-    private String supplierName;
+    private String supplierCode;
+
+    /**
+     * 入库库位
+     */
+    private String inStorageCode;
     /**
      * 进货单明细信息
      */
@@ -70,12 +75,20 @@ public class QueryOnePurchaseBillDTO {
         this.memo = memo;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public String getSupplierCode() {
+        return supplierCode;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public String getInStorageCode() {
+        return inStorageCode;
+    }
+
+    public void setInStorageCode(String inStorageCode) {
+        this.inStorageCode = inStorageCode;
     }
 
     public List<BillDetailDTO> getBillDetails() {
@@ -93,7 +106,8 @@ public class QueryOnePurchaseBillDTO {
                 ", shippedAmount=" + shippedAmount +
                 ", actualAmount=" + actualAmount +
                 ", memo='" + memo + '\'' +
-                ", supplierName='" + supplierName + '\'' +
+                ", supplierCode='" + supplierCode + '\'' +
+                ", inStorageCode='" + inStorageCode + '\'' +
                 ", billDetails=" + billDetails +
                 '}';
     }

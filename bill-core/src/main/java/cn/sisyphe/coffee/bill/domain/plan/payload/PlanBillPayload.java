@@ -2,9 +2,9 @@ package cn.sisyphe.coffee.bill.domain.plan.payload;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
-import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,8 +95,8 @@ public class PlanBillPayload {
         this.castableStrategy = castableStrategy;
     }
 
-    public void doCast(BillRepository billRepository) {
-        this.castableStrategy.cast(this, billRepository);
+    public List<PlanBill> doCast() {
+        return this.castableStrategy.cast(this);
     }
 
     public List<PlanBillPayloadDetail> getGoodDetails() {

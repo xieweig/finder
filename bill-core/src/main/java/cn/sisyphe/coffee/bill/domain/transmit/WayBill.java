@@ -4,12 +4,10 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 运货单
@@ -19,28 +17,19 @@ import java.util.Set;
 public class WayBill extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
-    // @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "wayBill")
     @org.hibernate.annotations.ForeignKey(name = "none")
     private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
-
-
-    @Transient
-    private Set<WayBillDetail> wayBillDetailSetDelete = new HashSet<>();
-
-    @Transient
-    private Set<WayBillDetail> wayBillDetailSetAddOrUpdate = new HashSet<>();
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long billId;
 
-
     /**
      * 单据code
      * tip: 必须加name="bill_code" ,否则子类找不到外键
      */
-    @Column(name = "bill_code", length = 255, nullable = false)
+    @Column(name = "bill_code", length = 255, nullable = false, unique = true)
     private String billCode;
 
 
@@ -80,7 +69,7 @@ public class WayBill extends BaseEntity {
     /**
      * 目的地
      */
-    @Column(length = 255, nullable = false)
+    @Column(length = 255)
     private String destination;
 
 
@@ -121,72 +110,28 @@ public class WayBill extends BaseEntity {
     @Column(length = 255)
     private String memo;
 
-    /**
-     * @param wayBillDetail
-     */
-    public void removeItem(WayBillDetail wayBillDetail) {
-
-        //System.out.println(" 需要删除的  id:" + wayBillDetail.getBillDetailId());/// all id
-        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
-            return;
-        }
-        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
-        while (it.hasNext()) {
-            WayBillDetail item = it.next();
-            //  System.out.println(" item  id:" + item.getBillDetailId());/// all id
-
-            if (item != null && item.getBillDetailId() != null)
-                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
-                    //
-                    // System.out.println("delete ............." + item.getBillDetailId());
-                    it.remove();
-                }
-        }
-    }
 
     /**
-     * @param wayBillDetail
-     */
-    public void addOrUpdateItem(WayBillDetail wayBillDetail) {
-
-        System.out.println(" update : " + wayBillDetail);
-        if (wayBillDetail == null || this.getWayBillDetailSet() == null) {
-            return;
-        }
-        Iterator<WayBillDetail> it = this.getWayBillDetailSet().iterator();
-        while (it.hasNext()) {
-            WayBillDetail item = it.next();
-            if (item != null && item.getBillDetailId() != null)
-                if (item.getBillDetailId().equals(wayBillDetail.getBillDetailId())) {
-                    //
-                    System.out.println("delete ............." + item.getBillDetailId());
-                    it.remove();
-                }
-        }
-        System.out.println("add........" + wayBillDetail.getBillDetailId());
-        // TODO: 2018/1/2
-        wayBillDetail.setWayBill(this);// 添加主对象
-        this.getWayBillDetailSet().add(wayBillDetail);
-    }
-
-
-    /**
-     * 运货件数
+     * 总运货件数
      *
      * @return
      */
-    private int calcTotalPackageAmoumt() {
-        int totalAmount = 0;
-        if (wayBillDetailSet == null) {
+    private int calcTotalPackageAmount() {
+        //包号
+        List<String> packAgesList = new ArrayList<>();
+        if (wayBillDetailSet == null || wayBillDetailSet.isEmpty()) {
             return 0;
         }
         for (WayBillDetail wayBillDetail : wayBillDetailSet) {
-            //
-            if (!wayBillDetail.getPackageCode().equals("")) {
-                totalAmount += 1;
+            //包号不为空
+            if (!StringUtils.isEmpty(wayBillDetail.getPackageCode())) {
+                //
+                if (!packAgesList.contains(wayBillDetail.getPackageCode())) {
+                    packAgesList.add(wayBillDetail.getPackageCode());//
+                }
             }
         }
-        return totalAmount;
+        return packAgesList.size();
     }
 
 
@@ -247,7 +192,16 @@ public class WayBill extends BaseEntity {
         this.destination = destination;
     }
 
+    /**
+     * 计算运货件数
+     *
+     * @return
+     */
     public Integer getAmountOfPackages() {
+        if (!this.getWayBillDetailSet().isEmpty()) {
+
+            return this.calcTotalPackageAmount();
+        }
         return amountOfPackages;
     }
 
@@ -312,22 +266,6 @@ public class WayBill extends BaseEntity {
         this.outStationCode = outStationCode;
     }
 
-
-    public Set<WayBillDetail> getWayBillDetailSetDelete() {
-        return wayBillDetailSetDelete;
-    }
-
-    public void setWayBillDetailSetDelete(Set<WayBillDetail> wayBillDetailSetDelete) {
-        this.wayBillDetailSetDelete = wayBillDetailSetDelete;
-    }
-
-    public Set<WayBillDetail> getWayBillDetailSetAddOrUpdate() {
-        return wayBillDetailSetAddOrUpdate;
-    }
-
-    public void setWayBillDetailSetAddOrUpdate(Set<WayBillDetail> wayBillDetailSetAddOrUpdate) {
-        this.wayBillDetailSetAddOrUpdate = wayBillDetailSetAddOrUpdate;
-    }
 
     @Override
     public String toString() {

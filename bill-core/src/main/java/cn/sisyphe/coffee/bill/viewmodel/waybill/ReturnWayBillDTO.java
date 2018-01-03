@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -83,6 +84,12 @@ public class ReturnWayBillDTO implements Serializable {
 
         return outStorageBillCode;
     }
+
+    /**
+     * 收货状态
+     */
+    private ReceivedStatusEnum receivedStatus;
+
 
     public void setOutStorageBillCode(String outStorageBillCode) {
         this.outStorageBillCode = outStorageBillCode;
@@ -173,6 +180,14 @@ public class ReturnWayBillDTO implements Serializable {
         this.outStationName = outStationName;
     }
 
+    public ReceivedStatusEnum getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+        this.receivedStatus = receivedStatus;
+    }
+
     @Override
     public String toString() {
         return "ReturnWayBillDTO{" +
@@ -188,6 +203,7 @@ public class ReturnWayBillDTO implements Serializable {
                 ", outStationName='" + outStationName + '\'' +
                 ", wayBillStatus='" + wayBillStatus + '\'' +
                 ", operatorName='" + operatorName + '\'' +
+                ", receivedStatus=" + receivedStatus +
                 '}';
     }
 }
