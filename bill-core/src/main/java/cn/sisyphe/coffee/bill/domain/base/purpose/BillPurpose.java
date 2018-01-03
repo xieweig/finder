@@ -18,5 +18,5 @@ public interface BillPurpose {
     /**
      * 用途处理器
      */
-    void handle();
+    void handle() throws ClassNotFoundException;
 }
