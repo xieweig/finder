@@ -5,6 +5,8 @@ import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -19,6 +21,6 @@ public interface PlanBillRepository extends BillRepository<PlanBill> {
 
     void save(List<PlanBill> planBills);
 
-    Page<PlanBill> findByCondition(ConditionQueryPlanBill conditionQueryPlanBill);
+    Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable);
 
 }
