@@ -10,6 +10,7 @@ import java.text.MessageFormat;
 /**
  * Created by heyong on 2017/12/19 12:22
  * Description: 出库用途处理器
+ *
  * @author heyong
  */
 public class OutStoragePurpose extends AbstractBillPurpose {

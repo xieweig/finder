@@ -77,7 +77,7 @@ public class PlanBillIntegrationTest {
         billService.setBillRepository(planBillRepository);
         billService.dispose(new PurposeBehavior());
         billService.save();
-        System.out.println(planBillRepository.findByBillCode("testcode3").getBillDetails().size());
+        System.out.println(planBillRepository.findOneByBillCode("testcode3").getBillDetails().size());
     }
 
 }

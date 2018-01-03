@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +36,25 @@ public class PlanBillController {
     @ApiOperation(value = "新建总部计划，暂存")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
-        planBillManager.create(planBillDTO);
-        return null;
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("billCode", planBillManager.create(planBillDTO));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "提交总部计划")
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
     public ResponseResult submitPlanBill(@RequestBody PlanBillDTO planBillDTO) {
-        planBillManager.submit(planBillDTO);
-        return null;
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("billCode", planBillManager.submit(planBillDTO));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "审核总部计划")
