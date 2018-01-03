@@ -3,7 +3,6 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.EditPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -87,10 +86,10 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "修改进货单据信息--保存")
     @RequestMapping(path = "/updatePurchaseBillToSave", method = RequestMethod.POST)
-    public ResponseResult updatePurchaseBillToSaved(@RequestBody EditPurchaseBillDTO billDTO) {
+    public ResponseResult updatePurchaseBillToSaved(@RequestBody AddPurchaseBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            purchaseBillManager.updateBill(billDTO);
+            purchaseBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -104,10 +103,10 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "修改进货单据信息--提交审核")
     @RequestMapping(path = "/updatePurchaseBillToSubmit", method = RequestMethod.POST)
-    public ResponseResult updatePurchaseBillToSubmit(@RequestBody EditPurchaseBillDTO billDTO) {
+    public ResponseResult updatePurchaseBillToSubmit(@RequestBody AddPurchaseBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            purchaseBillManager.updateBill(billDTO);
+            purchaseBillManager.updateBillToSubmit(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }

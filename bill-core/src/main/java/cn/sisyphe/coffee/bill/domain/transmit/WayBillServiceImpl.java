@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.transmit;
 
+import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.infrastructure.transmit.WayBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/28.
  */
 @Service
-public class IWayBillServiceImpl implements IWayBillService {
+public class WayBillServiceImpl implements WayBillService {
 
 
     @Autowired
@@ -33,6 +34,15 @@ public class IWayBillServiceImpl implements IWayBillService {
         return wayBillRepository.findOne(id);
     }
 
+
+    /**
+     * @param billCode
+     * @return
+     */
+    @Override
+    public WayBill findOneBillByCode(String billCode) {
+        return wayBillRepository.findOneByCode(billCode);
+    }
 
     /**
      * 分页查询运单
@@ -110,23 +120,49 @@ public class IWayBillServiceImpl implements IWayBillService {
                         "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
             }
             // 录单时间
-            if (conditionQueryWayBill.getCreateTime() != null) {
+            if (conditionQueryWayBill.getCreateStartTime() != null &&
+                    conditionQueryWayBill.getCreateEndTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
                 expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getCreateStartTime(),
                         conditionQueryWayBill.getCreateEndTime()));
             }
             // 发货时间
-            if (conditionQueryWayBill.getDeliverTime() != null) {
+            if (conditionQueryWayBill.getDeliveryStartTime() != null &&
+                    conditionQueryWayBill.getDeliveryEndTime() != null) {
                 //当 开始时间和结束时间 都不为空时 拼接sql
                 expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
                         conditionQueryWayBill.getDeliveryEndTime()));
             }
-
+            //运货件数
+            if (conditionQueryWayBill.getAmountOfPackages() != null) {
+                expressions.add(cb.equal(root.<String>get("amountOfPackages"),
+                        "" + conditionQueryWayBill.getAmountOfPackages() + ""));
+            }
             //分组查询
             query.groupBy(root.get("billCode"));
             //
             return predicate;
         }, pageable);
+
+
+    }
+
+
+    /**
+     * 收货确定
+     *
+     * @param billCode
+     */
+    @Override
+    public void confirmReceiptBill(String billCode) {
+
+        WayBill wayBill = wayBillRepository.findOneByCode(billCode);
+        if (wayBill == null) {
+            throw new DataException("50001", "单据不存在不能确认收货");
+        }
+        wayBill.setReceivedStatus(ReceivedStatusEnum.IS_RECEIVED);
+        //
+        wayBillRepository.save(wayBill);
 
 
     }
@@ -151,7 +187,8 @@ public class IWayBillServiceImpl implements IWayBillService {
 
         // TODO: 2017/12/29  修改方法实现
         //1先查询一条数据库里的内容
-        WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        // WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
+        WayBill wayBillDB = wayBillRepository.findOneByCode(wayBill.getBillCode());
         //2设置值
         //公司名称
         if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
@@ -185,19 +222,11 @@ public class IWayBillServiceImpl implements IWayBillService {
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
         }
-        //
-        //添加 or Update 明细
-        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSetAddOrUpdate()) {
-            wayBillDB.addOrUpdateItem(wayBillDetail);
-        }
-        //删除 明细
-        for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSetDelete()) {
-            wayBillDB.removeItem(wayBillDetail);
-        }
         //3保存
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;
     }
+
 
     /**
      * 条件查询

@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -43,12 +44,13 @@ public class RestockTest {
 
     @Test
     public void Juice(){
+
         RestockBill restockBill = new RestockBill();
         Calendar calendar = Calendar.getInstance();
         Date date = new Date();
         calendar.setTime(date);
 
-        calendar.add(Calendar.HOUR, 10);
+        calendar.add(Calendar.HOUR, 11);
         logger.info(calendar.getTime().toString());
         restockBill.setInStorageStartTime(calendar.getTime());
 
@@ -69,7 +71,7 @@ public class RestockTest {
         restockBill.setBillType(BillTypeEnum.RESTOCK);
         //前段页面显性要求
 
-        restockBill.setBillCode("030212002");
+        restockBill.setBillCode("030212004");
         //restockBill.setStorageType();
         //正常库在途库等
         restockBill.setRemarks("ba_la_ba_la");

@@ -112,10 +112,10 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
 
     /**
-     * 更新前
+     * 更新前, 在数据库操作中调用
      */
-    @PrePersist
-    @PreUpdate
+//    @PrePersist
+//    @PreUpdate
     public void update() {
         if (inLocation != null) {
             dbStation.setInLocation(inLocation);

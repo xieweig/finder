@@ -10,7 +10,14 @@ import java.util.List;
  * Created by Administrator on 2017/12/28.
  */
 
-public interface IWayBillService {
+public interface WayBillService {
+
+
+    /**
+     * 收货
+     * @param billCode
+     */
+    void confirmReceiptBill(String billCode);
 
 
     WayBill createBill(WayBill wayBill);
@@ -18,6 +25,13 @@ public interface IWayBillService {
 
     WayBill updateBill(WayBill wayBill);
 
+    /**
+     * 通过code查找单据
+     *
+     * @param billCode
+     * @return
+     */
+    WayBill findOneBillByCode(String billCode);
 
     /**
      * @param id

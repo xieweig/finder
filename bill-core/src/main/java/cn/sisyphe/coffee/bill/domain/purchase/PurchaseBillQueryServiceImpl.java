@@ -35,6 +35,25 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
     private UserRepository userRepository;
 
     /**
+     * 根据单据编码查询单据信息
+     *
+     * @param billCode 单据编码
+     * @return
+     */
+    @Override
+    public PurchaseBill findByBillCode(String billCode) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("20011", "进货单编码为空");
+        }
+        PurchaseBill purchaseBill = purchaseBillRepository.findOneByBillCode(billCode);
+        if (purchaseBill != null) {
+            return purchaseBill;
+        } else {
+            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
+        }
+    }
+    
+    /**
      * 多条件查询
      *
      * @param conditionQueryPurchaseBill 查询条件
@@ -59,25 +78,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
         }
         return purchaseBillPage;
-    }
-
-    /**
-     * 根据单据编码查询单据信息
-     *
-     * @param billCode 单据编码
-     * @return
-     */
-    @Override
-    public PurchaseBill findByBillCode(String billCode) {
-        if (StringUtils.isEmpty(billCode)) {
-            throw new DataException("20011", "进货单编码为空");
-        }
-        PurchaseBill purchaseBill = purchaseBillRepository.findOneByBillCode(billCode);
-        if (purchaseBill != null) {
-            return purchaseBill;
-        } else {
-            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
-        }
     }
 
     /**

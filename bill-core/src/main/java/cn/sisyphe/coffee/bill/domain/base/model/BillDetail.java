@@ -3,15 +3,7 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * 单据明细
@@ -32,7 +24,7 @@ public class BillDetail {
     private AbstractGoods goods;
 
     /**
-     * 最小单位数量
+     * 实收最小单位数量
      */
     private int amount;
 
@@ -47,13 +39,13 @@ public class BillDetail {
     private DbGoods dbGoods = new DbGoods();
 
     /**
-     * 更新前
+     * 更新前, 在数据库操作中调用
      */
-    @PrePersist
-    @PreUpdate
+//    @PrePersist
+//    @PreUpdate
     public void update() {
         if (goods == null) {
-            return;
+         return;
         }
 
         dbGoods.setGoods(goods);

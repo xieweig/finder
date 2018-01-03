@@ -40,12 +40,12 @@ public class PurchaseBillDTO {
     /**
      * 入库站点-主表
      */
-    private String inStationName;
+    private String inStationCode;
 
     /**
      * 入库库房-主表
      */
-    private String inStorageName;
+    private String inStorageCode;
 
     /**
      * 实收数量--明细表
@@ -129,21 +129,22 @@ public class PurchaseBillDTO {
         this.supplierCode = supplierCode;
     }
 
-    public String getInStationName() {
-        return inStationName;
+    public String getInStationCode() {
+        return inStationCode;
     }
 
-    public void setInStationName(String inStationName) {
-        this.inStationName = inStationName;
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
     }
 
-    public String getInStorageName() {
-        return inStorageName;
+    public String getInStorageCode() {
+        return inStorageCode;
     }
 
-    public void setInStorageName(String inStorageName) {
-        this.inStorageName = inStorageName;
+    public void setInStorageCode(String inStorageCode) {
+        this.inStorageCode = inStorageCode;
     }
+
     public Integer getActualNumber() {
         return actualNumber;
     }
@@ -196,12 +197,12 @@ public class PurchaseBillDTO {
     public String toString() {
         return "PurchaseBillDTO{" +
                 "billCode='" + billCode + '\'' +
-                ", inWareHouseTime='" + inWareHouseTime + '\'' +
-                ", createTime='" + createTime + '\'' +
+                ", inWareHouseTime=" + inWareHouseTime +
+                ", createTime=" + createTime +
                 ", operatorCode='" + operatorCode + '\'' +
                 ", auditPersonCode='" + auditPersonCode + '\'' +
-                ", inStationName='" + inStationName + '\'' +
-                ", inStorageName='" + inStorageName + '\'' +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", inStorageCode='" + inStorageCode + '\'' +
                 ", actualNumber=" + actualNumber +
                 ", differenceNumber=" + differenceNumber +
                 ", inTotalPrice=" + inTotalPrice +

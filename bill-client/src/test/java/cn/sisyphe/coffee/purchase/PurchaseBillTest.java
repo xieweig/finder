@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.SAVED;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.SUBMITTED;
-
 /**
  * Created by XiongJing on 2017/12/27.
  * remark：进货单据单元测试
@@ -55,14 +52,10 @@ public class PurchaseBillTest {
         saveDto.setMemo("测试保存单据");
         // 操作人代码
         saveDto.setOperatorCode("xj0001");
-        // 归属站点
-        saveDto.setBelongStationCode("CD36");
         // 库房
         Storage storage = new Storage("kf001");
         storage.setStorageName("测试库房");
         saveDto.setStorage(storage);
-        // 单据状态
-        saveDto.setBillState(SAVED);
 
         // 供应商信息
         Supplier supplier = new Supplier("supplier001");
@@ -132,14 +125,10 @@ public class PurchaseBillTest {
         saveDto.setMemo("测试保存单据2");
         // 操作人代码
         saveDto.setOperatorCode("xj0002");
-        // 归属站点
-        saveDto.setBelongStationCode("CD37");
         // 库房
         Storage storage = new Storage("kf002");
         storage.setStorageName("测试库房2");
         saveDto.setStorage(storage);
-        // 单据状态
-        saveDto.setBillState(SUBMITTED);
 
         // 供应商信息
         Supplier supplier = new Supplier("supplier002");
@@ -219,14 +208,10 @@ public class PurchaseBillTest {
         saveDto.setMemo("测试保存单据-保存");
         // 操作人代码
         saveDto.setOperatorCode("xj0001");
-        // 归属站点
-        saveDto.setBelongStationCode("CD36");
         // 库房
         Storage storage = new Storage("kf001");
         storage.setStorageName("测试库房");
         saveDto.setStorage(storage);
-        // 单据状态
-        saveDto.setBillState(SAVED);
 
         // 供应商信息
         Supplier supplier = new Supplier("supplier001-saved");
@@ -274,7 +259,7 @@ public class PurchaseBillTest {
 
         billDetails.add(detailDTO);
         saveDto.setBillDetails(billDetails);
-        purchaseBillManager.updateBill(saveDto);
+       // purchaseBillManager.updateBill(saveDto);
     }
     /**
      * 修改单据--提交审核
@@ -294,14 +279,10 @@ public class PurchaseBillTest {
         saveDto.setMemo("测试保存单据-提交");
         // 操作人代码
         saveDto.setOperatorCode("xj0001");
-        // 归属站点
-        saveDto.setBelongStationCode("CD36");
         // 库房
         Storage storage = new Storage("kf001");
         storage.setStorageName("测试库房");
         saveDto.setStorage(storage);
-        // 单据状态
-        saveDto.setBillState(SUBMITTED);
 
         // 供应商信息
         Supplier supplier = new Supplier("supplier001-submit");
@@ -349,7 +330,7 @@ public class PurchaseBillTest {
 
         billDetails.add(detailDTO);
         saveDto.setBillDetails(billDetails);
-        purchaseBillManager.updateBill(saveDto);
+      //  purchaseBillManager.updateBill(saveDto);
     }
     /**
      * 测试审核失败单据
