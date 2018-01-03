@@ -105,7 +105,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      */
     public QueryOnePurchaseBillDTO openBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
-        // 如果单据是打开状态，则直接返回转换后的进货单据信息
+        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的进货单据信息
         if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
                 || purchaseBill.getBillState().equals(BillStateEnum.AUDIT_FAILURE)) {
             return mapOneToDTO(purchaseBill);

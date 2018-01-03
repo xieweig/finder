@@ -200,7 +200,7 @@ public class PurchaseBillTest {
      */
     @Test
     public void openBill() {
-        String billCode = "bill002";
+        String billCode = "bill001";
          purchaseBillManager.openBill(billCode);
     }
     /**
