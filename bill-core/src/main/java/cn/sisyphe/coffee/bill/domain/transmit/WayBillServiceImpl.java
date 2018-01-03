@@ -76,6 +76,8 @@ public class WayBillServiceImpl implements WayBillService {
     private Page<WayBill> pageCondition(final ConditionQueryWayBill conditionQueryWayBill,
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
+            // 去重复
+            query.distinct(true);
 
             Predicate predicate = cb.conjunction();
             //左连接
@@ -87,7 +89,6 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.like(root.<String>get("billCode"),
                         "%" + conditionQueryWayBill.getWayBillCode() + "%"));
             }
-
             //出库单号
             if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStorageBillCode())) {
                 expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
@@ -103,7 +104,6 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.equal(root.<String>get("outStationCode"),
                         "" + conditionQueryWayBill.getOutStationCode() + ""));
             }
-
             //物流公司名称
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
                 expressions.add(cb.like(root.<String>get("logisticsCompanyName"),
@@ -140,7 +140,6 @@ public class WayBillServiceImpl implements WayBillService {
             }
             //分组查询
             query.groupBy(root.get("billCode"));
-            //
             return predicate;
         }, pageable);
 
@@ -159,6 +158,10 @@ public class WayBillServiceImpl implements WayBillService {
         WayBill wayBill = wayBillRepository.findOneByCode(billCode);
         if (wayBill == null) {
             throw new DataException("50001", "单据不存在不能确认收货");
+        }
+        //
+        if (wayBill.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
+            throw new DataException("50002", "已经确定收货了");
         }
         wayBill.setReceivedStatus(ReceivedStatusEnum.IS_RECEIVED);
         //
@@ -221,6 +224,12 @@ public class WayBillServiceImpl implements WayBillService {
         //运货件数
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
+        }
+
+        //
+
+        if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
+            throw new DataException("50003", "已经确定了收货不能修改");
         }
         //3保存
         wayBillDB = wayBillRepository.save(wayBillDB);
