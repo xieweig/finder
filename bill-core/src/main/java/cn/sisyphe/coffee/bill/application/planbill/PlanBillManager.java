@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.planbill;
 
+import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
@@ -20,17 +21,16 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
-import cn.sisyphe.coffee.bill.util.Constant;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
-import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -40,6 +40,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.group.Groups.group;
 
 /**
  * @author ncmao
@@ -309,32 +313,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     /**
-     * @param
-     * @return
-     * @throws DataException
-     */
-    public PlanBill findPlanBillByBillCode(String planBillCode) {
-        PlanBill planBill = planBillQueryService.findByBillCode(planBillCode);
-/*
-        // 如果单据是打开状态，则直接返回转换后的进货单据信息
-        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
-            return mapOneToDTO(purchaseBill);
-        }
-*/
-    /**
      * 根据编号查询
      *
      * @param billCode
      * @return
      */
-    public ResultPlanBillDTO findByBillCode(String billCode) {
+    public ResultPlanBillDTO findByBillCode(String billCode) throws DataException{
         return planBillToResultPlanBillDTO(planBillRepository.findByBillCode(billCode));
-    }
-
-        // 打开单据
-//        planBill = open(purchaseBill);
-
-        return planBill;
     }
     /**
      * 将 PlanBill 转为 ResultPlanBillDTO
@@ -342,27 +327,32 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param planBill
      * @return
      */
-    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) {
+    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) throws DataException{
         ResultPlanBillDTO resultPlanBillDTO = new ResultPlanBillDTO();
+        if(planBill==null){
+            return resultPlanBillDTO;
+        }
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
         resultPlanBillDTO.setBillType(planBill.getBillType());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
-        Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
-        for (String head : groupedPlanBillDetail.keySet()) {
-            ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
-            List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
-            PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-            resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
-            Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
-            for (PlanBillDetail planBillDetail : planBillDetails) {
-                ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
-                resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
-                resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
-                resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
+        if(planBill.getBillDetails()!=null){
+            Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
+            for (String head : groupedPlanBillDetail.keySet()) {
+                ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
+                List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
+                PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
+                resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
+                Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
+                for (PlanBillDetail planBillDetail : planBillDetails) {
+                    ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
+                    resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
+                    resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
+                    resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
+                }
+                resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
+                resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
             }
-            resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
-            resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
         }
         resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
         return resultPlanBillDTO;

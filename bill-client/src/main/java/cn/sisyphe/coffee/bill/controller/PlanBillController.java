@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
@@ -92,25 +91,15 @@ public class PlanBillController {
         return responseResult;
     }
 
-    /**
-     * 计划单据根据billCode查询
-     *
-     * @return
-     */
-    @ApiOperation(value = "计划单据根据billCode查询")
-    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
-    public ResponseResult findPlanBillByBillCode(@RequestBody String billCode) {
-        ResponseResult responseResult = new ResponseResult();
-        PlanBill planBill = planBillManager.findPlanBillByBillCode(billCode);
-        responseResult.put("content", planBill);
-        return responseResult;
-    }
-
-    @ApiOperation(value = "根据单据编号查询单据明细")
+    @ApiOperation(value = "根据单据编号查询单据信息")
     @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("planBill",planBillManager.findByBillCode(billCode));
+        try {
+            responseResult.put("planBill",planBillManager.findByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 }
