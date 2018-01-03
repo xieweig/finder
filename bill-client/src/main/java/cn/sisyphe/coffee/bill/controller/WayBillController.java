@@ -85,15 +85,15 @@ public class WayBillController {
     /**
      * 确认收货
      *
-     * @param billCode
+     * @param wayBillCode
      * @return
      */
     @ApiOperation(value = "运单确认收货")
-    @RequestMapping(path = "/confirmReceiptBill", method = RequestMethod.POST)
-    public ResponseResult confirmReceiptBill(@RequestParam(required = false) String billCode) {
+    @RequestMapping(path = "/confirmReceiptBill", method = RequestMethod.GET)
+    public ResponseResult confirmReceiptBill(@RequestParam String wayBillCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            wayBillManager.confirmReceiptBill(billCode);
+            wayBillManager.confirmReceiptBill(wayBillCode);
         } catch (DataException data) {
             responseResult.putException(data);
         }

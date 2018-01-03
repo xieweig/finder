@@ -48,9 +48,9 @@ public class WayBillManager {
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
-        //  queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
+        //queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
-        //Long i = wayBillPage.getTotalElements();
+        // Long i = wayBillPage.getTotalElements();
         queryWayBillDTO.setContent(wayBillDTOList);
         return queryWayBillDTO;
     }
