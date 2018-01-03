@@ -108,14 +108,12 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      * 单据状态
      */
     @Enumerated(EnumType.STRING)
-    private BillStateEnum billState;
+    private BillStateEnum billState = BillStateEnum.SAVED;
 
 
     /**
      * 更新前, 在数据库操作中调用
      */
-//    @PrePersist
-//    @PreUpdate
     public void update() {
         if (inLocation != null) {
             dbStation.setInLocation(inLocation);

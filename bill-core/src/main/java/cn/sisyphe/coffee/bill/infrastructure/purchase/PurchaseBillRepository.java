@@ -13,6 +13,5 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public interface PurchaseBillRepository extends BillRepository<PurchaseBill> {
 
-    PurchaseBill findOneByBillCode(String billCode);
     Page<PurchaseBill> findAll(Specification<PurchaseBill> ta, Pageable pageable);
 }

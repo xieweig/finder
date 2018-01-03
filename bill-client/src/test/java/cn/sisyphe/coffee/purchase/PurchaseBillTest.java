@@ -42,29 +42,29 @@ public class PurchaseBillTest {
     public void save() {
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         // 货运单号
-        saveDto.setFreightCode("hydh001");
+        saveDto.setFreightCode("hydh003");
         // 发货件数
-        saveDto.setShippedAmount(10);
+        saveDto.setShippedAmount(30);
         // 实收件数
-        saveDto.setActualAmount(8);
+        saveDto.setActualAmount(30);
         // 备注
         saveDto.setMemo("测试保存单据");
         // 操作人代码
-        saveDto.setOperatorCode("xj0001");
+        saveDto.setOperatorCode("xj0003");
         // 库房
-        Storage storage = new Storage("kf001");
+        Storage storage = new Storage("kf003");
         storage.setStorageName("测试库房");
         saveDto.setStorage(storage);
 
         // 供应商信息
-        Supplier supplier = new Supplier("supplier001");
-        supplier.setSupplierName("测试供应商");
+        Supplier supplier = new Supplier("supplier003");
+        supplier.setSupplierName("测试供应商3");
         supplier.setAddress("重庆市");
         saveDto.setSupplier(supplier);
 
         // 站点
-        Station station = new Station("CD36");
-        station.setStationName("总部");
+        Station station = new Station("CD38");
+        station.setStationName("总部3");
         station.setStationType(StationType.STORE);
         // 将库房设置到站点中去
         station.setStorage(storage);
@@ -75,24 +75,24 @@ public class PurchaseBillTest {
         BillDetailDTO detailDTO = new BillDetailDTO();
 
         // 最小单位数量
-        detailDTO.setAmount(1000);
+        detailDTO.setAmount(300);
         // 包号
-        detailDTO.setPackageCode("package001");
+        detailDTO.setPackageCode("package003");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
         detailDTO.setUnitPrice(new BigDecimal(10));
         // 发货数量
-        detailDTO.setShippedNumber(68);
+        detailDTO.setShippedNumber(300);
         // 数量差值
-        detailDTO.setDifferenceNumber(20);
+        detailDTO.setDifferenceNumber(0);
         // 总价差值
-        detailDTO.setDifferencePrice(new BigDecimal(200));
+        detailDTO.setDifferencePrice(new BigDecimal(0));
 
-        RawMaterial rawMaterial = new RawMaterial("ylbm001");
-        rawMaterial.setRawMaterialName("原料001");
-        Cargo cargo = new Cargo("cargo001");
-        cargo.setCargoName("货物001");
+        RawMaterial rawMaterial = new RawMaterial("ylbm003");
+        rawMaterial.setRawMaterialName("原料003");
+        Cargo cargo = new Cargo("cargo003");
+        cargo.setCargoName("货物003");
         rawMaterial.setCargo(cargo);
         detailDTO.setRawMaterial(rawMaterial);
 
@@ -314,7 +314,7 @@ public class PurchaseBillTest {
     public void auditFailureBill() {
         String billCode = "bill002";
         String auditPersonCode = "admin001";
-        purchaseBillManager.auditFailureBill(billCode,auditPersonCode);
+        purchaseBillManager.auditBill(billCode,auditPersonCode,false);
     }
 
     /**
@@ -324,7 +324,7 @@ public class PurchaseBillTest {
     public void AuditSuccessBill() {
         String billCode = "bill002";
         String auditPersonCode = "admin002";
-        purchaseBillManager.AuditSuccessBill(billCode,auditPersonCode);
+        purchaseBillManager.auditBill(billCode,auditPersonCode,true);
     }
     /**
      * 测试多条件查询

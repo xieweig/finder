@@ -18,4 +18,14 @@ public class DeliveryBillRepositoryImpl extends AbstractBillRepository<DeliveryB
     @Autowired
     private JPADeliveryBillRepository jpaDeliveryBillRepository;
 
+    /**
+     * 按单号查询
+     *
+     * @param billCode
+     * @return
+     */
+    @Override
+    public DeliveryBill findOneByBillCode(String billCode) {
+        return null;
+    }
 }

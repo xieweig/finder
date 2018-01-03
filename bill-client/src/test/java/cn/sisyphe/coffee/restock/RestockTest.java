@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
+import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
@@ -16,6 +17,8 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailsDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRawMaterialDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -108,6 +111,45 @@ public class RestockTest {
         billService.setBillRepository(restockBillRepository);
         billService.save();
         billService.sendEvent(applicationEventPublisher);
+
+    }
+    @Resource
+    private RestockBillManager restockBillManager;
+    @Test
+    public void Orange(){
+        SaveByRawMaterialDTO saveByRawMaterialDTO = new SaveByRawMaterialDTO();
+        saveByRawMaterialDTO.setBillCode("0302104"+random.nextInt(10));
+        saveByRawMaterialDTO.setCreateTime(new Date());
+        saveByRawMaterialDTO.setInStationCode("10001"+random.nextInt(10));
+        saveByRawMaterialDTO.setOutStationCode("20001"+random.nextInt(10));
+
+
+            List<RestockBillDetailsDTO> list = new ArrayList<>();
+            RestockBillDetailsDTO first = new RestockBillDetailsDTO();
+            first.setRawMaterialName("milk");
+            first.setRawMaterialCode("2002"+random.nextInt(10));
+            first.setCargoName("menu");
+            first.setCargoCode("30003"+random.nextInt(10));
+            first.setAmount(500);
+            first.setPackageCode("bottle");
+            first.setNumber(10);
+            first.setCargoRemarks("only"+random.nextInt(100)+" left ");
+            list.add(first);
+            RestockBillDetailsDTO second = new RestockBillDetailsDTO();
+            second.setRawMaterialName("milk");
+            second.setRawMaterialCode("2002"+random.nextInt(10));
+            second.setCargoName("menu");
+            second.setCargoCode("30003"+random.nextInt(10));
+            second.setAmount(500);
+            second.setPackageCode("bottle");
+            second.setNumber(10);
+            second.setCargoRemarks("only"+random.nextInt(100)+" left ");
+            list.add(second);
+
+        saveByRawMaterialDTO.setBillDetails(list);
+
+        restockBillManager.saveByRawMaterial(saveByRawMaterialDTO);
+
 
     }
 }

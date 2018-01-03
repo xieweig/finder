@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -36,6 +37,19 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
             planBillPage = queryByParams(conditionQueryPlanBill, pageable);
         }
         return planBillPage;
+    }
+
+    @Override
+    public PlanBill findByBillCode(String planBillCode) {
+        if (StringUtils.isEmpty(planBillCode)) {
+            throw new DataException("20011", "进货单编码为空");
+        }
+        PlanBill planBill = planBillRepository.findOneByBillCode(planBillCode);
+        if (planBill != null) {
+            return planBill;
+        } else {
+            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
+        }
     }
 
     /**

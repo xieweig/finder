@@ -30,8 +30,5 @@ public abstract class AbstractBillRepository<T extends Bill> implements BillRepo
         billRepository.save(bill);
     }
 
-    @Override
-    public T findOne(Long id) {
-        return billRepository.findOne(id);
-    }
+
 }

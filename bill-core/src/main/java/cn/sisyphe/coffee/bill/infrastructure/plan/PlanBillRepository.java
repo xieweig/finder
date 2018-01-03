@@ -25,4 +25,5 @@ public interface PlanBillRepository extends BillRepository<PlanBill> {
     void save(List<PlanBill> planBills);
 
     Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable);
+
 }

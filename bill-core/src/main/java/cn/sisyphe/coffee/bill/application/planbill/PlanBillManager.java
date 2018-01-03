@@ -1,15 +1,9 @@
 package cn.sisyphe.coffee.bill.application.planbill;
 
-import ch.lambdaj.group.Group;
-import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
-import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
-import cn.sisyphe.coffee.bill.domain.base.behavior.AuditBehavior;
-import cn.sisyphe.coffee.bill.domain.base.behavior.OpenBehavior;
-import cn.sisyphe.coffee.bill.domain.base.behavior.PurposeBehavior;
-import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
-import cn.sisyphe.coffee.bill.domain.base.behavior.SubmitBehavior;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
@@ -25,18 +19,20 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.util.Constant;
-import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
-import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -45,18 +41,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.group;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.group.Groups.by;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.SAVED;
-
 /**
  * @author ncmao
  * @Date 2017/12/27 11:36
  * @description
  */
 @Service
-public class PlanBillManager {
+public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     @Autowired
     private PlanBillQueryService planBillQueryService;
@@ -70,37 +61,37 @@ public class PlanBillManager {
     @Autowired
     private StationRepository stationRepository;
 
+    @Autowired
+    public PlanBillManager(BillRepository<PlanBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
+        super(billRepository, applicationEventPublisher);
+    }
+
     /**
      * 创建计划单
      *
      * @param planBillDTO 计划单DTO
+     * @return billcode
      */
 
-    public PlanBillDTO create(PlanBillDTO planBillDTO) {
+    public String create(PlanBillDTO planBillDTO) {
         PlanBill planBill;
-        if (planBillDTO.getBillId() != null) {
+        if (planBillDTO.getBillCode() != null) {
             //因为计划单编号是可以更改的，所以更新的时候，不能使用billCode查询
-            planBill = planBillRepository.findByBillCode(planBillRepository.findOne(planBillDTO.getBillId()).getBillCode());
+            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
         } else {
             validateBillCode(planBillDTO.getBillCode());
             planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
         }
         map(planBill, planBillDTO);
-
-        planBill.setBillState(SAVED);
-        AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
-        billService.setBillRepository(planBillRepository);
-        billService.dispose(new SaveBehavior());
-        billService.save();
-        return planBillDTO;
-
+        validateBillCode(planBillDTO.getBillCode());
+        return save(planBill).getBillCode();
     }
 
     private void validateBillCode(String billCode) {
         if (billCode == null) {
             throw new DataException("123456", "请输入计划编号");
         }
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         if (planBill != null) {
             throw new DataException("123456", "计划编号已存在");
         }
@@ -111,49 +102,39 @@ public class PlanBillManager {
      *
      * @param planBillDTO 前端传过来的DTO
      */
-    public void submit(PlanBillDTO planBillDTO) {
+    public String submit(PlanBillDTO planBillDTO) {
         PlanBill planBill;
-        if (planBillDTO.getBillId() != null) {
+        if (planBillDTO.getBillCode() != null) {
             //因为计划单编号是可以更改的，所以更新的时候，不能使用billCode查询
-            planBill = planBillRepository.findByBillCode(planBillRepository.findOne(planBillDTO.getBillId()).getBillCode());
+            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
         } else {
             validateBillCode(planBillDTO.getBillCode());
             planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
         }
         map(planBill, planBillDTO);
-        AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
-        billService.setBillRepository(planBillRepository);
-        billService.dispose(new SubmitBehavior());
-        billService.save();
+        return submit(planBill).getBillCode();
     }
 
     //查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
     public void open(String billCode) {
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
-        AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
-        billService.setBillRepository(planBillRepository);
-        billService.dispose(new OpenBehavior());
-        billService.save();
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+        open(planBill);
     }
 
     //审核不通过
     public void unPass(String billCode) {
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
-        AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
-        billService.setBillRepository(planBillRepository);
-        billService.dispose(new AuditBehavior(billService, Constant.AUDIT_FAILURE_VALUE));
-        billService.save();
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+        audit(planBill, false);
+
     }
 
     //审核通过，然后进行计划单切片
     public void pass(String billCode) {
-        PlanBill planBill = planBillRepository.findByBillCode(billCode);
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         mapForSplit(planBill);
-        AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
-        billService.setBillRepository(planBillRepository);
-        billService.dispose(new AuditBehavior(billService, Constant.AUDIT_SUCCESS_VALUE));
-        billService.dispose(new PurposeBehavior());
-        billService.save();
+        audit(planBill, true);
+        purpose(planBill);
+
     }
 
     private void mapForSplit(PlanBill planBill) {
@@ -292,6 +273,10 @@ public class PlanBillManager {
             }
             queryPlanDetailBillDTO.setAmount(amount);
             /**
+             * 货物详情-从表
+             */
+            queryPlanDetailBillDTO.setBillDetails(planBill.getBillDetails());
+            /**
              * 规格品种--主表
              */
             queryPlanDetailBillDTO.setSpecies(billDetails.size());
@@ -324,6 +309,19 @@ public class PlanBillManager {
     }
 
     /**
+     * @param
+     * @return
+     * @throws DataException
+     */
+    public PlanBill findPlanBillByBillCode(String planBillCode) {
+        PlanBill planBill = planBillQueryService.findByBillCode(planBillCode);
+/*
+        // 如果单据是打开状态，则直接返回转换后的进货单据信息
+        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
+            return mapOneToDTO(purchaseBill);
+        }
+*/
+    /**
      * 根据编号查询
      *
      * @param billCode
@@ -333,6 +331,11 @@ public class PlanBillManager {
         return planBillToResultPlanBillDTO(planBillRepository.findByBillCode(billCode));
     }
 
+        // 打开单据
+//        planBill = open(purchaseBill);
+
+        return planBill;
+    }
     /**
      * 将 PlanBill 转为 ResultPlanBillDTO
      *

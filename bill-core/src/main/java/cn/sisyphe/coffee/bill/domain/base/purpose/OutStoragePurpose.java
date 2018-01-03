@@ -10,6 +10,7 @@ import java.text.MessageFormat;
 /**
  * Created by heyong on 2017/12/19 12:22
  * Description: 出库用途处理器
+ *
  * @author heyong
  */
 public class OutStoragePurpose extends AbstractBillPurpose {
@@ -23,13 +24,10 @@ public class OutStoragePurpose extends AbstractBillPurpose {
         System.err.println("out Storage");
 
         Bill bill = getBillService().getBill();
-        bill.setBillState(BillStateEnum.OUTSTORAGING);
+        bill.setBillState(BillStateEnum.OUT_STORAGING);
 
-        try {
-            MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
+
     }
 
     /**

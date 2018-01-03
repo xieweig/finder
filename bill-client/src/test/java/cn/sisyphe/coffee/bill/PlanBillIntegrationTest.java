@@ -60,40 +60,23 @@ public class PlanBillIntegrationTest {
         //第三次 配送计划单
         PlanBill planBill = new PlanBill();
         planBill.setBillType(BillTypeEnum.PLAN);
-        planBill.setSpecificBillType(BillTypeEnum.ADJUST);
+        planBill.setSpecificBillType(BillTypeEnum.DELIVERY);
         planBill.setBillPurpose(BillPurposeEnum.Plan);
         planBill.setHqBill(true);
-        planBill.setBillCode(planBill.getSpecificBillType().name()+sdf.format(new Date()));
+        planBill.setBillCode("testcode3");
+
         PlanBillDetail planBillDetail = new PlanBillDetail();
-//        Station outLocation = new Station("CTUB11");
-//        Station inLocation = new Station("CKGC11");
-//        outLocation.setStationType(StationType.STORE);
-//        inLocation.setStationType(StationType.STORE);
-
-//        PlanBillDetail planBillDetail = new PlanBillDetail();
-//        Station outLocation = new Station("LGDA02");
-//        Station inLocation = new Station("LGDA03");
-//        outLocation.setStationType(StationType.LOGISTICS);
-//        inLocation.setStationType(StationType.LOGISTICS);
-
-//        Station outLocation = new Station("CTUB11");
-//        Station inLocation = new Station("LGDA02");
-//        outLocation.setStationType(StationType.STORE);
-//        inLocation.setStationType(StationType.LOGISTICS);
-
-        Station outLocation = new Station("LGDA02");
-        Station inLocation = new Station("CKGC11");
-        outLocation.setStationType(StationType.LOGISTICS);
+        Station inLocation = new Station("CQ00");
         inLocation.setStationType(StationType.STORE);
-
-        planBillDetail.setOutLocation(outLocation);
         planBillDetail.setInLocation(inLocation);
-        planBill.setOutLocation(outLocation);
-        planBill.setInLocation(inLocation);
+        Station outLocation = new Station("CQ01");
+        planBillDetail.setOutLocation(outLocation);
         planBillDetail.setAmount(2);
-
+        planBill.setInLocation(inLocation);
+        planBill.setOutLocation(outLocation);
         RawMaterial rawMaterial1 = new RawMaterial("YLCODE1");
         planBillDetail.setGoods(rawMaterial1);
+
 
         PlanBillDetail planBillDetail1 = new PlanBillDetail();
         planBillDetail1.setInLocation(inLocation);

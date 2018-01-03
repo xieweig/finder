@@ -21,21 +21,21 @@ public enum BillStateEnum {
     /**
      * 审核失败
      */
-    AUDITFAILURE,
+    AUDIT_FAILURE,
     /**
      * 审核成功
      */
-    AUDITSUCCESS,
+    AUDIT_SUCCESS,
 
     /**
      * 出库中
      */
-    OUTSTORAGING,
+    OUT_STORAGING,
 
     /**
      * 入库中
      */
-    INSTORAGING,
+    IN_STORAGING,
     /**
      * 完成
      */

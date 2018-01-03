@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -44,8 +46,18 @@ public class SaveByRawMaterialDTO {
      *notes :计划单信息
      *  录单时间 出库站点  入库站点
      */
-    private Set<BillDetailsDTO> details;
-    //private List<BillDetailsDTO> details;
+    /**
+     * 进货单明细信息
+     */
+    private List<RestockBillDetailsDTO> billDetails;
+
+    public List<RestockBillDetailsDTO> getBillDetails() {
+        return billDetails;
+    }
+
+    public void setBillDetails(List<RestockBillDetailsDTO> billDetails) {
+        this.billDetails = billDetails;
+    }
 
     public String getBillCode() {
         return billCode;
@@ -95,11 +107,11 @@ public class SaveByRawMaterialDTO {
         this.outStationCode = outStationCode;
     }
 
-    public Set<BillDetailsDTO> getDetails() {
-        return details;
-    }
-
-    public void setDetails(Set<BillDetailsDTO> details) {
-        this.details = details;
-    }
+//    public Set<BillDetailsDTO> getDetails() {
+//        return details;
+//    }
+//
+//    public void setDetails(Set<BillDetailsDTO> details) {
+//        this.details = details;
+//    }
 }
