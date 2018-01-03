@@ -122,9 +122,9 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(@RequestParam String purchaseBillCode) {
+    public ResponseResult auditFailure(@RequestParam String purchaseBillCode,@RequestParam String auditPersonCode) {
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditFailureBill(purchaseBillCode);
+        purchaseBillManager.auditFailureBill(purchaseBillCode,auditPersonCode);
         return responseResult;
     }
 
@@ -136,9 +136,9 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(@RequestParam String purchaseBillCode) {
+    public ResponseResult auditSuccess(@RequestParam String purchaseBillCode,@RequestParam String auditPersonCode) {
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.AuditSuccessBill(purchaseBillCode);
+        purchaseBillManager.AuditSuccessBill(purchaseBillCode,auditPersonCode);
         return responseResult;
     }
 }
