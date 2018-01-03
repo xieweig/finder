@@ -36,12 +36,12 @@ public class ResultPlanBillLocationDTO {
         this.inLocation = inLocation;
     }
 
-    @Override
-    public String toString() {
-        return "ResultPlanBillDetailDTO{" +
-                ", outLocation=" + outLocation +
-                ", inLocation=" + inLocation +
-                '}';
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ResultPlanBillLocationDTO {
 
         ResultPlanBillLocationDTO that = (ResultPlanBillLocationDTO) o;
 
-        if (amount != that.amount) return false;
+        if (getAmount() != that.getAmount()) return false;
         if (getOutLocation() != null ? !getOutLocation().equals(that.getOutLocation()) : that.getOutLocation() != null)
             return false;
         return getInLocation() != null ? getInLocation().equals(that.getInLocation()) : that.getInLocation() == null;
@@ -61,7 +61,7 @@ public class ResultPlanBillLocationDTO {
     public int hashCode() {
         int result = getOutLocation() != null ? getOutLocation().hashCode() : 0;
         result = 31 * result + (getInLocation() != null ? getInLocation().hashCode() : 0);
-        result = 31 * result + amount;
+        result = 31 * result + getAmount();
         return result;
     }
 }
