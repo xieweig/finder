@@ -63,23 +63,14 @@ public class AbstractBillManager<T extends Bill> {
     }
 
     /**
-     * 审核成功
+     * 审核
      * @param bill
      * @return
      */
-    public T auditSuccess(T bill){
-        return dispose(bill, new AuditBehavior(true));
+    public T audit(T bill, boolean isSuccess){
+        return dispose(bill, new AuditBehavior(isSuccess));
     }
 
-    /**
-     * 审核失败
-     * @param bill
-     * @return
-     */
-    public T auditFailed(T bill){
-
-        return dispose(bill, new AuditBehavior(false));
-    }
 
     /**
      * 具体行为处理
@@ -110,15 +101,15 @@ public class AbstractBillManager<T extends Bill> {
 
         // 生成单据服务
         BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(bill);
+        AbstractBillService billService = serviceFactory.createBillService(bill);
         // 动作调用
-        purchaseBillService.dispose(abstractBillBehavior);
+        billService.dispose(abstractBillBehavior);
         // 设置数据库仓库
-        purchaseBillService.setBillRepository(billRepository);
+        billService.setBillRepository(billRepository);
         // 保存数据到数据库中
-        purchaseBillService.save();
+        billService.save();
         // 发送事件
-        purchaseBillService.sendEvent(applicationEventPublisher);
+        billService.sendEvent(applicationEventPublisher);
 
         return bill;
     }

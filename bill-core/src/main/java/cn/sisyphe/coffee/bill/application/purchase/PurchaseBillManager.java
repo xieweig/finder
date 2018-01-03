@@ -1,9 +1,6 @@
 package cn.sisyphe.coffee.bill.application.purchase;
 
-import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
-import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
-import cn.sisyphe.coffee.bill.domain.base.behavior.*;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -15,8 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillQueryService;
-import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
-import cn.sisyphe.coffee.bill.util.Constant;
+import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.*;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -37,28 +33,17 @@ import java.util.*;
  * @author XiongJing
  */
 @Service
-public class PurchaseBillManager {
+public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
 
     @Autowired
     private PurchaseBillQueryService purchaseBillQueryService;
-    @Autowired
-    private PurchaseBillRepository purchaseBillRepository;
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
 
-    /**
-     * 用途
-     *
-     * @param bill
-     */
-    public void purpose(Bill bill) {
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(bill.getBillCode());
-        AbstractBillService billService = serviceFactory.createBillService(purchaseBill);
-        billService.dispose(new PurposeBehavior());
-        billService.setBillRepository(purchaseBillRepository);
-        billService.save();
+
+    @Autowired
+    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
+        super(billRepository, applicationEventPublisher);
     }
+
 
     /**
      * 保存进货单
@@ -68,17 +53,9 @@ public class PurchaseBillManager {
     public void saveBill(AddPurchaseBillDTO addPurchaseBillDTO) {
         // 转换单据
         PurchaseBill purchaseBill = dtoToMapPurchaseBill(addPurchaseBillDTO);
-        // 生成单据服务
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        // 动作调用
-        purchaseBillService.dispose(new SaveBehavior());
-        // 设置数据库仓库
-        purchaseBillService.setBillRepository(purchaseBillRepository);
-        // 保存数据到数据库中
-        purchaseBillService.save();
-        // 发送事件
-        purchaseBillService.sendEvent(applicationEventPublisher);
+
+        // 保存单据
+        save(purchaseBill);
     }
 
     /**
@@ -89,19 +66,89 @@ public class PurchaseBillManager {
     public void submitBill(AddPurchaseBillDTO addPurchaseBillDTO) {
         // 转换单据
         PurchaseBill purchaseBill = dtoToMapPurchaseBill(addPurchaseBillDTO);
-        // 生成单据服务
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        // 动作调用
-        purchaseBillService.dispose(new SubmitBehavior());
-        // 设置数据库仓库
-        purchaseBillService.setBillRepository(purchaseBillRepository);
-        // 保存数据到数据库中
-        purchaseBillService.save();
-        // 发送事件
-        purchaseBillService.sendEvent(applicationEventPublisher);
+
+        submit(purchaseBill);
 
     }
+
+    /**
+     * 修改进货单--保存
+     *
+     * @param billDTO
+     */
+    public void updateBillToSave(AddPurchaseBillDTO billDTO) {
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
+        purchaseBill.getBillDetails().clear();
+        // 转换单据
+        PurchaseBill mapBillAfter = dtoToMapPurchaseBillForEdit(billDTO, purchaseBill);
+
+        save(mapBillAfter);
+    }
+
+    /**
+     * 修改进货单--提交审核
+     *
+     * @param billDTO
+     */
+    public void updateBillToSubmit(AddPurchaseBillDTO billDTO) {
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
+        purchaseBill.getBillDetails().clear();
+        // 转换单据
+        PurchaseBill mapBillAfter = dtoToMapPurchaseBillForEdit(billDTO, purchaseBill);
+
+        submit(mapBillAfter);
+    }
+
+    /**
+     * 打开进货单
+     *
+     * @param purchaseBillCode
+     */
+    public QueryOnePurchaseBillDTO openBill(String purchaseBillCode) {
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+        // 如果单据是打开状态，则直接返回转换后的进货单据信息
+        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
+            return mapOneToDTO(purchaseBill);
+        }
+
+        // 打开单据
+        purchaseBill = open(purchaseBill);
+
+        return mapOneToDTO(purchaseBill);
+    }
+
+
+    /**
+     * 审核进货单
+     *
+     * @param purchaseBillCode
+     */
+    public void auditBill(String purchaseBillCode, String auditPersonCode, boolean isSuccess) {
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+        // 设置审核人编码
+        purchaseBill.setAuditPersonCode(auditPersonCode);
+
+        audit(purchaseBill, isSuccess);
+    }
+
+    /**
+     * 单据出入库完成
+     *
+     * @param responseResult
+     */
+    public void doneBill(ResponseResult responseResult) {
+        Map<String, Object> resultMap = responseResult.getResult();
+        // 转换出单据信息
+        PurchaseBill bill = responseResult.toClassObject(resultMap.get("bill"), PurchaseBill.class);
+        // 根据单据编码查询数据库单据信息
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(bill.getBillCode());
+        // 设置入库时间
+        purchaseBill.setInWareHouseTime(new Date());
+
+
+        done(bill);
+    }
+
 
     /**
      * 保存和提交操作需要用到的DTO转换
@@ -109,7 +156,7 @@ public class PurchaseBillManager {
      * @param addPurchaseBillDTO 前端传递的DTO参数信息
      * @return
      */
-    public PurchaseBill dtoToMapPurchaseBill(AddPurchaseBillDTO addPurchaseBillDTO) {
+    private PurchaseBill dtoToMapPurchaseBill(AddPurchaseBillDTO addPurchaseBillDTO) {
         //通过工厂方法生成具体种类的单据
         BillFactory billFactory = new BillFactory();
         PurchaseBill purchaseBill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
@@ -143,7 +190,7 @@ public class PurchaseBillManager {
         // 设置出库位置
         purchaseBill.setOutLocation(addPurchaseBillDTO.getSupplier());
         // 转换单据明细信息
-        Set<PurchaseBillDetail> detailSet = ListDetailMapToSetDetail(addPurchaseBillDTO.getBillDetails());
+        Set<PurchaseBillDetail> detailSet = listDetailMapToSetDetail(addPurchaseBillDTO.getBillDetails());
         // 设置单据明细信息
         purchaseBill.setBillDetails(detailSet);
 
@@ -157,7 +204,7 @@ public class PurchaseBillManager {
      * @param billDetails
      * @return
      */
-    public Set<PurchaseBillDetail> ListDetailMapToSetDetail(List<BillDetailDTO> billDetails) {
+    private Set<PurchaseBillDetail> listDetailMapToSetDetail(List<BillDetailDTO> billDetails) {
 
         Set<PurchaseBillDetail> detailSet = new HashSet<>();
         for (BillDetailDTO detail : billDetails) {
@@ -182,25 +229,6 @@ public class PurchaseBillManager {
             detailSet.add(purchaseBillDetail);
         }
         return detailSet;
-    }
-
-    /**
-     * 打开进货单
-     *
-     * @param purchaseBillCode
-     */
-    public QueryOnePurchaseBillDTO openBill(String purchaseBillCode) {
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
-        // 如果单据是打开状态，则直接返回转换后的进货单据信息
-        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
-            return mapOneToDTO(purchaseBill);
-        }
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        purchaseBillService.dispose(new OpenBehavior());
-        purchaseBillService.setBillRepository(purchaseBillRepository);
-        purchaseBillService.save();
-        return mapOneToDTO(purchaseBill);
     }
 
 
@@ -271,57 +299,6 @@ public class PurchaseBillManager {
         return detailDTOList;
     }
 
-    /**
-     * 修改进货单--保存
-     *
-     * @param billDTO
-     */
-    public void updateBillToSave(AddPurchaseBillDTO billDTO) {
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
-        purchaseBill.getBillDetails().clear();
-        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
-                || purchaseBill.getBillState().equals(BillStateEnum.SAVED)
-                || purchaseBill.getBillState().equals(BillStateEnum.AUDITFAILURE)) {
-
-            // 转换单据
-            PurchaseBill mapBillAfter = dtoToMapPurchaseBillForEdit(billDTO, purchaseBill);
-            BillServiceFactory serviceFactory = new BillServiceFactory();
-            AbstractBillService purchaseBillService = serviceFactory.createBillService(mapBillAfter);
-            // 动作调用
-            purchaseBillService.dispose(new SaveBehavior());
-            purchaseBillService.setBillRepository(purchaseBillRepository);
-            purchaseBillService.save();
-
-        } else {
-            throw new DataException("30001", "该进货单不能编辑");
-        }
-    }
-
-    /**
-     * 修改进货单--提交审核
-     *
-     * @param billDTO
-     */
-    public void updateBillToSubmit(AddPurchaseBillDTO billDTO) {
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
-        purchaseBill.getBillDetails().clear();
-        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
-                || purchaseBill.getBillState().equals(BillStateEnum.SAVED)
-                || purchaseBill.getBillState().equals(BillStateEnum.AUDITFAILURE)) {
-
-            // 转换单据
-            PurchaseBill mapBillAfter = dtoToMapPurchaseBillForEdit(billDTO, purchaseBill);
-            BillServiceFactory serviceFactory = new BillServiceFactory();
-            AbstractBillService purchaseBillService = serviceFactory.createBillService(mapBillAfter);
-            // 动作调用
-            purchaseBillService.dispose(new SubmitBehavior());
-            purchaseBillService.setBillRepository(purchaseBillRepository);
-            purchaseBillService.save();
-
-        } else {
-            throw new DataException("30001", "该进货单不能编辑");
-        }
-    }
 
     /**
      * 修改需要转换DTO
@@ -354,74 +331,13 @@ public class PurchaseBillManager {
         // 设置出库位置
         purchaseBill.setOutLocation(editPurchaseBillDTO.getStorage());
         // 转换单据明细信息
-        Set<PurchaseBillDetail> detailSet = ListDetailMapToSetDetail(editPurchaseBillDTO.getBillDetails());
+        Set<PurchaseBillDetail> detailSet = listDetailMapToSetDetail(editPurchaseBillDTO.getBillDetails());
         // 设置单据明细信息
         purchaseBill.setBillDetails(detailSet);
 
         return purchaseBill;
     }
 
-    /**
-     * 审核失败进货单
-     *
-     * @param purchaseBillCode
-     */
-    public void auditFailureBill(String purchaseBillCode, String auditPersonCode) {
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
-        // 设置审核人编码
-        purchaseBill.setAuditPersonCode(auditPersonCode);
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        purchaseBillService.dispose(new AuditBehavior(purchaseBillService, Constant.AUDIT_FAILURE_VALUE));
-        purchaseBillService.setBillRepository(purchaseBillRepository);
-        purchaseBillService.save();
-        // 发送事件
-        purchaseBillService.sendEvent(applicationEventPublisher);
-    }
-
-    /**
-     * 审核成功进货单
-     *
-     * @param purchaseBillCode
-     */
-    public void AuditSuccessBill(String purchaseBillCode, String auditPersonCode) {
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
-        // 设置审核人编码
-        purchaseBill.setAuditPersonCode(auditPersonCode);
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        purchaseBillService.dispose(new AuditBehavior(purchaseBillService, Constant.AUDIT_SUCCESS_VALUE));
-        purchaseBillService.setBillRepository(purchaseBillRepository);
-        purchaseBillService.save();
-        // 发送事件
-        purchaseBillService.sendEvent(applicationEventPublisher);
-    }
-
-    /**
-     * 单据出入库完成
-     *
-     * @param responseResult
-     */
-    public void DoneBill(ResponseResult responseResult) {
-        Map<String, Object> resultMap = responseResult.getResult();
-        // 转换出单据信息
-        PurchaseBill bill = responseResult.toClassObject(resultMap.get("bill"), PurchaseBill.class);
-        // 根据单据编码查询数据库单据信息
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(bill.getBillCode());
-        BillServiceFactory serviceFactory = new BillServiceFactory();
-        // 设置入库时间
-        purchaseBill.setInWareHouseTime(new Date());
-        // 创建单据工厂服务
-        AbstractBillService purchaseBillService = serviceFactory.createBillService(purchaseBill);
-        // 设置用途
-        purchaseBillService.dispose(new PurposeBehavior());
-        // 设置数据仓库
-        purchaseBillService.setBillRepository(purchaseBillRepository);
-        // 保存
-        purchaseBillService.save();
-        // 发送事件
-        purchaseBillService.sendEvent(applicationEventPublisher);
-    }
 
     /**
      * 根据多条件查询进货单据信息

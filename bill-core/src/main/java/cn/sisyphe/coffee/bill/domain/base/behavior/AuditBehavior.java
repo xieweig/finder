@@ -15,55 +15,73 @@ import cn.sisyphe.framework.web.exception.DataException;
  */
 public class AuditBehavior extends AbstractBillBehavior {
 
+    private boolean isSuccess = false;
+
     /**
-     * 执行动作
+     * 可以接受的状态
+     *
+     * @return
      */
     @Override
-    public void doAction() {
-        Bill bill = getBillService().getBill();
-        if (bill != null) {
-            // 操作是需要审核成功，并且单据状态是提交或者打开状态，才能赋予审核成功状态
-            if ((Constant.AUDIT_SUCCESS_VALUE).equals(behaviorType)) {
-                if (bill.getBillState().equals(BillStateEnum.SUBMITTED) || bill.getBillState().equals(BillStateEnum.OPEN)) {
-                    bill.setBillState(BillStateEnum.AUDITSUCCESS);
-                } else {
-                    throw new DataException("20004", "当前状态不能审核成功");
-                }
-            }
-            // 操作是需要审核失败，并且单据状态是提交或者打开状态，才能赋予审核失败状态
-            else if ((Constant.AUDIT_FAILURE_VALUE).equals(behaviorType)) {
-                if (bill.getBillState().equals(BillStateEnum.SUBMITTED) || bill.getBillState().equals(BillStateEnum.OPEN)) {
-                    bill.setBillState(BillStateEnum.AUDITFAILURE);
-                } else {
-                    throw new DataException("20004", "当前状态不能审核失败");
-                }
-            } else {
-                throw new DataException("20004", "没有具体操作类型--审核失败还是审核成功(behaviorType)");
-            }
-        } else {
-            throw new DataException("20404", "单据为空");
-        }
+    public BillStateEnum[] allowableStates() {
+        return new BillStateEnum[]{BillStateEnum.SUBMITTED, BillStateEnum.OPEN};
     }
 
-
     /**
-     * 根据执行类型做相关操作
+     * 保存的状态
      *
-     * @param billService
-     * @param behaviorType
+     * @return
      */
-    public AuditBehavior(AbstractBillService billService, String behaviorType) {
-        super(billService);
-        this.behaviorType = behaviorType;
-
+    @Override
+    public BillStateEnum billState() {
+        return isSuccess ? BillStateEnum.AUDITSUCCESS : BillStateEnum.AUDITFAILURE;
     }
 
-    public AuditBehavior(boolean isSuccess){
+//    /**
+//     * 执行动作
+//     */
+//    @Override
+//    public void doAction() {
+//        Bill bill = getBillService().getBill();
+//        if (bill != null) {
+//            // 操作是需要审核成功，并且单据状态是提交或者打开状态，才能赋予审核成功状态
+//            if ((Constant.AUDIT_SUCCESS_VALUE).equals(behaviorType)) {
+//                if (bill.getBillState().equals(BillStateEnum.SUBMITTED) || bill.getBillState().equals(BillStateEnum.OPEN)) {
+//                    bill.setBillState(BillStateEnum.AUDITSUCCESS);
+//                } else {
+//                    throw new DataException("20004", "当前状态不能审核成功");
+//                }
+//            }
+//            // 操作是需要审核失败，并且单据状态是提交或者打开状态，才能赋予审核失败状态
+//            else if ((Constant.AUDIT_FAILURE_VALUE).equals(behaviorType)) {
+//                if (bill.getBillState().equals(BillStateEnum.SUBMITTED) || bill.getBillState().equals(BillStateEnum.OPEN)) {
+//                    bill.setBillState(BillStateEnum.AUDITFAILURE);
+//                } else {
+//                    throw new DataException("20004", "当前状态不能审核失败");
+//                }
+//            } else {
+//                throw new DataException("20004", "没有具体操作类型--审核失败还是审核成功(behaviorType)");
+//            }
+//        } else {
+//            throw new DataException("20404", "单据为空");
+//        }
+//    }
 
+
+//    /**
+//     * 根据执行类型做相关操作
+//     *
+//     * @param billService
+//     * @param behaviorType
+//     */
+//    public AuditBehavior(AbstractBillService billService, String behaviorType) {
+//        super(billService);
+//        this.behaviorType = behaviorType;
+//
+//    }
+
+    public AuditBehavior(boolean isSuccess) {
+        this.isSuccess = isSuccess;
     }
 
-    /**
-     * 执行具体操作类型
-     */
-    private String behaviorType;
 }

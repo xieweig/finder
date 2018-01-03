@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.purchase;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class PurchaseBillEventProcessor {
     @EventListener(condition = "#event.billType.toString() ==  'PURCHASE' and #event.billState.toString() == 'AUDITSUCCESS'")
     public void billSuccess(BehaviorEvent event) {
         System.err.println("AUDITSUCCESS:" + event.getBill());
-        purchaseBillManager.purpose(event.getBill());
+        purchaseBillManager.purpose((PurchaseBill) event.getBill());
     }
 
     /**
