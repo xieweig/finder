@@ -1,10 +1,8 @@
 package cn.sisyphe.coffee.bill.application.planbill;
 
-import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
@@ -40,10 +38,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static ch.lambdaj.Lambda.by;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.group.Groups.group;
 
 /**
  * @author ncmao
@@ -87,14 +81,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
         }
         map(planBill, planBillDTO);
-        validateBillCode(planBillDTO.getBillCode());
         return save(planBill).getBillCode();
     }
 
     private void validateBillCode(String billCode) {
-        if (billCode == null) {
-            throw new DataException("123456", "请输入计划编号");
-        }
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         if (planBill != null) {
             throw new DataException("123456", "计划编号已存在");
@@ -176,7 +166,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         planBill.setMemo(planBillDTO.getMemo());
         planBill.setHqBill(true);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
-        Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getPlanBillDetailDTOS()) {
             for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
                 PlanBillDetail planBillDetail = new PlanBillDetail();
@@ -184,11 +173,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
                 planBillDetail.setInLocation(getLocation(planBillStationDTO.getInStation()));
                 planBillDetail.setOutLocation(getLocation(planBillStationDTO.getOutStation()));
                 planBillDetail.setGoods(mapGoods(planBillDetailDTO.getRawMaterialCode(), planBillDetailDTO.getCargoCode(), planBill.getBasicEnum()));
-                planBillDetails.add(planBillDetail);
+                planBill.getBillDetails().add(planBillDetail);
             }
 
         }
-        planBill.getBillDetails().addAll(planBillDetails);
         planBill.setBillPurpose(BillPurposeEnum.Plan);
 
     }
@@ -216,7 +204,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
             if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
                     && planBillDetail.getOutLocation() instanceof Supplier) {
-                //TODO 需要使用真实数据，等唐华玲写好接口之后
+                //TODO 需要使用真实数据，等唐华玲写好接口之后,将中转的物流站点map上去
                 Station wlzd001 = new Station("WLZD001");
                 wlzd001.setStationType(StationType.LOGISTICS);
                 planBillDetail.setTransferLocation(wlzd001);

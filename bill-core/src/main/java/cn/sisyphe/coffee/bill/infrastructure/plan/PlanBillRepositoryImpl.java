@@ -23,11 +23,6 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
     private JPAPlanBillRepository jpaPlanBillRepository;
 
     @Override
-    public void save(PlanBill bill) {
-        jpaPlanBillRepository.save(bill);
-    }
-
-    @Override
     public PlanBill findOneByBillCode(String billCode) {
         return jpaPlanBillRepository.findByBillCode(billCode);
     }

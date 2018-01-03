@@ -42,9 +42,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private String creatorName;
 
-    //审核人名称
-    @Column
-    private String auditorName;
 
     @Column
     private Boolean hqBill;
@@ -98,13 +95,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.creatorName = creatorName;
     }
 
-    public String getAuditorName() {
-        return auditorName;
-    }
-
-    public void setAuditorName(String auditorName) {
-        this.auditorName = auditorName;
-    }
 
     public BigDecimal getProgress() {
         return progress;
