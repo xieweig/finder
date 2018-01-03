@@ -13,6 +13,8 @@ import java.util.List;
 public class PlanBillDTO {
     private String billCode;
 
+    private Long billId;
+
     private String billName;
 
     private BillTypeEnum billType;
@@ -80,5 +82,13 @@ public class PlanBillDTO {
 
     public void setAuditMemo(String auditMemo) {
         this.auditMemo = auditMemo;
+    }
+
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
     }
 }

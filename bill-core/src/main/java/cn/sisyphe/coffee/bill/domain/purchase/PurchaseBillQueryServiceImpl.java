@@ -63,9 +63,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
     public Page<PurchaseBill> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryPurchaseBill.getPage() - 1, conditionQueryPurchaseBill.getPageSize());
-        // SpringCloud调用查询供应商编码
-        List<String> supplierCodeList = supplierRepository.findByLikeSupplierName(conditionQueryPurchaseBill.getSupplierName());
-        conditionQueryPurchaseBill.setSupplierCodeList(supplierCodeList);
         // SpringCloud调用查询录单人编码
         List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
         conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
@@ -133,9 +130,8 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 供应商
              */
-            if (conditionQueryPurchaseBill.getSupplierCodeList() != null
-                    && conditionQueryPurchaseBill.getSupplierCodeList().size() > 0) {
-                expressions.add(root.get("supplierCode").as(String.class).in(conditionQueryPurchaseBill.getSupplierCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getSupplierCode())){
+                expressions.add(cb.equal(root.get("supplierCode").as(String.class), conditionQueryPurchaseBill.getSupplierCode()));
             }
             /**
              * 拼接状态

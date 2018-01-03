@@ -60,9 +60,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private BigDecimal progress;
 
-    @Column
-    private String parentBillCode;
-
     public PlanBill() {
         setBillType(BillTypeEnum.PLAN);
     }
@@ -139,13 +136,5 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setAuditMemo(String auditMemo) {
         this.auditMemo = auditMemo;
-    }
-
-    public String getParentBillCode() {
-        return parentBillCode;
-    }
-
-    public void setParentBillCode(String parentBillCode) {
-        this.parentBillCode = parentBillCode;
     }
 }

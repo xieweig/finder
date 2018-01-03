@@ -28,6 +28,7 @@ import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.util.Constant;
+import cn.sisyphe.framework.web.exception.DataException;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
@@ -71,9 +72,15 @@ public class PlanBillManager {
      * @param planBillDTO 计划单DTO
      */
 
-    public PlanBill create(PlanBillDTO planBillDTO) {
-        PlanBill planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
-
+    public PlanBillDTO create(PlanBillDTO planBillDTO) {
+        PlanBill planBill;
+        if (planBillDTO.getBillId() != null) {
+            //因为计划单编号是可以更改的，所以更新的时候，不能使用billCode查询
+            planBill = planBillRepository.findByBillCode(planBillRepository.findOne(planBillDTO.getBillId()).getBillCode());
+        } else {
+            validateBillCode(planBillDTO.getBillCode());
+            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        }
         map(planBill, planBillDTO);
 
         planBill.setBillState(SAVED);
@@ -81,8 +88,18 @@ public class PlanBillManager {
         billService.setBillRepository(planBillRepository);
         billService.dispose(new SaveBehavior());
         billService.save();
-        return planBillRepository.findByBillCode(planBillDTO.getBillCode());
+        return planBillDTO;
 
+    }
+
+    private void validateBillCode(String billCode) {
+        if (billCode == null) {
+            throw new DataException("123456", "请输入计划编号");
+        }
+        PlanBill planBill = planBillRepository.findByBillCode(billCode);
+        if (planBill != null) {
+            throw new DataException("123456", "计划编号已存在");
+        }
     }
 
     /**
@@ -91,7 +108,14 @@ public class PlanBillManager {
      * @param planBillDTO 前端传过来的DTO
      */
     public void submit(PlanBillDTO planBillDTO) {
-        PlanBill planBill = planBillRepository.findByBillCode(planBillDTO.getBillCode());
+        PlanBill planBill;
+        if (planBillDTO.getBillId() != null) {
+            //因为计划单编号是可以更改的，所以更新的时候，不能使用billCode查询
+            planBill = planBillRepository.findByBillCode(planBillRepository.findOne(planBillDTO.getBillId()).getBillCode());
+        } else {
+            validateBillCode(planBillDTO.getBillCode());
+            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        }
         map(planBill, planBillDTO);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
@@ -120,7 +144,7 @@ public class PlanBillManager {
     //审核通过，然后进行计划单切片
     public void pass(String billCode) {
         PlanBill planBill = planBillRepository.findByBillCode(billCode);
-        setTransferLocation(planBill);
+        mapForSplit(planBill);
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
         billService.dispose(new AuditBehavior(billService, Constant.AUDIT_SUCCESS_VALUE));
@@ -128,7 +152,33 @@ public class PlanBillManager {
         billService.save();
     }
 
-    //将前端传过来的数据进行
+    private void mapForSplit(PlanBill planBill) {
+        mapInLocation(planBill);
+        mapOutLocation(planBill);
+        setTransferLocation(planBill);
+    }
+
+    private void mapInLocation(PlanBill planBill) {
+        if (planBill.getInLocation() instanceof Station) {
+            planBill.setInLocation(stationRepository.findByStationCode(((Station) planBill.getInLocation()).getStationCode()));
+            return;
+        }
+        if (planBill.getInLocation() instanceof Supplier) {
+            planBill.setInLocation(supplierRepository.findBySupplierCode(((Supplier) planBill.getInLocation()).getSupplierCode()));
+        }
+    }
+
+    private void mapOutLocation(PlanBill planBill) {
+        if (planBill.getOutLocation() instanceof Station) {
+            planBill.setOutLocation(stationRepository.findByStationCode(((Station) planBill.getOutLocation()).getStationCode()));
+            return;
+        }
+        if (planBill.getInLocation() instanceof Supplier) {
+            planBill.setOutLocation(supplierRepository.findBySupplierCode(((Supplier) planBill.getOutLocation()).getSupplierCode()));
+        }
+    }
+
+    //将前端传过来的数据进行转换
     private void map(PlanBill planBill, PlanBillDTO planBillDTO) {
         planBill.getBillDetails().clear();
         planBill.setSpecificBillType(planBillDTO.getBillType());
@@ -154,6 +204,7 @@ public class PlanBillManager {
 
     }
 
+    //g根据前端传递过来的货物类型进行map，如果是按照货物分类则是cargo，其他这是原料
     private AbstractGoods mapGoods(String rawMaterialCode, String cargoCode, BasicEnum basicEnum) {
         if (BasicEnum.BY_CARGO.equals(basicEnum)) {
             return new Cargo(cargoCode);
@@ -161,13 +212,14 @@ public class PlanBillManager {
         return new RawMaterial(rawMaterialCode);
     }
 
+    //如果前端传递过来类型是供应商，则new供应商对象
     private AbstractLocation getLocation(Station station) {
         if (StationType.SUPPLIER.equals(station.getStationType())) {
             Supplier supplier = new Supplier(station.getStationCode());
             supplier.setSupplierName(station.getStationName());
             return supplier;
         }
-        return stationRepository.findByStationCode(station.getStationCode());
+        return new Station(station.getStationCode());
     }
 
     //TODO 如果出站站点是门店，并且入战站点是供应商，则需要将中转物流站点map到tranferLocation上面去
@@ -175,10 +227,12 @@ public class PlanBillManager {
         for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
             if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
                     && planBillDetail.getOutLocation() instanceof Supplier) {
-                planBillDetail.setTransferLocation(supplierRepository.findBySupplierCode(planBillDetail.getOutLocation().code()));
+                //TODO 需要使用真实数据，等唐华玲写好接口之后
+                Station wlzd001 = new Station("WLZD001");
+                wlzd001.setStationType(StationType.LOGISTICS);
+                planBillDetail.setTransferLocation(wlzd001);
             }
         }
-
     }
 
     /**

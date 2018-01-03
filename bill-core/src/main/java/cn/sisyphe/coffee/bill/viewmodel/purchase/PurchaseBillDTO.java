@@ -50,7 +50,7 @@ public class PurchaseBillDTO {
     /**
      * 实收数量--明细表
      */
-    private Integer actualNumber;
+    private Integer amount;
 
     /**
      * 数量差值--明细表
@@ -145,12 +145,12 @@ public class PurchaseBillDTO {
         this.inStorageCode = inStorageCode;
     }
 
-    public Integer getActualNumber() {
-        return actualNumber;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setActualNumber(Integer actualNumber) {
-        this.actualNumber = actualNumber;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Integer getDifferenceNumber() {
@@ -203,7 +203,7 @@ public class PurchaseBillDTO {
                 ", auditPersonCode='" + auditPersonCode + '\'' +
                 ", inStationCode='" + inStationCode + '\'' +
                 ", inStorageCode='" + inStorageCode + '\'' +
-                ", actualNumber=" + actualNumber +
+                ", amount=" + amount +
                 ", differenceNumber=" + differenceNumber +
                 ", inTotalPrice=" + inTotalPrice +
                 ", differencePrice=" + differencePrice +

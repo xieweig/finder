@@ -19,7 +19,7 @@ public class InStoragePurpose extends AbstractBillPurpose {
      */
     @Override
     public void handle() {
-        System.err.println("in Storage");
+        System.err.println("入库中......");
 
         Bill bill = getBillService().getBill();
         bill.setBillState(BillStateEnum.INSTORAGING);
