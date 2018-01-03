@@ -44,7 +44,7 @@ public class PurchaseBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'PURCHASE' and #event.billState.toString() == 'AUDITFAILURE'")
     public void billFailure(BehaviorEvent event) {
-        System.err.println("AUDITFAILURE:" + event.getBill());
+        System.err.println("AUDIT_FAILURE:" + event.getBill());
     }
 
     /**
@@ -54,7 +54,7 @@ public class PurchaseBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'PURCHASE' and #event.billState.toString() == 'AUDITSUCCESS'")
     public void billSuccess(BehaviorEvent event) {
-        System.err.println("AUDITSUCCESS:" + event.getBill());
+        System.err.println("AUDIT_SUCCESS:" + event.getBill());
         purchaseBillManager.purpose((PurchaseBill) event.getBill());
     }
 

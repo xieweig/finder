@@ -1,8 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.base.behavior;
 
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.framework.web.exception.DataException;
 
 /**
  * Created by heyong on 2017/12/19 12:03

@@ -22,7 +22,7 @@ public class InStoragePurpose extends AbstractBillPurpose {
         System.err.println("入库中......");
 
         Bill bill = getBillService().getBill();
-        bill.setBillState(BillStateEnum.INSTORAGING);
+        bill.setBillState(BillStateEnum.IN_STORAGING);
 
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
 

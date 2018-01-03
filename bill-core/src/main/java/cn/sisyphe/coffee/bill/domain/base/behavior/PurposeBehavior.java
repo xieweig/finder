@@ -17,7 +17,7 @@ public class PurposeBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillStateEnum[] allowableStates() {
-        return new BillStateEnum[]{BillStateEnum.AUDITSUCCESS};
+        return new BillStateEnum[]{BillStateEnum.AUDIT_SUCCESS};
     }
 
     /**
@@ -27,7 +27,7 @@ public class PurposeBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillStateEnum billState() {
-        // TODO: 2018/1/3 处理行为的状态
+        // 只处可不回写，交给handle处理
         return null;
     }
 
