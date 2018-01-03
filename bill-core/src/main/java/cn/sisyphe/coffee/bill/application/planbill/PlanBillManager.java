@@ -19,6 +19,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillQueryService;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
@@ -27,10 +28,19 @@ import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.util.Constant;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.SAVED;
@@ -42,6 +52,9 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.SAVED
  */
 @Service
 public class PlanBillManager {
+
+    @Autowired
+    private PlanBillQueryService planBillQueryService;
 
     @Autowired
     private PlanBillRepository planBillRepository;
@@ -167,4 +180,89 @@ public class PlanBillManager {
         }
 
     }
+
+    /**
+     * @param conditionQueryPlanBill
+     * @return
+     * @throws DataException
+     */
+    public QueryPlanBillDTO findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
+
+        //1 根据具体的运单号查询,只有唯一的显示，显示一条
+        //2 根据配送出库查询可能会有多条
+        //3 所有都是模糊匹配
+        //所有的产品表中的数据
+        Page<PlanBill> planBillPage = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
+        QueryPlanBillDTO queryPlanBillDTO = new QueryPlanBillDTO();
+        // 转换
+        List<QueryPlanDetailBillDTO> billDTOList = toMapDTO(planBillPage.getContent());
+        // 总数
+        queryPlanBillDTO.setTotalNumber(planBillPage.getTotalElements());
+        // 进货单据数据
+        queryPlanBillDTO.setContent(billDTOList);
+
+        return queryPlanBillDTO;
+    }
+    /**
+     * 前端多条件查询转换DTO
+     *
+     * @param planBillList
+     * @return
+     */
+    public List<QueryPlanDetailBillDTO> toMapDTO(List<PlanBill> planBillList) {
+
+        List<QueryPlanDetailBillDTO> planBillDTOList = new ArrayList<>();
+        int amount;
+        for (PlanBill planBill : planBillList) {
+            QueryPlanDetailBillDTO queryPlanDetailBillDTO = new QueryPlanDetailBillDTO();
+            /**
+             * progress-主表
+             */
+            queryPlanDetailBillDTO.setProgress(planBill.getProgress());
+            /**
+             * 计划站点号-主表
+             */
+            queryPlanDetailBillDTO.setStationPlanCode("bugaosuni001-buzhidao002");
+            /**
+             * 数量-从表
+             */
+            Set<PlanBillDetail> billDetails = planBill.getBillDetails();
+            amount = 0;
+            for (PlanBillDetail planBillDetail : billDetails) {
+                amount += planBillDetail.getAmount();
+            }
+            queryPlanDetailBillDTO.setAmount(amount);
+            /**
+             * 规格品种--主表
+             */
+            queryPlanDetailBillDTO.setSpecies(billDetails.size());
+            /**
+             * 录单时间-主表
+             */
+            queryPlanDetailBillDTO.setCreateTime(planBill.getCreateTime());
+            /**
+             * 调入站点-主表
+             */
+            Station station = (Station) planBill.getInLocation();
+            queryPlanDetailBillDTO.setInStation(station.getStationName());
+            /**
+             * 出库站点-主表
+             */
+            station = (Station) planBill.getOutLocation();
+            queryPlanDetailBillDTO.setOutStation(station.getStationName());
+            /**
+             * 录单人-主表
+             */
+            queryPlanDetailBillDTO.setCreatorName(planBill.getCreatorName());
+            /**
+             * 备注-主表
+             */
+            queryPlanDetailBillDTO.setMemo(planBill.getMemo());
+
+            planBillDTOList.add(queryPlanDetailBillDTO);
+        }
+        return planBillDTOList;
+    }
+
+
 }

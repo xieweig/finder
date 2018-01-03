@@ -2,6 +2,8 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,5 +64,19 @@ public class PlanBillController {
     public ResponseResult pass(@RequestParam("billCode") String billCode) {
         planBillManager.pass(billCode);
         return null;
+    }
+
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "计划单据多条件分页查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        QueryPlanBillDTO billPage = planBillManager.findPageByCondition(conditionQueryPlanBill);
+        responseResult.put("content", billPage);
+        return responseResult;
     }
 }
