@@ -23,7 +23,8 @@ public class PlanBillTest {
 //        conditionQueryPlanBill.setCreatorName("伊利丹");
         conditionQueryPlanBill.setPage(1);
         conditionQueryPlanBill.setPageSize(10);
-        System.err.print(planBillManager.findPageByCondition(conditionQueryPlanBill));
+        planBillManager.findPageByCondition(conditionQueryPlanBill);
+//        System.err.print(planBillManager.findPageByCondition(conditionQueryPlanBill));
 //        System.err.print(planBillManager.);
     }
 }
