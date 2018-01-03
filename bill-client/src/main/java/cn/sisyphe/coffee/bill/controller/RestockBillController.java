@@ -11,7 +11,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-
+/**
+ *@date: 2018/1/3
+ *@description:
+ *@author：xieweiguang
+ */
 @RequestMapping("/api/bill/restock")
 @RestController
 @CrossOrigin(origins = "*")
