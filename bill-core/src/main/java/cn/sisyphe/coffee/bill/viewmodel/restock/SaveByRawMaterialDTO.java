@@ -20,7 +20,9 @@ public class SaveByRawMaterialDTO {
      *  单号 出库库位 单据备注
      */
     private String billCode;
+
     private String storageCode;
+
     private String remarks;
 
     /**

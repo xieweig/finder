@@ -182,7 +182,7 @@ public class PurchaseBillTest {
      */
     @Test
     public void updatePurchaseBillToSave() {
-        String billCode = "bill001";
+        String billCode = "bill003";
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         saveDto.setBillCode(billCode);
         // 货运单号
