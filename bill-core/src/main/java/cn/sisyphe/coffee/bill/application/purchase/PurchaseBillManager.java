@@ -16,7 +16,6 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.*;
 import cn.sisyphe.framework.web.ResponseResult;
-import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -144,8 +143,6 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(bill.getBillCode());
         // 设置入库时间
         purchaseBill.setInWareHouseTime(new Date());
-
-
         done(bill);
     }
 
@@ -166,7 +163,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
-        purchaseBill.setBillCode("bill002");
+        purchaseBill.setBillCode("bill003");
         // 货运单号
         purchaseBill.setFreightCode(addPurchaseBillDTO.getFreightCode());
         // 发货件数
@@ -424,9 +421,6 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
 
             purchaseBillDTOList.add(purchaseBillDTO);
         }
-
         return purchaseBillDTOList;
     }
-
-
 }

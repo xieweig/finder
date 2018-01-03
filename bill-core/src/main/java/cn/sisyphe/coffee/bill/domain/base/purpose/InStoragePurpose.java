@@ -18,7 +18,7 @@ public class InStoragePurpose extends AbstractBillPurpose {
      * 用途处理器
      */
     @Override
-    public void handle() throws ClassNotFoundException {
+    public void handle(){
         System.err.println("入库中......");
 
         Bill bill = getBillService().getBill();
