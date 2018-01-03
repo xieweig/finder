@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.planbill;
 
+import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
@@ -38,6 +39,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
 
 /**
  * @author ncmao
@@ -307,7 +312,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return
      */
     public ResultPlanBillDTO findByBillCode(String billCode) throws DataException{
-        return planBillToResultPlanBillDTO(planBillRepository.findByBillCode(billCode));
+        return planBillToResultPlanBillDTO(planBillRepository.findOneByBillCode(billCode));
     }
     /**
      * 将 PlanBill 转为 ResultPlanBillDTO

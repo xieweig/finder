@@ -15,13 +15,6 @@ import java.util.List;
  */
 public interface PlanBillRepository extends BillRepository<PlanBill> {
 
-    /**
-     * 根据单据编号查询
-     * @param billCode
-     * @return
-     */
-    PlanBill findByBillCode(String billCode);
-
     void save(List<PlanBill> planBills);
 
     Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable);
