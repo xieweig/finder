@@ -147,6 +147,7 @@ public class RestockTest {
     private RestockBillManager restockBillManager;
     @Test
     public void Orange(){
+
         SaveByRestockBillDTO saveByRawMaterialDTO = new SaveByRestockBillDTO();
         saveByRawMaterialDTO.setBillCode("0802104"+random.nextInt(10));
         saveByRawMaterialDTO.setCreateTime(new Date());
@@ -180,7 +181,7 @@ public class RestockTest {
 
         saveByRawMaterialDTO.setBillDetails(list);
 
-        restockBillManager.saveByRawMaterial(saveByRawMaterialDTO);
+        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
 
 
     }
