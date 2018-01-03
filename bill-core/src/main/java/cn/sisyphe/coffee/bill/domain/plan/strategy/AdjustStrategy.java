@@ -5,8 +5,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
-import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,16 +14,17 @@ import java.util.List;
 
 /**
  * @author ncmao
- *         计划单转成调剂单策略
+ * 计划单转成调剂单策略
  */
 
 @Service
 public class AdjustStrategy extends AbstractCastableStrategy {
     @Override
-    public void cast(PlanBillPayload planBillPayload, BillRepository billRepository) {
+    public List<PlanBill> cast(PlanBillPayload planBillPayload) {
         StationType outStationType = obtainStationTypeByLocation(planBillPayload.getOutLocation());
         StationType inStationType = obtainStationTypeByLocation(planBillPayload.getInLocation());
         getAdjustSpecStrategy(outStationType, inStationType);
+        return new ArrayList<>();
     }
 
     /**

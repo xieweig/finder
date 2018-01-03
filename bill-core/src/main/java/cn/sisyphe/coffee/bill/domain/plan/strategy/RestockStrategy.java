@@ -3,21 +3,25 @@ package cn.sisyphe.coffee.bill.domain.plan.strategy;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
-import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author ncmao
- *         计划单转成退库单策略
+ * 计划单转成退库单策略
  */
 
 @Service
 public class RestockStrategy extends AbstractCastableStrategy {
+
+
     @SuppressWarnings("unchecked")
     @Override
-    public void cast(PlanBillPayload planBillPayload, BillRepository billRepository) {
+    public List<PlanBill> cast(PlanBillPayload planBillPayload) {
         PlanBill planBill = generatePlanBill(planBillPayload, BillTypeEnum.RESTOCK, planBill1 -> {
         });
-        billRepository.save(planBill);
+        return Collections.singletonList(planBill);
     }
 }
