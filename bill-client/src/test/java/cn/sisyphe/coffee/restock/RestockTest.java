@@ -44,6 +44,38 @@ public class RestockTest {
     @Resource
     private RestockBillRepository restockBillRepository;
     private Random random = new Random();
+    private Calendar calendar =Calendar.getInstance();
+    private void setDate(RestockBill restockBill){
+
+
+        Date date = new Date();
+        calendar.setTime(date);
+
+        logger.info(calendar.getTime().toString());
+
+        if (restockBill.getInStorageEndTime()==null) {
+
+            calendar.add(Calendar.HOUR, 11);
+            restockBill.setInStorageStartTime(calendar.getTime());
+        }
+
+        if (restockBill.getInStorageStartTime()==null){
+
+            calendar.add(Calendar.HOUR,18);
+            restockBill.setInStorageEndTime(calendar.getTime());
+        }
+
+        if (restockBill.getOutStorageStartTime()==null){
+
+            calendar.add(Calendar.DATE, 2);
+            restockBill.setOutStorageStartTime(calendar.getTime());
+        }
+        if (restockBill.getOutStorageEndTime()==null){
+
+            calendar.add(Calendar.HOUR,12);
+            restockBill.setOutStorageEndTime(calendar.getTime());
+        }
+    }
 
     @Test
     public void Juice(){
@@ -118,31 +150,33 @@ public class RestockTest {
     @Test
     public void Orange(){
         SaveByRawMaterialDTO saveByRawMaterialDTO = new SaveByRawMaterialDTO();
-        saveByRawMaterialDTO.setBillCode("0302104"+random.nextInt(10));
+        saveByRawMaterialDTO.setBillCode("0802104"+random.nextInt(10));
         saveByRawMaterialDTO.setCreateTime(new Date());
         saveByRawMaterialDTO.setInStationCode("10001"+random.nextInt(10));
         saveByRawMaterialDTO.setOutStationCode("20001"+random.nextInt(10));
+        saveByRawMaterialDTO.setRemarks("bill remarks");
 
 
             List<RestockBillDetailsDTO> list = new ArrayList<>();
             RestockBillDetailsDTO first = new RestockBillDetailsDTO();
             first.setRawMaterialName("milk");
-            first.setRawMaterialCode("2002"+random.nextInt(10));
+            first.setRawMaterialCode("8002"+random.nextInt(10));
             first.setCargoName("menu");
-            first.setCargoCode("30003"+random.nextInt(10));
+            first.setCargoCode("80003"+random.nextInt(10));
             first.setAmount(500);
             first.setPackageCode("bottle");
-            first.setNumber(10);
+            first.setActualNumber(10);
             first.setCargoRemarks("only"+random.nextInt(100)+" left ");
+
             list.add(first);
             RestockBillDetailsDTO second = new RestockBillDetailsDTO();
             second.setRawMaterialName("milk");
-            second.setRawMaterialCode("2002"+random.nextInt(10));
+            second.setRawMaterialCode("7002"+random.nextInt(10));
             second.setCargoName("menu");
-            second.setCargoCode("30003"+random.nextInt(10));
+            second.setCargoCode("70003"+random.nextInt(10));
             second.setAmount(500);
             second.setPackageCode("bottle");
-            second.setNumber(10);
+            second.setActualNumber(10);
             second.setCargoRemarks("only"+random.nextInt(100)+" left ");
             list.add(second);
 

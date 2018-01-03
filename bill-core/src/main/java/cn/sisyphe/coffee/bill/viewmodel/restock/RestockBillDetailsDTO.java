@@ -23,6 +23,26 @@ public class RestockBillDetailsDTO  {
 
     private String rawMaterialName;
 
+    private Integer expectedNumber;
+
+    private Integer actualNumber;
+
+    public Integer getExpectedNumber() {
+        return expectedNumber;
+    }
+
+    public void setExpectedNumber(Integer expectedNumber) {
+        this.expectedNumber = expectedNumber;
+    }
+
+    public Integer getActualNumber() {
+        return actualNumber;
+    }
+
+    public void setActualNumber(Integer actualNumber) {
+        this.actualNumber = actualNumber;
+    }
+
     /**
      * 实收最小单位数量
      */
@@ -33,7 +53,6 @@ public class RestockBillDetailsDTO  {
      */
     private String packageCode;
 
-    private Integer number;
 
     private String cargoRemarks;
 
@@ -89,13 +108,7 @@ public class RestockBillDetailsDTO  {
         this.packageCode = packageCode;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
 
     public String getCargoRemarks() {
         return cargoRemarks;

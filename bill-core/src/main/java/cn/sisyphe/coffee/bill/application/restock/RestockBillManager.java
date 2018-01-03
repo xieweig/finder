@@ -26,9 +26,7 @@ import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -52,15 +50,19 @@ public class RestockBillManager {
         // 初始化单据为：退库 出库单
         restockBill.setBillType(BillTypeEnum.RESTOCK);
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
+
         //根据单据生成对应的BillServer;
         RestockBillService billService = (RestockBillService) billServiceFactory.createBillService(restockBill);
         //会setBillBehavior;
-        billService.setBillBehavior(new SaveBehavior());
+        billService.dispose(new SaveBehavior());
+
         billService.setBillRepository(restockBillRepository);
+
         billService.save();
-        billService.sendEvent(applicationEventPublisher);
+        //billService.sendEvent(applicationEventPublisher);
 
     }
+
     public void saveBySelf(SaveBySelfDTO saveBySelfDTO) {
         RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
         BeanUtils.copyProperties(saveBySelfDTO, restockBill);
@@ -69,7 +71,13 @@ public class RestockBillManager {
     }
 
     public void saveByCargo(SaveByCargoDTO saveByCargoDTO) {
+        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
+        //this.billCopyPropertiesFromDTO();
+    }
 
+    public Page<CargoDTO> queryCargo(String cargoName, String cargoCode) {
+
+        return null;
     }
 
     public void saveByRawMaterial(SaveByRawMaterialDTO saveByRawMaterialDTO) {
@@ -86,39 +94,14 @@ public class RestockBillManager {
         this.save_init(restockBill);
 
     }
-
-    public Page<CargoDTO> queryCargo(String cargoName, String cargoCode) {
-
-
-        return null;
-    }
-    private void detailsCopyPropertiesFromDTO(RestockBillDetailsDTO dto, RestockBillDetail detail){
-
-        RawMaterial rawMaterial = new RawMaterial(dto.getRawMaterialCode());
-        rawMaterial.setRawMaterialName(dto.getRawMaterialName());
-
-        Cargo cargo = new Cargo(dto.getCargoCode());
-        cargo.setCargoName(dto.getCargoName());
-        rawMaterial.setCargo(cargo);
-
-        detail.setGoods(rawMaterial);
-        detail.setAmount(dto.getAmount());
-        detail.setPackageCode(dto.getPackageCode());
-        detail.setNumber(dto.getNumber());
-
-        detail.setDetailsRemarks(dto.getCargoRemarks());
+    private void billCopyPropertiesFromDTO(SaveByCargoDTO saveByCargoDTO, RestockBill restockBill){
 
     }
-    private Set<RestockBillDetail> listToSet(List<RestockBillDetailsDTO> list){
-        Set<RestockBillDetail> details = new HashSet<>();
-        for (RestockBillDetailsDTO detailDTO:list
-             ) {
-            RestockBillDetail restockBillDetail = new RestockBillDetail();
-            this.detailsCopyPropertiesFromDTO(detailDTO, restockBillDetail);
-            details.add(restockBillDetail);
-        }
-        return details;
-    }
+    /**
+     *
+     *notes :
+     *  billDTO to Bill ;包括关联的details ;single
+     */
     private void billCopyPropertiesFromDTO(SaveByRawMaterialDTO saveByRawMaterialDTO, RestockBill restockBill){
 
         restockBill.setBillCode(saveByRawMaterialDTO.getBillCode());
@@ -138,10 +121,52 @@ public class RestockBillManager {
         outStation.setStorage(storage);
         restockBill.setOutLocation(outStation);
 
+
+
         Set<RestockBillDetail> details = this.listToSet(saveByRawMaterialDTO.getBillDetails());
 
+        restockBill.setBillDetails(details);
 
 
+
+
+    }
+    /**
+     *
+     *notes :
+     *  如果@requestbody注解只能直接绑定成list 那么此处需要转换成set
+     */
+    private Set<RestockBillDetail> listToSet(List<RestockBillDetailsDTO> list){
+        Set<RestockBillDetail> details = new HashSet<>();
+        for (RestockBillDetailsDTO detailDTO:list
+                ) {
+            RestockBillDetail restockBillDetail = new RestockBillDetail();
+            this.detailsCopyPropertiesFromDTO(detailDTO, restockBillDetail);
+            details.add(restockBillDetail);
+        }
+        System.out.println("details: "+details.size());
+        return details;
+    }
+    /**
+     *
+     *notes :
+     *  billDetailDTO to BillDetail; single
+     */
+    private void detailsCopyPropertiesFromDTO(RestockBillDetailsDTO dto, RestockBillDetail detail){
+
+        RawMaterial rawMaterial = new RawMaterial(dto.getRawMaterialCode());
+        rawMaterial.setRawMaterialName(dto.getRawMaterialName());
+
+        Cargo cargo = new Cargo(dto.getCargoCode());
+        cargo.setCargoName(dto.getCargoName());
+        rawMaterial.setCargo(cargo);
+
+        detail.setGoods(rawMaterial);
+        detail.setAmount(dto.getAmount());
+        detail.setPackageCode(dto.getPackageCode());
+        detail.setNumber(dto.getActualNumber());
+
+        detail.setDetailsRemarks(dto.getCargoRemarks());
 
     }
 
