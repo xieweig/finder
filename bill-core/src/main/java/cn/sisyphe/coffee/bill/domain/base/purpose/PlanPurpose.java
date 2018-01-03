@@ -12,7 +12,6 @@ import cn.sisyphe.coffee.bill.domain.plan.strategy.AdjustStrategy;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.DeliveryStrategy;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.RestockStrategy;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.ReturnedStrategy;
-import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,7 +68,7 @@ public class PlanPurpose extends AbstractBillPurpose {
         for (PlanBillPayload payload : payloads) {
             splitedPlanBills.addAll(payload.doCast());
         }
-        ((PlanBillRepository) getBillService().getBillRepository()).save(splitedPlanBills);
+        getBillService().getBillRepository().save(splitedPlanBills);
 
     }
 

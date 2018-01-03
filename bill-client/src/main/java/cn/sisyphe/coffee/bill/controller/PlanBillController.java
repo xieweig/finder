@@ -59,8 +59,13 @@ public class PlanBillController {
     @ApiOperation(value = "审核总部计划")
     @RequestMapping(path = "/open", method = RequestMethod.POST)
     public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
-        planBillManager.open(billCode);
-        return null;
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", planBillManager.open(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "审核不通过")
@@ -96,7 +101,7 @@ public class PlanBillController {
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill",planBillManager.findByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }

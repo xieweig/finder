@@ -4,6 +4,7 @@ import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
@@ -79,13 +80,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     public String create(PlanBillDTO planBillDTO) {
         PlanBill planBill;
-//        if (planBillDTO.getBillCode() != null) {
-        //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
-//            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
-//        } else {
-        validateBillCode(planBillDTO.getBillCode());
-        planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
-//        }
+        if (planBillDTO.getBillCode() != null) {
+            //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
+            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
+        } else {
+            validateBillCode(planBillDTO.getBillCode());
+            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        }
         map(planBill, planBillDTO);
         return save(planBill).getBillCode();
     }
@@ -105,7 +106,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     public String submit(PlanBillDTO planBillDTO) {
         PlanBill planBill;
         if (planBillDTO.getBillCode() != null) {
-            //因为计划单编号是可以更改的，所以更新的时候，不能使用billCode查询
             planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
         } else {
             validateBillCode(planBillDTO.getBillCode());
@@ -115,28 +115,49 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return submit(planBill).getBillCode();
     }
 
-    //查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
-    public void open(String billCode) {
+    /**
+     * 查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
+     *
+     * @param billCode
+     * @return
+     */
+    public ResultPlanBillDTO open(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+        if (BillStateEnum.OPEN.equals(planBill.getBillState()) || BillStateEnum.AUDIT_FAILURE.equals(planBill.getBillState())) {
+            return planBillToResultPlanBillDTO(planBill);
+        }
         open(planBill);
+        return planBillToResultPlanBillDTO(planBill);
     }
 
-    //审核不通过
+    /**
+     * 审核不通过
+     *
+     * @param billCode
+     * @return
+     */
+
     public void unPass(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         audit(planBill, false);
 
     }
 
-    //审核通过，然后进行计划单切片
+    /**
+     * 审核通过，然后进行计划单切片
+     *
+     * @param billCode
+     * @return
+     */
+
     public void pass(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         mapForSplit(planBill);
         audit(planBill, true);
-        purpose(planBill);
 
     }
 
+    //因为数据库只保存了code，所以在做切片的时候要去查询基础资料，把站点类型拿过来
     private void mapForSplit(PlanBill planBill) {
         mapInLocation(planBill);
         mapOutLocation(planBill);
