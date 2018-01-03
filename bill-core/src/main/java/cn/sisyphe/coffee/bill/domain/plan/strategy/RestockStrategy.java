@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.domain.plan.strategy;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
@@ -17,7 +16,8 @@ public class RestockStrategy extends AbstractCastableStrategy {
     @SuppressWarnings("unchecked")
     @Override
     public void cast(PlanBillPayload planBillPayload, BillRepository billRepository) {
-        PlanBill planBill = generatePlanBill(planBillPayload, BillTypeEnum.RESTOCK, BillPurposeEnum.Plan);
+        PlanBill planBill = generatePlanBill(planBillPayload, BillTypeEnum.RESTOCK, planBill1 -> {
+        });
         billRepository.save(planBill);
     }
 }
