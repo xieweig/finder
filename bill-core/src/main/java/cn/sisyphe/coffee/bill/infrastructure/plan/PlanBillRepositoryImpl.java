@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.plan;
 
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;

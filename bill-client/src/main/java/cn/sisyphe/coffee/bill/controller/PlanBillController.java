@@ -79,4 +79,12 @@ public class PlanBillController {
         responseResult.put("content", billPage);
         return responseResult;
     }
+
+    @ApiOperation(value = "根据单据编号查询单据明细")
+    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
+    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.put("planBill",planBillManager.findByBillCode(billCode));
+        return responseResult;
+    }
 }

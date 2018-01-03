@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.planbill;
 
+import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.AuditBehavior;
@@ -28,15 +29,15 @@ import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.util.Constant;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
-import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.group.Groups.by;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.SAVED;
 
 /**
@@ -257,6 +261,7 @@ public class PlanBillManager {
 
         return queryPlanBillDTO;
     }
+
     /**
      * 前端多条件查询转换DTO
      *
@@ -318,5 +323,49 @@ public class PlanBillManager {
         return planBillDTOList;
     }
 
+    /**
+     * 根据编号查询
+     *
+     * @param billCode
+     * @return
+     */
+    public ResultPlanBillDTO findByBillCode(String billCode) {
+        return planBillToResultPlanBillDTO(planBillRepository.findByBillCode(billCode));
+    }
 
+    /**
+     * 将 PlanBill 转为 ResultPlanBillDTO
+     *
+     * @param planBill
+     * @return
+     */
+    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) {
+        ResultPlanBillDTO resultPlanBillDTO = new ResultPlanBillDTO();
+        resultPlanBillDTO.setBillCode(planBill.getBillCode());
+        resultPlanBillDTO.setBillName(planBill.getBillName());
+        resultPlanBillDTO.setBillType(planBill.getBillType());
+        Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
+        Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
+        for (String head : groupedPlanBillDetail.keySet()) {
+            ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
+            List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
+            PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
+            resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
+            Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
+            for (PlanBillDetail planBillDetail : planBillDetails) {
+                ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
+                resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
+                resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
+                resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
+            }
+            resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
+            resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
+        }
+        resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
+        return resultPlanBillDTO;
+    }
+
+    private void checkSaveParam() {
+
+    }
 }
