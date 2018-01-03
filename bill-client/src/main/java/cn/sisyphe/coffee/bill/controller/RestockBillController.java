@@ -1,9 +1,8 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByCargoDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRawMaterialDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.SaveBySelfDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import io.swagger.annotations.Api;
@@ -39,24 +38,45 @@ public class RestockBillController {
     }
 
 
-    @ApiOperation(value = "站点计划退库按货物拣货")
+    @ApiOperation(value = "站点计划退库按货物拣货第一步保存")
     @PostMapping(path ="/saveByCargo")
-    public ResponseResult saveByCargo(@RequestBody SaveByCargoDTO saveByCargoDTO) {
+    public ResponseResult saveByCargo(@RequestBody SaveByRestockBillDTO saveByCargoDTO) {
 
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.saveByCargo(saveByCargoDTO);
+        saveByCargoDTO.setReadyByCargo(true);
+        restockBillManager.saveByRestockBill(saveByCargoDTO);
         return responseResult;
     }
 
 
-    @ApiOperation(value = "站点计划退库按原料拣货")
+    @ApiOperation(value = "站点计划退库按原料拣货第一步保存")
     @PostMapping(path ="/saveByRawMaterial")
-    public ResponseResult saveByRawMaterial(@RequestBody SaveByRawMaterialDTO saveByRawMaterialDTO) {
+    public ResponseResult saveByRawMaterial(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
 
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.saveByRawMaterial(saveByRawMaterialDTO);
+        saveByRawMaterialDTO.setReadyByCargo(false);
+        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
         return responseResult;
     }
+    @ApiOperation(value = "站点计划退库按货物拣货第二步提交")
+    @PostMapping(path ="/submitByCargo")
+    public ResponseResult submitByCargo(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
+
+        ResponseResult responseResult = new ResponseResult();
+        saveByRawMaterialDTO.setReadyByCargo(true);
+        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
+        return responseResult;
+    }
+    @ApiOperation(value = "站点计划退库按原料拣货第二步提交")
+    @PostMapping(path ="/submitByRawMaterial")
+    public ResponseResult submitByRawMaterial(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
+
+        ResponseResult responseResult = new ResponseResult();
+        saveByRawMaterialDTO.setReadyByCargo(false);
+        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
+        return responseResult;
+    }
+
 
     @ApiOperation(value = "可退库货物查询")
     @PostMapping(path ="/queryCargo")

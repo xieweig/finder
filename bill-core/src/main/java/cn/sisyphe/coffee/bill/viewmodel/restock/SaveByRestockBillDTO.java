@@ -11,7 +11,7 @@ import java.util.Set;
  *@description: 
  *@author：xieweiguang
  */
-public class SaveByRawMaterialDTO {
+public class SaveByRestockBillDTO {
 
 
     /**
@@ -52,6 +52,21 @@ public class SaveByRawMaterialDTO {
      * 进货单明细信息
      */
     private List<RestockBillDetailsDTO> billDetails;
+    /**
+     *
+     *notes :
+     *  区分是安照原料拣货还是按照货物拣货 默认按照货物拣货
+     *  不作copyProperties之用
+     */
+    private Boolean readyByCargo =true;
+
+    public Boolean getReadyByCargo() {
+        return readyByCargo;
+    }
+
+    public void setReadyByCargo(Boolean readyByCargo) {
+        this.readyByCargo = readyByCargo;
+    }
 
     public List<RestockBillDetailsDTO> getBillDetails() {
         return billDetails;

@@ -2,10 +2,8 @@ package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -18,7 +16,7 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailsDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRawMaterialDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRestockBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -149,7 +147,7 @@ public class RestockTest {
     private RestockBillManager restockBillManager;
     @Test
     public void Orange(){
-        SaveByRawMaterialDTO saveByRawMaterialDTO = new SaveByRawMaterialDTO();
+        SaveByRestockBillDTO saveByRawMaterialDTO = new SaveByRestockBillDTO();
         saveByRawMaterialDTO.setBillCode("0802104"+random.nextInt(10));
         saveByRawMaterialDTO.setCreateTime(new Date());
         saveByRawMaterialDTO.setInStationCode("10001"+random.nextInt(10));

@@ -47,14 +47,6 @@ public class RestockBillDetail extends BillDetail {
         this.totalPrice = totalPrice;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public String getDetailsRemarks() {
         return detailsRemarks;
     }
@@ -75,8 +67,25 @@ public class RestockBillDetail extends BillDetail {
      *  货物数量
      */
     @Column
-    private Integer number;
+    private Integer actualNumber;
+    @Column
+    private Integer expectedNumber;
     @Column(length = 500)
     private String detailsRemarks;
 
+    public Integer getActualNumber() {
+        return actualNumber;
+    }
+
+    public void setActualNumber(Integer actualNumber) {
+        this.actualNumber = actualNumber;
+    }
+
+    public Integer getExpectedNumber() {
+        return expectedNumber;
+    }
+
+    public void setExpectedNumber(Integer expectedNumber) {
+        this.expectedNumber = expectedNumber;
+    }
 }
