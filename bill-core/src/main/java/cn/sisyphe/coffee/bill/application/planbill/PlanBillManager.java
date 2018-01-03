@@ -118,8 +118,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
      *
-     * @param billCode
-     * @return
+     * @param billCode 计划单编码
+     * @return ResultPlanBillDTO
      */
     public ResultPlanBillDTO open(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
@@ -133,8 +133,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 审核不通过
      *
-     * @param billCode
-     * @return
+     * @param billCode 计划单编码
      */
 
     public void unPass(String billCode) {
@@ -146,8 +145,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 审核通过，然后进行计划单切片
      *
-     * @param billCode
-     * @return
+     * @param billCode 计划单编码
      */
 
     public void pass(String billCode) {
@@ -245,8 +243,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     /**
-     * @param conditionQueryPlanBill
-     * @return
+     * @param conditionQueryPlanBill 条件查询
+     * @return QueryPlanBillDTO 前端页面展示
      * @throws DataException
      */
     public QueryPlanBillDTO findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
