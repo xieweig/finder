@@ -96,10 +96,10 @@ public class PurchaseBillTest {
     }
 
     /**
-     * 测试审核成功单据
+     * 测试计划单据查询
      */
     @Test
-    public void AuditSuccessBill() {
+    public void findPlanBillByConditions() {
         String billCode = "test000002";
         purchaseBillManager.AuditSuccessBill(billCode);
     }

@@ -59,6 +59,7 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
     public ResponseResult findByConditions(@RequestBody ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         ResponseResult responseResult = new ResponseResult();
+
         QueryPurchaseBillDTO billPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
         responseResult.put("content", billPage);
         return responseResult;
