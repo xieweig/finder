@@ -20,6 +20,12 @@ public interface JPAPlanBillRepository extends JpaRepository<PlanBill, Long>, Jp
 
     PlanBill findByBillCode(String billCode);
 
+    /**
+     * 条件筛选查询
+     * @param ta
+     * @param pageable
+     * @return
+     */
     @Override
     Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable );
 }

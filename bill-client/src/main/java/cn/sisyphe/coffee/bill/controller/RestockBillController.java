@@ -45,7 +45,7 @@ public class RestockBillController {
     }
 
 
-    @ApiOperation(value = "站点计划退库按货物拣货")
+    @ApiOperation(value = "站点计划退库按原料拣货")
     @PostMapping(path ="/saveByRawMaterial")
     public ResponseResult saveByRawMaterial(@RequestBody SaveByRawMaterialDTO saveByRawMaterialDTO) {
 

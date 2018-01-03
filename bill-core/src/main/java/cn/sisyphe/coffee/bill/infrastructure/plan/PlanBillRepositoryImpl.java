@@ -47,36 +47,4 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
     public Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable) {
         return jpaPlanBillRepository.findAll(ta, pageable);
     }
-    /*@Override
-    public Page<PlanBill> findByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
-        // 组装页面
-        Pageable pageable = new PageRequest(conditionQueryPlanBill.getPage() - 1, conditionQueryPlanBill.getPageSize());
-
-        Page<PlanBill> planBillWithPage;
-        planBillWithPage = queryByParams(conditionQueryPlanBill, pageable);
-
-        // 改变页码导致的页面为空时，获取最后一页
-        if (planBillWithPage.getContent().size() < 1 && planBillWithPage.getTotalElements() > 0) {
-            pageable = new PageRequest(planBillWithPage.getTotalPages() - 1, conditionQueryPlanBill.getPageSize());
-            planBillWithPage = queryByParams(conditionQueryPlanBill, pageable);
-        }
-        return planBillWithPage;
-    }
-
-    private Page<PlanBill> queryByParams(ConditionQueryPlanBill conditionQueryPlanBill, Pageable pageable) {
-        return jpaPlanBillRepository.findAll((root, criteriaQuery, cb) -> {
-            criteriaQuery.distinct(true);
-            Predicate predicate = cb.conjunction();
-            List<Expression<Boolean>> expressions = predicate.getExpressions();
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillCode())) {
-                expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryPlanBill.getBillCode() + "%"));
-            }
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillName())) {
-                expressions.add(cb.like(root.get("billName").as(String.class), "%" + conditionQueryPlanBill.getBillName() + "%"));
-            }
-            return predicate;
-        }, pageable);
-    }*/
-
-
 }
