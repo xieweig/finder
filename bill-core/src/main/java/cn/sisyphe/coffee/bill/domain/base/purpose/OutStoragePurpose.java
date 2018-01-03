@@ -18,7 +18,7 @@ public class OutStoragePurpose extends AbstractBillPurpose {
      * 用途处理器
      */
     @Override
-    public void handle() throws ClassNotFoundException {
+    public void handle() {
 
         System.err.println("out Storage");
 
