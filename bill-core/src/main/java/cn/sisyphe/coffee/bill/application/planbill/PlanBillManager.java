@@ -26,10 +26,10 @@ import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierReposit
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
-import cn.sisyphe.framework.web.exception.DataException;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -79,13 +79,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     public String create(PlanBillDTO planBillDTO) {
         PlanBill planBill;
-        if (planBillDTO.getBillCode() != null) {
-            //因为计划单编号是可以更改的，所以更新的时候，不能使用billCode查询
-            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
-        } else {
-            validateBillCode(planBillDTO.getBillCode());
-            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
-        }
+//        if (planBillDTO.getBillCode() != null) {
+        //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
+//            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
+//        } else {
+        validateBillCode(planBillDTO.getBillCode());
+        planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+//        }
         map(planBill, planBillDTO);
         return save(planBill).getBillCode();
     }
@@ -144,22 +144,27 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     private void mapInLocation(PlanBill planBill) {
-        if (planBill.getInLocation() instanceof Station) {
-            planBill.setInLocation(stationRepository.findByStationCode(((Station) planBill.getInLocation()).getStationCode()));
-            return;
+        for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
+            if (planBillDetail.getInLocation() instanceof Station) {
+                planBillDetail.setInLocation(stationRepository.findByStationCode(((Station) planBillDetail.getInLocation()).getStationCode()));
+                return;
+            }
+            if (planBillDetail.getInLocation() instanceof Supplier) {
+                planBillDetail.setInLocation(supplierRepository.findBySupplierCode(((Supplier) planBillDetail.getInLocation()).getSupplierCode()));
+            }
         }
-        if (planBill.getInLocation() instanceof Supplier) {
-            planBill.setInLocation(supplierRepository.findBySupplierCode(((Supplier) planBill.getInLocation()).getSupplierCode()));
-        }
+
     }
 
     private void mapOutLocation(PlanBill planBill) {
-        if (planBill.getOutLocation() instanceof Station) {
-            planBill.setOutLocation(stationRepository.findByStationCode(((Station) planBill.getOutLocation()).getStationCode()));
-            return;
-        }
-        if (planBill.getInLocation() instanceof Supplier) {
-            planBill.setOutLocation(supplierRepository.findBySupplierCode(((Supplier) planBill.getOutLocation()).getSupplierCode()));
+        for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
+            if (planBillDetail.getOutLocation() instanceof Station) {
+                planBillDetail.setOutLocation(stationRepository.findByStationCode(((Station) planBillDetail.getOutLocation()).getStationCode()));
+                return;
+            }
+            if (planBillDetail.getOutLocation() instanceof Supplier) {
+                planBillDetail.setOutLocation(supplierRepository.findBySupplierCode(((Supplier) planBillDetail.getOutLocation()).getSupplierCode()));
+            }
         }
     }
 

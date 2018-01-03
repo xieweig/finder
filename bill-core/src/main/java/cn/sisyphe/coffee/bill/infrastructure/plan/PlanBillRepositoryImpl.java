@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.plan;
 
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
@@ -29,6 +30,16 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
 
     @Override
     public void save(List<PlanBill> planBills) {
+        for (PlanBill planBill : planBills) {
+            // 更新单据的关系
+            planBill.update();
+
+            for (Object object : planBill.getBillDetails()) {
+                BillDetail detail = (BillDetail) object;
+                detail.update();
+            }
+        }
+
         jpaPlanBillRepository.save(planBills);
     }
 

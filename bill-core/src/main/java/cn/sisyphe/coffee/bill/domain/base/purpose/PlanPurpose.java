@@ -47,6 +47,7 @@ public class PlanPurpose extends AbstractBillPurpose {
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
             planBillPayload.setOutLocation(firstPlanBillDetail.getOutLocation());
+            planBillPayload.setBillType(BillTypeEnum.PLAN);
             planBillPayload.setInLocation(firstPlanBillDetail.getInLocation());
             planBillPayload.setCastableStrategy(getSpecStrategy(bill.getSpecificBillType()));
             planBillPayload.setBasicEnum(bill.getBasicEnum());
