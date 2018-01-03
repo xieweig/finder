@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,11 +34,7 @@ public class PlanBillController {
     @RequestMapping(path = "/create", method = RequestMethod.POST)
     public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("bill", planBillManager.create(planBillDTO));
-        } catch (Exception e) {
-            responseResult.putException(e);
-        }
+        responseResult.put("bill", planBillManager.create(planBillDTO));
         return responseResult;
     }
 
@@ -69,10 +66,10 @@ public class PlanBillController {
         return null;
     }
 
-    @ApiOperation(value = "总部计划查询")
-    @RequestMapping(path = "/pass", method = RequestMethod.GET)
-    public ResponseResult query( String billCode) {
-        planBillManager.pass(billCode);
+    @ApiOperation(value = "条件筛选查询总部计划")
+    @RequestMapping(path = "/findByConditionQuery", method = RequestMethod.GET)
+    public ResponseResult findByConditionQuery(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+//        planBillManager.findByConditionQuery(conditionQueryPlanBill);
         return null;
     }
 }
