@@ -1,9 +1,9 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByCargoDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveBySelfDTO;
+import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.framework.web.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ public class RestockBillController {
     public ResponseResult saveBySelf(@RequestBody SaveBySelfDTO saveBySelfDTO) {
 
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.saveBySelf(saveBySelfDTO);
+//        restockBillManager.saveBySelf(saveBySelfDTO);
         return responseResult;
     }
 
@@ -44,7 +44,7 @@ public class RestockBillController {
 
         ResponseResult responseResult = new ResponseResult();
         saveByCargoDTO.setReadyByCargo(true);
-        restockBillManager.saveByRestockBill(saveByCargoDTO);
+//        restockBillManager.saveByRestockBill(saveByCargoDTO);
         return responseResult;
     }
 
@@ -55,7 +55,7 @@ public class RestockBillController {
 
         ResponseResult responseResult = new ResponseResult();
         saveByRawMaterialDTO.setReadyByCargo(false);
-        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
+//        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
         return responseResult;
     }
     @ApiOperation(value = "站点计划退库按货物拣货第二步提交")
@@ -64,7 +64,7 @@ public class RestockBillController {
 
         ResponseResult responseResult = new ResponseResult();
         saveByRawMaterialDTO.setReadyByCargo(true);
-        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
+//        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
         return responseResult;
     }
     @ApiOperation(value = "站点计划退库按原料拣货第二步提交")
@@ -73,7 +73,7 @@ public class RestockBillController {
 
         ResponseResult responseResult = new ResponseResult();
         saveByRawMaterialDTO.setReadyByCargo(false);
-        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
+//        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
         return responseResult;
     }
 
@@ -86,6 +86,34 @@ public class RestockBillController {
 
         return responseResult;
     }
+    /**
+     * 多条件查询退库入库单
+     *
+     * @param conditionQueryPurchaseBill
+     * @return
+     */
+    @ApiOperation(value = "多条件查询退库入库单")
+    @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
+    public ResponseResult findByConditions(@RequestBody ConditionQueryRestockBill conditionQueryRestockBill) {
+        ResponseResult responseResult = new ResponseResult();
 
+        QueryRestockBillDTO billPage = restockBillManager.findByConditions(conditionQueryRestockBill);
+        responseResult.put("content", billPage);
+        return responseResult;
+    }
+    /**
+     *
+     *
+     * @param RestockBillCode
+     * @return
+     */
+    @ApiOperation(value = "根据进货单编码查询图库出库单详细信息")
+    @RequestMapping(path = "/findByRestockBillCode", method = RequestMethod.GET)
+    public ResponseResult findByRestockBillCode(@RequestParam String RestockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        QueryOneRestockBillDTO billDTO = RestockBillManager.openBill(RestockBillCode);
+        responseResult.put("RestockBill", billDTO);
+        return responseResult;
+    }
 
 }

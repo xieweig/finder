@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
@@ -12,11 +13,13 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     private ApplicationEventPublisher applicationEventPublisher;
     @Resource
     private RestockBillRepository restockBillRepository;
+    @Autowired
+    private RestockBillQueryService restockBillQueryService;
     //@config @bean @resource
     private BillFactory billFactory = new BillFactory();
 
@@ -183,5 +188,48 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         }
     }
 
+    /**
+     * 根据多条件查询进货单据信息
+     *
+     * @param conditionQueryRestockBill 查询条件
+     * @return
+     */
+    public QueryRestockBillDTO findByConditions(ConditionQueryRestockBill conditionQueryRestockBill) {
+        Page<RestockBill> restockBillPage = restockBillQueryService.findPageByCondition(conditionQueryRestockBill);
 
+        QueryRestockBillDTO QueryRestockBillDTO = new QueryRestockBillDTO();
+        // 转换
+        List<RestockBillDTO> billDTOList = toMapDTO(restockBillPage.getContent());
+        // 总数
+        QueryRestockBillDTO.setTotalNumber(restockBillPage.getTotalElements());
+        // 进货单据数据
+        QueryRestockBillDTO.setContent(billDTOList);
+
+        return QueryRestockBillDTO;
+    }
+
+    private List<RestockBillDTO> toMapDTO(List<RestockBill> content) {
+        List<RestockBillDTO> restockBillDTOList = new ArrayList<>();
+
+        return restockBillDTOList;
+    }
+
+
+    public QueryOneRestockBillDTO openBill(String restockBillCode) {
+        RestockBill restockBill = restockBillQueryService.findOneByBillCode(restockBillCode);
+        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的进货单据信息
+        if (restockBill.getBillState().equals(BillStateEnum.OPEN)
+                || restockBill.getBillState().equals(BillStateEnum.AUDIT_FAILURE)) {
+            return mapOneToDTO(restockBill);
+        }
+
+        // 打开单据
+        restockBill = open(restockBill);
+
+        return mapOneToDTO(restockBill);
+    }
+
+    private QueryOneRestockBillDTO mapOneToDTO(RestockBill restockBill) {
+        return null;
+    }
 }

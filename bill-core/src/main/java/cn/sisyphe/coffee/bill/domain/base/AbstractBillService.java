@@ -5,9 +5,12 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.BillBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurposeFactory;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 
 /**
  * Created by heyong on 2017/12/19 12:07
@@ -129,4 +132,5 @@ public abstract class AbstractBillService {
     public void setBill(Bill bill) {
         this.bill = bill;
     }
+
 }
