@@ -56,7 +56,7 @@ public class MondayTest {
         restockBill.setBillCode("030212025"+random.nextInt(100));
 
         RestockBillDetail restockBillDetail = new RestockBillDetail();
-        restockBillDetail.setDetailsRemarks("all right");
+//        restockBillDetail.setDetailsRemarks("all right");
         Cargo cargo = new Cargo("cargocode 12120");
         restockBillDetail.setGoods(cargo);
         Set<RestockBillDetail> details = new HashSet();
