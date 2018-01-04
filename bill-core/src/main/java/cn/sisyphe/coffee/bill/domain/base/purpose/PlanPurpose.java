@@ -33,6 +33,7 @@ public class PlanPurpose extends AbstractBillPurpose {
     /**
      * 用途处理器，根据站点对的数量，判断有多少个子计划单
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void handle() {
         PlanBill bill = (PlanBill) getBillService().getBill();
