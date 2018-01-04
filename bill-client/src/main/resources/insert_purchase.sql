@@ -21,27 +21,36 @@ INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, upd
 INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`) VALUES (2014, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '4', 'BILL002005002', '审核通过', 'BILL,BILL002,BILL002005,BILL002005002', '/api/bill/purchase/auditSuccess', 2006, '\0');
 
 
-
 ---二级菜单(运单)
 
 
 INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
 VALUES (9001, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009', '运单跟踪', 'BILL,BILL009', 'app.bill.trace', 9000 , '\0');
 
-
 --三级菜单(运单)
 
 INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (9002, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001', '添加运单', 'BILL,BILL009,BILL009001', 'app.bill.trace.list', 9001, '\0');
+VALUES (9002, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001', '运单列表', 'BILL,BILL009,BILL009001', 'app.bill.trace.list', 9001, '\0');
 
 
 INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (9003, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009002', '添加运单', 'BILL,BILL009,BILL009002', 'app.bill.trace.add', 9002, '\0');
+VALUES (9003, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009002', '添加运单', 'BILL,BILL009,BILL009002', 'app.bill.trace.add', 9001, '\0');
 
 --四级菜单权限(运单)
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+ VALUES (9004, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001001', '查询', 'BILL,BILL009,BILL009001,BILL009001001', '/api/waybill/findWayBillByConditions', 9002, '\0');
 
 
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+ VALUES (9005, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001002', '添加', 'BILL,BILL009,BILL009001,BILL009001002', '/api/waybill/createWayBill', 9003, '\0');
 
 
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+ VALUES (9006, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001003', '修改', 'BILL,BILL009,BILL009001,BILL009001003', '/api/waybill/updateWayBill', 9002, '\0');
+
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+ VALUES (9007, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001004', '查看', 'BILL,BILL009,BILL009001,BILL009001004', '/api/waybill/findOneWayBill', 9002, '\0');
 
 
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+ VALUES (9008, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001005', '运单确认收货', 'BILL,BILL009,BILL009001,BILL009001005', '/api/waybill/confirmReceiptBill', 9002, '\0');
