@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -93,7 +93,7 @@ public class DeliveryBillController {
      */
     @ApiOperation(value = "站点配送计划拣货 按货物拣货,保存")
     @RequestMapping(path = "/pickingByCargo", method = RequestMethod.POST)
-    public ResponseResult pickingByCargo(@RequestBody DeliveryBillDTO deliveryBillDTO) {
+    public ResponseResult pickingByCargo(@RequestBody DeliveryPickingEditDTO deliveryBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;
@@ -108,7 +108,7 @@ public class DeliveryBillController {
      */
     @ApiOperation(value = "站点配送计划拣货 按原料拣货,保存")
     @RequestMapping(path = "/pickingByRawMaterial", method = RequestMethod.POST)
-    public ResponseResult pickingByRawMaterial(@RequestBody DeliveryBillDTO deliveryBillDTO) {
+    public ResponseResult pickingByRawMaterial(@RequestBody DeliveryPickingEditDTO deliveryBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;
@@ -122,7 +122,7 @@ public class DeliveryBillController {
      */
     @ApiOperation(value = "拣货提交")
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
-    public ResponseResult submitWhenDone(@RequestBody DeliveryBillDTO deliveryBillDTO) {
+    public ResponseResult submitWhenDone(@RequestBody DeliveryPickingEditDTO deliveryBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;

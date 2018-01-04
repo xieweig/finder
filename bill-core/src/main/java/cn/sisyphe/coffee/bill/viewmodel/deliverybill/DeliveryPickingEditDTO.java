@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2018/1/4.
  */
-public class DeliveryBillEditDTO implements Serializable {
+public class DeliveryPickingEditDTO implements Serializable {
 
 
     @JsonIgnore
@@ -29,7 +29,7 @@ public class DeliveryBillEditDTO implements Serializable {
      */
     private String outStationCode;
 
-    private List<DeliveryBillEditItemDTO> billDetails;
+    private List<DeliveryPickingEditItemDTO> billDetails;
 
     public Long getBillId() {
 
@@ -64,11 +64,11 @@ public class DeliveryBillEditDTO implements Serializable {
         this.outStationCode = outStationCode;
     }
 
-    public List<DeliveryBillEditItemDTO> getBillDetails() {
+    public List<DeliveryPickingEditItemDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(List<DeliveryBillEditItemDTO> billDetails) {
+    public void setBillDetails(List<DeliveryPickingEditItemDTO> billDetails) {
         this.billDetails = billDetails;
     }
 

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2018/1/4.
  */
-public class DeliveryBillEditItemDTO implements Serializable {
+public class DeliveryPickingEditItemDTO implements Serializable {
 
 
     /**
