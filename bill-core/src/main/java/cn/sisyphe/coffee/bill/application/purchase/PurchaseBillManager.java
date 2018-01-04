@@ -105,8 +105,9 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      */
     public QueryOnePurchaseBillDTO openBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
-        // 如果单据是打开状态，则直接返回转换后的进货单据信息
-        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)) {
+        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的进货单据信息
+        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
+                || purchaseBill.getBillState().equals(BillStateEnum.AUDIT_FAILURE)) {
             return mapOneToDTO(purchaseBill);
         }
 
@@ -164,7 +165,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
-        purchaseBill.setBillCode("bill003");
+        purchaseBill.setBillCode("bill004");
         // 货运单号
         purchaseBill.setFreightCode(addPurchaseBillDTO.getFreightCode());
         // 发货件数
@@ -387,10 +388,9 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
             Supplier supplier = (Supplier) purchaseBill.getOutLocation();
             purchaseBillDTO.setSupplierCode(supplier.getSupplierName());
             // 单据状态--主表
-            purchaseBillDTO.setBillState(purchaseBill.getBillState().name());
+            toMapTwoState(purchaseBillDTO, purchaseBill.getBillState().name());
             // 备注--主表
             purchaseBillDTO.setMemo(purchaseBill.getMemo());
-
             // 循环遍历明细信息，累加得到数据
             Set<PurchaseBillDetail> purchaseBillDetailSet = purchaseBill.getBillDetails();
             // 实收数量总计
@@ -424,4 +424,57 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         }
         return purchaseBillDTOList;
     }
+
+    /**
+     * map状态
+     *
+     * @param billDTO
+     * @param stateName
+     * @return
+     */
+    private PurchaseBillDTO toMapTwoState(PurchaseBillDTO billDTO, String stateName) {
+
+        switch (stateName) {
+
+            case "SAVED":
+                billDTO.setSubmitState("未提交");
+                billDTO.setAuditState("未审核");
+                break;
+            case "SUBMITTED":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("未审核");
+                break;
+            case "OPEN":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("未审核");
+                break;
+            case "AUDIT_FAILURE":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核不通过");
+                break;
+            case "AUDIT_SUCCESS":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            case "OUT_STORAGING":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            case "IN_STORAGING":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            case "DONE":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            default:
+                break;
+
+        }
+
+        return billDTO;
+    }
+
+
 }

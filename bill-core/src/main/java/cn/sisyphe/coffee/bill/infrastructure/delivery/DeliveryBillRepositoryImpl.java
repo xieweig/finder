@@ -4,14 +4,17 @@ import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.delivery.jpa.JPADeliveryBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-/**
- * @author ncmao
- * @Date 2017/12/27 12:26
- * @description
- */
 
+/** 配送单
+   @company 西西弗文化传播
+*  @author yichuan
+*  @Date 2018/1/4 10:04
+**/
 @Service
 public class DeliveryBillRepositoryImpl extends AbstractBillRepository<DeliveryBill> implements DeliveryBillRepository {
 
@@ -26,6 +29,21 @@ public class DeliveryBillRepositoryImpl extends AbstractBillRepository<DeliveryB
      */
     @Override
     public DeliveryBill findOneByBillCode(String billCode) {
-        return null;
+        return jpaDeliveryBillRepository.findOneByBillCode(billCode);
     }
+
+
+    /**
+     * 多条件查询配送单
+     *
+     * @param ta
+     * @param pageable
+     * @return
+     */
+    @Override
+    public Page<DeliveryBill> findAll(Specification<DeliveryBill> ta, Pageable pageable) {
+        return jpaDeliveryBillRepository.findAll(ta, pageable);
+    }
+
+
 }

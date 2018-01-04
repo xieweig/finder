@@ -3,7 +3,10 @@ package cn.sisyphe.coffee.bill.viewmodel.restock;
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,25 +42,29 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      */
     private String outStationCode;
     /**
-     *
-     *notes :ref BaseBill
-     *   录单日期起始
+     * 录单开始时间
      */
-    private Date createTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createStartTime;
     /**
-     *
-     *notes :ref BaseBill
-     *   录单日期终止
+     * 录单结束时间
      */
-
-    private Date updateTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createEndTime;
     /**
-     *
-     *notes :ref RestockBill
-     *  退库 出库单 起始终止时间
+     * 入库开始时间
      */
-    private Date outStorageStartTime;
-    private Date outStorageEndTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date inStartTime;
+    /**
+     * 入库结束时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date inEndTime;
     /**
      *
      *notes :ref Bill
@@ -90,107 +97,5 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      */
     private int totalPrice;
 
-    public String getOperatorCode() {
-        return operatorCode;
-    }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
-    }
-
-    public String getBillCode() {
-        return billCode;
-    }
-
-    public void setBillCode(String billCode) {
-        this.billCode = billCode;
-    }
-
-    public String getInStationCode() {
-        return inStationCode;
-    }
-
-    public void setInStationCode(String inStationCode) {
-        this.inStationCode = inStationCode;
-    }
-
-    public String getOutStationCode() {
-        return outStationCode;
-    }
-
-    public void setOutStationCode(String outStationCode) {
-        this.outStationCode = outStationCode;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Date getOutStorageStartTime() {
-        return outStorageStartTime;
-    }
-
-    public void setOutStorageStartTime(Date outStorageStartTime) {
-        this.outStorageStartTime = outStorageStartTime;
-    }
-
-    public Date getOutStorageEndTime() {
-        return outStorageEndTime;
-    }
-
-    public void setOutStorageEndTime(Date outStorageEndTime) {
-        this.outStorageEndTime = outStorageEndTime;
-    }
-
-    public BillStateEnum getBillStateEnum() {
-        return billStateEnum;
-    }
-
-    public void setBillStateEnum(BillStateEnum billStateEnum) {
-        this.billStateEnum = billStateEnum;
-    }
-
-    public BillStateEnum getBillStateEnum2() {
-        return billStateEnum2;
-    }
-
-    public void setBillStateEnum2(BillStateEnum billStateEnum2) {
-        this.billStateEnum2 = billStateEnum2;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public DbGoods getDbGoods() {
-        return dbGoods;
-    }
-
-    public void setDbGoods(DbGoods dbGoods) {
-        this.dbGoods = dbGoods;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }

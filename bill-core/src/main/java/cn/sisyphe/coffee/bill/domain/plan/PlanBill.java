@@ -43,9 +43,11 @@ public class PlanBill extends Bill<PlanBillDetail> {
     private String creatorName;
 
 
+    //是否是总部计划
     @Column
     private Boolean hqBill;
 
+    //计划备注
     @Column
     private String memo;
 

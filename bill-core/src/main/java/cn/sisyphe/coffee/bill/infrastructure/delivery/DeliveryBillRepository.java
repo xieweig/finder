@@ -2,11 +2,35 @@ package cn.sisyphe.coffee.bill.infrastructure.delivery;
 
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
- * @author ncmao
- * @Date 2017/12/27 12:24
- * @description
- */
+ * 配送单
+ *
+ * @author yichuan
+ * @company 西西弗文化传播
+ * @Date 2018/1/4 10:04
+ **/
 public interface DeliveryBillRepository extends BillRepository<DeliveryBill> {
+
+
+    /**
+     * 根据单据编号查询单据信息
+     *
+     * @param billCode
+     * @return
+     */
+    DeliveryBill findOneByBillCode(String billCode);
+
+    /**
+     * 条件筛选查询
+     *
+     * @param ta
+     * @param pageable
+     * @return
+     */
+    Page<DeliveryBill> findAll(Specification<DeliveryBill> ta, Pageable pageable);
+
 }

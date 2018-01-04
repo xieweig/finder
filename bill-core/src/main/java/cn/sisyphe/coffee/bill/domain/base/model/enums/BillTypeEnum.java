@@ -8,7 +8,7 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
  */
 public enum BillTypeEnum {
 
-    /**
+     /**
      * 计划
      */
     PLAN,

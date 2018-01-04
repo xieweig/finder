@@ -25,9 +25,7 @@ public class OutStoragePurpose extends AbstractBillPurpose {
 
         Bill bill = getBillService().getBill();
         bill.setBillState(BillStateEnum.OUT_STORAGING);
-
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
-
     }
 
     /**

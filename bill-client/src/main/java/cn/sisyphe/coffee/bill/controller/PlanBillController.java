@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -9,12 +10,7 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ncmao
@@ -59,22 +55,37 @@ public class PlanBillController {
     @ApiOperation(value = "审核总部计划")
     @RequestMapping(path = "/open", method = RequestMethod.POST)
     public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
-        planBillManager.open(billCode);
-        return null;
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.open(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "审核不通过")
-    @RequestMapping(path = "/unpass", method = RequestMethod.GET)
-    public ResponseResult unpass(@RequestParam("billCode") String billCode) {
-        planBillManager.unPass(billCode);
-        return null;
+    @RequestMapping(path = "/unpass", method = RequestMethod.POST)
+    public ResponseResult unpass(@RequestBody AuditPlanBillDTO auditPlanBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            planBillManager.unPass(auditPlanBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "审核通过")
-    @RequestMapping(path = "/pass", method = RequestMethod.GET)
-    public ResponseResult pass(@RequestParam("billCode") String billCode) {
-        planBillManager.pass(billCode);
-        return null;
+    @RequestMapping(path = "/pass", method = RequestMethod.POST)
+    public ResponseResult pass(@RequestBody AuditPlanBillDTO auditPlanBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            planBillManager.pass(auditPlanBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     /**
@@ -96,7 +107,7 @@ public class PlanBillController {
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill",planBillManager.findByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }

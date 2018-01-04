@@ -2,6 +2,8 @@ package cn.sisyphe.coffee.bill.domain.base.behavior;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.DONE;
+
 /**
  * Created by heyong on 2017/12/19 14:36
  * Description: 某个用途（计划、出库、入库）的动作处理
@@ -28,7 +30,7 @@ public class PurposeBehavior extends AbstractBillBehavior {
     @Override
     public BillStateEnum billState() {
         // 只处可不回写，交给handle处理
-        return null;
+        return DONE;
     }
 
     /**

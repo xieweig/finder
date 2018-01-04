@@ -9,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author ncmao
  * @Date 2017/12/25 17:09
@@ -25,11 +23,6 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
     @Override
     public PlanBill findOneByBillCode(String billCode) {
         return jpaPlanBillRepository.findByBillCode(billCode);
-    }
-
-    @Override
-    public void save(List<PlanBill> planBills) {
-        jpaPlanBillRepository.save(planBills);
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.text.MessageFormat;
 /**
  * Created by heyong on 2017/12/19 14:07
  * Description: 入库单用途处理器
+ *
  * @author heyong
  */
 public class InStoragePurpose extends AbstractBillPurpose {
@@ -23,10 +24,10 @@ public class InStoragePurpose extends AbstractBillPurpose {
 
         Bill bill = getBillService().getBill();
         bill.setBillState(BillStateEnum.IN_STORAGING);
-
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
 
     }
+
     /**
      * bill.{type}.{purpose}.{status}
      *
@@ -42,9 +43,10 @@ public class InStoragePurpose extends AbstractBillPurpose {
 
     /**
      * 监控出库行为
+     *
      * @param bill
      */
-    public void listener(Bill bill){
+    public void listener(Bill bill) {
 
     }
 }

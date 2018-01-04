@@ -2,10 +2,8 @@ package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -18,7 +16,8 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailsDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRawMaterialDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRestockBillDTO;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -76,7 +75,12 @@ public class RestockTest {
             restockBill.setOutStorageEndTime(calendar.getTime());
         }
     }
-
+    /**
+     *
+     *notes :
+     *  restock bill 相比bill新增几个字段的测试
+     */
+    @Ignore
     @Test
     public void Juice(){
 
@@ -147,10 +151,16 @@ public class RestockTest {
     }
     @Resource
     private RestockBillManager restockBillManager;
+    /**
+     *
+     *notes :
+     *      核心退库出库单生成save流程测试
+     */
     @Test
     public void Orange(){
-        SaveByRawMaterialDTO saveByRawMaterialDTO = new SaveByRawMaterialDTO();
-        saveByRawMaterialDTO.setBillCode("0802104"+random.nextInt(10));
+
+        SaveByRestockBillDTO saveByRawMaterialDTO = new SaveByRestockBillDTO();
+        saveByRawMaterialDTO.setBillCode("0802105"+random.nextInt(10));
         saveByRawMaterialDTO.setCreateTime(new Date());
         saveByRawMaterialDTO.setInStationCode("10001"+random.nextInt(10));
         saveByRawMaterialDTO.setOutStationCode("20001"+random.nextInt(10));
@@ -182,8 +192,7 @@ public class RestockTest {
 
         saveByRawMaterialDTO.setBillDetails(list);
 
-        restockBillManager.saveByRawMaterial(saveByRawMaterialDTO);
-
+        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
 
     }
 }
