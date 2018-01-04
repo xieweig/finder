@@ -24,6 +24,7 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
+import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -47,9 +49,9 @@ import static ch.lambdaj.Lambda.group;
 import static ch.lambdaj.Lambda.on;
 
 /**
+ * 计划单据manager
+ *
  * @author ncmao
- * @Date 2017/12/27 11:36
- * @description
  */
 @Service
 public class PlanBillManager extends AbstractBillManager<PlanBill> {
@@ -79,23 +81,37 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
 
     public String create(PlanBillDTO planBillDTO) {
+        PlanBill planBill = preparePlanBill(planBillDTO);
+        map(planBill, planBillDTO);
+        return save(planBill).getBillCode();
+    }
+
+    private PlanBill preparePlanBill(PlanBillDTO planBillDTO) {
         PlanBill planBill;
         if (planBillDTO.getBillCode() != null) {
             //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
             planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
-        } else {
-            validateBillCode(planBillDTO.getBillCode());
-            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+            if (planBill == null) {
+                throw new DataException("xxxx", "没有找到该计划单");
+            }
+            return planBill;
         }
-        map(planBill, planBillDTO);
-        return save(planBill).getBillCode();
+        //TODO 为了测试
+        planBillDTO.setBillCode(planBillDTO.getMemo());
+        validate(planBillDTO);
+        return (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
     }
 
     private void validateBillCode(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         if (planBill != null) {
-            throw new DataException("123456", "计划编号已存在");
+            throw new DataException("", "计划编号已存在");
         }
+    }
+
+    private void validate(PlanBillDTO planBillDTO) {
+        validateBillCode(planBillDTO.getBillCode());
+        checkCreateParam(planBillDTO);
     }
 
     /**
@@ -104,13 +120,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param planBillDTO 前端传过来的DTO
      */
     public String submit(PlanBillDTO planBillDTO) {
-        PlanBill planBill;
-        if (planBillDTO.getBillCode() != null) {
-            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
-        } else {
-            validateBillCode(planBillDTO.getBillCode());
-            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
-        }
+        PlanBill planBill = preparePlanBill(planBillDTO);
         map(planBill, planBillDTO);
         return submit(planBill).getBillCode();
     }
@@ -118,8 +128,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
      *
-     * @param billCode
-     * @return
+     * @param billCode 计划单编码
+     * @return ResultPlanBillDTO
      */
     public ResultPlanBillDTO open(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
@@ -133,12 +143,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 审核不通过
      *
-     * @param billCode
-     * @return
+     * @param auditPlanBillDTO 计划单审核DTO
      */
 
-    public void unPass(String billCode) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+    public void unPass(AuditPlanBillDTO auditPlanBillDTO) {
+        PlanBill planBill = planBillRepository.findOneByBillCode(auditPlanBillDTO.getBillCode());
+        planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
         audit(planBill, false);
 
     }
@@ -146,12 +156,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 审核通过，然后进行计划单切片
      *
-     * @param billCode
-     * @return
+     * @param auditPlanBillDTO 计划单审核DTO
      */
 
-    public void pass(String billCode) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void pass(AuditPlanBillDTO auditPlanBillDTO) {
+        PlanBill planBill = planBillRepository.findOneByBillCode(auditPlanBillDTO.getBillCode());
+        planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
         mapForSplit(planBill);
         audit(planBill, true);
 
@@ -245,8 +256,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     /**
-     * @param conditionQueryPlanBill
-     * @return
+     * @param conditionQueryPlanBill 条件查询
+     * @return QueryPlanBillDTO 前端页面展示
      * @throws DataException
      */
     public QueryPlanBillDTO findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
@@ -396,9 +407,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         //TODO 备注是否允许为空？ 字符长度是多少？
         if (StringUtils.isEmpty(planBillDTO.getMemo())) {
             throw new DataException("", "单据备注");
-        }
-        if (StringUtils.isEmpty(planBillDTO.getBasicEnum())) {
-            throw new DataException("", "计划类型不能为空");
         }
         if (StringUtils.isEmpty(planBillDTO.getPlanBillDetailDTOS()) || planBillDTO.getPlanBillDetailDTOS().size() <= 0) {
             throw new DataException("", "单据明细不能为空");
