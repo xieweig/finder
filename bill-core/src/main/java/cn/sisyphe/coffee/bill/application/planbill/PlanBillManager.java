@@ -96,7 +96,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             }
             return planBill;
         }
-        //TODO 为了测试
+        //TODO 为了测试,临时修改
         planBillDTO.setBillCode(planBillDTO.getMemo());
         validate(planBillDTO);
         return (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
@@ -248,14 +248,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return new Station(station.getStationCode());
     }
 
-    //TODO 如果出站站点是门店，并且入战站点是供应商，则需要将中转物流站点map到tranferLocation上面去
     private Station getTransferLocation(PlanBillDetail planBillDetail) {
         if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
                 && planBillDetail.getInLocation() instanceof Supplier) {
-            //TODO 需要使用真实数据，等唐华玲写好接口之后,将中转的物流站点map上去
-            Station wlzd001 = new Station("WLZD001");
-            wlzd001.setStationType(StationType.LOGISTICS);
-            return wlzd001;
+            Station transferStation = new Station(stationRepository.findLogisticCodeByStationCode(planBillDetail.getOutLocation().code()));
+            transferStation.setStationType(StationType.LOGISTICS);
+            return transferStation;
         }
         return null;
     }
