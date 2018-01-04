@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -38,6 +39,19 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
         return planBillPage;
     }
 
+    @Override
+    public PlanBill findByBillCode(String planBillCode) {
+        if (StringUtils.isEmpty(planBillCode)) {
+            throw new DataException("20011", "进货单编码为空");
+        }
+        PlanBill planBill = planBillRepository.findOneByBillCode(planBillCode);
+        if (planBill != null) {
+            return planBill;
+        } else {
+            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
+        }
+    }
+
     /**
      * @param conditionQueryPlanBill
      * @param pageable
@@ -58,41 +72,44 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
                 expressions.add(cb.like(root.<String>get("billCode"), "%" + conditionQueryPlanBill.getBillCode() + "%"));
             }*/
 
+
+
+
             //单据的种类
-//            if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())){
-//                expressions.add(cb.equal(root.<String>get("specificBillType"),
-//                        "" + conditionQueryPlanBill.getSpecificBillType() + ""));
-//            }
-//
-//            // 入库站点
-//            if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCode())) {
-//                expressions.add(cb.equal(root.<String>get("inStationCode"),
-//                        "" + conditionQueryPlanBill.getInStationCode() + ""));
-//            }
-//            //出库站点
-//            if (!StringUtils.isEmpty(conditionQueryPlanBill.getOutStationCode())) {
-//                expressions.add(cb.equal(root.<String>get("outStationCode"),
-//                        "" + conditionQueryPlanBill.getOutStationCode() + ""));
-//            }
-//
-//            //录单人
-//            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
-//                expressions.add(cb.like(root.<String>get("creatorName"),
-//                        "%" + conditionQueryPlanBill.getCreatorName() + "%"));
-//            }
-//
-//            /**
-//             * 录单开始时间
-//             */
-//            if(!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())){
-//                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateStartTime()));
-//            }
-//            /**
-//             * 录单结束时间
-//             */
-//            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
-//                expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
-//            }
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())){
+                expressions.add(cb.equal(root.<String>get("specificBillType"),
+                        "" + conditionQueryPlanBill.getSpecificBillType() + ""));
+            }
+
+            // 入库站点
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCode())) {
+                expressions.add(cb.equal(root.<String>get("inStationCode"),
+                        "" + conditionQueryPlanBill.getInStationCode() + ""));
+            }
+            //出库站点
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getOutStationCode())) {
+                expressions.add(cb.equal(root.<String>get("outStationCode"),
+                        "" + conditionQueryPlanBill.getOutStationCode() + ""));
+            }
+
+            //录单人
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+                expressions.add(cb.like(root.<String>get("creatorName"),
+                        "%" + conditionQueryPlanBill.getCreatorName() + "%"));
+            }
+
+            /**
+             * 录单开始时间
+             */
+            if(!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())){
+                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateStartTime()));
+            }
+            /**
+             * 录单结束时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
+            }
 
 //            SetJoin<PlanBill, Long> planBillLongSetJoin = root.join(root.getModel().getSet(""));
            /* //分组查询

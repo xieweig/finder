@@ -1,10 +1,9 @@
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
-import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
+import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -16,6 +15,8 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailsDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRestockBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -41,6 +42,38 @@ public class RestockTest {
     @Resource
     private RestockBillRepository restockBillRepository;
     private Random random = new Random();
+    private Calendar calendar =Calendar.getInstance();
+    private void setDate(RestockBill restockBill){
+
+
+        Date date = new Date();
+        calendar.setTime(date);
+
+        logger.info(calendar.getTime().toString());
+
+        if (restockBill.getInStorageEndTime()==null) {
+
+            calendar.add(Calendar.HOUR, 11);
+            restockBill.setInStorageStartTime(calendar.getTime());
+        }
+
+        if (restockBill.getInStorageStartTime()==null){
+
+            calendar.add(Calendar.HOUR,18);
+            restockBill.setInStorageEndTime(calendar.getTime());
+        }
+
+        if (restockBill.getOutStorageStartTime()==null){
+
+            calendar.add(Calendar.DATE, 2);
+            restockBill.setOutStorageStartTime(calendar.getTime());
+        }
+        if (restockBill.getOutStorageEndTime()==null){
+
+            calendar.add(Calendar.HOUR,12);
+            restockBill.setOutStorageEndTime(calendar.getTime());
+        }
+    }
 
     @Test
     public void Juice(){
@@ -108,6 +141,48 @@ public class RestockTest {
         billService.setBillRepository(restockBillRepository);
         billService.save();
         billService.sendEvent(applicationEventPublisher);
+
+    }
+    @Resource
+    private RestockBillManager restockBillManager;
+    @Test
+    public void Orange(){
+
+        SaveByRestockBillDTO saveByRawMaterialDTO = new SaveByRestockBillDTO();
+        saveByRawMaterialDTO.setBillCode("0802104"+random.nextInt(10));
+        saveByRawMaterialDTO.setCreateTime(new Date());
+        saveByRawMaterialDTO.setInStationCode("10001"+random.nextInt(10));
+        saveByRawMaterialDTO.setOutStationCode("20001"+random.nextInt(10));
+        saveByRawMaterialDTO.setRemarks("bill remarks");
+
+
+            List<RestockBillDetailsDTO> list = new ArrayList<>();
+            RestockBillDetailsDTO first = new RestockBillDetailsDTO();
+            first.setRawMaterialName("milk");
+            first.setRawMaterialCode("8002"+random.nextInt(10));
+            first.setCargoName("menu");
+            first.setCargoCode("80003"+random.nextInt(10));
+            first.setAmount(500);
+            first.setPackageCode("bottle");
+            first.setActualNumber(10);
+            first.setCargoRemarks("only"+random.nextInt(100)+" left ");
+
+            list.add(first);
+            RestockBillDetailsDTO second = new RestockBillDetailsDTO();
+            second.setRawMaterialName("milk");
+            second.setRawMaterialCode("7002"+random.nextInt(10));
+            second.setCargoName("menu");
+            second.setCargoCode("70003"+random.nextInt(10));
+            second.setAmount(500);
+            second.setPackageCode("bottle");
+            second.setActualNumber(10);
+            second.setCargoRemarks("only"+random.nextInt(100)+" left ");
+            list.add(second);
+
+        saveByRawMaterialDTO.setBillDetails(list);
+
+        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
+
 
     }
 }

@@ -18,7 +18,7 @@ public class OpenBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillStateEnum[] allowableStates() {
-        return new BillStateEnum[]{BillStateEnum.OPEN, BillStateEnum.SUBMITTED};
+        return new BillStateEnum[]{BillStateEnum.SUBMITTED};
     }
 
     /**

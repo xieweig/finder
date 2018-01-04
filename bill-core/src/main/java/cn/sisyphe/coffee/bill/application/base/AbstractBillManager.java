@@ -102,10 +102,11 @@ public class AbstractBillManager<T extends Bill> {
         // 生成单据服务
         BillServiceFactory serviceFactory = new BillServiceFactory();
         AbstractBillService billService = serviceFactory.createBillService(bill);
-        // 动作调用
-        billService.dispose(abstractBillBehavior);
         // 设置数据库仓库
         billService.setBillRepository(billRepository);
+
+        // 动作调用
+        billService.dispose(abstractBillBehavior);
         // 保存数据到数据库中
         billService.save();
         // 发送事件

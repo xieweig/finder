@@ -25,12 +25,12 @@ public class RestockBill extends Bill<RestockBillDetail> {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(nullable = false, updatable = false)
+   // @Column()
     private Date outStorageStartTime;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(nullable = false, updatable = false)
+   // @Column()
     private Date outStorageEndTime;
     /**
      *
@@ -39,12 +39,12 @@ public class RestockBill extends Bill<RestockBillDetail> {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(nullable = false, updatable = false)
+    //@Column()
     private Date inStorageStartTime;
 
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(nullable = false, updatable = false)
+   // @Column()
     private Date inStorageEndTime;
 
     @Column(length = 300)

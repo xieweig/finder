@@ -43,9 +43,9 @@ public class SaveByCargoDTO {
     private String outStationCode;
     /**
      *
-     *notes :计划单信息
-     *  录单时间 出库站点  入库站点
+     *notes : 计划单信息
+     *  录单时间 出库站点 入库站点
      */
-    private List<BillDetailsDTO> lists;
+    private List<RestockBillDetailsDTO> lists;
 
 }

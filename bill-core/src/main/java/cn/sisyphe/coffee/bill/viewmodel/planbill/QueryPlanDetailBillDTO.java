@@ -1,11 +1,15 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author bifenglin
@@ -58,6 +62,26 @@ public class QueryPlanDetailBillDTO implements Serializable{
      * 状态
      */
     private BillStateEnum billState;
+    /**
+     * 详情
+     */
+    private Set<PlanBillDetail> billDetails = new HashSet<>();
+
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
+    }
+
+    public Set<PlanBillDetail> getBillDetails() {
+        return billDetails;
+    }
+
+    public void setBillDetails(Set<PlanBillDetail> billDetails) {
+        this.billDetails = billDetails;
+    }
 
     public BigDecimal getProgress() {
         return progress;

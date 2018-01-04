@@ -8,19 +8,15 @@ package cn.sisyphe.coffee.bill.util;
  * @author XiongJing
  */
 public final class Constant {
-    /**
-     * 审核失败
-     */
-    public static final String AUDIT_FAILURE_VALUE = "Failure";
-    /**
-     * 审核成功
-     */
-    public static final String AUDIT_SUCCESS_VALUE = "Success";
-
 
     /**
-     * RabbitMQ
+     * RabbitMQ-EXCHANGE
      */
     public static final String BILL_EXCHANGE = "cn_sisyphe_coffee_bill";
+
+    /**
+     * COMMON-NAME
+     */
+    public static final String COMMON_NAME = "bill-stock-done";
 
 }

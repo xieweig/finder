@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date 2017/12/29 9:55
  * @description
  */
-@FeignClient(value = "COFFEE-BASEINFO-API", fallback = LocalSupplierCloudRepository.class)
+@FeignClient(value = "COFFEE-BASEINFO", fallback = LocalSupplierCloudRepository.class)
 public interface SupplierCloudRepository {
 
+    /**
+     * 根据供应商编码查询供应商信息
+     *
+     * @param supplierCode 供应商编码
+     * @return
+     */
     @RequestMapping(path = "/api/v1/baseInfo/supplier/findBySupplierCode", method = RequestMethod.GET)
     ResponseResult findSupplierByCode(@RequestParam("supplierCode") String supplierCode);
-
-    @RequestMapping(path = "/api/v1/baseInfo/supplier/findByLikeSupplierName", method = RequestMethod.GET)
-    ResponseResult findByLikeSupplierName(@RequestParam("supplierName") String supplierCode);
 }

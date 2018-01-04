@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +11,7 @@ import java.util.Set;
  *@description: 
  *@author：xieweiguang
  */
-public class SaveByRawMaterialDTO {
+public class SaveByRestockBillDTO {
 
 
     /**
@@ -18,7 +20,9 @@ public class SaveByRawMaterialDTO {
      *  单号 出库库位 单据备注
      */
     private String billCode;
+
     private String storageCode;
+
     private String remarks;
 
     /**
@@ -44,8 +48,33 @@ public class SaveByRawMaterialDTO {
      *notes :计划单信息
      *  录单时间 出库站点  入库站点
      */
-    private Set<BillDetailsDTO> details;
-    //private List<BillDetailsDTO> details;
+    /**
+     * 进货单明细信息
+     */
+    private List<RestockBillDetailsDTO> billDetails;
+    /**
+     *
+     *notes :
+     *  区分是安照原料拣货还是按照货物拣货 默认按照货物拣货
+     *  不作copyProperties之用
+     */
+    private Boolean readyByCargo =true;
+
+    public Boolean getReadyByCargo() {
+        return readyByCargo;
+    }
+
+    public void setReadyByCargo(Boolean readyByCargo) {
+        this.readyByCargo = readyByCargo;
+    }
+
+    public List<RestockBillDetailsDTO> getBillDetails() {
+        return billDetails;
+    }
+
+    public void setBillDetails(List<RestockBillDetailsDTO> billDetails) {
+        this.billDetails = billDetails;
+    }
 
     public String getBillCode() {
         return billCode;
@@ -95,11 +124,11 @@ public class SaveByRawMaterialDTO {
         this.outStationCode = outStationCode;
     }
 
-    public Set<BillDetailsDTO> getDetails() {
-        return details;
-    }
-
-    public void setDetails(Set<BillDetailsDTO> details) {
-        this.details = details;
-    }
+//    public Set<BillDetailsDTO> getDetails() {
+//        return details;
+//    }
+//
+//    public void setDetails(Set<BillDetailsDTO> details) {
+//        this.details = details;
+//    }
 }

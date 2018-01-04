@@ -42,29 +42,29 @@ public class PurchaseBillTest {
     public void save() {
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         // 货运单号
-        saveDto.setFreightCode("hydh001");
+        saveDto.setFreightCode("hydh004");
         // 发货件数
-        saveDto.setShippedAmount(10);
+        saveDto.setShippedAmount(30);
         // 实收件数
-        saveDto.setActualAmount(8);
+        saveDto.setActualAmount(30);
         // 备注
-        saveDto.setMemo("测试保存单据");
+        saveDto.setMemo("测试保存单据4");
         // 操作人代码
-        saveDto.setOperatorCode("xj0001");
+        saveDto.setOperatorCode("xj0004");
         // 库房
-        Storage storage = new Storage("kf001");
-        storage.setStorageName("测试库房");
+        Storage storage = new Storage("kf004");
+        storage.setStorageName("测试库房4");
         saveDto.setStorage(storage);
 
         // 供应商信息
-        Supplier supplier = new Supplier("supplier001");
-        supplier.setSupplierName("测试供应商");
-        supplier.setAddress("重庆市");
+        Supplier supplier = new Supplier("supplier004");
+        supplier.setSupplierName("测试供应商4");
+        supplier.setAddress("重庆市4");
         saveDto.setSupplier(supplier);
 
         // 站点
-        Station station = new Station("CD36");
-        station.setStationName("总部");
+        Station station = new Station("CD39");
+        station.setStationName("总部4");
         station.setStationType(StationType.STORE);
         // 将库房设置到站点中去
         station.setStorage(storage);
@@ -72,32 +72,58 @@ public class PurchaseBillTest {
         saveDto.setStation(station);
 
         List<BillDetailDTO> billDetails = new ArrayList<>();
+
         BillDetailDTO detailDTO = new BillDetailDTO();
 
         // 最小单位数量
-        detailDTO.setAmount(1000);
+        detailDTO.setAmount(300);
         // 包号
-        detailDTO.setPackageCode("package001");
+        detailDTO.setPackageCode("package004");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
         detailDTO.setUnitPrice(new BigDecimal(10));
         // 发货数量
-        detailDTO.setShippedNumber(68);
+        detailDTO.setShippedNumber(300);
         // 数量差值
-        detailDTO.setDifferenceNumber(20);
+        detailDTO.setDifferenceNumber(0);
         // 总价差值
-        detailDTO.setDifferencePrice(new BigDecimal(200));
+        detailDTO.setDifferencePrice(new BigDecimal(0));
 
-        RawMaterial rawMaterial = new RawMaterial("ylbm001");
-        rawMaterial.setRawMaterialName("原料001");
-        Cargo cargo = new Cargo("cargo001");
-        cargo.setCargoName("货物001");
+        RawMaterial rawMaterial = new RawMaterial("ylbm004");
+        rawMaterial.setRawMaterialName("原料004");
+        Cargo cargo = new Cargo("cargo004");
+        cargo.setCargoName("货物004");
         rawMaterial.setCargo(cargo);
         detailDTO.setRawMaterial(rawMaterial);
 
+        BillDetailDTO detailDTO2 = new BillDetailDTO();
+
+        // 最小单位数量
+        detailDTO2.setAmount(200);
+        // 包号
+        detailDTO2.setPackageCode("package005");
+        // 生产日期
+        detailDTO2.setDateInProduced(new Date());
+        // 单位进价
+        detailDTO2.setUnitPrice(new BigDecimal(10));
+        // 发货数量
+        detailDTO2.setShippedNumber(300);
+        // 数量差值
+        detailDTO2.setDifferenceNumber(100);
+        // 总价差值
+        detailDTO2.setDifferencePrice(new BigDecimal(1000));
+
+        RawMaterial rawMaterial2 = new RawMaterial("ylbm005");
+        rawMaterial2.setRawMaterialName("原料005");
+        Cargo cargo2 = new Cargo("cargo005");
+        cargo2.setCargoName("货物005");
+        rawMaterial2.setCargo(cargo2);
+        detailDTO2.setRawMaterial(rawMaterial2);
 
         billDetails.add(detailDTO);
+        billDetails.add(detailDTO2);
+
         saveDto.setBillDetails(billDetails);
         purchaseBillManager.saveBill(saveDto);
     }
@@ -174,7 +200,7 @@ public class PurchaseBillTest {
      */
     @Test
     public void openBill() {
-        String billCode = "bill002";
+        String billCode = "bill001";
          purchaseBillManager.openBill(billCode);
     }
     /**
@@ -182,7 +208,7 @@ public class PurchaseBillTest {
      */
     @Test
     public void updatePurchaseBillToSave() {
-        String billCode = "bill001";
+        String billCode = "bill003";
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         saveDto.setBillCode(billCode);
         // 货运单号
@@ -247,7 +273,7 @@ public class PurchaseBillTest {
      */
     @Test
     public void updatePurchaseBillToSubmit() {
-        String billCode = "bill001";
+        String billCode = "bill003";
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         saveDto.setBillCode(billCode);
         // 货运单号
@@ -314,7 +340,7 @@ public class PurchaseBillTest {
     public void auditFailureBill() {
         String billCode = "bill002";
         String auditPersonCode = "admin001";
-        purchaseBillManager.auditFailureBill(billCode,auditPersonCode);
+        purchaseBillManager.auditBill(billCode,auditPersonCode,false);
     }
 
     /**
@@ -322,9 +348,9 @@ public class PurchaseBillTest {
      */
     @Test
     public void AuditSuccessBill() {
-        String billCode = "bill002";
-        String auditPersonCode = "admin002";
-        purchaseBillManager.AuditSuccessBill(billCode,auditPersonCode);
+        String billCode = "bill003";
+        String auditPersonCode = "admin003 ";
+        purchaseBillManager.auditBill(billCode,auditPersonCode,true);
     }
     /**
      * 测试多条件查询

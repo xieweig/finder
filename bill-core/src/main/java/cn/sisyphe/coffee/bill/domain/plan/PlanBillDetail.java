@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Entity;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -49,9 +47,9 @@ public class PlanBillDetail extends BillDetail {
     /**
      * 更新前
      */
-    @PrePersist
-    @PreUpdate
-    public void planBillUpdate() {
+    @Override
+    public void update() {
+        super.update();
         if (inLocation != null) {
             dbStation.setInLocation(inLocation);
         }
