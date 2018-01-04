@@ -1,5 +1,8 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+/**
+ * @author bifenglin
+ */
 public class AddRestockBillDTO {
     private String billCode;
 
