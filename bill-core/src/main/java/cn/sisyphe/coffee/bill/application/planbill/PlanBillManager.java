@@ -102,16 +102,22 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
     }
 
+    /**
+     * 参数校验
+     *
+     * @param planBillDTO 前端传递过来的数据
+     */
+
+    private void validate(PlanBillDTO planBillDTO) {
+        validateBillCode(planBillDTO.getBillCode());
+        checkCreateParam(planBillDTO);
+    }
+
     private void validateBillCode(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
         if (planBill != null) {
             throw new DataException("", "计划编号已存在");
         }
-    }
-
-    private void validate(PlanBillDTO planBillDTO) {
-        validateBillCode(planBillDTO.getBillCode());
-        checkCreateParam(planBillDTO);
     }
 
     /**
@@ -407,7 +413,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         if (StringUtils.isEmpty(planBillDTO.getBillType())) {
             throw new DataException("", "单据类型不能为空");
         }
-        //TODO 备注是否允许为空？ 字符长度是多少？
         if (StringUtils.isEmpty(planBillDTO.getMemo())) {
             throw new DataException("", "单据备注");
         }
