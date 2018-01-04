@@ -1,9 +1,7 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByCargoDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.SaveByRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.SaveBySelfDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,14 +26,14 @@ public class RestockBillController {
  *notes :
  *
  */
-    @ApiOperation(value = "站点自主退库拣货保存")
-    @PostMapping(path ="/saveBySelf")
-    public ResponseResult saveBySelf(@RequestBody SaveBySelfDTO saveBySelfDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        restockBillManager.saveBySelf(saveBySelfDTO);
-        return responseResult;
-    }
+//    @ApiOperation(value = "站点自主退库拣货保存")
+//    @PostMapping(path ="/saveBySelf")
+//    public ResponseResult saveBySelf(@RequestBody SaveBySelfDTO saveBySelfDTO) {
+//
+//        ResponseResult responseResult = new ResponseResult();
+//        restockBillManager.saveBySelf(saveBySelfDTO);
+//        return responseResult;
+//    }
 
 
     @ApiOperation(value = "站点计划退库按货物拣货第一步保存")
@@ -78,14 +76,13 @@ public class RestockBillController {
     }
 
 
-    @ApiOperation(value = "可退库货物查询")
-    @PostMapping(path ="/queryCargo")
-    public ResponseResult queryCargo(@RequestParam String cargoName, @RequestParam String cargoCode){
-        ResponseResult responseResult = new ResponseResult();
-        restockBillManager.queryCargo(cargoName, cargoCode);
-
-        return responseResult;
-    }
-
+//    @ApiOperation(value = "可退库货物查询")
+//    @PostMapping(path ="/queryCargo")
+//    public ResponseResult queryCargo(@RequestParam String cargoName, @RequestParam String cargoCode){
+//        ResponseResult responseResult = new ResponseResult();
+//        restockBillManager.queryCargo(cargoName, cargoCode);
+//
+//        return responseResult;
+//    }
 
 }

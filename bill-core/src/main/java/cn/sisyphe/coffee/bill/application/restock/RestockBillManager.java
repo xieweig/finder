@@ -16,6 +16,7 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -37,67 +38,37 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
-    @Resource
-    private ApplicationEventPublisher applicationEventPublisher;
-    @Resource
-    private RestockBillRepository restockBillRepository;
-    //@config @bean @resource
-    private BillFactory billFactory = new BillFactory();
 
-    private BillServiceFactory billServiceFactory = new BillServiceFactory();
-    public void submitByRestockBill(SaveByRestockBillDTO saveByRestockBillDTO){
+      //@config @bean @resource 不然可能被回收？
+   // private BillFactory billFactory = new BillFactory();
 
-    }
-
-    private void save_init(RestockBill restockBill){
-        //restockBill.setBillState(BillStateEnum.SAVED);这一步会在set Behavior中
-        // 初始化单据为：退库 出库单
-        restockBill.setBillType(BillTypeEnum.RESTOCK);
-        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
-
-        //根据单据生成对应的BillServer;
-        RestockBillService billService = (RestockBillService) billServiceFactory.createBillService(restockBill);
-        //会setBillBehavior;
-        billService.dispose(new SaveBehavior());
-
-        billService.setBillRepository(restockBillRepository);
-
-        billService.save();
-        //billService.sendEvent(applicationEventPublisher);
-
-    }
-
-    public void saveBySelf(SaveBySelfDTO saveBySelfDTO) {
-        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
-        BeanUtils.copyProperties(saveBySelfDTO, restockBill);
-        this.save_init(restockBill);
-
-    }
-
-    public void saveByCargo(SaveByCargoDTO saveByCargoDTO) {
-        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
-        //this.billCopyPropertiesFromDTO();
-    }
-
-    public Page<CargoDTO> queryCargo(String cargoName, String cargoCode) {
-
-        return null;
-    }
-
-    public void saveByRestockBill(SaveByRestockBillDTO saveByRawMaterialDTO) {
-        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
+    /**
+     *
+     *notes :
+     *  退库出库单 保存
+     */
+    public void saveByRestockBill(SaveByRestockBillDTO SaveByRestockBillDTO) {
         /**
          *
-         *notes :BeanUtils.copyProperties(saveByRawMaterialDTO, restockBill);
+         *notes :
+         *  初始化bill
+         */
+        BillFactory billFactory = new BillFactory();
+        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
+        restockBill.setBillType(BillTypeEnum.RESTOCK);
+        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        /**
+         *
+         *notes :BeanUtils.copyProperties(SaveByRestockBillDTO, restockBill);
          *    内部转换属性方法
          */
+        this.billCopyPropertiesFromDTO(SaveByRestockBillDTO, restockBill);
 
-        this.billCopyPropertiesFromDTO(saveByRawMaterialDTO, restockBill);
+        save(restockBill);
 
-
-        this.save_init(restockBill);
 
     }
+
 
     /**
      *
@@ -106,6 +77,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     private void billCopyPropertiesFromDTO(SaveByRestockBillDTO saveByRestockBillDTO, RestockBill restockBill){
 
+        //究竟是不是dto提供bill_code？
         restockBill.setBillCode(saveByRestockBillDTO.getBillCode());
 
         restockBill.setRemarks(saveByRestockBillDTO.getRemarks());
@@ -116,19 +88,19 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         Station inStation = new Station(saveByRestockBillDTO.getInStationCode());
         restockBill.setInLocation(inStation);
 
-        //从出库站点的正常库  出
+        //从出库站点的正常库 出
         Station outStation = new Station(saveByRestockBillDTO.getOutStationCode());
         Storage storage = new Storage();
         storage.setStorageCode(saveByRestockBillDTO.getStorageCode());
         outStation.setStorage(storage);
         restockBill.setOutLocation(outStation);
-
-
         Boolean readyByCargo = saveByRestockBillDTO.getReadyByCargo();
+
         Set<RestockBillDetail> details = this.listToSet(saveByRestockBillDTO.getBillDetails(),readyByCargo);
 
         restockBill.setBillDetails(details);
     }
+
     /**
      *
      *notes :
@@ -136,13 +108,15 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     private Set<RestockBillDetail> listToSet(List<RestockBillDetailsDTO> list, Boolean readyByCargo){
         Set<RestockBillDetail> details = new HashSet<>();
-        for (RestockBillDetailsDTO detailDTO:list
-                ) {
+
+        if (list.size()==0) throw new DataException("30001","单据来源缺失bill_details");
+
+        for (RestockBillDetailsDTO detailDTO : list) {
             RestockBillDetail restockBillDetail = new RestockBillDetail();
             this.detailsCopyPropertiesFromDTO(detailDTO, restockBillDetail, readyByCargo);
             details.add(restockBillDetail);
         }
-        System.out.println("details: "+details.size());
+
         return details;
     }
     /**
@@ -178,10 +152,28 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             detail.setPackageCode(dto.getPackageCode());
             detail.setActualNumber(dto.getActualNumber());
             detail.setExpectedNumber(dto.getExpectedNumber());
-
-
         }
     }
+    /**
+     *
+     *notes :
+     *  一步到位不经过保存直接提交
+     */
+    public void submitByRestockBill(SaveByRestockBillDTO saveByRestockBillDTO){
+
+        BillFactory billFactory = new BillFactory();
+        RestockBill restockBill = (RestockBill)billFactory.createBill(BillTypeEnum.RESTOCK);
+        restockBill.setBillType(BillTypeEnum.RESTOCK);
+        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
+
+        this.billCopyPropertiesFromDTO(saveByRestockBillDTO,restockBill);
+
+        submit(restockBill);
+
+
+    }
+
+
 
 
 }
