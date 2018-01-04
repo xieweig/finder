@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
@@ -12,11 +13,15 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
+import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -40,7 +45,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
       //@config @bean @resource 不然可能被回收？
    // private BillFactory billFactory = new BillFactory();
-
+    @Autowired
+    private RestockBillQueryService restockBillQueryService;
     /**
      *
      *notes :

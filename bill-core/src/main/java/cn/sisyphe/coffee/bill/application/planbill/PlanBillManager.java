@@ -170,34 +170,32 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     //因为数据库只保存了code，所以在做切片的时候要去查询基础资料，把站点类型拿过来
     private void mapForSplit(PlanBill planBill) {
-        mapInLocation(planBill);
-        mapOutLocation(planBill);
-        setTransferLocation(planBill);
+        mapRealLocation(planBill);
     }
 
-    private void mapInLocation(PlanBill planBill) {
+    /**
+     * 组装切片站点信息
+     *
+     * @param planBill 计划单
+     */
+
+    private void mapRealLocation(PlanBill planBill) {
         for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
-            if (planBillDetail.getInLocation() instanceof Station) {
-                planBillDetail.setInLocation(stationRepository.findByStationCode(((Station) planBillDetail.getInLocation()).getStationCode()));
-                return;
-            }
-            if (planBillDetail.getInLocation() instanceof Supplier) {
-                planBillDetail.setInLocation(supplierRepository.findBySupplierCode(((Supplier) planBillDetail.getInLocation()).getSupplierCode()));
-            }
+            planBillDetail.setInLocation(getRealLocation(planBillDetail.getInLocation()));
+            planBillDetail.setOutLocation(getRealLocation(planBillDetail.getOutLocation()));
+            planBillDetail.setTransferLocation(getTransferLocation(planBillDetail));
         }
 
     }
 
-    private void mapOutLocation(PlanBill planBill) {
-        for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
-            if (planBillDetail.getOutLocation() instanceof Station) {
-                planBillDetail.setOutLocation(stationRepository.findByStationCode(((Station) planBillDetail.getOutLocation()).getStationCode()));
-                return;
-            }
-            if (planBillDetail.getOutLocation() instanceof Supplier) {
-                planBillDetail.setOutLocation(supplierRepository.findBySupplierCode(((Supplier) planBillDetail.getOutLocation()).getSupplierCode()));
-            }
+    private AbstractLocation getRealLocation(AbstractLocation abstractLocation) {
+        if (abstractLocation instanceof Station) {
+            return stationRepository.findByStationCode(abstractLocation.code());
         }
+        if (abstractLocation instanceof Supplier) {
+            return supplierRepository.findBySupplierCode(abstractLocation.code());
+        }
+        throw new DataException("xxx", "站点转换错误");
     }
 
     //将前端传过来的数据进行转换
@@ -243,16 +241,15 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     //TODO 如果出站站点是门店，并且入战站点是供应商，则需要将中转物流站点map到tranferLocation上面去
-    private void setTransferLocation(PlanBill planBill) {
-        for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
-            if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
-                    && planBillDetail.getOutLocation() instanceof Supplier) {
-                //TODO 需要使用真实数据，等唐华玲写好接口之后,将中转的物流站点map上去
-                Station wlzd001 = new Station("WLZD001");
-                wlzd001.setStationType(StationType.LOGISTICS);
-                planBillDetail.setTransferLocation(wlzd001);
-            }
+    private Station getTransferLocation(PlanBillDetail planBillDetail) {
+        if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
+                && planBillDetail.getOutLocation() instanceof Supplier) {
+            //TODO 需要使用真实数据，等唐华玲写好接口之后,将中转的物流站点map上去
+            Station wlzd001 = new Station("WLZD001");
+            wlzd001.setStationType(StationType.LOGISTICS);
+            return wlzd001;
         }
+        return null;
     }
 
     /**
@@ -284,7 +281,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param planBillList
      * @return
      */
-    public List<QueryPlanDetailBillDTO> toMapDTO(List<PlanBill> planBillList) {
+    private List<QueryPlanDetailBillDTO> toMapDTO(List<PlanBill> planBillList) {
 
         List<QueryPlanDetailBillDTO> planBillDTOList = new ArrayList<>();
         int amount;
