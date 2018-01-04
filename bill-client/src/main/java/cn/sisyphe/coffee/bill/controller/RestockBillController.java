@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.domain.restock.ReadyWays;
+import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -10,10 +10,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+
 /**
  *@date: 2018/1/3
  *@description:
- *@author：xieweiguang
+ *@author：bifenglin
  */
 @RequestMapping("/api/bill/restock")
 @RestController
@@ -23,73 +24,33 @@ public class RestockBillController {
     @Resource
     private RestockBillManager restockBillManager;
 
-/**
- *
- *notes :
- *
- */
-    @ApiOperation(value = "站点自主退库拣货保存")
-    @PostMapping(path ="/saveBySelf")
-    public ResponseResult saveBySelf(@RequestBody SaveByRestockBillDTO saveBySelfDTO) {
-
+    /**
+     * 保存退库单
+     *
+     * @param addRestockBillDTO
+     * @return
+     */
+    @ApiOperation(value = "保存退库单")
+    @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
+    public ResponseResult saveRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        saveBySelfDTO.setReadyWays(ReadyWays.ByStationSelf);
-        restockBillManager.saveByRestockBill(saveBySelfDTO);
+        restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
     }
 
-
-    @ApiOperation(value = "站点计划退库按 货物 拣货保存")
-    @PostMapping(path ="/saveByCargo")
-    public ResponseResult saveByCargo(@RequestBody SaveByRestockBillDTO saveByCargoDTO) {
-
+    /**
+     * 提交退库单
+     *
+     * @param addRestockBillDTO
+     * @return
+     */
+    @ApiOperation(value = "提交退库单")
+    @RequestMapping(path = "/submitRestockBill", method = RequestMethod.POST)
+    public ResponseResult submitRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        saveByCargoDTO.setReadyWays(ReadyWays.ByCargo);
-        restockBillManager.saveByRestockBill(saveByCargoDTO);
+        restockBillManager.submitBill(addRestockBillDTO);
         return responseResult;
     }
-
-
-    @ApiOperation(value = "站点计划退库按 原料 拣货保存")
-    @PostMapping(path ="/saveByRawMaterial")
-    public ResponseResult saveByRawMaterial(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        saveByRawMaterialDTO.setReadyWays(ReadyWays.ByRawMaterial);
-        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
-        return responseResult;
-    }
-
-    @ApiOperation(value = "站点自主 拣货提交")
-    @PostMapping(path ="/submitBySelf")
-    public ResponseResult submitBySelf(@RequestBody SaveByRestockBillDTO saveByCargoDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        saveByCargoDTO.setReadyWays(ReadyWays.ByStationSelf);
-
-        restockBillManager.submitByRestockBill(saveByCargoDTO);
-        return responseResult;
-    }
-
-    @ApiOperation(value = "站点计划退库按 货物 拣货提交")
-    @PostMapping(path ="/submitByCargo")
-    public ResponseResult submitByCargo(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        saveByRawMaterialDTO.setReadyWays(ReadyWays.ByCargo);
-       restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
-        return responseResult;
-    }
-    @ApiOperation(value = "站点计划退库按 原料 拣货提交")
-    @PostMapping(path ="/submitByRawMaterial")
-    public ResponseResult submitByRawMaterial(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        saveByRawMaterialDTO.setReadyWays(ReadyWays.ByRawMaterial);
-       restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
-        return responseResult;
-    }
-
 
     /**
      * 多条件查询退库入库单

@@ -1,7 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
-import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
