@@ -2,6 +2,10 @@ package cn.sisyphe.coffee.bill.controller;
 
 
 import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
+import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -22,14 +26,24 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class DeliveryBillController {
 
-
+    //配送拣货
     @Autowired
     private DeliveryBillManager deliveryBillManager;
 
+    // 计划单
+    @Autowired
+    private PlanBillManager planBillManager;
 
+
+    /**
+     * 根据单据编号查询单据信息
+     *
+     * @param billCode
+     * @return
+     */
     @ApiOperation(value = "根据单据编号查询单据信息")
-    @RequestMapping(path = "/findOneByBillCode", method = RequestMethod.GET)
-    public ResponseResult findOneByBillCode(@RequestParam("billCode") String billCode) {
+    @RequestMapping(path = "/findOneDeliveryBillByCode", method = RequestMethod.GET)
+    public ResponseResult findOneDeliveryBillByCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("deliveryBill", deliveryBillManager.findOneByBillCode(billCode));
@@ -38,4 +52,80 @@ public class DeliveryBillController {
         }
         return responseResult;
     }
+
+    /**
+     * 计划单据多条件分页查询(根据传入的单据类型返回不同单据)
+     *
+     * @return
+     */
+    @ApiOperation(value = "配送计划单据多条件分页查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        QueryPlanBillDTO queryPlanBillDTO = planBillManager.findPageByCondition(conditionQueryPlanBill);
+        responseResult.put("content", queryPlanBillDTO);
+        return responseResult;
+    }
+
+    /**
+     * 根据单据编号查询配送单信息
+     *
+     * @param billCode
+     * @return
+     */
+    @ApiOperation(value = "根据单据编号查询配送单信息")
+    @RequestMapping(path = "/findPlanByBillCode", method = RequestMethod.GET)
+    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.findByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 按货物拣货
+     *
+     * @param deliveryBillDTO
+     * @return
+     */
+    @ApiOperation(value = "站点配送计划拣货 按货物拣货,保存")
+    @RequestMapping(path = "/pickingByCargo", method = RequestMethod.POST)
+    public ResponseResult pickingByCargo(@RequestBody DeliveryBillDTO deliveryBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+
+        return responseResult;
+    }
+
+
+    /**
+     * 按原料拣货
+     *
+     * @param deliveryBillDTO
+     * @return
+     */
+    @ApiOperation(value = "站点配送计划拣货 按原料拣货,保存")
+    @RequestMapping(path = "/pickingByRawMaterial", method = RequestMethod.POST)
+    public ResponseResult pickingByRawMaterial(@RequestBody DeliveryBillDTO deliveryBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+
+        return responseResult;
+    }
+
+    /**
+     * 拣货提交
+     *
+     * @param deliveryBillDTO
+     * @return
+     */
+    @ApiOperation(value = "拣货提交")
+    @RequestMapping(path = "/submit", method = RequestMethod.POST)
+    public ResponseResult submitWhenDone(@RequestBody DeliveryBillDTO deliveryBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+
+        return responseResult;
+    }
+
 }
