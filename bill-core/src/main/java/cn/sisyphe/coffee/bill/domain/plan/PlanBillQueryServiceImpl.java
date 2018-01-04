@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -11,13 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class PlanBillQueryServiceImpl implements PlanBillQueryService{
+public class PlanBillQueryServiceImpl implements PlanBillQueryService {
 
     @Autowired
     private PlanBillRepository planBillRepository;
@@ -64,7 +63,11 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
             //去重
             criteriaQuery.distinct(true);
             Predicate predicate = cb.conjunction();
-
+            //连接明细表
+//            SetJoin<PlanBill, PlanBillDetail> planBillPlanBillDetailSetJoin = root.join(root.getModel().getSet("billDetails", PlanBillDetail.class), JoinType.LEFT);
+            Join<PlanBill, PlanBillDetail> planBillPlanBillDetailSetJoin = root.join("billDetails", JoinType.LEFT);
+            //连接明细表里的商品
+            Join<PlanBillDetail, DbGoods> planBillDetailDbGoodsJoin = planBillPlanBillDetailSetJoin.join("dbGoods", JoinType.LEFT);
             List<Expression<Boolean>> expressions = predicate.getExpressions();
 
             //站点计划号未实现
@@ -76,7 +79,7 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
 
 
             //单据的种类
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())){
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())) {
                 expressions.add(cb.equal(root.<String>get("specificBillType"),
                         "" + conditionQueryPlanBill.getSpecificBillType() + ""));
             }
@@ -101,7 +104,7 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
             /**
              * 录单开始时间
              */
-            if(!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())){
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateStartTime()));
             }
             /**
@@ -115,6 +118,26 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
            /* //分组查询
             query.groupBy(root.get("billCode"));
             //*/
+
+           //是否为总部计划单
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getHqBill()) && "true".equals(conditionQueryPlanBill.getHqBill())) {
+                expressions.add(cb.isTrue(root.<Boolean>get("hqBill")));
+            } else if (!StringUtils.isEmpty(conditionQueryPlanBill.getHqBill()) && "false".equals(conditionQueryPlanBill.getHqBill())) {
+                expressions.add(cb.isFalse(root.<Boolean>get("hqBill")));
+            }
+
+            //单据名称模糊查询
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillName())) {
+                expressions.add(cb.like(root.<String>get("billName"), "%" + conditionQueryPlanBill.getBillName() + "%"));
+            }
+            //货物编号集合
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoCodeArray())) {
+                expressions.add(planBillDetailDbGoodsJoin.<String>get("cargoCode").in(conditionQueryPlanBill.getCargoCodeArray()));
+            }
+            //货物编号模糊查询
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoCode())) {
+                expressions.add(cb.like(planBillDetailDbGoodsJoin.<String>get("cargoCode"), "%" + conditionQueryPlanBill.getCargoCode() + "%"));
+            }
             return predicate;
         }, pageable);
     }

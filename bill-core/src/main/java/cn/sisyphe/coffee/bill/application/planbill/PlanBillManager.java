@@ -331,24 +331,28 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setBillName(planBill.getBillName());
         resultPlanBillDTO.setBillType(planBill.getBillType());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
-        if (planBill.getBillDetails() != null) {
-            Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
-            for (String head : groupedPlanBillDetail.keySet()) {
-                ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
-                List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
-                PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-                resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
-                Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
-                for (PlanBillDetail planBillDetail : planBillDetails) {
-                    ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
-                    resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
-                    resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
-                    resultPlanBillLocationDTO.setAmount(planBillDetail.getAmount());
-                    resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
-                }
-                resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
-                resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
+        if (planBill.getBillDetails() == null) {
+            resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
+            return resultPlanBillDTO;
+        }
+
+
+        Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
+        for (String head : groupedPlanBillDetail.keySet()) {
+            ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
+            List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
+            PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
+            resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
+            Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
+            for (PlanBillDetail planBillDetail : planBillDetails) {
+                ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
+                resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
+                resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
+                resultPlanBillLocationDTO.setAmount(planBillDetail.getAmount());
+                resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
             }
+            resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
+            resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
         }
         resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
         return resultPlanBillDTO;

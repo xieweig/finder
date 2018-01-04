@@ -16,4 +16,9 @@ public class LocalStationCloudRepository implements StationCloudRepository {
     public ResponseResult findByStationCodeForApi(String stationCode) {
         return new ResponseResult();
     }
+
+    @Override
+    public ResponseResult findLogisticCodeByStationCode(String stationCode) {
+        return new ResponseResult();
+    }
 }

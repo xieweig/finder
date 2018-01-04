@@ -3,6 +3,8 @@ package cn.sisyphe.coffee.bill.infrastructure.share.station.repo;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.StationCloudRepository;
+import cn.sisyphe.framework.web.ResponseResult;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +39,15 @@ public class StationRepositoryImpl implements StationRepository {
         return station;
     }
 
+    @Override
+    public String findLogisticCodeByStationCode(String stationCode) {
+        ResponseResult responseResult = stationCloudRepository.findLogisticCodeByStationCode(stationCode);
+        Map<String, Object> resultMap = responseResult.getResult();
+        if (!resultMap.containsKey("logisticCode")) {
+            return null;
+        }
+        return JSON.toJSONString(responseResult.getResult().get("logisticCode"));
+    }
     private StationType getStationType(String siteType) {
 
         if (SUPPLIER.name().equals(siteType)) {
