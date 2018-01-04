@@ -192,7 +192,7 @@ public class RestockTest {
 
         saveByRawMaterialDTO.setBillDetails(list);
 
-        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
+   //     restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
 
     }
 }
