@@ -388,10 +388,9 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
             Supplier supplier = (Supplier) purchaseBill.getOutLocation();
             purchaseBillDTO.setSupplierCode(supplier.getSupplierName());
             // 单据状态--主表
-            purchaseBillDTO.setBillState(purchaseBill.getBillState().name());
+            toMapTwoState(purchaseBillDTO, purchaseBill.getBillState().name());
             // 备注--主表
             purchaseBillDTO.setMemo(purchaseBill.getMemo());
-
             // 循环遍历明细信息，累加得到数据
             Set<PurchaseBillDetail> purchaseBillDetailSet = purchaseBill.getBillDetails();
             // 实收数量总计
@@ -425,4 +424,57 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         }
         return purchaseBillDTOList;
     }
+
+    /**
+     * map状态
+     *
+     * @param billDTO
+     * @param stateName
+     * @return
+     */
+    private PurchaseBillDTO toMapTwoState(PurchaseBillDTO billDTO, String stateName) {
+
+        switch (stateName) {
+
+            case "SAVED":
+                billDTO.setSubmitState("未提交");
+                billDTO.setAuditState("未审核");
+                break;
+            case "SUBMITTED":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("未审核");
+                break;
+            case "OPEN":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("未审核");
+                break;
+            case "AUDIT_FAILURE":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核不通过");
+                break;
+            case "AUDIT_SUCCESS":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            case "OUT_STORAGING":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            case "IN_STORAGING":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            case "DONE":
+                billDTO.setSubmitState("已提交");
+                billDTO.setAuditState("审核通过");
+                break;
+            default:
+                break;
+
+        }
+
+        return billDTO;
+    }
+
+
 }
