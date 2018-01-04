@@ -22,6 +22,23 @@ INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, upd
 
 
 
+---二级菜单(运单)
+
+
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+VALUES (9001, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009', '运单跟踪', 'BILL,BILL009', 'app.bill.trace', 9000 , '\0');
+
+
+--三级菜单(运单)
+
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+VALUES (9002, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009001', '添加运单', 'BILL,BILL009,BILL009001', 'app.bill.trace.list', 9001, '\0');
+
+
+INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+VALUES (9003, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '9', 'BILL009002', '添加运单', 'BILL,BILL009,BILL009002', 'app.bill.trace.add', 9002, '\0');
+
+--四级菜单权限(运单)
 
 
 
