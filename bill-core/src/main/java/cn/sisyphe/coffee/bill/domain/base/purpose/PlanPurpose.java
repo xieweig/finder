@@ -31,12 +31,12 @@ import static ch.lambdaj.group.Groups.by;
 public class PlanPurpose extends AbstractBillPurpose {
 
     /**
-     * 用途处理器
+     * 用途处理器，根据站点对的数量，判断有多少个子计划单
      */
     @Override
     public void handle() {
         PlanBill bill = (PlanBill) getBillService().getBill();
-        //将详情安装出入站点名字进行分组
+        //将详情按照出入站点名字进行分组
         Group<PlanBillDetail> groupedPlanBillDetail = group(bill.getBillDetails(), by(on(PlanBillDetail.class).getInOutStationCode()));
         Set<PlanBillPayload> payloads = new HashSet<>();
 
@@ -46,8 +46,9 @@ public class PlanPurpose extends AbstractBillPurpose {
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
             planBillPayload.setOutLocation(firstPlanBillDetail.getOutLocation());
-            planBillPayload.setBillType(BillTypeEnum.PLAN);
             planBillPayload.setInLocation(firstPlanBillDetail.getInLocation());
+            planBillPayload.setTransferLocation(firstPlanBillDetail.getTransferLocation());
+            planBillPayload.setBillType(BillTypeEnum.PLAN);
             planBillPayload.setCastableStrategy(getSpecStrategy(bill.getSpecificBillType()));
             planBillPayload.setBasicEnum(bill.getBasicEnum());
             planBillPayload.setMemo(bill.getMemo());
@@ -72,6 +73,12 @@ public class PlanPurpose extends AbstractBillPurpose {
 
     }
 
+    /**
+     * 根据不同的单据类型选择不同的策略
+     *
+     * @param billTypeEnum 单据类型
+     * @return 选择出的策略
+     */
     private AbstractCastableStrategy getSpecStrategy(BillTypeEnum billTypeEnum) {
         Switcher<AbstractCastableStrategy> switcher = new Switcher<AbstractCastableStrategy>()
                 .addCase(BillTypeEnum.DELIVERY, new DeliveryStrategy())

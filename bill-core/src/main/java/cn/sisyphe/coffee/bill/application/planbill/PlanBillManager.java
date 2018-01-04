@@ -224,10 +224,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     //g根据前端传递过来的货物类型进行map，如果是按照货物分类则是cargo，其他这是原料
     private AbstractGoods mapGoods(String rawMaterialCode, String cargoCode, BasicEnum basicEnum) {
-        if (BasicEnum.BY_CARGO.equals(basicEnum)) {
-            return new Cargo(cargoCode);
+        RawMaterial rawMaterial = new RawMaterial(rawMaterialCode);
+        if (!StringUtils.isEmpty(cargoCode)) {
+            Cargo cargo = new Cargo(cargoCode);
+            rawMaterial.setCargo(cargo);
         }
-        return new RawMaterial(rawMaterialCode);
+        return rawMaterial;
     }
 
     //如果前端传递过来类型是供应商，则new供应商对象
@@ -363,7 +365,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         }
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
-        resultPlanBillDTO.setBillType(planBill.getBillType());
+        resultPlanBillDTO.setBillType(planBill.getSpecificBillType());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() != null) {
             Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));

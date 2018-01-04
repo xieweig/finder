@@ -20,8 +20,6 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RETURN
 
 public class ReturnedStrategy extends AbstractCastableStrategy {
 
-    //TODO 先切分，后面再批量保存
-
     @SuppressWarnings("unchecked")
     @Override
     public List<PlanBill> cast(PlanBillPayload planBillPayload) {
