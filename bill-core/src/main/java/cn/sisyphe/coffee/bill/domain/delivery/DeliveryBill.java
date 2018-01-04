@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * Created by yichuan on 2017/12/19 17:33
@@ -49,6 +50,15 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
      */
     @Column
     private String operatorName;
+
+
+    /**
+     * 完成度
+     */
+    @Column
+    private BigDecimal progress;
+
+
     /**
      * 备注
      */
@@ -97,13 +107,22 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
         this.memo = memo;
     }
 
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
     @Override
     public String toString() {
         return "DeliveryBill{" +
-                ", totalAmount=" + totalAmount +
+                "totalAmount=" + totalAmount +
                 ", totalCount=" + totalCount +
                 ", operatorCode='" + operatorCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +
+                ", progress=" + progress +
                 ", memo='" + memo + '\'' +
                 '}';
     }

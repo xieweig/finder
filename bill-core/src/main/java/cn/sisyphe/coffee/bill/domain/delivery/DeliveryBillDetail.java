@@ -46,6 +46,7 @@ public class DeliveryBillDetail extends BillDetail {
      * 数据库位置储存
      */
     private DbStation dbStation = new DbStation();
+
     /**
      * 更新前
      */
@@ -60,6 +61,7 @@ public class DeliveryBillDetail extends BillDetail {
             dbStation.setOutLocation(outLocation);
         }
     }
+
     /**
      * 载入
      */
@@ -116,5 +118,16 @@ public class DeliveryBillDetail extends BillDetail {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
+    }
+
+    @Override
+    public String toString() {
+        return "DeliveryBillDetail{" +
+                "progress=" + progress +
+                ", outLocation=" + outLocation +
+                ", inLocation=" + inLocation +
+                ", transferLocation=" + transferLocation +
+                ", dbStation=" + dbStation +
+                '}';
     }
 }
