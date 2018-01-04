@@ -72,9 +72,14 @@ public class PurchaseBillDTO {
     private String supplierCode;
 
     /**
-     * 单据状态--主表
+     * 单据审核状态--主表
      */
-    private String billState;
+    private String auditState;
+
+    /**
+     * 单据提交状态--主表
+     */
+    private String submitState;
 
     /**
      * 备注--主表
@@ -169,12 +174,20 @@ public class PurchaseBillDTO {
         this.differencePrice = differencePrice;
     }
 
-    public String getBillState() {
-        return billState;
+    public String getAuditState() {
+        return auditState;
     }
 
-    public void setBillState(String billState) {
-        this.billState = billState;
+    public void setAuditState(String auditState) {
+        this.auditState = auditState;
+    }
+
+    public String getSubmitState() {
+        return submitState;
+    }
+
+    public void setSubmitState(String submitState) {
+        this.submitState = submitState;
     }
 
     public String getMemo() {
@@ -208,7 +221,8 @@ public class PurchaseBillDTO {
                 ", inTotalPrice=" + inTotalPrice +
                 ", differencePrice=" + differencePrice +
                 ", supplierCode='" + supplierCode + '\'' +
-                ", billState='" + billState + '\'' +
+                ", auditState='" + auditState + '\'' +
+                ", submitState='" + submitState + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';
     }
