@@ -11,10 +11,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
+import cn.sisyphe.coffee.bill.domain.restock.*;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
@@ -42,9 +39,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
-
-      //@config @bean @resource 不然可能被回收？
-   // private BillFactory billFactory = new BillFactory();
     @Autowired
     private RestockBillQueryService restockBillQueryService;
     /**
@@ -99,9 +93,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         storage.setStorageCode(saveByRestockBillDTO.getStorageCode());
         outStation.setStorage(storage);
         restockBill.setOutLocation(outStation);
-        Boolean readyByCargo = saveByRestockBillDTO.getReadyByCargo();
 
-        Set<RestockBillDetail> details = this.listToSet(saveByRestockBillDTO.getBillDetails(),readyByCargo);
+        ReadyWays readyWay = saveByRestockBillDTO.getReadyWays();
+        Set<RestockBillDetail> details = this.listToSet(saveByRestockBillDTO.getBillDetails(),readyWay);
 
         restockBill.setBillDetails(details);
     }
@@ -111,14 +105,14 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      *notes :
      *  如果@requestbody注解只能直接绑定成list 那么此处需要转换成set
      */
-    private Set<RestockBillDetail> listToSet(List<RestockBillDetailsDTO> list, Boolean readyByCargo){
+    private Set<RestockBillDetail> listToSet(List<RestockBillDetailsDTO> list, ReadyWays readyWay){
         Set<RestockBillDetail> details = new HashSet<>();
 
         if (list.size()==0) throw new DataException("30001","单据来源缺失bill_details");
 
         for (RestockBillDetailsDTO detailDTO : list) {
             RestockBillDetail restockBillDetail = new RestockBillDetail();
-            this.detailsCopyPropertiesFromDTO(detailDTO, restockBillDetail, readyByCargo);
+            this.detailsCopyPropertiesFromDTO(detailDTO, restockBillDetail, readyWay);
             details.add(restockBillDetail);
         }
 
@@ -128,9 +122,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      *
      *notes :
      *  billDetailDTO to BillDetail; single
+     *  该方法要配合实际前段的业务列表字段 进行增减
      */
-    private void detailsCopyPropertiesFromDTO(RestockBillDetailsDTO dto, RestockBillDetail detail, Boolean readyByCargo){
-        if (readyByCargo == false){
+    private void detailsCopyPropertiesFromDTO(RestockBillDetailsDTO dto, RestockBillDetail detail, ReadyWays readyWay){
+        if (readyWay == ReadyWays.ByRawMaterial){
         RawMaterial rawMaterial = new RawMaterial(dto.getRawMaterialCode());
         rawMaterial.setRawMaterialName(dto.getRawMaterialName());
 
@@ -145,7 +140,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         detail.setDetailsRemarks(dto.getCargoRemarks());
         }
-        else {
+        else if(readyWay == ReadyWays.ByCargo) {
             RawMaterial rawMaterial = new RawMaterial(dto.getRawMaterialCode());
             rawMaterial.setRawMaterialName(dto.getRawMaterialName());
 
@@ -157,7 +152,20 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             detail.setPackageCode(dto.getPackageCode());
             detail.setActualNumber(dto.getActualNumber());
             detail.setExpectedNumber(dto.getExpectedNumber());
-        }
+        }   else if(readyWay == ReadyWays.ByStationSelf) {
+
+            RawMaterial rawMaterial = new RawMaterial(dto.getRawMaterialCode());
+            rawMaterial.setRawMaterialName(dto.getRawMaterialName());
+            Cargo cargo = new Cargo(dto.getCargoCode());
+            cargo.setCargoName(dto.getCargoName());
+            rawMaterial.setCargo(cargo);
+            detail.setGoods(rawMaterial);
+            detail.setAmount(dto.getAmount());
+            detail.setPackageCode(dto.getPackageCode());
+            detail.setActualNumber(dto.getActualNumber());
+
+
+        }   else throw new DataException("30002","缺失拣货方式：自主拣货 or 计划按货物 or 计划按原料");
     }
     /**
      *
