@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.domain.restock.ReadyWays;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
 
 import java.util.Date;
@@ -58,14 +59,14 @@ public class SaveByRestockBillDTO {
      *  区分是安照原料拣货还是按照货物拣货 默认按照货物拣货
      *  不作copyProperties之用
      */
-    private Boolean readyByCargo =true;
+    private ReadyWays readyWays = ReadyWays.ByCargo;
 
-    public Boolean getReadyByCargo() {
-        return readyByCargo;
+    public ReadyWays getReadyWays() {
+        return readyWays;
     }
 
-    public void setReadyByCargo(Boolean readyByCargo) {
-        this.readyByCargo = readyByCargo;
+    public void setReadyWays(ReadyWays readyWays) {
+        this.readyWays = readyWays;
     }
 
     public List<RestockBillDetailsDTO> getBillDetails() {
