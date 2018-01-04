@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
+import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -9,6 +10,9 @@ import java.util.List;
  * Created by Administrator on 2018/1/4.
  */
 public class DeliveryPickingEditDTO implements Serializable {
+
+
+    private List<DeliveryPickingEditItemDTO> billDetails;
 
 
     @JsonIgnore
@@ -29,11 +33,56 @@ public class DeliveryPickingEditDTO implements Serializable {
      */
     private String outStationCode;
 
-    private List<DeliveryPickingEditItemDTO> billDetails;
+    /**
+     * 操作人code
+     */
+    private String operatorCode;
+
+    /**
+     * Bill to DTO
+     *
+     * @param deliveryBill
+     * @return
+     */
+    public DeliveryPickingEditDTO convertBillToPickingDTO(DeliveryBill deliveryBill) {
+        this.billId = deliveryBill.getBillId();
+        //bill code
+        this.billCode = deliveryBill.getBillCode();
+        this.operatorCode = deliveryBill.getOperatorCode();
+        //入库
+        this.inStationCode = deliveryBill.getInLocation().code();
+        //出库
+        this.outStationCode = deliveryBill.getOutLocation().code();
+
+        return this;
+    }
+
+    /**
+     * DTO  to bill
+     *
+     * @param dto
+     * @return
+     */
+    public DeliveryBill convertPickingDTOToBill(DeliveryPickingEditDTO dto) {
+        DeliveryBill deliveryBill = new DeliveryBill();
+        // bill code
+        deliveryBill.setBillCode(dto.getBillCode());
+        return deliveryBill;
+
+    }
+
 
     public Long getBillId() {
 
         return billId;
+    }
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
     }
 
     public void setBillId(Long billId) {
@@ -71,6 +120,7 @@ public class DeliveryPickingEditDTO implements Serializable {
     public void setBillDetails(List<DeliveryPickingEditItemDTO> billDetails) {
         this.billDetails = billDetails;
     }
+
 
     @Override
     public String

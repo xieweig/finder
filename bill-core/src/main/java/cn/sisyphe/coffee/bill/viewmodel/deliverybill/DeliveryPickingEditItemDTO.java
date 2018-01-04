@@ -13,7 +13,6 @@ public class DeliveryPickingEditItemDTO implements Serializable {
      */
     private String cargoCode;
 
-
     /**
      * 源码编号
      */
@@ -33,6 +32,47 @@ public class DeliveryPickingEditItemDTO implements Serializable {
      */
     private String packageCode;
 
+    /**
+     * 入库库位
+     */
+    private String inStorageCode;//
+
+    /**
+     * 出库库位
+     */
+    private String outStorageCode;//
+
+
+    /**
+     * 备注
+     */
+    private String memo;
+
+    public String getInStorageCode() {
+
+        return inStorageCode;
+    }
+
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public void setInStorageCode(String inStorageCode) {
+        this.inStorageCode = inStorageCode;
+    }
+
+    public String getOutStorageCode() {
+        return outStorageCode;
+    }
+
+    public void setOutStorageCode(String outStorageCode) {
+        this.outStorageCode = outStorageCode;
+    }
 
     public String getCargoCode() {
         return cargoCode;
