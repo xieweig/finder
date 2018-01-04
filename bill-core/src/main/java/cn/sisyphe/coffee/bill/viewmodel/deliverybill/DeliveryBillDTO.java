@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -27,6 +28,9 @@ public class DeliveryBillDTO implements Serializable {
      */
     private Set<DeliveryBillDetailDTO> billDetails = new HashSet<>();
 
+
+    @JsonIgnore
+    private Long billId;
     /**
      * 单据号
      */
@@ -236,6 +240,14 @@ public class DeliveryBillDTO implements Serializable {
 
     public void setAuditPersonCode(String auditPersonCode) {
         this.auditPersonCode = auditPersonCode;
+    }
+
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
     }
 
     @Override
