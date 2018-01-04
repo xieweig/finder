@@ -31,6 +31,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+
     /**
      * 根据单号查看单据
      *
@@ -120,10 +121,6 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
             throw new DataException("30002", "操作人编码不能为空");
         }
 
-        if (!editDTO.getBillDetails().isEmpty()) {
-            //明细检查
-            // TODO: 2018/1/4
-        }
 
     }
 }

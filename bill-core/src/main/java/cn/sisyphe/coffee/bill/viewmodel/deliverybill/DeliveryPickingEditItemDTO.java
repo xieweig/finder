@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+
 import java.io.Serializable;
 
 /**
@@ -32,15 +34,18 @@ public class DeliveryPickingEditItemDTO implements Serializable {
      */
     private String packageCode;
 
-    /**
-     * 入库库位
-     */
-    private String inStorageCode;//
 
     /**
-     * 出库库位
+     * 出库位置
      */
-    private String outStorageCode;//
+
+    private AbstractLocation outLocation;
+
+    /**
+     * 入库位置
+     */
+
+    private AbstractLocation inLocation;
 
 
     /**
@@ -48,11 +53,13 @@ public class DeliveryPickingEditItemDTO implements Serializable {
      */
     private String memo;
 
-    public String getInStorageCode() {
-
-        return inStorageCode;
+    public AbstractLocation getOutLocation() {
+        return outLocation;
     }
 
+    public void setOutLocation(AbstractLocation outLocation) {
+        this.outLocation = outLocation;
+    }
 
     public String getMemo() {
         return memo;
@@ -62,16 +69,12 @@ public class DeliveryPickingEditItemDTO implements Serializable {
         this.memo = memo;
     }
 
-    public void setInStorageCode(String inStorageCode) {
-        this.inStorageCode = inStorageCode;
+    public AbstractLocation getInLocation() {
+        return inLocation;
     }
 
-    public String getOutStorageCode() {
-        return outStorageCode;
-    }
-
-    public void setOutStorageCode(String outStorageCode) {
-        this.outStorageCode = outStorageCode;
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
     }
 
     public String getCargoCode() {
