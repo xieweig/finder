@@ -46,7 +46,7 @@ public class StationRepositoryImpl implements StationRepository {
         if (!resultMap.containsKey("logisticCode")) {
             return null;
         }
-        return JSON.toJSONString(responseResult.getResult().get("logisticCode"));
+        return responseResult.getResult().get("logisticCode").toString();
     }
     private StationType getStationType(String siteType) {
 
