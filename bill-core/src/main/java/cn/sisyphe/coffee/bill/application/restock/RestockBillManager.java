@@ -12,12 +12,15 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
+import cn.sisyphe.framework.web.ResponseResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -189,6 +193,33 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     }
 
     /**
+     * 修改进货单--保存
+     *
+     * @param billDTO
+     */
+    public void updateBillToSave(AddRestockBillDTO billDTO) {
+        RestockBill restockBill = restockBillQueryService.findOneByBillCode(billDTO.getBillCode());
+        restockBill.getBillDetails().clear();
+        // 转换单据
+        RestockBill mapBillAfter = dtoToMapRestockBillForEdit(billDTO, restockBill);
+
+        save(mapBillAfter);
+    }
+
+    /**
+     * 修改进货单--提交审核
+     *
+     * @param billDTO
+     */
+    public void updateBillToSubmit(AddRestockBillDTO billDTO) {
+        RestockBill restockBill = restockBillQueryService.findOneByBillCode(billDTO.getBillCode());
+        restockBill.getBillDetails().clear();
+        // 转换单据
+        RestockBill mapBillAfter = dtoToMapRestockBillForEdit(billDTO, restockBill);
+
+        submit(mapBillAfter);
+    }
+    /**
      * 根据多条件查询进货单据信息
      *
      * @param conditionQueryRestockBill 查询条件
@@ -232,4 +263,90 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     private QueryOneRestockBillDTO mapOneToDTO(RestockBill restockBill) {
         return null;
     }
+
+    /**
+     * 审核进货单
+     *
+     * @param restockBillCode
+     */
+    public void auditBill(String restockBillCode, String auditPersonCode, boolean isSuccess) {
+        RestockBill restockBill = restockBillQueryService.findOneByBillCode(restockBillCode);
+        // 设置审核人编码
+        restockBill.setAuditPersonCode(auditPersonCode);
+
+        audit(restockBill, isSuccess);
+    }
+
+    /**
+     * 单据出入库完成
+     *
+     * @param responseResult
+     */
+    public void doneBill(ResponseResult responseResult) {
+        Map<String, Object> resultMap = responseResult.getResult();
+        // 转换出单据信息
+        RestockBill bill = responseResult.toClassObject(resultMap.get("bill"), RestockBill.class);
+        // 根据单据编码查询数据库单据信息
+        RestockBill restockBill = restockBillQueryService.findOneByBillCode(bill.getBillCode());
+        // 设置入库时间
+        restockBill.setInStorageEndTime(new Date());
+        // 处理完成
+        done(bill);
+    }
+
+
+    /**
+     * 保存和提交操作需要用到的DTO转换
+     *
+     * @param addRestockBillDTO 前端传递的DTO参数信息
+     * @return
+     */
+    private RestockBill dtoToMapRestockBill(AddRestockBillDTO addRestockBillDTO) {
+        //通过工厂方法生成具体种类的单据
+        BillFactory billFactory = new BillFactory();
+        RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
+       
+
+        return restockBill;
+    }
+
+
+    /**
+     * 保存、提交和修改操作需要用到的DTO转换单据明细信息
+     *
+     * @param billDetails
+     * @return
+     */
+    private Set<RestockBillDetail> listDetailMapToSetDetail(List<BillDetailDTO> billDetails) {
+
+        Set<RestockBillDetail> detailSet = new HashSet<>();
+      
+        return detailSet;
+    }
+
+    /**
+     * 前端查询单个单据明细信息将set转换为dto
+     *
+     * @param restockBillDetails
+     * @return
+     */
+    private List<BillDetailDTO> setDetailMapToListMapDetail(Set<RestockBillDetail> restockBillDetails) {
+
+        List<BillDetailDTO> detailDTOList = new ArrayList<>();
+
+        return detailDTOList;
+    }
+
+
+    /**
+     * 修改需要转换DTO
+     *
+     * @param editRestockBillDTO
+     * @return
+     */
+    private RestockBill dtoToMapRestockBillForEdit(AddRestockBillDTO editRestockBillDTO, RestockBill restockBill) {
+        return restockBill;
+    }
+
+
 }

@@ -17,4 +17,5 @@ public interface RestockBillQueryService {
     Page<RestockBill> findPageByCondition(ConditionQueryRestockBill conditionQueryRestockBill);
 
     RestockBill findOneByBillCode(String restockBillCode);
+
 }
