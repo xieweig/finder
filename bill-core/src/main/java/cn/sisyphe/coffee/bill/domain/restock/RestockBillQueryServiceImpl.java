@@ -66,12 +66,6 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
         return restockBillPage;
     }
 
-    @Override
-    public RestockBill findOneByBillCode(String restockBillCode) {
-
-        return null;
-    }
-
     private Page<RestockBill> queryByParams(ConditionQueryRestockBill conditionQueryRestockBill, Pageable pageable) {
         return restockBillRepository.findAll((root, criteriaQuery, cb) -> {
             //去重
