@@ -76,15 +76,15 @@ public class RestockBillController {
         return responseResult;
     }
 
-
-    @ApiOperation(value = "可退库货物查询")
-    @PostMapping(path ="/queryCargo")
-    public ResponseResult queryCargo(@RequestParam String cargoName, @RequestParam String cargoCode){
-        ResponseResult responseResult = new ResponseResult();
-        restockBillManager.queryCargo(cargoName, cargoCode);
-
-        return responseResult;
-    }
+//
+//    @ApiOperation(value = "可退库货物查询")
+//    @PostMapping(path ="/queryCargo")
+//    public ResponseResult queryCargo(@RequestParam String cargoName, @RequestParam String cargoCode){
+//        ResponseResult responseResult = new ResponseResult();
+//        restockBillManager.queryCargo(cargoName, cargoCode);
+//
+//        return responseResult;
+//    }
     /**
      * 多条件查询退库入库单
      *
