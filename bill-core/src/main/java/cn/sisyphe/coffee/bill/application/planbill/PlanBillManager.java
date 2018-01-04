@@ -224,10 +224,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     //g根据前端传递过来的货物类型进行map，如果是按照货物分类则是cargo，其他这是原料
     private AbstractGoods mapGoods(String rawMaterialCode, String cargoCode, BasicEnum basicEnum) {
-        if (BasicEnum.BY_CARGO.equals(basicEnum)) {
-            return new Cargo(cargoCode);
+        RawMaterial rawMaterial = new RawMaterial(rawMaterialCode);
+        if (!StringUtils.isEmpty(cargoCode)) {
+            Cargo cargo = new Cargo(cargoCode);
+            rawMaterial.setCargo(cargo);
         }
-        return new RawMaterial(rawMaterialCode);
+        return rawMaterial;
     }
 
     //如果前端传递过来类型是供应商，则new供应商对象
@@ -243,7 +245,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     //TODO 如果出站站点是门店，并且入战站点是供应商，则需要将中转物流站点map到tranferLocation上面去
     private Station getTransferLocation(PlanBillDetail planBillDetail) {
         if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
-                && planBillDetail.getOutLocation() instanceof Supplier) {
+                && planBillDetail.getInLocation() instanceof Supplier) {
             //TODO 需要使用真实数据，等唐华玲写好接口之后,将中转的物流站点map上去
             Station wlzd001 = new Station("WLZD001");
             wlzd001.setStationType(StationType.LOGISTICS);
@@ -363,7 +365,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         }
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
-        resultPlanBillDTO.setBillType(planBill.getBillType());
+        resultPlanBillDTO.setBillType(planBill.getSpecificBillType());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);

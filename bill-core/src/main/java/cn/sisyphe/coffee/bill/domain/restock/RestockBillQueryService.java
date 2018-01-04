@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
  */
 public interface RestockBillQueryService {
 
+
+    RestockBill findByBillCode(String billCode);
     /**
      * 多条件查询进货单数据
      *
@@ -15,7 +17,5 @@ public interface RestockBillQueryService {
      * @return
      */
     Page<RestockBill> findPageByCondition(ConditionQueryRestockBill conditionQueryRestockBill);
-
-    RestockBill findOneByBillCode(String restockBillCode);
 
 }

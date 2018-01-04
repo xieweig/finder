@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,77 +19,72 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class RestockBill extends Bill<RestockBillDetail> {
+    public RestockBill() {
+        setBillType(BillTypeEnum.RESTOCK);
+    }
+
     /**
-     *
-     *notes :
-     *  退库 出库单 起始终止时间
+     * 货运单号
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-   // @Column()
-    private Date outStorageStartTime;
+    private String freightCode;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-   // @Column()
-    private Date outStorageEndTime;
     /**
-     *
-     *notes :
-     *  退库 入库单 起始终止时间
+     * 发货件数
      */
-    @Temporal(TemporalType.TIMESTAMP)
+    private int shippedAmount;
+
+    /**
+     * 实收件数
+     */
+    private int actualAmount;
+    /**
+     * 备注
+     */
+    private String memo;
+
+    /**
+     * 入库时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    //@Column()
-    private Date inStorageStartTime;
+    private Date inWareHouseTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-   // @Column()
-    private Date inStorageEndTime;
-
-    @Column(length = 300)
-    private String remarks;
-
-    public String getRemarks() {
-        return remarks;
+    public String getFreightCode() {
+        return freightCode;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
+    public void setFreightCode(String freightCode) {
+        this.freightCode = freightCode;
     }
 
-    public Date getOutStorageStartTime() {
-        return outStorageStartTime;
+    public int getShippedAmount() {
+        return shippedAmount;
     }
 
-    public void setOutStorageStartTime(Date outStorageStartTime) {
-        this.outStorageStartTime = outStorageStartTime;
+    public void setShippedAmount(int shippedAmount) {
+        this.shippedAmount = shippedAmount;
     }
 
-    public Date getOutStorageEndTime() {
-        return outStorageEndTime;
+    public int getActualAmount() {
+        return actualAmount;
     }
 
-    public void setOutStorageEndTime(Date outStorageEndTime) {
-        this.outStorageEndTime = outStorageEndTime;
+    public void setActualAmount(int actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
-    public Date getInStorageStartTime() {
-        return inStorageStartTime;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setInStorageStartTime(Date inStorageStartTime) {
-        this.inStorageStartTime = inStorageStartTime;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
-    public Date getInStorageEndTime() {
-        return inStorageEndTime;
+    public Date getInWareHouseTime() {
+        return inWareHouseTime;
     }
 
-    public void setInStorageEndTime(Date inStorageEndTime) {
-        this.inStorageEndTime = inStorageEndTime;
+    public void setInWareHouseTime(Date inWareHouseTime) {
+        this.inWareHouseTime = inWareHouseTime;
     }
-
-
 }

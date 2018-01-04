@@ -2,9 +2,9 @@ package cn.sisyphe.coffee.bill.application.deliverybill;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.delivery.DeliveryBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class DeliveryBillManager extends AbstractBillManager<PlanBill> {
 
     @Autowired
-    private DeliveryBillRepository deliveryBillRepository;
+    private DeliveryBillQueryService deliveryBillQueryService;
 
 
     @Autowired
@@ -35,7 +35,7 @@ public class DeliveryBillManager extends AbstractBillManager<PlanBill> {
     public DeliveryBillDTO findOneByBillCode(String billCode) {
 
         DeliveryBillDTO deliveryBillDTO = new DeliveryBillDTO();
-        DeliveryBill deliveryBill = deliveryBillRepository.findOneByBillCode(billCode);
+        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(billCode);
         return deliveryBillDTO.convertBillToDTO(deliveryBill);
     }
 }

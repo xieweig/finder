@@ -1,7 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
-import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,6 +7,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *@date: 2018/1/2
@@ -18,29 +17,9 @@ import java.util.Date;
 
 public class ConditionQueryRestockBill extends BaseConditionQuery implements Serializable {
     /**
-     *
-     *notes :
-     *  操作人员 ref Bill
+     * 录单人名称
      */
-    private String operatorCode;
-    /**
-     *
-     *notes :
-     *  单据编号 ref Bill
-     */
-    private String billCode;
-    /**
-     *
-     *notes : ref Bill.DBStation
-     *  入库站点
-     */
-    private String inStationCode;
-    /**
-     *
-     *notes : ref Bill.DBStation
-     *  出库站点
-     */
-    private String outStationCode;
+    private String operatorName;
     /**
      * 录单开始时间
      */
@@ -54,6 +33,10 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createEndTime;
     /**
+     * 入库单号
+     */
+    private String billCode;
+    /**
      * 入库开始时间
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -66,36 +49,88 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inEndTime;
     /**
-     *
-     *notes :ref Bill
-     *  单据状态 only distinct 已提交 未提交
+     * 供应商编码
      */
-    private BillStateEnum billStateEnum;
+    private String supplierCode;
+    /**
+     * 状态
+     */
+    private String statusCode;
 
     /**
-     *
-     *notes :ref Bill
-     *  审核状态 only distinct 审核中 审核通过 审核未通过
+     * 录单人编码集合
      */
-    private BillStateEnum billStateEnum2;
-    /**
-     *
-     *notes :ref BillDetail
-     *  配送数量
-     */
-    private int number;
-    /**
-     *
-     *notes :暂时理解为goods  ref BillDetail.DBGoods
-     *  配送品种
-     */
-    private DbGoods dbGoods;
-    /**
-     *
-     *notes :ref RestockBill
-     *  配送总价
-     */
-    private int totalPrice;
+    private List<String> operatorCodeList;
 
+    public String getOperatorName() {
+        return operatorName;
+    }
 
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public Date getCreateStartTime() {
+        return createStartTime;
+    }
+
+    public void setCreateStartTime(Date createStartTime) {
+        this.createStartTime = createStartTime;
+    }
+
+    public Date getCreateEndTime() {
+        return createEndTime;
+    }
+
+    public void setCreateEndTime(Date createEndTime) {
+        this.createEndTime = createEndTime;
+    }
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
+
+    public Date getInStartTime() {
+        return inStartTime;
+    }
+
+    public void setInStartTime(Date inStartTime) {
+        this.inStartTime = inStartTime;
+    }
+
+    public Date getInEndTime() {
+        return inEndTime;
+    }
+
+    public void setInEndTime(Date inEndTime) {
+        this.inEndTime = inEndTime;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public List<String> getOperatorCodeList() {
+        return operatorCodeList;
+    }
+
+    public void setOperatorCodeList(List<String> operatorCodeList) {
+        this.operatorCodeList = operatorCodeList;
+    }
 }

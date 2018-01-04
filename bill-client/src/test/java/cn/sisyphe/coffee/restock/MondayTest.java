@@ -56,7 +56,7 @@ public class MondayTest {
         restockBill.setBillCode("030212025"+random.nextInt(100));
 
         RestockBillDetail restockBillDetail = new RestockBillDetail();
-        restockBillDetail.setDetailsRemarks("all right");
+//        restockBillDetail.setDetailsRemarks("all right");
         Cargo cargo = new Cargo("cargocode 12120");
         restockBillDetail.setGoods(cargo);
         Set<RestockBillDetail> details = new HashSet();
@@ -79,7 +79,7 @@ public class MondayTest {
      */
     @Test
     public void apple(){
-        SaveByRestockBillDTO saveByRestockBillDTO = new SaveByRestockBillDTO();
+        /*SaveByRestockBillDTO saveByRestockBillDTO = new SaveByRestockBillDTO();
         saveByRestockBillDTO.setBillCode("030202250"+random.nextInt(100));
         saveByRestockBillDTO.setInStationCode("0905"+random.nextInt(100));
         saveByRestockBillDTO.setOutStationCode("0901"+random.nextInt(100));
@@ -103,7 +103,7 @@ public class MondayTest {
 
         saveByRestockBillDTO.setBillDetails(list);
         restockBillManager.submitByRestockBill(saveByRestockBillDTO);
-
+*/
 
     }
 }
