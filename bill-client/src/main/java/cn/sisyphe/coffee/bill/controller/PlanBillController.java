@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -61,7 +62,7 @@ public class PlanBillController {
     public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", planBillManager.open(billCode));
+            responseResult.put("planBill", planBillManager.open(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -69,17 +70,27 @@ public class PlanBillController {
     }
 
     @ApiOperation(value = "审核不通过")
-    @RequestMapping(path = "/unpass", method = RequestMethod.GET)
-    public ResponseResult unpass(@RequestParam("billCode") String billCode) {
-        planBillManager.unPass(billCode);
-        return null;
+    @RequestMapping(path = "/unpass", method = RequestMethod.POST)
+    public ResponseResult unpass(@RequestBody AuditPlanBillDTO auditPlanBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            planBillManager.unPass(auditPlanBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     @ApiOperation(value = "审核通过")
-    @RequestMapping(path = "/pass", method = RequestMethod.GET)
-    public ResponseResult pass(@RequestParam("billCode") String billCode) {
-        planBillManager.pass(billCode);
-        return null;
+    @RequestMapping(path = "/pass", method = RequestMethod.POST)
+    public ResponseResult pass(@RequestBody AuditPlanBillDTO auditPlanBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            planBillManager.pass(auditPlanBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
     }
 
     /**

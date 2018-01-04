@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date 2017/12/29 9:55
  * @description
  */
-@FeignClient(value = "COFFEE-BASEINFO-API", fallback = LocalSupplierCloudRepository.class)
+@FeignClient(value = "COFFEE-BASEINFO", fallback = LocalSupplierCloudRepository.class)
 public interface SupplierCloudRepository {
 
     /**
