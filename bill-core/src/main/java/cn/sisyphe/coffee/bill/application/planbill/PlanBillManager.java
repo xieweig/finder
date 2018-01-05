@@ -84,6 +84,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         PlanBill planBill = preparePlanBill(planBillDTO);
         if (planBill == null) {
             planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+            planBill.setBillCode(generateBillCode());
         }
         map(planBill, planBillDTO);
         return save(planBill).getBillCode();
@@ -102,6 +103,11 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return null;
     }
 
+    //todo 测试
+    private String generateBillCode() {
+        return String.valueOf(System.currentTimeMillis());
+    }
+
     /**
      * 参数校验
      *
@@ -109,17 +115,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
 
     private void validate(PlanBillDTO planBillDTO) {
-        validateBillCode(planBillDTO.getBillCode());
         checkCreateParam(planBillDTO);
     }
-
-    private void validateBillCode(String billCode) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
-        if (planBill != null) {
-            throw new DataException("", "计划编号已存在");
-        }
-    }
-
     /**
      * 提交计划单进行审核
      *
@@ -130,6 +127,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         PlanBill planBill = preparePlanBill(planBillDTO);
         if (planBill == null) {
             planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+            planBill.setBillCode(generateBillCode());
         }
         map(planBill, planBillDTO);
         return submit(planBill).getBillCode();
@@ -214,7 +212,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         planBill.getBillDetails().clear();
         planBill.setSpecificBillType(planBillDTO.getBillType());
         planBill.setBillName(planBillDTO.getBillName());
-        planBill.setBillCode(planBillDTO.getBillCode());
         planBill.setMemo(planBillDTO.getMemo());
         planBill.setHqBill(true);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
