@@ -27,6 +27,9 @@ public class RawMaterial extends AbstractGoods {
         this.cargo = cargo;
     }
 
+    public RawMaterial() {
+    }
+
     public RawMaterial(String rawMaterialCode) {
         this.rawMaterialCode = rawMaterialCode;
     }

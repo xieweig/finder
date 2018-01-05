@@ -12,6 +12,10 @@ import java.util.List;
 public class QueryOnePurchaseBillDTO {
 
     /**
+     * 单据编码
+     */
+    private String billCode;
+    /**
      * 货运单号
      */
     private String freightCode;
@@ -42,6 +46,14 @@ public class QueryOnePurchaseBillDTO {
      * 进货单明细信息
      */
     private List<BillDetailDTO> billDetails;
+
+    public String getBillCode() {
+        return billCode;
+    }
+
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
+    }
 
     public String getFreightCode() {
         return freightCode;
@@ -102,7 +114,8 @@ public class QueryOnePurchaseBillDTO {
     @Override
     public String toString() {
         return "QueryOnePurchaseBillDTO{" +
-                "freightCode='" + freightCode + '\'' +
+                "billCode='" + billCode + '\'' +
+                ", freightCode='" + freightCode + '\'' +
                 ", shippedAmount=" + shippedAmount +
                 ", actualAmount=" + actualAmount +
                 ", memo='" + memo + '\'' +

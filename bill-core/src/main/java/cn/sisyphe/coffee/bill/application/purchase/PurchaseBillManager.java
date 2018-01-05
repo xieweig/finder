@@ -237,6 +237,8 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     private QueryOnePurchaseBillDTO mapOneToDTO(PurchaseBill purchaseBill) {
 
         QueryOnePurchaseBillDTO billDTO = new QueryOnePurchaseBillDTO();
+        // 单据编码
+        billDTO.setBillCode(purchaseBill.getBillCode());
         // 备注
         billDTO.setMemo(purchaseBill.getMemo());
         // 运单号
@@ -384,8 +386,18 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
             // 供应商名称--主表
             Supplier supplier = (Supplier) purchaseBill.getOutLocation();
             purchaseBillDTO.setSupplierCode(supplier.getSupplierName());
-            // 单据状态--主表
-            toMapTwoState(purchaseBillDTO, purchaseBill.getBillState().name());
+            // 单据提交状态--主表
+            if (purchaseBill.getSubmitState() != null) {
+                purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState().name());
+            } else {
+                purchaseBillDTO.setSubmitState("-");
+            }
+            // 单据审核状态--主表
+            if (purchaseBill.getAuditState() != null) {
+                purchaseBillDTO.setAuditState(purchaseBill.getAuditState().name());
+            } else {
+                purchaseBillDTO.setAuditState("-");
+            }
             // 备注--主表
             purchaseBillDTO.setMemo(purchaseBill.getMemo());
             // 循环遍历明细信息，累加得到数据
