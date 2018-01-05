@@ -11,11 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ChildPlanBillDetailDTO {
 
     /**
-     * 货物名称
-     */
-    private String cargoName;
-
-    /**
      * 编码
      */
     private String goodsCode;
@@ -25,14 +20,6 @@ public class ChildPlanBillDetailDTO {
      * 应拣货物数量
      */
     private Integer amount;
-
-    public String getCargoName() {
-        return cargoName;
-    }
-
-    public void setCargoName(String cargoName) {
-        this.cargoName = cargoName;
-    }
 
 
     public Integer getAmount() {

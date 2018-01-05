@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+
 import java.util.Set;
 
 /**
@@ -20,6 +22,10 @@ public class ResultPlanBillDTO {
      * 计划单类型
      */
     private BillTypeEnum billType;
+    /**
+     * 按原料还是按货物
+      */
+    private BasicEnum basicEnum;
 
     /**
      * 单据明细
@@ -66,5 +72,13 @@ public class ResultPlanBillDTO {
                 ", billType=" + billType +
                 ", planBillDetails=" + planBillDetails +
                 '}';
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
     }
 }

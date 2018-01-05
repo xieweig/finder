@@ -97,11 +97,23 @@ public class PlanBillController {
      *
      * @return
      */
-    @ApiOperation(value = "计划单据多条件分页查询")
+    @ApiOperation(value = "总部计划多条件查询")
     @RequestMapping(path = "/hq/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
+        return responseResult;
+    }
+
+    @ApiOperation(value = "总部计划单个查询")
+    @RequestMapping(path = "/hq/findByBillCode", method = RequestMethod.GET)
+    public ResponseResult findHqPlanBillByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.findHqPlanBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 
@@ -111,7 +123,7 @@ public class PlanBillController {
      *
      * @return
      */
-    @ApiOperation(value = "计划单据多条件分页查询")
+    @ApiOperation(value = "子计划多条件查询")
     @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -124,19 +136,8 @@ public class PlanBillController {
         return responseResult;
     }
 
-    @ApiOperation(value = "根据单据编号查询单据信息")
-    @RequestMapping(path = "/hq/findByBillCode", method = RequestMethod.GET)
-    public ResponseResult findHqPlanBillByBillCode(@RequestParam("billCode") String billCode) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("planBill", planBillManager.findHqPlanBillByBillCode(billCode));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
 
-    @ApiOperation(value = "根据单据编号查询切分出来的信息")
+    @ApiOperation(value = "子计划单个查询")
     @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();

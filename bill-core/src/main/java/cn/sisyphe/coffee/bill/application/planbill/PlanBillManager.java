@@ -82,6 +82,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     public String create(PlanBillDTO planBillDTO) {
         PlanBill planBill = preparePlanBill(planBillDTO);
+        if (planBill == null) {
+            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        }
         map(planBill, planBillDTO);
         return save(planBill).getBillCode();
     }
@@ -96,11 +99,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             }
             return planBill;
         }
-        //TODO 为了测试,临时修改
-        planBillDTO.setBillCode(planBillDTO.getMemo());
-        //
-        validate(planBillDTO);
-        return (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        return null;
     }
 
     /**
@@ -127,7 +126,11 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param planBillDTO 前端传过来的DTO
      */
     public String submit(PlanBillDTO planBillDTO) {
+        validate(planBillDTO);
         PlanBill planBill = preparePlanBill(planBillDTO);
+        if (planBill == null) {
+            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+        }
         map(planBill, planBillDTO);
         return submit(planBill).getBillCode();
     }
@@ -304,6 +307,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
         resultPlanBillDTO.setBillType(planBill.getSpecificBillType());
+        resultPlanBillDTO.setBasicEnum(planBill.getBasicEnum());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
@@ -316,7 +320,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-            resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
+            resultPlanBillGoodsDTO.setGoodsCode(firstPlanBillDetail.getGoods().code());
             Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
