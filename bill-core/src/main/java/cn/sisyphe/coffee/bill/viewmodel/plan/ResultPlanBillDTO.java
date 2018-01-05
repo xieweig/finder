@@ -1,8 +1,14 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -26,6 +32,21 @@ public class ResultPlanBillDTO {
      * 按原料还是按货物
      */
     private BasicEnum basicEnum;
+
+    /**
+     * 录单时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date createTime;
+
+    private BillSubmitStateEnum billSubmitState;
+
+    private BillAuditStateEnum auditState;
+
+    private String auditorName;
+
+    private String operatorName;
 
     /**
      * 单据明细
@@ -91,4 +112,46 @@ public class ResultPlanBillDTO {
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public BillSubmitStateEnum getBillSubmitState() {
+        return billSubmitState;
+    }
+
+    public void setBillSubmitState(BillSubmitStateEnum billSubmitState) {
+        this.billSubmitState = billSubmitState;
+    }
+
+    public BillAuditStateEnum getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(BillAuditStateEnum auditState) {
+        this.auditState = auditState;
+    }
+
+    public String getAuditorName() {
+        return auditorName;
+    }
+
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+
 }

@@ -309,12 +309,16 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setBillType(planBill.getSpecificBillType());
         resultPlanBillDTO.setBasicEnum(planBill.getBasicEnum());
         resultPlanBillDTO.setAuditMemo(planBill.getAuditMemo());
+        resultPlanBillDTO.setCreateTime(planBill.getCreateTime());
+        resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
+        resultPlanBillDTO.setAuditState(planBill.getAuditState());
+        resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
+        resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
             return resultPlanBillDTO;
         }
-
 
         Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
         for (String head : groupedPlanBillDetail.keySet()) {
