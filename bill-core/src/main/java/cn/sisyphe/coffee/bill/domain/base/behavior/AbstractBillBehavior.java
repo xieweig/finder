@@ -2,7 +2,10 @@ package cn.sisyphe.coffee.bill.domain.base.behavior;
 
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -37,6 +40,23 @@ public abstract class AbstractBillBehavior implements BillBehavior {
      */
     public abstract BillStateEnum billState();
 
+    /**
+     * 提交状态
+     */
+    public abstract BillSubmitStateEnum submitState();
+
+    /**
+     * 审核状态
+     */
+    public abstract BillAuditStateEnum auditState();
+
+    /**
+     * 出入库状态
+     *
+     * @return
+     */
+    public abstract BillInOrOutStateEnum inOrOutState();
+
 
     /**
      * 行为处理
@@ -61,8 +81,14 @@ public abstract class AbstractBillBehavior implements BillBehavior {
         if (!flag) {
             throw new DataException("004", "当前单据状态不能执行此操作[{0}]", new String[]{bill.getBillState().name()}, bill);
         }
-
+        // 主状态
         bill.setBillState(billState());
+        // 提交状态
+        bill.setSubmitState(submitState());
+        // 审核状态
+        bill.setAuditState(auditState());
+        // 出入库状态
+        bill.setInOrOutState(inOrOutState());
     }
 
 

@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,8 +24,7 @@ public class AdjustStrategy extends AbstractCastableStrategy {
     public List<PlanBill> cast(PlanBillPayload planBillPayload) {
         StationType outStationType = obtainStationTypeByLocation(planBillPayload.getOutLocation());
         StationType inStationType = obtainStationTypeByLocation(planBillPayload.getInLocation());
-        getAdjustSpecStrategy(outStationType, inStationType);
-        return new ArrayList<>();
+        return getAdjustSpecStrategy(outStationType, inStationType).cast(planBillPayload);
     }
 
     /**
@@ -40,7 +40,7 @@ public class AdjustStrategy extends AbstractCastableStrategy {
                 .addCase(obtainDeliveryType(), new AdjustToDeliveryStrategy())
                 .addCase(obtainRestockType(), new AdjustToRestockStrategy());
 
-        return switcher.exec(outStationType, inStationType);
+        return switcher.exec(Arrays.asList(outStationType, inStationType));
     }
 
     private List<StationType> obtainAdjustStoreType() {

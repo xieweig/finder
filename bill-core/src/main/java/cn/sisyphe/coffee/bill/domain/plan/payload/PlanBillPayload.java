@@ -16,17 +16,29 @@ import java.util.List;
  */
 public class PlanBillPayload {
 
+    //总是PLAN
     private BillTypeEnum billType;
+    //计划名称
     private String billName;
+    //计划编码
     private String billCode;
+    //备注
     private String memo;
+    //入站站点
     private AbstractLocation inLocation;
+
+    //出站站点
     private AbstractLocation outLocation;
+    //中转站点
     private AbstractLocation transferLocation;
+
+    //按货物还是原料
     private BasicEnum basicEnum;
+
+    //原始计划编码
     private String parentBillCode;
     private List<PlanBillPayloadDetail> goodDetails = new ArrayList<>();
-
+    //策略,根据不同的单据类型选择不同的策略
     private AbstractCastableStrategy castableStrategy;
 
 

@@ -16,4 +16,13 @@ public interface StationCloudRepository {
 
     @RequestMapping(path = "/api/v1/baseInfo/station/findByStationCodeForApi", method = RequestMethod.GET)
     ResponseResult findByStationCodeForApi(@RequestParam("stationCode") String stationCode);
+
+    /**
+     * 根据站点编号查询其第一物流站点的编号
+     *
+     * @param stationCode
+     * @return
+     */
+    @RequestMapping(path = "/api/v1/baseInfo/station/findLogisticCodeByStationCodeForApi", method = RequestMethod.GET)
+    ResponseResult findLogisticCodeByStationCode(@RequestParam("stationCode") String stationCode);
 }

@@ -96,10 +96,21 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             }
             return planBill;
         }
-        //TODO 为了测试
+        //TODO 为了测试,临时修改
         planBillDTO.setBillCode(planBillDTO.getMemo());
         validate(planBillDTO);
         return (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+    }
+
+    /**
+     * 参数校验
+     *
+     * @param planBillDTO 前端传递过来的数据
+     */
+
+    private void validate(PlanBillDTO planBillDTO) {
+        validateBillCode(planBillDTO.getBillCode());
+        checkCreateParam(planBillDTO);
     }
 
     private void validateBillCode(String billCode) {
@@ -107,11 +118,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         if (planBill != null) {
             throw new DataException("", "计划编号已存在");
         }
-    }
-
-    private void validate(PlanBillDTO planBillDTO) {
-        validateBillCode(planBillDTO.getBillCode());
-        checkCreateParam(planBillDTO);
     }
 
     /**
@@ -224,10 +230,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     //g根据前端传递过来的货物类型进行map，如果是按照货物分类则是cargo，其他这是原料
     private AbstractGoods mapGoods(String rawMaterialCode, String cargoCode, BasicEnum basicEnum) {
-        if (BasicEnum.BY_CARGO.equals(basicEnum)) {
-            return new Cargo(cargoCode);
+        RawMaterial rawMaterial = new RawMaterial(rawMaterialCode);
+        if (!StringUtils.isEmpty(cargoCode)) {
+            Cargo cargo = new Cargo(cargoCode);
+            rawMaterial.setCargo(cargo);
         }
-        return new RawMaterial(rawMaterialCode);
+        return rawMaterial;
     }
 
     //如果前端传递过来类型是供应商，则new供应商对象
@@ -240,14 +248,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return new Station(station.getStationCode());
     }
 
-    //TODO 如果出站站点是门店，并且入战站点是供应商，则需要将中转物流站点map到tranferLocation上面去
     private Station getTransferLocation(PlanBillDetail planBillDetail) {
         if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
-                && planBillDetail.getOutLocation() instanceof Supplier) {
-            //TODO 需要使用真实数据，等唐华玲写好接口之后,将中转的物流站点map上去
-            Station wlzd001 = new Station("WLZD001");
-            wlzd001.setStationType(StationType.LOGISTICS);
-            return wlzd001;
+                && planBillDetail.getInLocation() instanceof Supplier) {
+            Station transferStation = new Station(stationRepository.findLogisticCodeByStationCode(planBillDetail.getOutLocation().code()));
+            transferStation.setStationType(StationType.LOGISTICS);
+            return transferStation;
         }
         return null;
     }
@@ -363,26 +369,30 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         }
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
-        resultPlanBillDTO.setBillType(planBill.getBillType());
+        resultPlanBillDTO.setBillType(planBill.getSpecificBillType());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
-        if (planBill.getBillDetails() != null) {
-            Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
-            for (String head : groupedPlanBillDetail.keySet()) {
-                ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
-                List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
-                PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-                resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
-                Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
-                for (PlanBillDetail planBillDetail : planBillDetails) {
-                    ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
-                    resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
-                    resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
-                    resultPlanBillLocationDTO.setAmount(planBillDetail.getAmount());
-                    resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
-                }
-                resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
-                resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
+        if (planBill.getBillDetails() == null) {
+            resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
+            return resultPlanBillDTO;
+        }
+
+
+        Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
+        for (String head : groupedPlanBillDetail.keySet()) {
+            ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
+            List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
+            PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
+            resultPlanBillGoodsDTO.setGoods(firstPlanBillDetail.getGoods());
+            Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
+            for (PlanBillDetail planBillDetail : planBillDetails) {
+                ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
+                resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
+                resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
+                resultPlanBillLocationDTO.setAmount(planBillDetail.getAmount());
+                resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
             }
+            resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
+            resultPlanBillGoodsDTOSet.add(resultPlanBillGoodsDTO);
         }
         resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
         return resultPlanBillDTO;
@@ -401,7 +411,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         if (StringUtils.isEmpty(planBillDTO.getBillType())) {
             throw new DataException("", "单据类型不能为空");
         }
-        //TODO 备注是否允许为空？ 字符长度是多少？
         if (StringUtils.isEmpty(planBillDTO.getMemo())) {
             throw new DataException("", "单据备注");
         }

@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +14,6 @@ public class DeliveryPickingEditItemDTO implements Serializable {
      * 货物编码
      */
     private String cargoCode;
-
 
     /**
      * 源码编号
@@ -33,6 +34,48 @@ public class DeliveryPickingEditItemDTO implements Serializable {
      */
     private String packageCode;
 
+
+    /**
+     * 出库位置
+     */
+
+    private AbstractLocation outLocation;
+
+    /**
+     * 入库位置
+     */
+
+    private AbstractLocation inLocation;
+
+
+    /**
+     * 备注
+     */
+    private String memo;
+
+    public AbstractLocation getOutLocation() {
+        return outLocation;
+    }
+
+    public void setOutLocation(AbstractLocation outLocation) {
+        this.outLocation = outLocation;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public AbstractLocation getInLocation() {
+        return inLocation;
+    }
+
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
+    }
 
     public String getCargoCode() {
         return cargoCode;

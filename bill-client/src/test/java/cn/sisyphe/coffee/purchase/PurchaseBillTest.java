@@ -135,30 +135,26 @@ public class PurchaseBillTest {
     public void commit() {
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         // 货运单号
-        saveDto.setFreightCode("hydh002");
+        saveDto.setFreightCode("hydh005");
         // 发货件数
-        saveDto.setShippedAmount(5);
+        saveDto.setShippedAmount(55);
         // 实收件数
-        saveDto.setActualAmount(5);
+        saveDto.setActualAmount(55);
         // 备注
-        saveDto.setMemo("测试保存单据2");
+        saveDto.setMemo("测试保存单据5");
         // 操作人代码
-        saveDto.setOperatorCode("xj0002");
+        saveDto.setOperatorCode("xj0005");
         // 库房
-        Storage storage = new Storage("kf002");
-        storage.setStorageName("测试库房2");
+        Storage storage = new Storage("kf005");
         saveDto.setStorage(storage);
 
         // 供应商信息
-        Supplier supplier = new Supplier("supplier002");
-        supplier.setSupplierName("测试供应商2");
-        supplier.setAddress("重庆市2");
+        Supplier supplier = new Supplier("supplier005");
         saveDto.setSupplier(supplier);
 
         // 站点
         Station station = new Station("CD37");
-        station.setStationName("总部");
-        station.setStationType(StationType.STORE);
+        station.setStationType(StationType.LOGISTICS);
         // 将库房设置到站点中去
         station.setStorage(storage);
 
@@ -168,9 +164,9 @@ public class PurchaseBillTest {
         BillDetailDTO detailDTO = new BillDetailDTO();
 
         // 最小单位数量
-        detailDTO.setAmount(2000);
+        detailDTO.setAmount(888);
         // 包号
-        detailDTO.setPackageCode("package002");
+        detailDTO.setPackageCode("package005");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
@@ -183,14 +179,37 @@ public class PurchaseBillTest {
         detailDTO.setDifferencePrice(new BigDecimal(200));
 
         RawMaterial rawMaterial = new RawMaterial("ylbm002");
-        rawMaterial.setRawMaterialName("原料002");
         Cargo cargo = new Cargo("cargo002");
-        cargo.setCargoName("货物002");
         rawMaterial.setCargo(cargo);
         detailDTO.setRawMaterial(rawMaterial);
 
 
         billDetails.add(detailDTO);
+
+        BillDetailDTO detailDTO2 = new BillDetailDTO();
+
+        // 最小单位数量
+        detailDTO2.setAmount(888);
+        // 包号
+        detailDTO2.setPackageCode("package002");
+        // 生产日期
+        detailDTO2.setDateInProduced(new Date());
+        // 单位进价
+        detailDTO2.setUnitPrice(new BigDecimal(1));
+        // 发货数量
+        detailDTO2.setShippedNumber(688);
+        // 数量差值
+        detailDTO2.setDifferenceNumber(200);
+        // 总价差值
+        detailDTO2.setDifferencePrice(new BigDecimal(200));
+
+        RawMaterial rawMaterial2 = new RawMaterial("ylbm22");
+        Cargo cargo2 = new Cargo("cargo22");
+        rawMaterial2.setCargo(cargo2);
+        detailDTO2.setRawMaterial(rawMaterial2);
+
+
+        billDetails.add(detailDTO2);
         saveDto.setBillDetails(billDetails);
         purchaseBillManager.submitBill(saveDto);
     }
@@ -359,7 +378,7 @@ public class PurchaseBillTest {
     public void queryByConditions() {
         ConditionQueryPurchaseBill bill = new ConditionQueryPurchaseBill();
         bill.setPage(1);
-        bill.setPageSize(1);
+        bill.setPageSize(10);
         bill.setBillCode("bill001");
         QueryPurchaseBillDTO dto = purchaseBillManager.findByConditions(bill);
         System.out.println(dto.toString());

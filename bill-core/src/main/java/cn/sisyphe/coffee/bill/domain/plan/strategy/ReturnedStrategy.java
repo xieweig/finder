@@ -20,8 +20,6 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RETURN
 
 public class ReturnedStrategy extends AbstractCastableStrategy {
 
-    //TODO 先切分，后面再批量保存
-
     @SuppressWarnings("unchecked")
     @Override
     public List<PlanBill> cast(PlanBillPayload planBillPayload) {
@@ -40,11 +38,13 @@ public class ReturnedStrategy extends AbstractCastableStrategy {
             PlanBill restockBill = generatePlanBill(planBillPayload, BillTypeEnum.RESTOCK, planBill -> {
                 planBill.setInLocation(planBillPayload.getTransferLocation());
                 planBill.setOutLocation(planBillPayload.getInLocation());
+                planBill.setBillCode(planBillPayload.getBillCode() + "_0");
             });
 
             PlanBill returnedBill = generatePlanBill(planBillPayload, BillTypeEnum.RETURNED, planBill -> {
                 planBill.setInLocation(planBillPayload.getOutLocation());
                 planBill.setOutLocation(planBillPayload.getTransferLocation());
+                planBill.setBillCode(planBillPayload.getBillCode() + "_1");
             });
             planBills.add(restockBill);
             planBills.add(returnedBill);

@@ -8,7 +8,13 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
  * @description
  */
 public interface StationRepository {
-
-
     Station findByStationCode(String stationCode);
+
+    /**
+     * 通过站点编号查询第一个物流站点的编号
+     *
+     * @param stationCode
+     * @return
+     */
+    String findLogisticCodeByStationCode(String stationCode);
 }
