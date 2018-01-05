@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.delivery;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -9,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by yichuan on 2017/12/19 17:33
@@ -58,6 +60,11 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
     @Column
     private BigDecimal progress;
 
+    /**
+     * 出库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outStockTime;
 
     /**
      * 备注
@@ -113,6 +120,14 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
+    }
+
+    public Date getOutStockTime() {
+        return outStockTime;
+    }
+
+    public void setOutStockTime(Date outStockTime) {
+        this.outStockTime = outStockTime;
     }
 
     @Override

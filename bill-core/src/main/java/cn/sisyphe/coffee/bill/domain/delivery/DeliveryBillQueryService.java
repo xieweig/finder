@@ -1,7 +1,8 @@
 package cn.sisyphe.coffee.bill.domain.delivery;
 
 
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.data.domain.Page;
 
 /**
@@ -23,8 +24,13 @@ public interface DeliveryBillQueryService {
     DeliveryBill findOneByBillCode(String billCode);
 
 
-
-    Page<DeliveryBill> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill);
+    /**
+     * 分页查询配送出库单
+     *
+     * @param conditionQueryDeliveryBill
+     * @return
+     */
+    Page<DeliveryBill> findPageByCondition(ConditionQueryDeliveryBill conditionQueryDeliveryBill)  throws DataException;
 
 
 }
