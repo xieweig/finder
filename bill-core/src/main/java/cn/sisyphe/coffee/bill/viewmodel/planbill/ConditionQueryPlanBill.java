@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -71,6 +72,8 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      * 货物编号
      */
     private String cargoCode;
+
+    private List<String> operatorCodes;
 
 
     public BillStateEnum getBillState() {
@@ -175,5 +178,13 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
 
     public void setCargoCode(String cargoCode) {
         this.cargoCode = cargoCode;
+    }
+
+    public List<String> getOperatorCodes() {
+        return operatorCodes;
+    }
+
+    public void setOperatorCodes(List<String> operatorCodes) {
+        this.operatorCodes = operatorCodes;
     }
 }

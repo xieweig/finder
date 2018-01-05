@@ -41,6 +41,8 @@ public class PlanBillPayload {
     //策略,根据不同的单据类型选择不同的策略
     private AbstractCastableStrategy castableStrategy;
 
+    private String operatorCode;
+
 
     public BillTypeEnum getBillType() {
         return billType;
@@ -137,5 +139,13 @@ public class PlanBillPayload {
 
     public void setParentBillCode(String parentBillCode) {
         this.parentBillCode = parentBillCode;
+    }
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
     }
 }

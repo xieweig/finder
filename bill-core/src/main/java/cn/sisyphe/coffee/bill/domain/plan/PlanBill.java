@@ -38,10 +38,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
-    //创建人名称
-    @Column
-    private String creatorName;
-
 
     //是否是总部计划
     @Column
@@ -87,14 +83,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setSpecificBillType(BillTypeEnum specificBillType) {
         this.specificBillType = specificBillType;
-    }
-
-    public String getCreatorName() {
-        return creatorName;
-    }
-
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
     }
 
 

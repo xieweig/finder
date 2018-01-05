@@ -393,9 +393,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
-        //查询总部子计划
-        conditionQueryPlanBill.setHqBill("false");
-        Page<PlanBill> childPlanBill = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
+        Page<PlanBill> childPlanBill = planBillQueryService.findChildPlanBillBy(conditionQueryPlanBill);
         return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
 }

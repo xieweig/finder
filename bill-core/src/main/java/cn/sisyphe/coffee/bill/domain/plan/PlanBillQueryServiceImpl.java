@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +24,9 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
 
     @Autowired
     private PlanBillRepository planBillRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Page<PlanBill> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
@@ -49,6 +56,68 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
         } else {
             throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
         }
+    }
+
+    @Override
+    public Page<PlanBill> findChildPlanBillBy(ConditionQueryPlanBill conditionQueryPlanBill) {
+
+        List<String> operatorCodes = userRepository.findByLikeUserName(conditionQueryPlanBill.getCreatorName());
+        conditionQueryPlanBill.setOperatorCodes(operatorCodes);
+        // 组装页面
+        Pageable pageable = new PageRequest(conditionQueryPlanBill.getPage() - 1, conditionQueryPlanBill.getPageSize());
+
+        Page<PlanBill> planBillPage;
+        planBillPage = queryChildByParams(conditionQueryPlanBill, pageable);
+
+        // 改变页码导致的页面为空时，获取最后一页
+        if (planBillPage.getContent().size() < 1 && planBillPage.getTotalElements() > 0) {
+            pageable = new PageRequest(planBillPage.getTotalPages() - 1, conditionQueryPlanBill.getPageSize());
+            planBillPage = queryChildByParams(conditionQueryPlanBill, pageable);
+        }
+        return planBillPage;
+    }
+
+    private Page<PlanBill> queryChildByParams(final ConditionQueryPlanBill conditionQueryPlanBill,
+                                              Pageable pageable) {
+        return planBillRepository.findAll((root, criteriaQuery, cb) -> {
+            criteriaQuery.distinct(true);
+            Predicate predicate = cb.conjunction();
+            List<Expression<Boolean>> expressions = predicate.getExpressions();
+
+            /*
+             * 计划编码
+             */
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillCode())) {
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryPlanBill.getBillCode() + "%"));
+            }
+
+            // 入库站点集合
+            if (conditionQueryPlanBill.getInStationCodeArray() != null && conditionQueryPlanBill.getInStationCodeArray().size() > 0) {
+                expressions.add(root.<String>get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
+            }
+            //出库站点集合
+            if (conditionQueryPlanBill.getOutStationCodeArray() != null && conditionQueryPlanBill.getOutStationCodeArray().size() > 0) {
+                expressions.add(root.<String>get("outStationCode").in(conditionQueryPlanBill.getOutStationCodeArray()));
+            }
+            /*
+             * 录单开始时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateStartTime()));
+            }
+            /*
+             * 录单结束时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
+            }
+
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
+            }
+            expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), false));
+            return predicate;
+        }, pageable);
     }
 
     /**

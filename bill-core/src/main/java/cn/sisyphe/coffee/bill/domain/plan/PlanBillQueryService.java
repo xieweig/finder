@@ -19,4 +19,6 @@ public interface PlanBillQueryService {
      * @return
      */
     PlanBill findByBillCode(String planBillCode);
+
+    Page<PlanBill> findChildPlanBillBy(ConditionQueryPlanBill conditionQueryPlanBill);
 }
