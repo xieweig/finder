@@ -16,7 +16,6 @@ import java.util.Date;
  * Created by yichuan on 2017/12/19 17:33
  * Description: 配送单
  *
- * @author heyong
  */
 @Entity
 @Table

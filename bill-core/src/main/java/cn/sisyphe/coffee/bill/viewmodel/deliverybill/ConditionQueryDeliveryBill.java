@@ -25,7 +25,25 @@ public class ConditionQueryDeliveryBill extends BaseConditionQuery implements Se
      */
     private String billCode;
 
+    /**
+     * 总数量下限
+     */
+    private Integer minTotalAmount;//
+    /**
+     * 总数量上限
+     */
+    private Integer maxTotalAmount;//
 
+    /**
+     * 总品种下限
+     */
+    private Integer minTotalCount;
+
+
+    /**
+     * 总品种上限
+     */
+    private Integer maxTotalCount;
     /**
      * 录单人名称
      */
@@ -66,6 +84,39 @@ public class ConditionQueryDeliveryBill extends BaseConditionQuery implements Se
      * 录单人编码集合
      */
     private List<String> operatorCodeList;
+
+
+    public Integer getMinTotalAmount() {
+        return minTotalAmount;
+    }
+
+    public void setMinTotalAmount(Integer minTotalAmount) {
+        this.minTotalAmount = minTotalAmount;
+    }
+
+    public Integer getMaxTotalAmount() {
+        return maxTotalAmount;
+    }
+
+    public void setMaxTotalAmount(Integer maxTotalAmount) {
+        this.maxTotalAmount = maxTotalAmount;
+    }
+
+    public Integer getMinTotalCount() {
+        return minTotalCount;
+    }
+
+    public void setMinTotalCount(Integer minTotalCount) {
+        this.minTotalCount = minTotalCount;
+    }
+
+    public Integer getMaxTotalCount() {
+        return maxTotalCount;
+    }
+
+    public void setMaxTotalCount(Integer maxTotalCount) {
+        this.maxTotalCount = maxTotalCount;
+    }
 
     public String getBillCode() {
         return billCode;

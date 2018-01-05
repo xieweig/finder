@@ -104,7 +104,7 @@ public class DeliveryBillQueryServiceImpl implements DeliveryBillQueryService {
                         conditionQuery.getCreateEndTime()));
             }
             /**
-             * 出库开始时间
+             * 出库时间
              */
             if (conditionQuery.getOutStockStartTime() != null &&
                     conditionQuery.getOutStockEndTime() != null) {
@@ -117,6 +117,20 @@ public class DeliveryBillQueryServiceImpl implements DeliveryBillQueryService {
              */
             if (!StringUtils.isEmpty(conditionQuery.getStatusCode())) {
                 expressions.add(cb.equal(root.get("billState").as(String.class), conditionQuery.getStatusCode()));
+            }
+            /**
+             * 配送品种
+             */
+            if (conditionQuery.getMinTotalCount() != null && conditionQuery.getMaxTotalCount() != null) {
+                expressions.add(cb.between(root.<Integer>get("totalCount"), conditionQuery.getMinTotalCount(),
+                        conditionQuery.getMaxTotalCount()));
+            }
+            /**
+             * 配送数量
+             */
+            if (conditionQuery.getMinTotalAmount() != null && conditionQuery.getMaxTotalAmount() != null) {
+                expressions.add(cb.between(root.<Integer>get("totalAmount"), conditionQuery.getMinTotalCount(),
+                        conditionQuery.getMaxTotalCount()));
             }
             return predicate;
         }, pageable);

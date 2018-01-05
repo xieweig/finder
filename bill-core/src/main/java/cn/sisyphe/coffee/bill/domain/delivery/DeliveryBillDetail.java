@@ -13,7 +13,6 @@ import java.math.BigDecimal;
  * Created by yichuan on 2017/12/26 11:56
  * Description: 配送单明细
  *
- * @author heyong
  */
 @Entity
 @Table

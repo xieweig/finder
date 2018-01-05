@@ -29,11 +29,6 @@ public class WayBillServiceImpl implements WayBillService {
     @Autowired
     private WayBillRepository wayBillRepository;
 
-    @Override
-    public WayBill findOne(Long id) {
-        return wayBillRepository.findOne(id);
-    }
-
 
     /**
      * @param billCode

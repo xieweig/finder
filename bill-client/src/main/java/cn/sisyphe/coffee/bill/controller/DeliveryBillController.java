@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -99,6 +100,11 @@ public class DeliveryBillController {
     public ResponseResult pickingByCargo(@RequestBody DeliveryPickingEditDTO deliveryBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
+        try {
+            deliveryBillManager.pickingByCargo(deliveryBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 
@@ -114,6 +120,11 @@ public class DeliveryBillController {
     public ResponseResult pickingByRawMaterial(@RequestBody DeliveryPickingEditDTO deliveryBillDTO) {
         ResponseResult responseResult = new ResponseResult();
 
+        try {
+            deliveryBillManager.pickingByRawMaterial(deliveryBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 
@@ -127,7 +138,53 @@ public class DeliveryBillController {
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
     public ResponseResult submitWhenDone(@RequestBody DeliveryPickingEditDTO deliveryBillDTO) {
         ResponseResult responseResult = new ResponseResult();
+        try {
+            deliveryBillManager.submitWhenDone(deliveryBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
 
+
+    /**
+     * 根据单号查询配送单
+     *
+     * @param billCode
+     * @return
+     */
+    @ApiOperation(value = "根据单号查询配送单")
+    @RequestMapping(path = "/findOneDeliveryBillByBillCode", method = RequestMethod.GET)
+    public ResponseResult findOneDeliveryBillByBillCode(@RequestParam(required = true) String billCode) {
+
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("deliveryBill", deliveryBillManager.findOneDeliveryBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+
+        return responseResult;
+
+    }
+
+
+    /**
+     * 运单多条件分页查询
+     *
+     * @param conditionQueryDeliveryBill
+     * @return
+     */
+    @ApiOperation(value = "配送单多条件分页查询")
+    @RequestMapping(path = "/findDeliveryBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findDeliveryBillByConditions(@RequestBody ConditionQueryDeliveryBill conditionQueryDeliveryBill) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("deliveryBillList", deliveryBillManager.findDeliveryBillsByCondition(conditionQueryDeliveryBill));
+
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 
