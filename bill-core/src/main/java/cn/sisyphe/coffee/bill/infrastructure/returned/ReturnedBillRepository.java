@@ -9,4 +9,5 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
  * @description
  */
 public interface ReturnedBillRepository extends BillRepository<ReturnedBill> {
+
 }
