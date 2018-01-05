@@ -177,12 +177,14 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         BillFactory billFactory = new BillFactory();
         RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
         // 设置单据的作用
-        restockBill.setBillPurpose(BillPurposeEnum.InStorage);
+        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
         // 设置单据类型
         restockBill.setBillType(BillTypeEnum.RESTOCK);
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
-        restockBill.setBillCode("bill004");
+        //测试使用
+        Random random = new Random();
+        restockBill.setBillCode(random.nextInt(10000)+"0302");
         // 备注
         restockBill.setMemo(addRestockBillDTO.getMemo());
         // 操作人代码
