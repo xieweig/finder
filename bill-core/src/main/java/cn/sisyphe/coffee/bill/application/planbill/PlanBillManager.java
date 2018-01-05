@@ -94,7 +94,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     private PlanBill preparePlanBill(PlanBillDTO planBillDTO) {
         PlanBill planBill;
-        if (planBillDTO.getBillCode() != null) {
+        if (!StringUtils.isEmpty(planBillDTO.getBillCode())) {
             //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
             planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
             if (planBill == null) {
