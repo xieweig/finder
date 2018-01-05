@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * @author Amy 2018/1/3
- *         计划单返回实体
+ * 计划单返回实体
  */
 public class ResultPlanBillDTO {
     /**
@@ -24,13 +24,15 @@ public class ResultPlanBillDTO {
     private BillTypeEnum billType;
     /**
      * 按原料还是按货物
-      */
+     */
     private BasicEnum basicEnum;
 
     /**
      * 单据明细
      */
     private Set<ResultPlanBillGoodsDTO> planBillDetails;
+
+    private String auditMemo;
 
     public String getBillName() {
         return billName;
@@ -62,6 +64,14 @@ public class ResultPlanBillDTO {
 
     public void setPlanBillDetails(Set<ResultPlanBillGoodsDTO> planBillDetails) {
         this.planBillDetails = planBillDetails;
+    }
+
+    public String getAuditMemo() {
+        return auditMemo;
+    }
+
+    public void setAuditMemo(String auditMemo) {
+        this.auditMemo = auditMemo;
     }
 
     @Override

@@ -117,6 +117,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     private void validate(PlanBillDTO planBillDTO) {
         checkCreateParam(planBillDTO);
     }
+
     /**
      * 提交计划单进行审核
      *
@@ -305,6 +306,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setBillName(planBill.getBillName());
         resultPlanBillDTO.setBillType(planBill.getSpecificBillType());
         resultPlanBillDTO.setBasicEnum(planBill.getBasicEnum());
+        resultPlanBillDTO.setAuditMemo(planBill.getAuditMemo());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
