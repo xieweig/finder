@@ -55,6 +55,8 @@ public class ResultPlanBillDTO {
 
     private String auditMemo;
 
+    private String memo;
+
     public String getBillName() {
         return billName;
     }
@@ -153,5 +155,11 @@ public class ResultPlanBillDTO {
         this.operatorName = operatorName;
     }
 
+    public String getMemo() {
+        return memo;
+    }
 
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 }
