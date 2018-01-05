@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @description
  */
 @RestController
-@RequestMapping("/api/bill/planbill")
+@RequestMapping("/api/bill/planBill")
 @Api(description = "总部计划中心")
 @CrossOrigin(origins = "*")
 public class PlanBillController {
@@ -52,7 +52,7 @@ public class PlanBillController {
         return responseResult;
     }
 
-    @ApiOperation(value = "审核总部计划")
+    @ApiOperation(value = "打开总部计划")
     @RequestMapping(path = "/open", method = RequestMethod.POST)
     public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();

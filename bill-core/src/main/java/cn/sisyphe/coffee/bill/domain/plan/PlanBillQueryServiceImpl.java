@@ -76,23 +76,19 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
             }*/
 
 
-
-
             //单据的种类
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())) {
                 expressions.add(cb.equal(root.<String>get("specificBillType"),
                         "" + conditionQueryPlanBill.getSpecificBillType() + ""));
             }
 
-            // 入库站点
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCode())) {
-                expressions.add(cb.equal(root.<String>get("inStationCode"),
-                        "" + conditionQueryPlanBill.getInStationCode() + ""));
+            // 入库站点集合
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCodeArray())) {
+                expressions.add(root.<String>get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
             }
-            //出库站点
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getOutStationCode())) {
-                expressions.add(cb.equal(root.<String>get("outStationCode"),
-                        "" + conditionQueryPlanBill.getOutStationCode() + ""));
+            //出库站点集合
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getOutStationCodeArray())) {
+                expressions.add(root.<String>get("outStationCode").in(conditionQueryPlanBill.getOutStationCodeArray()));
             }
 
             //录单人
@@ -119,7 +115,7 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
             query.groupBy(root.get("billCode"));
             //*/
 
-           //是否为总部计划单
+            //是否为总部计划单
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getHqBill()) && "true".equals(conditionQueryPlanBill.getHqBill())) {
                 expressions.add(cb.isTrue(root.<Boolean>get("hqBill")));
             } else if (!StringUtils.isEmpty(conditionQueryPlanBill.getHqBill()) && "false".equals(conditionQueryPlanBill.getHqBill())) {

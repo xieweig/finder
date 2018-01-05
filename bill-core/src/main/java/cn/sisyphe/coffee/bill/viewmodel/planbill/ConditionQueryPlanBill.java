@@ -33,14 +33,14 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     private Date createEndTime;
 
     /**
-     * 入库站点
+     * 入库站点编号集合
      */
-    private String inStationCode;
+    private Set<String> inStationCodeArray;
 
     /**
-     * 出库站点
+     * 出库站点编号集合
      */
-    private String outStationCode;
+    private Set<String> outStationCodeArray;
 
 
     /**
@@ -121,20 +121,20 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.createEndTime = createEndTime;
     }
 
-    public String getInStationCode() {
-        return inStationCode;
+    public Set<String> getInStationCodeArray() {
+        return inStationCodeArray;
     }
 
-    public void setInStationCode(String inStationCode) {
-        this.inStationCode = inStationCode;
+    public void setInStationCodeArray(Set<String> inStationCodeArray) {
+        this.inStationCodeArray = inStationCodeArray;
     }
 
-    public String getOutStationCode() {
-        return outStationCode;
+    public Set<String> getOutStationCodeArray() {
+        return outStationCodeArray;
     }
 
-    public void setOutStationCode(String outStationCode) {
-        this.outStationCode = outStationCode;
+    public void setOutStationCodeArray(Set<String> outStationCodeArray) {
+        this.outStationCodeArray = outStationCodeArray;
     }
 
     public String getCreatorName() {
