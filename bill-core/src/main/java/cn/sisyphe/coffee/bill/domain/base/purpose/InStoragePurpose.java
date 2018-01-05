@@ -24,14 +24,10 @@ public class InStoragePurpose extends AbstractBillPurpose {
 
         Bill bill = getBillService().getBill();
         bill.setBillState(BillStateEnum.IN_STORAGING);
-
-        try {
-            MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
 
     }
+
 
     /**
      * bill.{type}.{purpose}.{status}
