@@ -20,6 +20,7 @@ public final class Constant {
     public static final String COMMON_NAME = "bill-stock-done";
 
     // 进货库：STOCKLIBRARY
+    // 正常库：NORMALLIBRARY
     // 仓储库：STORAGELIBRARY
     // 退货库：RETURNLIBRARY
     // 在途库：PASSAGELIBRARY

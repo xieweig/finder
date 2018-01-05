@@ -52,6 +52,8 @@ public abstract class AbstractBillBehavior implements BillBehavior {
 
     /**
      * 出入库状态
+     *
+     * @return
      */
     public abstract BillInOrOutStateEnum inOrOutState();
 
