@@ -5,13 +5,17 @@ import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 配送单
@@ -62,8 +66,7 @@ public class DeliveryBillController {
     @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-        QueryPlanBillDTO queryPlanBillDTO = planBillManager.findPageByCondition(conditionQueryPlanBill);
-        responseResult.put("content", queryPlanBillDTO);
+        responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
         return responseResult;
     }
 

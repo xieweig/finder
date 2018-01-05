@@ -4,7 +4,6 @@ import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -99,11 +98,29 @@ public class PlanBillController {
      * @return
      */
     @ApiOperation(value = "计划单据多条件分页查询")
-    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    @RequestMapping(path = "/hq/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-        QueryPlanBillDTO billPage = planBillManager.findPageByCondition(conditionQueryPlanBill);
-        responseResult.put("content", billPage);
+        responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
+        return responseResult;
+    }
+
+
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "计划单据多条件分页查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 

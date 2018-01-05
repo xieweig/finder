@@ -31,8 +31,6 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -100,6 +98,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         }
         //TODO 为了测试,临时修改
         planBillDTO.setBillCode(planBillDTO.getMemo());
+        //
         validate(planBillDTO);
         return (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
     }
@@ -266,88 +265,17 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return QueryPlanBillDTO 前端页面展示
      * @throws DataException
      */
-    public QueryPlanBillDTO findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
+    public Page<ResultPlanBillDTO> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
 
         //1 根据具体的运单号查询,只有唯一的显示，显示一条
         //2 根据配送出库查询可能会有多条
         //3 所有都是模糊匹配
         //所有的产品表中的数据
         Page<PlanBill> planBillPage = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
-        QueryPlanBillDTO queryPlanBillDTO = new QueryPlanBillDTO();
-        // 转换
-        List<QueryPlanDetailBillDTO> billDTOList = toMapDTO(planBillPage.getContent());
-        // 总数
-        queryPlanBillDTO.setTotalNumber(planBillPage.getTotalElements());
-        // 进货单据数据
-        queryPlanBillDTO.setContent(billDTOList);
+        return planBillPage.map(this::planBillToResultPlanBillDTO);
 
-        return queryPlanBillDTO;
     }
 
-    /**
-     * 前端多条件查询转换DTO
-     *
-     * @param planBillList
-     * @return
-     */
-    private List<QueryPlanDetailBillDTO> toMapDTO(List<PlanBill> planBillList) {
-
-        List<QueryPlanDetailBillDTO> planBillDTOList = new ArrayList<>();
-        int amount;
-        for (PlanBill planBill : planBillList) {
-            QueryPlanDetailBillDTO queryPlanDetailBillDTO = new QueryPlanDetailBillDTO();
-            /**
-             * progress-主表
-             */
-            queryPlanDetailBillDTO.setProgress(planBill.getProgress());
-            /**
-             * 计划站点号-主表
-             */
-            queryPlanDetailBillDTO.setStationPlanCode("bugaosuni001-buzhidao002");
-            /**
-             * 数量-从表
-             */
-            Set<PlanBillDetail> billDetails = planBill.getBillDetails();
-            amount = 0;
-            for (PlanBillDetail planBillDetail : billDetails) {
-                amount += planBillDetail.getAmount();
-            }
-            queryPlanDetailBillDTO.setAmount(amount);
-            /**
-             * 货物详情-从表
-             */
-            queryPlanDetailBillDTO.setBillDetails(planBill.getBillDetails());
-            /**
-             * 规格品种--主表
-             */
-            queryPlanDetailBillDTO.setSpecies(billDetails.size());
-            /**
-             * 录单时间-主表
-             */
-            queryPlanDetailBillDTO.setCreateTime(planBill.getCreateTime());
-            /**
-             * 调入站点-主表
-             */
-            Station station = (Station) planBill.getInLocation();
-            queryPlanDetailBillDTO.setInStation(station.getStationName());
-            /**
-             * 出库站点-主表
-             */
-            station = (Station) planBill.getOutLocation();
-            queryPlanDetailBillDTO.setOutStation(station.getStationName());
-            /**
-             * 录单人-主表
-             */
-            queryPlanDetailBillDTO.setCreatorName(planBill.getCreatorName());
-            /**
-             * 备注-主表
-             */
-            queryPlanDetailBillDTO.setMemo(planBill.getMemo());
-
-            planBillDTOList.add(queryPlanDetailBillDTO);
-        }
-        return planBillDTOList;
-    }
 
     /**
      * 根据编号查询
@@ -365,7 +293,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param planBill
      * @return
      */
-    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) throws DataException {
+    private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) {
         ResultPlanBillDTO resultPlanBillDTO = new ResultPlanBillDTO();
         if (planBill == null) {
             return resultPlanBillDTO;
@@ -456,5 +384,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         }
         childPlanBillDTO.setChildPlanBillDetails(childPlanBillDetailDTOS);
         return childPlanBillDTO;
+    }
+
+    public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
+        Page<PlanBill> childPlanBill = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
+        return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
 }
