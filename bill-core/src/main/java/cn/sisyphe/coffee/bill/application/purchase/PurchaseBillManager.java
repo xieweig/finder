@@ -16,10 +16,12 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.*;
 import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -62,9 +64,10 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      * @param addPurchaseBillDTO
      */
     public void submitBill(AddPurchaseBillDTO addPurchaseBillDTO) {
+        // 验证属性
+        verificationSubmit(addPurchaseBillDTO);
         // 转换单据
         PurchaseBill purchaseBill = dtoToMapPurchaseBill(addPurchaseBillDTO);
-
         submit(purchaseBill);
 
     }
@@ -75,11 +78,13 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      * @param billDTO
      */
     public void updateBillToSave(AddPurchaseBillDTO billDTO) {
+        if (StringUtils.isEmpty(billDTO.getBillCode())) {
+            throw new DataException("404", "单据编码为空");
+        }
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
         purchaseBill.getBillDetails().clear();
         // 转换单据
         PurchaseBill mapBillAfter = dtoToMapPurchaseBillForEdit(billDTO, purchaseBill);
-
         save(mapBillAfter);
     }
 
@@ -89,6 +94,9 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      * @param billDTO
      */
     public void updateBillToSubmit(AddPurchaseBillDTO billDTO) {
+        if (StringUtils.isEmpty(billDTO.getBillCode())) {
+            throw new DataException("404", "单据编码为空");
+        }
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
         purchaseBill.getBillDetails().clear();
         // 转换单据
@@ -103,6 +111,9 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      * @param purchaseBillCode
      */
     public QueryOnePurchaseBillDTO openBill(String purchaseBillCode) {
+        if (StringUtils.isEmpty(purchaseBillCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         // 如果单据是提交状态，则进行打开动作
         if (purchaseBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
@@ -121,6 +132,12 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      * @param purchaseBillCode
      */
     public void auditBill(String purchaseBillCode, String auditPersonCode, boolean isSuccess) {
+        if (StringUtils.isEmpty(purchaseBillCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        if (StringUtils.isEmpty(auditPersonCode)) {
+            throw new DataException("404", "审核人编码为空");
+        }
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         // 设置审核人编码
         purchaseBill.setAuditPersonCode(auditPersonCode);
@@ -162,7 +179,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
-        purchaseBill.setBillCode("bill005");
+        purchaseBill.setBillCode(new Date().toString());
         // 货运单号
         purchaseBill.setFreightCode(addPurchaseBillDTO.getFreightCode());
         // 发货件数
@@ -173,18 +190,26 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setMemo(addPurchaseBillDTO.getMemo());
         // 操作人代码
         purchaseBill.setOperatorCode(addPurchaseBillDTO.getOperatorCode());
-        // 归属站点
-        purchaseBill.setBelongStationCode(addPurchaseBillDTO.getStation().getStationCode());
         // 获取站点
         Station station = addPurchaseBillDTO.getStation();
+        if (station != null) {
+            // 归属站点
+            purchaseBill.setBelongStationCode(station.getStationCode());
+        }
         // 获取库房
         Storage storage = addPurchaseBillDTO.getStorage();
-        // 组合站点和库房
-        station.setStorage(storage);
-        // 设置入库位置
-        purchaseBill.setInLocation(station);
-        // 设置出库位置
-        purchaseBill.setOutLocation(addPurchaseBillDTO.getSupplier());
+        if (storage != null) {
+            // 组合站点和库房
+            station.setStorage(storage);
+            // 设置入库位置
+            purchaseBill.setInLocation(station);
+        }
+
+        Supplier supplier = addPurchaseBillDTO.getSupplier();
+        if (supplier != null) {
+            // 设置出库位置
+            purchaseBill.setOutLocation(supplier);
+        }
         // 转换单据明细信息
         Set<PurchaseBillDetail> detailSet = listDetailMapToSetDetail(addPurchaseBillDTO.getBillDetails());
         // 设置单据明细信息
@@ -203,28 +228,35 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     private Set<PurchaseBillDetail> listDetailMapToSetDetail(List<BillDetailDTO> billDetails) {
 
         Set<PurchaseBillDetail> detailSet = new HashSet<>();
-        for (BillDetailDTO detail : billDetails) {
-            PurchaseBillDetail purchaseBillDetail = new PurchaseBillDetail();
-            // 设置货物和原料信息
-            RawMaterial rawMaterial = detail.getRawMaterial();
-            purchaseBillDetail.setGoods(rawMaterial);
-            // 包号
-            purchaseBillDetail.setPackageCode(detail.getPackageCode());
-            // 生产日期
-            purchaseBillDetail.setDateInProduced(detail.getDateInProduced());
-            // 单位进价
-            purchaseBillDetail.setUnitPrice(detail.getUnitPrice());
-            // 发货数量
-            purchaseBillDetail.setShippedNumber(detail.getShippedNumber());
-            // 实收数量-最小单位数量
-            purchaseBillDetail.setAmount(detail.getAmount());
-            // 数量差值
-            purchaseBillDetail.setDifferenceNumber(detail.getDifferenceNumber());
-            // 总价差值
-            purchaseBillDetail.setDifferencePrice(detail.getDifferencePrice());
-            detailSet.add(purchaseBillDetail);
+        if (billDetails != null && billDetails.size() > 0) {
+            for (BillDetailDTO detail : billDetails) {
+                PurchaseBillDetail purchaseBillDetail = new PurchaseBillDetail();
+                // 设置货物和原料信息
+                RawMaterial rawMaterial = detail.getRawMaterial();
+                if (rawMaterial != null) {
+                    purchaseBillDetail.setGoods(rawMaterial);
+                }
+                // 包号
+                purchaseBillDetail.setPackageCode(detail.getPackageCode());
+                // 生产日期
+                purchaseBillDetail.setDateInProduced(detail.getDateInProduced());
+                // 单位进价
+                purchaseBillDetail.setUnitPrice(detail.getUnitPrice());
+                // 发货数量
+                purchaseBillDetail.setShippedNumber(detail.getShippedNumber());
+                // 实收数量-最小单位数量
+                purchaseBillDetail.setAmount(detail.getAmount());
+                // 数量差值
+                purchaseBillDetail.setDifferenceNumber(detail.getDifferenceNumber());
+                // 总价差值
+                purchaseBillDetail.setDifferencePrice(detail.getDifferencePrice());
+                detailSet.add(purchaseBillDetail);
+            }
+            return detailSet;
+        } else {
+            return detailSet;
         }
-        return detailSet;
+
     }
 
 
@@ -249,11 +281,18 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         billDTO.setShippedAmount(purchaseBill.getShippedAmount());
         // 设置供应商名称
         Supplier supplier = (Supplier) purchaseBill.getOutLocation();
-        billDTO.setSupplierCode(supplier.getSupplierCode());
-
-        Station station = (Station) purchaseBill.getInLocation();
+        if (supplier != null) {
+            billDTO.setSupplierCode(supplier.getSupplierCode());
+        }
         // 库位名称
-        billDTO.setInStorageCode(station.getStorage().getStorageCode());
+        Station station = (Station) purchaseBill.getInLocation();
+        if (station != null) {
+            Storage storage = station.getStorage();
+            if (storage != null) {
+                billDTO.setInStorageCode(storage.getStorageCode());
+            }
+        }
+
         // 转换进货单明细信息
         List<BillDetailDTO> detailDTOList = setDetailMapToListMapDetail(purchaseBill.getBillDetails());
 
@@ -272,29 +311,35 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     private List<BillDetailDTO> setDetailMapToListMapDetail(Set<PurchaseBillDetail> purchaseBillDetails) {
 
         List<BillDetailDTO> detailDTOList = new ArrayList<>();
-        for (PurchaseBillDetail detail : purchaseBillDetails) {
-            BillDetailDTO detailDTO = new BillDetailDTO();
-            // 设置货物和原料信息
-            RawMaterial rawMaterial = (RawMaterial) detail.getGoods();
-
-            detailDTO.setRawMaterial(rawMaterial);
-            // 实收数量-最小单位数量
-            detailDTO.setAmount(detail.getAmount());
-            // 包号
-            detailDTO.setPackageCode(detail.getPackageCode());
-            // 生产日期
-            detailDTO.setDateInProduced(detail.getDateInProduced());
-            // 单位进价
-            detailDTO.setUnitPrice(detail.getUnitPrice());
-            // 发货数量
-            detailDTO.setShippedNumber(detail.getShippedNumber());
-            // 数量差值
-            detailDTO.setDifferenceNumber(detail.getDifferenceNumber());
-            // 总价差值
-            detailDTO.setDifferencePrice(detail.getDifferencePrice());
-            detailDTOList.add(detailDTO);
+        if (purchaseBillDetails != null && purchaseBillDetails.size() > 0) {
+            for (PurchaseBillDetail detail : purchaseBillDetails) {
+                BillDetailDTO detailDTO = new BillDetailDTO();
+                // 设置货物和原料信息
+                RawMaterial rawMaterial = (RawMaterial) detail.getGoods();
+                if (rawMaterial != null) {
+                    detailDTO.setRawMaterial(rawMaterial);
+                }
+                // 实收数量-最小单位数量
+                detailDTO.setAmount(detail.getAmount());
+                // 包号
+                detailDTO.setPackageCode(detail.getPackageCode());
+                // 生产日期
+                detailDTO.setDateInProduced(detail.getDateInProduced());
+                // 单位进价
+                detailDTO.setUnitPrice(detail.getUnitPrice());
+                // 发货数量
+                detailDTO.setShippedNumber(detail.getShippedNumber());
+                // 数量差值
+                detailDTO.setDifferenceNumber(detail.getDifferenceNumber());
+                // 总价差值
+                detailDTO.setDifferencePrice(detail.getDifferencePrice());
+                detailDTOList.add(detailDTO);
+            }
+            return detailDTOList;
+        } else {
+            return detailDTOList;
         }
-        return detailDTOList;
+
     }
 
 
@@ -316,18 +361,23 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setMemo(editPurchaseBillDTO.getMemo());
         // 操作人代码
         purchaseBill.setOperatorCode(editPurchaseBillDTO.getOperatorCode());
-        // 归属站点
-        purchaseBill.setBelongStationCode(editPurchaseBillDTO.getStation().getStationCode());
         // 获取站点
         Station station = editPurchaseBillDTO.getStation();
+        if (station != null) {
+            // 归属站点
+            purchaseBill.setBelongStationCode(station.getStationCode());
+        }
+
         // 获取库房
         Storage storage = editPurchaseBillDTO.getStorage();
-        // 组合站点和库房
-        station.setStorage(storage);
-        // 设置入库位置
-        purchaseBill.setInLocation(station);
-        // 设置出库位置
-        purchaseBill.setOutLocation(editPurchaseBillDTO.getStorage());
+        if (storage != null) {
+            // 组合站点和库房
+            station.setStorage(storage);
+            // 设置入库位置
+            purchaseBill.setInLocation(station);
+            // 设置出库位置
+            purchaseBill.setOutLocation(storage);
+        }
         // 转换单据明细信息
         Set<PurchaseBillDetail> detailSet = listDetailMapToSetDetail(editPurchaseBillDTO.getBillDetails());
         // 设置单据明细信息
@@ -366,124 +416,96 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     private List<PurchaseBillDTO> toMapDTO(List<PurchaseBill> purchaseBillList) {
 
         List<PurchaseBillDTO> purchaseBillDTOList = new ArrayList<>();
-        for (PurchaseBill purchaseBill : purchaseBillList) {
-            PurchaseBillDTO purchaseBillDTO = new PurchaseBillDTO();
-            // 进货单号-主表
-            purchaseBillDTO.setBillCode(purchaseBill.getBillCode());
-            // 入库时间-主表
-            purchaseBillDTO.setInWareHouseTime(purchaseBill.getInWareHouseTime());
-            // 录单时间-主表
-            purchaseBillDTO.setCreateTime(purchaseBill.getCreateTime());
-            // 录单人-主表
-            purchaseBillDTO.setOperatorCode(purchaseBill.getOperatorCode());
-            // 审核人-主表
-            purchaseBillDTO.setAuditPersonCode(purchaseBill.getAuditPersonCode());
-            // 入库站点-主表
-            Station station = (Station) purchaseBill.getInLocation();
-            purchaseBillDTO.setInStationCode(station.getStationCode());
-            // 入库库房-主表
-            purchaseBillDTO.setInStorageCode(station.getStorage().getStorageCode());
-            // 供应商名称--主表
-            Supplier supplier = (Supplier) purchaseBill.getOutLocation();
-            purchaseBillDTO.setSupplierCode(supplier.getSupplierName());
-            // 单据提交状态--主表
-            if (purchaseBill.getSubmitState() != null) {
-                purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState().name());
-            } else {
-                purchaseBillDTO.setSubmitState("-");
-            }
-            // 单据审核状态--主表
-            if (purchaseBill.getAuditState() != null) {
-                purchaseBillDTO.setAuditState(purchaseBill.getAuditState().name());
-            } else {
-                purchaseBillDTO.setAuditState("-");
-            }
-            // 备注--主表
-            purchaseBillDTO.setMemo(purchaseBill.getMemo());
-            // 循环遍历明细信息，累加得到数据
-            Set<PurchaseBillDetail> purchaseBillDetailSet = purchaseBill.getBillDetails();
-            // 实收数量总计
-            Integer amount = 0;
-            // 数量差值总计
-            Integer differenceNumber = 0;
-            // 进货总价
-            BigDecimal inTotalPrice = BigDecimal.ZERO;
-            // 差价总和
-            BigDecimal differencePrice = BigDecimal.ZERO;
-            for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetailSet) {
-                // 累加实收数量
-                amount += purchaseBillDetail.getAmount();
-                // 累加数量差值
-                differenceNumber += purchaseBillDetail.getDifferenceNumber();
-                // 累加进货总价
-                inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getAmount())));
-                // 累加差价总和
-                differencePrice = differencePrice.add(purchaseBillDetail.getDifferencePrice());
-            }
-            // 实收数量--明细表
-            purchaseBillDTO.setAmount(amount);
-            // 数量差值--明细表
-            purchaseBillDTO.setDifferenceNumber(differenceNumber);
-            // 总价差值--明细表
-            purchaseBillDTO.setDifferencePrice(differencePrice);
-            // 进货实洋
-            purchaseBillDTO.setInTotalPrice(inTotalPrice);
+        if (purchaseBillList != null && purchaseBillList.size() > 0) {
+            for (PurchaseBill purchaseBill : purchaseBillList) {
+                PurchaseBillDTO purchaseBillDTO = new PurchaseBillDTO();
+                // 进货单号-主表
+                purchaseBillDTO.setBillCode(purchaseBill.getBillCode());
+                // 入库时间-主表
+                purchaseBillDTO.setInWareHouseTime(purchaseBill.getInWareHouseTime());
+                // 录单时间-主表
+                purchaseBillDTO.setCreateTime(purchaseBill.getCreateTime());
+                // 录单人-主表
+                purchaseBillDTO.setOperatorCode(purchaseBill.getOperatorCode());
+                // 审核人-主表
+                purchaseBillDTO.setAuditPersonCode(purchaseBill.getAuditPersonCode());
+                // 入库站点-主表
+                Station station = (Station) purchaseBill.getInLocation();
+                if (station != null) {
+                    purchaseBillDTO.setInStationCode(station.getStationCode());
+                }
+                // 入库库房-主表
+                Storage storage = station.getStorage();
+                if (storage != null) {
+                    purchaseBillDTO.setInStorageCode(storage.getStorageCode());
+                }
+                // 供应商名称--主表
+                Supplier supplier = (Supplier) purchaseBill.getOutLocation();
+                if (supplier != null) {
+                    purchaseBillDTO.setSupplierCode(supplier.getSupplierName());
+                }
+                // 单据提交状态--主表
+                if (purchaseBill.getSubmitState() != null) {
+                    purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState().name());
+                } else {
+                    purchaseBillDTO.setSubmitState("-");
+                }
+                // 单据审核状态--主表
+                if (purchaseBill.getAuditState() != null) {
+                    purchaseBillDTO.setAuditState(purchaseBill.getAuditState().name());
+                } else {
+                    purchaseBillDTO.setAuditState("-");
+                }
+                // 备注--主表
+                purchaseBillDTO.setMemo(purchaseBill.getMemo());
+                // 循环遍历明细信息，累加得到数据
+                Set<PurchaseBillDetail> purchaseBillDetailSet = purchaseBill.getBillDetails();
+                // 实收数量总计
+                Integer amount = 0;
+                // 数量差值总计
+                Integer differenceNumber = 0;
+                // 进货总价
+                BigDecimal inTotalPrice = BigDecimal.ZERO;
+                // 差价总和
+                BigDecimal differencePrice = BigDecimal.ZERO;
+                for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetailSet) {
+                    // 累加实收数量
+                    amount += purchaseBillDetail.getAmount();
+                    // 累加数量差值
+                    differenceNumber += purchaseBillDetail.getDifferenceNumber();
+                    // 累加进货总价
+                    inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getAmount())));
+                    // 累加差价总和
+                    differencePrice = differencePrice.add(purchaseBillDetail.getDifferencePrice());
+                }
+                // 实收数量--明细表
+                purchaseBillDTO.setAmount(amount);
+                // 数量差值--明细表
+                purchaseBillDTO.setDifferenceNumber(differenceNumber);
+                // 总价差值--明细表
+                purchaseBillDTO.setDifferencePrice(differencePrice);
+                // 进货实洋
+                purchaseBillDTO.setInTotalPrice(inTotalPrice);
 
-            purchaseBillDTOList.add(purchaseBillDTO);
+                purchaseBillDTOList.add(purchaseBillDTO);
+            }
+            return purchaseBillDTOList;
+        } else {
+            return purchaseBillDTOList;
         }
-        return purchaseBillDTOList;
+
     }
 
     /**
-     * map状态
+     * 验证提交数据信息
      *
-     * @param billDTO
-     * @param stateName
-     * @return
+     * @param addPurchaseBillDTO
      */
-    private PurchaseBillDTO toMapTwoState(PurchaseBillDTO billDTO, String stateName) {
-
-        switch (stateName) {
-
-            case "SAVED":
-                billDTO.setSubmitState("未提交");
-                billDTO.setAuditState("未审核");
-                break;
-            case "SUBMITTED":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("未审核");
-                break;
-            case "OPEN":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("未审核");
-                break;
-            case "AUDIT_FAILURE":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核不通过");
-                break;
-            case "AUDIT_SUCCESS":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            case "OUT_STORAGING":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            case "IN_STORAGING":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            case "DONE":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            default:
-                break;
-
+    private void verificationSubmit(AddPurchaseBillDTO addPurchaseBillDTO) {
+        if (addPurchaseBillDTO.getBillDetails() == null) {
+            throw new DataException("500", "进货单据明细为空");
         }
 
-        return billDTO;
     }
-
 
 }

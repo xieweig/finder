@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.purchase;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -29,8 +28,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
 
     @Autowired
     private PurchaseBillRepository purchaseBillRepository;
-    @Autowired
-    private SupplierRepository supplierRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -93,8 +90,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 录单人
              */
-            if (conditionQueryPurchaseBill.getOperatorCodeList() != null
-                    && conditionQueryPurchaseBill.getOperatorCodeList().size() > 0) {
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getOperatorName())) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPurchaseBill.getOperatorCodeList()));
             }
             /**
