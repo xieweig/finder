@@ -52,13 +52,13 @@ public class AddRestockBillDTO {
     /**
      * 进货单明细信息
      */
-    private List<BillDetailDTO> billDetails;
+    private List<RestockBillDetailDTO> billDetails;
 
-    public List<BillDetailDTO> getBillDetails() {
+    public List<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(List<BillDetailDTO> billDetails) {
+    public void setBillDetails(List<RestockBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 

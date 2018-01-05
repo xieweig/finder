@@ -33,7 +33,7 @@ public class QueryOneRestockBillDTO {
     /**
      * 进货单明细信息
      */
-    private List<cn.sisyphe.coffee.bill.viewmodel.restock.BillDetailDTO> billDetails;
+    private List<RestockBillDetailDTO> billDetails;
 
     public String getFreightCode() {
         return freightCode;
@@ -83,11 +83,11 @@ public class QueryOneRestockBillDTO {
         this.inStorageCode = inStorageCode;
     }
 
-    public List<cn.sisyphe.coffee.bill.viewmodel.restock.BillDetailDTO> getBillDetails() {
+    public List<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(List<cn.sisyphe.coffee.bill.viewmodel.restock.BillDetailDTO> billDetails) {
+    public void setBillDetails(List<RestockBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 }

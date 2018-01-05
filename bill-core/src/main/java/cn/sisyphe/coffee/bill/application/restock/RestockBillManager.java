@@ -5,17 +5,10 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
@@ -25,7 +18,6 @@ import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.framework.web.ResponseResult;
-import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -75,7 +67,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         RestockBill restockBill = dtoToMapRestockBill(addRestockBillDTO);
 
         submit(restockBill);
-
     }
 
 
@@ -192,12 +183,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
         restockBill.setBillCode("bill004");
-        // 货运单号
-        restockBill.setFreightCode(addRestockBillDTO.getFreightCode());
-        // 发货件数
-        restockBill.setShippedAmount(addRestockBillDTO.getShippedAmount());
-        // 实收件数
-        restockBill.setActualAmount(addRestockBillDTO.getActualAmount());
         // 备注
         restockBill.setMemo(addRestockBillDTO.getMemo());
         // 操作人代码
@@ -227,28 +212,19 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param billDetails
      * @return
      */
-    private Set<RestockBillDetail> listDetailMapToSetDetail(List<BillDetailDTO> billDetails) {
+    private Set<RestockBillDetail> listDetailMapToSetDetail(List<RestockBillDetailDTO> billDetails) {
 
         Set<RestockBillDetail> detailSet = new HashSet<>();
-        for (BillDetailDTO detail : billDetails) {
+        for (RestockBillDetailDTO detail : billDetails) {
             RestockBillDetail restockBillDetail = new RestockBillDetail();
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             restockBillDetail.setGoods(rawMaterial);
-            // 包号
-            restockBillDetail.setPackageCode(detail.getPackageCode());
-            // 生产日期
-            restockBillDetail.setDateInProduced(detail.getDateInProduced());
-            // 单位进价
-            restockBillDetail.setUnitPrice(detail.getUnitPrice());
-            // 发货数量
-            restockBillDetail.setShippedNumber(detail.getShippedNumber());
-            // 实收数量-最小单位数量
+            //数量
             restockBillDetail.setAmount(detail.getAmount());
-            // 数量差值
-            restockBillDetail.setDifferenceNumber(detail.getDifferenceNumber());
-            // 总价差值
-            restockBillDetail.setDifferencePrice(detail.getDifferencePrice());
+            //备注
+            restockBillDetail.setMemo(detail.getMemo());
+
             detailSet.add(restockBillDetail);
         }
         return detailSet;
@@ -258,21 +234,18 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         QueryOneRestockBillDTO billDTO = new QueryOneRestockBillDTO();
         // 备注
         billDTO.setMemo(restockBill.getMemo());
-        // 运单号
-        billDTO.setFreightCode(restockBill.getFreightCode());
-        // 实收件数
-        billDTO.setActualAmount(restockBill.getActualAmount());
-        // 发货件数
-        billDTO.setShippedAmount(restockBill.getShippedAmount());
-        // 设置供应商名称
-        Supplier supplier = (Supplier) restockBill.getOutLocation();
-        billDTO.setSupplierCode(supplier.getSupplierCode());
+
 
         Station station = (Station) restockBill.getInLocation();
         // 库位名称
         billDTO.setInStorageCode(station.getStorage().getStorageCode());
+
+        station = (Station) restockBill.getOutLocation();
+        // 库位名称
+        billDTO.setInStorageCode(station.getStorage().getStorageCode());
+
         // 转换进货单明细信息
-        List<cn.sisyphe.coffee.bill.viewmodel.restock.BillDetailDTO> detailDTOList = setDetailMapToListMapDetail(restockBill.getBillDetails());
+        List<RestockBillDetailDTO> detailDTOList = setDetailMapToListMapDetail(restockBill.getBillDetails());
 
         // 进货单明细信息
         billDTO.setBillDetails(detailDTOList);
@@ -286,29 +259,19 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param restockBillDetails
      * @return
      */
-    private List<BillDetailDTO> setDetailMapToListMapDetail(Set<RestockBillDetail> restockBillDetails) {
+    private List<RestockBillDetailDTO> setDetailMapToListMapDetail(Set<RestockBillDetail> restockBillDetails) {
 
-        List<BillDetailDTO> detailDTOList = new ArrayList<>();
+        List<RestockBillDetailDTO> detailDTOList = new ArrayList<>();
         for (RestockBillDetail detail : restockBillDetails) {
-            BillDetailDTO detailDTO = new BillDetailDTO();
+            RestockBillDetailDTO detailDTO = new RestockBillDetailDTO();
             // 设置货物和原料信息
             RawMaterial rawMaterial = (RawMaterial) detail.getGoods();
-
-            detailDTO.setRawMaterial(rawMaterial);
-            // 实收数量-最小单位数量
+           /* detailDTO.setRawMaterial(rawMaterial);
+            //设置数量
             detailDTO.setAmount(detail.getAmount());
-            // 包号
-            detailDTO.setPackageCode(detail.getPackageCode());
-            // 生产日期
-            detailDTO.setDateInProduced(detail.getDateInProduced());
-            // 单位进价
-            detailDTO.setUnitPrice(detail.getUnitPrice());
-            // 发货数量
-            detailDTO.setShippedNumber(detail.getShippedNumber());
-            // 数量差值
-            detailDTO.setDifferenceNumber(detail.getDifferenceNumber());
-            // 总价差值
-            detailDTO.setDifferencePrice(detail.getDifferencePrice());
+            //备注
+            detailDTO.se
+*/
             detailDTOList.add(detailDTO);
         }
         return detailDTOList;
@@ -321,12 +284,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     private RestockBill dtoToMapRestockBillForEdit(AddRestockBillDTO editRestockBillDTO, RestockBill restockBill) {
 
-        // 货运单号
-        restockBill.setFreightCode(editRestockBillDTO.getFreightCode());
-        // 发货件数
-        restockBill.setShippedAmount(editRestockBillDTO.getShippedAmount());
-        // 实收件数
-        restockBill.setActualAmount(editRestockBillDTO.getActualAmount());
         // 备注
         restockBill.setMemo(editRestockBillDTO.getMemo());
         // 操作人代码
@@ -387,7 +344,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             BigDecimal inTotalPrice = BigDecimal.ZERO;
             // 差价总和
             BigDecimal differencePrice = BigDecimal.ZERO;
-            for (RestockBillDetail restockBillDetail : restockBillDetailSet) {
+           /* for (RestockBillDetail restockBillDetail : restockBillDetailSet) {
                 // 累加实收数量
                 amount += restockBillDetail.getAmount();
                 // 累加数量差值
@@ -396,7 +353,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
                 inTotalPrice = inTotalPrice.add(restockBillDetail.getUnitPrice().multiply(new BigDecimal(restockBillDetail.getAmount())));
                 // 累加差价总和
                 differencePrice = differencePrice.add(restockBillDetail.getDifferencePrice());
-            }
+            }*/
             // 实收数量--明细表
             restockBillDTO.setAmount(amount);
             // 数量差值--明细表

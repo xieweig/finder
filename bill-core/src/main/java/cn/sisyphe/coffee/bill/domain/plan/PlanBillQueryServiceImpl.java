@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -72,24 +73,21 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService{
                 expressions.add(cb.like(root.<String>get("billCode"), "%" + conditionQueryPlanBill.getBillCode() + "%"));
             }*/
 
-
-
-
             //单据的种类
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())){
-                expressions.add(cb.equal(root.<String>get("specificBillType"),
-                        "" + conditionQueryPlanBill.getSpecificBillType() + ""));
+                expressions.add(cb.equal(root.get("specificBillType").as(BillStateEnum.class),
+                        conditionQueryPlanBill.getSpecificBillType()));
             }
 
             // 入库站点
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCode())) {
                 expressions.add(cb.equal(root.<String>get("inStationCode"),
-                        "" + conditionQueryPlanBill.getInStationCode() + ""));
+                        conditionQueryPlanBill.getInStationCode()));
             }
             //出库站点
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getOutStationCode())) {
                 expressions.add(cb.equal(root.<String>get("outStationCode"),
-                        "" + conditionQueryPlanBill.getOutStationCode() + ""));
+                        conditionQueryPlanBill.getOutStationCode() ));
             }
 
             //录单人

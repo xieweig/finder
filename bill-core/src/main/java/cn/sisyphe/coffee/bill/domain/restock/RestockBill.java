@@ -24,21 +24,7 @@ public class RestockBill extends Bill<RestockBillDetail> {
     }
 
     /**
-     * 货运单号
-     */
-    private String freightCode;
-
-    /**
-     * 发货件数
-     */
-    private int shippedAmount;
-
-    /**
-     * 实收件数
-     */
-    private int actualAmount;
-    /**
-     * 备注
+     * 出库备注
      */
     private String memo;
 
@@ -47,30 +33,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
-
-    public String getFreightCode() {
-        return freightCode;
-    }
-
-    public void setFreightCode(String freightCode) {
-        this.freightCode = freightCode;
-    }
-
-    public int getShippedAmount() {
-        return shippedAmount;
-    }
-
-    public void setShippedAmount(int shippedAmount) {
-        this.shippedAmount = shippedAmount;
-    }
-
-    public int getActualAmount() {
-        return actualAmount;
-    }
-
-    public void setActualAmount(int actualAmount) {
-        this.actualAmount = actualAmount;
-    }
 
     public String getMemo() {
         return memo;

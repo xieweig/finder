@@ -9,7 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.BillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import org.junit.Test;
@@ -18,15 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by XiongJing on 2017/12/27.
- * remark：进货单据单元测试
- * version: 1.0
+ * @author bifenglin
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ClientApplication.class)
@@ -71,13 +67,13 @@ public class RestockBillTest {
 
         saveDto.setStation(station);
 
-        List<BillDetailDTO> billDetails = new ArrayList<>();
+        List<RestockBillDetailDTO> billDetails = new ArrayList<>();
 
-        BillDetailDTO detailDTO = new BillDetailDTO();
+        RestockBillDetailDTO detailDTO = new RestockBillDetailDTO();
 
         // 最小单位数量
         detailDTO.setAmount(300);
-        // 包号
+        /*// 包号
         detailDTO.setPackageCode("package004");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
@@ -89,7 +85,7 @@ public class RestockBillTest {
         detailDTO.setDifferenceNumber(0);
         // 总价差值
         detailDTO.setDifferencePrice(new BigDecimal(0));
-
+*/
         RawMaterial rawMaterial = new RawMaterial("ylbm004");
         rawMaterial.setRawMaterialName("原料004");
         Cargo cargo = new Cargo("cargo004");
@@ -97,12 +93,12 @@ public class RestockBillTest {
         rawMaterial.setCargo(cargo);
         detailDTO.setRawMaterial(rawMaterial);
 
-        BillDetailDTO detailDTO2 = new BillDetailDTO();
+        RestockBillDetailDTO detailDTO2 = new RestockBillDetailDTO();
 
         // 最小单位数量
         detailDTO2.setAmount(200);
         // 包号
-        detailDTO2.setPackageCode("package005");
+        /*detailDTO2.setPackageCode("package005");
         // 生产日期
         detailDTO2.setDateInProduced(new Date());
         // 单位进价
@@ -112,7 +108,7 @@ public class RestockBillTest {
         // 数量差值
         detailDTO2.setDifferenceNumber(100);
         // 总价差值
-        detailDTO2.setDifferencePrice(new BigDecimal(1000));
+        detailDTO2.setDifferencePrice(new BigDecimal(1000));*/
 
         RawMaterial rawMaterial2 = new RawMaterial("ylbm005");
         rawMaterial2.setRawMaterialName("原料005");
@@ -164,13 +160,13 @@ public class RestockBillTest {
 
         saveDto.setStation(station);
 
-        List<BillDetailDTO> billDetails = new ArrayList<>();
-        BillDetailDTO detailDTO = new BillDetailDTO();
+        List<RestockBillDetailDTO> billDetails = new ArrayList<>();
+        RestockBillDetailDTO detailDTO = new RestockBillDetailDTO();
 
         // 最小单位数量
         detailDTO.setAmount(2000);
         // 包号
-        detailDTO.setPackageCode("package002");
+        /*detailDTO.setPackageCode("package002");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
@@ -181,7 +177,7 @@ public class RestockBillTest {
         detailDTO.setDifferenceNumber(200);
         // 总价差值
         detailDTO.setDifferencePrice(new BigDecimal(200));
-
+*/
         RawMaterial rawMaterial = new RawMaterial("ylbm002");
         rawMaterial.setRawMaterialName("原料002");
         Cargo cargo = new Cargo("cargo002");
@@ -238,13 +234,13 @@ public class RestockBillTest {
         station.setStorage(storage);
         saveDto.setStation(station);
 
-        List<BillDetailDTO> billDetails = new ArrayList<>();
-        BillDetailDTO detailDTO = new BillDetailDTO();
+        List<RestockBillDetailDTO> billDetails = new ArrayList<>();
+        RestockBillDetailDTO detailDTO = new RestockBillDetailDTO();
 
         // 实收数量
         detailDTO.setAmount(88);
         // 包号
-        detailDTO.setPackageCode("package001-saved");
+        /*detailDTO.setPackageCode("package001-saved");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
@@ -254,7 +250,7 @@ public class RestockBillTest {
         // 数量差值
         detailDTO.setDifferenceNumber(0);
         // 总价差值
-        detailDTO.setDifferencePrice(new BigDecimal(0));
+        detailDTO.setDifferencePrice(new BigDecimal(0));*/
 
         RawMaterial rawMaterial = new RawMaterial("ylbm001");
         rawMaterial.setRawMaterialName("原料001");
@@ -303,13 +299,13 @@ public class RestockBillTest {
         station.setStorage(storage);
         saveDto.setStation(station);
 
-        List<BillDetailDTO> billDetails = new ArrayList<>();
-        BillDetailDTO detailDTO = new BillDetailDTO();
+        List<RestockBillDetailDTO> billDetails = new ArrayList<>();
+        RestockBillDetailDTO detailDTO = new RestockBillDetailDTO();
 
         // 最小单位数量
         detailDTO.setAmount(88);
         // 包号
-        detailDTO.setPackageCode("package001-submit");
+       /* detailDTO.setPackageCode("package001-submit");
         // 生产日期
         detailDTO.setDateInProduced(new Date());
         // 单位进价
@@ -319,7 +315,7 @@ public class RestockBillTest {
         // 数量差值
         detailDTO.setDifferenceNumber(0);
         // 总价差值
-        detailDTO.setDifferencePrice(new BigDecimal(0));
+        detailDTO.setDifferencePrice(new BigDecimal(0));*/
 
         RawMaterial rawMaterial = new RawMaterial("ylbm001");
         rawMaterial.setRawMaterialName("原料001");

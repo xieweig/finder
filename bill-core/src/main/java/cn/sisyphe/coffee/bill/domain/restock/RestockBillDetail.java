@@ -22,80 +22,32 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class RestockBillDetail extends BillDetail {
-    /**
-     * 生产日期
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date dateInProduced;
 
     /**
-     * 单位进价
+     * 数量
      */
-    private BigDecimal unitPrice;
+    private int amount;
 
     /**
-     * 发货数量
+     * 备注
      */
-    private int shippedNumber;
+    private String memo;
 
-    /**
-     * 数量差值
-     */
-    private int differenceNumber;
-
-    /**
-     * 总价差值
-     */
-    private BigDecimal differencePrice;
-
-    public Date getDateInProduced() {
-        return dateInProduced;
-    }
-
-    public void setDateInProduced(Date dateInProduced) {
-        this.dateInProduced = dateInProduced;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public int getShippedNumber() {
-        return shippedNumber;
-    }
-
-    public void setShippedNumber(int shippedNumber) {
-        this.shippedNumber = shippedNumber;
-    }
-
-    public int getDifferenceNumber() {
-        return differenceNumber;
-    }
-
-    public void setDifferenceNumber(int differenceNumber) {
-        this.differenceNumber = differenceNumber;
-    }
-
-    public BigDecimal getDifferencePrice() {
-        return differencePrice;
-    }
-
-    public void setDifferencePrice(BigDecimal differencePrice) {
-        this.differencePrice = differencePrice;
+    @Override
+    public int getAmount() {
+        return amount;
     }
 
     @Override
-    public String toString() {
-        return "RestockBillDetail{" +
-                "dateInProduced=" + dateInProduced +
-                ", unitPrice=" + unitPrice +
-                ", shippedNumber=" + shippedNumber +
-                ", differenceNumber=" + differenceNumber +
-                ", differencePrice=" + differencePrice +
-                '}';
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }

@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 @CrossOrigin(origins = "*")
 @Api(description = "退库相关操作")
 public class RestockBillController {
+
     @Resource
     private RestockBillManager restockBillManager;
 
@@ -67,6 +68,7 @@ public class RestockBillController {
         responseResult.put("content", billPage);
         return responseResult;
     }
+
     /**
      *
      *

@@ -121,7 +121,7 @@ public class BillDetailDTO {
 
     @Override
     public String toString() {
-        return "BillDetailDTO{" +
+        return "RestockBillDetailDTO{" +
                 "amount=" + amount +
                 ", packageCode='" + packageCode + '\'' +
                 ", dateInProduced=" + dateInProduced +
