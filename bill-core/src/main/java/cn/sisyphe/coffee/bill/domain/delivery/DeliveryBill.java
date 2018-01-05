@@ -26,7 +26,6 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
         setBillType(BillTypeEnum.DELIVERY);
     }
 
-
     /**
      * 总数量
      */
@@ -64,17 +63,14 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStockTime;
 
-//    /**
-//     * 站点（含库房）
-//     */
-//    private Station station;
-
 
     /**
      * 备注
      */
     @Column(length = 255)
     private String memo;
+
+
 
     public Integer getTotalAmount() {
         return totalAmount;
@@ -134,13 +130,6 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
         this.outStockTime = outStockTime;
     }
 
-//    public Station getStation() {
-//        return station;
-//    }
-//
-//    public void setStation(Station station) {
-//        this.station = station;
-//    }
 
     @Override
     public String toString() {

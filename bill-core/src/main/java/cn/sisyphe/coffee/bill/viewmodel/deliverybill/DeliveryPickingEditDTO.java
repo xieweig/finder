@@ -15,10 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/1/4.
@@ -52,7 +49,6 @@ public class DeliveryPickingEditDTO implements Serializable {
      * 单据号
      */
     private String billCode;
-
 
     /**
      * 出库位置
@@ -134,12 +130,15 @@ public class DeliveryPickingEditDTO implements Serializable {
         //出库站点
         deliveryBill.setOutLocation(dto.getOutLocation());
         //操作人编码
-        deliveryBill.setOperatorCode(deliveryBill.getOperatorCode());
+        deliveryBill.setOperatorCode(dto.getOperatorCode());
         //单据类型
         deliveryBill.setBillType(dto.getBillType());
         //单据用途
         deliveryBill.setBillPurpose(dto.getBillPurpose());
-
+        //总数量
+        deliveryBill.setTotalAmount(this.calcTotalAmount(dto));
+        //总品种
+        deliveryBill.setTotalCount(this.calcTotalCount(dto));
         //添加明细
         deliveryBill.setBillDetails(this.convertBillItemsToDTO(dto));
         return deliveryBill;
@@ -155,6 +154,7 @@ public class DeliveryPickingEditDTO implements Serializable {
     private Set<DeliveryBillDetail> convertBillItemsToDTO(DeliveryPickingEditDTO editDTO) throws DataException {
 
         Set<DeliveryBillDetail> billDetails = new HashSet<>();
+        //
         for (DeliveryPickingEditItemDTO item : editDTO.getBillDetails()) {
             DeliveryBillDetail tempBillDetail = new DeliveryBillDetail();
             //包号
@@ -171,11 +171,50 @@ public class DeliveryPickingEditDTO implements Serializable {
             tempBillDetail.setAmount(item.getActualAmount());
             //备注
             item.setMemo(item.getMemo());
-
+            //明细添加
             billDetails.add(tempBillDetail);
         }
         return billDetails;
     }
+
+    /**
+     * 总数量
+     *
+     * @param editDTO
+     * @return
+     */
+    public Integer calcTotalAmount(DeliveryPickingEditDTO editDTO) {
+        //
+        int totalAmount = 0;
+        for (DeliveryPickingEditItemDTO item : editDTO.getBillDetails()) {
+            // 数量累计
+            totalAmount += item.getActualAmount();//
+        }
+        return totalAmount;
+    }
+
+    /**
+     * 品种计算
+     *
+     * @param editDTO
+     * @return
+     */
+    public Integer calcTotalCount(DeliveryPickingEditDTO editDTO) {
+        //
+        List<String> cardCodeList = new ArrayList<>();
+
+        for (DeliveryPickingEditItemDTO item : editDTO.getBillDetails()) {
+            // 数量累计
+            String strCargoCode = item.getRawMaterial().getCargo().getCargoCode();
+            String billCode = editDTO.getBillCode();
+            String uniqueCode = billCode + strCargoCode;
+            if (!cardCodeList.contains(uniqueCode)) {
+                cardCodeList.add(uniqueCode);//
+            }
+        }
+        return cardCodeList.size();
+    }
+
 
     public String getBelongStationCode() {
         return belongStationCode;

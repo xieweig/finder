@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import cn.sisyphe.framework.web.exception.DataException;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -121,7 +122,10 @@ public class DeliveryBillDTO implements Serializable {
      * @param deliveryBill
      * @return
      */
-    public DeliveryBillDTO convertBillToDTO(DeliveryBill deliveryBill) {
+    public DeliveryBillDTO convertBillToDTO(DeliveryBill deliveryBill) throws DataException {
+        if (deliveryBill == null) {
+            return this;
+        }
         this.billCode = deliveryBill.getBillCode();
         //单据类别
         this.billType = deliveryBill.getBillType();
@@ -139,6 +143,8 @@ public class DeliveryBillDTO implements Serializable {
         this.sourceCode = deliveryBill.getSourceCode();
         // 录单人
         this.operatorName = deliveryBill.getOperatorName();
+        //操作人code
+        this.operatorCode = deliveryBill.getOperatorCode();//
         //审核人code
         this.auditPersonCode = deliveryBill.getAuditPersonCode();
         // 总品种
@@ -161,7 +167,6 @@ public class DeliveryBillDTO implements Serializable {
             DeliveryBillDetailDTO deliveryBillDetailDTO = new DeliveryBillDetailDTO();
 
             //
-
 
 
             deliveryBillDetailDTO.setProgress(item.getProgress());// 进度
