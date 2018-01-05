@@ -78,7 +78,7 @@ public class DeliveryBillController {
     public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }

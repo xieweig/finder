@@ -110,7 +110,7 @@ public class PlanBillIntegrationTest {
     @Test
     public void findByBillCode() {
         String billCode = "ADJUST20180102173046";
-        ResultPlanBillDTO resultPlanBillDTO = planBillManager.findByBillCode(billCode);
+        ResultPlanBillDTO resultPlanBillDTO = planBillManager.findHqPlanBillByBillCode(billCode);
         System.out.println(resultPlanBillDTO);
     }
 

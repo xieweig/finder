@@ -28,6 +28,8 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
@@ -139,10 +141,11 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
     public ResultPlanBillDTO open(String billCode) {
         PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
-        if (BillStateEnum.OPEN.equals(planBill.getBillState()) || BillStateEnum.AUDIT_FAILURE.equals(planBill.getBillState())) {
+        //TODO 还需要加上当前查看的不是提交人条件
+        if (BillStateEnum.SUBMITTED.equals(planBill.getBillState())) {
+            open(planBill);
             return planBillToResultPlanBillDTO(planBill);
         }
-        open(planBill);
         return planBillToResultPlanBillDTO(planBill);
     }
 
@@ -352,12 +355,12 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param billCode
      * @return
      */
-    public ResultPlanBillDTO findByBillCode(String billCode) throws DataException {
+    public ResultPlanBillDTO findHqPlanBillByBillCode(String billCode) throws DataException {
         return planBillToResultPlanBillDTO(planBillRepository.findOneByBillCode(billCode));
     }
 
     /**
-     * 将 PlanBill 转为 ResultPlanBillDTO
+     * 将总部计划PlanBill 转为 ResultPlanBillDTO
      *
      * @param planBill
      * @return
@@ -417,5 +420,41 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         if (StringUtils.isEmpty(planBillDTO.getPlanBillDetailDTOS()) || planBillDTO.getPlanBillDetailDTOS().size() <= 0) {
             throw new DataException("", "单据明细不能为空");
         }
+    }
+
+    /**
+     * 查询切分出来的子计划单
+     *
+     * @param billCode 计划单编码
+     * @return ChildPlanBillDTO
+     */
+    public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode) {
+        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+        return mapChildPlanBillToDTO(planBill);
+    }
+
+    /**
+     * 转换成子计划单DTO
+     *
+     * @param childPlanBill 子计划单
+     * @return 子计划单DTO
+     */
+    private ChildPlanBillDTO mapChildPlanBillToDTO(PlanBill childPlanBill) {
+        ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
+        childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
+        childPlanBillDTO.setMemo(childPlanBill.getMemo());
+        childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
+        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
+        List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS = new ArrayList<>();
+        for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
+            ChildPlanBillDetailDTO childPlanBillDetailDTO = new ChildPlanBillDetailDTO();
+            childPlanBillDetailDTO.setAmount(planBillDetail.getAmount());
+            childPlanBillDetailDTO.setGoodsCode(planBillDetail.getGoods().code());
+            childPlanBillDetailDTOS.add(childPlanBillDetailDTO);
+        }
+        childPlanBillDTO.setChildPlanBillDetails(childPlanBillDetailDTOS);
+        return childPlanBillDTO;
     }
 }
