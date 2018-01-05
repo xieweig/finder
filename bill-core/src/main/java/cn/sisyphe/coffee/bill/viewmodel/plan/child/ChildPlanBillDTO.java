@@ -35,6 +35,11 @@ public class ChildPlanBillDTO {
     private String inStationCode;
     private String outStationCode;
     private BasicEnum basicEnum;
+    private String operatorCode;
+    //数量
+    private Integer totalAmount;
+
+    private Integer typeAmount;
 
 
     private List<ChildPlanBillDetailDTO> childPlanBillDetails;
@@ -93,5 +98,29 @@ public class ChildPlanBillDTO {
 
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
+    }
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
+    }
+
+    public Integer getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Integer getTypeAmount() {
+        return typeAmount;
+    }
+
+    public void setTypeAmount(Integer typeAmount) {
+        this.typeAmount = typeAmount;
     }
 }

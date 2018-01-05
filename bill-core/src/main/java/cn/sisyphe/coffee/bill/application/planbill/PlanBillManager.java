@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.planbill;
 
 import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -47,6 +48,7 @@ import java.util.Set;
 import static ch.lambdaj.Lambda.by;
 import static ch.lambdaj.Lambda.group;
 import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -381,6 +383,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
         childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
+        childPlanBillDTO.setOperatorCode(childPlanBill.getOperatorCode());
+        childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
+        childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
         List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS = new ArrayList<>();
         for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
             ChildPlanBillDetailDTO childPlanBillDetailDTO = new ChildPlanBillDetailDTO();
