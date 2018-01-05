@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -88,6 +90,12 @@ public class DeliveryBillDTO implements Serializable {
     private BigDecimal progress;
 
     /**
+     * 出库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outStockTime;
+
+    /**
      * 备注
      */
     private String memo;
@@ -115,16 +123,35 @@ public class DeliveryBillDTO implements Serializable {
      */
     public DeliveryBillDTO convertBillToDTO(DeliveryBill deliveryBill) {
         this.billCode = deliveryBill.getBillCode();
+        //单据类别
         this.billType = deliveryBill.getBillType();
+        //单据用途
         this.billPurpose = deliveryBill.getBillPurpose();
-        //审核人code
-        this.auditPersonCode = deliveryBill.getAuditPersonCode();
+
         //总数量
         this.totalAmount = deliveryBill.getTotalAmount();
         //总品种
         this.totalCount = deliveryBill.getTotalCount();//
-        //items
+        // 备注
+        this.memo = deliveryBill.getMemo();
+
+        // 出库时间
+        this.outStockTime = deliveryBill.getOutStockTime();
+        // 来源单号
+        this.sourceCode = deliveryBill.getSourceCode();
+
+        // 录单人
+        this.operatorName = deliveryBill.getOperatorName();
+
+        //审核人code
+        this.auditPersonCode = deliveryBill.getAuditPersonCode();
+        // 总品种
+        this.totalCount = deliveryBill.getTotalCount();
+        //总数量
+        this.totalAmount = deliveryBill.getTotalAmount();
+        //
         this.billDetails = convertBillItemsToDTO(deliveryBill);
+
         return this;
     }
 
@@ -143,6 +170,14 @@ public class DeliveryBillDTO implements Serializable {
             billDetails.add(deliveryBillDetailDTO);
         }
         return billDetails;
+    }
+
+    public Date getOutStockTime() {
+        return outStockTime;
+    }
+
+    public void setOutStockTime(Date outStockTime) {
+        this.outStockTime = outStockTime;
     }
 
     public String getBillCode() {
@@ -254,16 +289,18 @@ public class DeliveryBillDTO implements Serializable {
     public String toString() {
         return "DeliveryBillDTO{" +
                 "billDetails=" + billDetails +
+                ", billId=" + billId +
                 ", billCode='" + billCode + '\'' +
                 ", billType=" + billType +
                 ", billPurpose=" + billPurpose +
                 ", sourceCode='" + sourceCode + '\'' +
                 ", auditPersonCode='" + auditPersonCode + '\'' +
-                ", progress=" + progress +
                 ", totalAmount=" + totalAmount +
                 ", totalCount=" + totalCount +
                 ", operatorCode='" + operatorCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +
+                ", progress=" + progress +
+                ", outStockTime=" + outStockTime +
                 ", memo='" + memo + '\'' +
                 '}';
     }

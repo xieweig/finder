@@ -93,15 +93,15 @@ public class DeliveryPickingEditDTO implements Serializable {
 
         // bill code
         deliveryBill.setBillCode(dto.getBillCode());
-        //入库
+        //入库站点
         deliveryBill.setInLocation(dto.getInLocation());
-        //出库
+        //出库站点
         deliveryBill.setOutLocation(dto.getOutLocation());
-
+        //操作人编码
         deliveryBill.setOperatorCode(deliveryBill.getOperatorCode());
         //单据类型
         deliveryBill.setBillType(dto.getBillType());
-        // 单据用途
+        //单据用途
         deliveryBill.setBillPurpose(dto.getBillPurpose());
         //添加明细
         deliveryBill.setBillDetails(this.convertBillItemsToDTO(dto));
