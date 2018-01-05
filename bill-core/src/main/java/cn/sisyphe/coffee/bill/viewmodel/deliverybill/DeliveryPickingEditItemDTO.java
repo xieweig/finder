@@ -46,6 +46,10 @@ public class DeliveryPickingEditItemDTO implements Serializable {
     private AbstractLocation inLocation;
 
 
+
+
+
+
     /**
      * 备注
      */

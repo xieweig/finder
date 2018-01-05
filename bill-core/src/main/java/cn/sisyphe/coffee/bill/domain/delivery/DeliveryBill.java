@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.domain.delivery;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -65,11 +64,10 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStockTime;
 
-
-    /**
-     * 库房
-     */
-    private Storage storage;
+//    /**
+//     * 站点（含库房）
+//     */
+//    private Station station;
 
 
     /**
@@ -136,13 +134,13 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
         this.outStockTime = outStockTime;
     }
 
-    public Storage getStorage() {
-        return storage;
-    }
-
-    public void setStorage(Storage storage) {
-        this.storage = storage;
-    }
+//    public Station getStation() {
+//        return station;
+//    }
+//
+//    public void setStation(Station station) {
+//        this.station = station;
+//    }
 
     @Override
     public String toString() {

@@ -102,6 +102,9 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      */
     public void pickingByCargo(DeliveryPickingEditDTO editDTO) throws DataException {
 
+        if (editDTO.getPickingTypeEnum() == null) {
+            throw new DataException("30005", "选择拣货方式");
+        }
         if (PickingTypeEnum.PICKING_BY_CARGO.equals(editDTO.getPickingTypeEnum())) {
             this.savePicking(editDTO);
         }
@@ -115,6 +118,9 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      */
     public void pickingByRawMaterial(DeliveryPickingEditDTO editDTO) throws DataException {
 
+        if (editDTO.getPickingTypeEnum() == null) {
+            throw new DataException("30005", "选择拣货方式");
+        }
         if (PickingTypeEnum.PICKING_BY_MATERIAL.equals(editDTO.getPickingTypeEnum())) {
             this.savePicking(editDTO);
         }
@@ -142,7 +148,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         DeliveryBill deliveryBill = editDTO.convertPickingDTOToBill(editDTO);
 
         // 保存单据
-        this.save(deliveryBill);
+        save(deliveryBill);
 
     }
 
@@ -152,7 +158,6 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      * @param editDTO
      */
     public void submitWhenDone(DeliveryPickingEditDTO editDTO) throws DataException {
-
 
     }
 
@@ -165,9 +170,9 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      */
     private void checkSaveParam(DeliveryPickingEditDTO editDTO) throws DataException {
 
-        if (StringUtils.isEmpty(editDTO.getBillCode())) {
-            throw new DataException("30001", "单据编码不能为空");
-        }
+//        if (StringUtils.isEmpty(editDTO.getBillCode())) {
+//            throw new DataException("30001", "单据编码不能为空");
+//        }
         //
         if (StringUtils.isEmpty(editDTO.getOperatorCode())) {
             throw new DataException("30002", "操作人编码不能为空");

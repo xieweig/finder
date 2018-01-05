@@ -4,10 +4,11 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
+import cn.sisyphe.framework.web.exception.DataException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.StringUtils;
 
@@ -26,6 +27,22 @@ public class DeliveryPickingEditDTO implements Serializable {
 
 
     private List<DeliveryPickingEditItemDTO> billDetails;
+
+    /**
+     * 站点
+     */
+    private Station station;
+
+    /**
+     * 归属站点
+     */
+    private String belongStationCode;
+
+
+//    /**
+//     * 库房
+//     */
+//    private Storage storage;
 
 
     @JsonIgnore
@@ -97,18 +114,21 @@ public class DeliveryPickingEditDTO implements Serializable {
      * @param dto
      * @return
      */
-    public DeliveryBill convertPickingDTOToBill(DeliveryPickingEditDTO dto) {
+    public DeliveryBill convertPickingDTOToBill(DeliveryPickingEditDTO dto) throws DataException {
         DeliveryBill deliveryBill = new DeliveryBill();
 
         // 假如首次添加默认一个暂时的单号
-        if (StringUtils.isEmpty(dto.getBillCode())) {
+        if (!StringUtils.isEmpty(dto.getBillCode())) {
+            // bill code
+            deliveryBill.setBillCode(dto.getBillCode());//
+        } else {
             //测试使用
             Random random = new Random();
             //配送单号
             deliveryBill.setBillCode("PS" + random.nextInt(10000));
         }
-        // bill code
-        deliveryBill.setBillCode(dto.getBillCode());//
+        //归属站点
+        deliveryBill.setBelongStationCode(dto.getOutLocation().code());
         //入库站点
         deliveryBill.setInLocation(dto.getInLocation());
         //出库站点
@@ -119,10 +139,7 @@ public class DeliveryPickingEditDTO implements Serializable {
         deliveryBill.setBillType(dto.getBillType());
         //单据用途
         deliveryBill.setBillPurpose(dto.getBillPurpose());
-        // 获取库房
-        Storage storage = deliveryBill.getStorage();
-        //库房
-        deliveryBill.setStorage(storage);
+
         //添加明细
         deliveryBill.setBillDetails(this.convertBillItemsToDTO(dto));
         return deliveryBill;
@@ -135,7 +152,7 @@ public class DeliveryPickingEditDTO implements Serializable {
      * @param editDTO
      * @return
      */
-    private Set<DeliveryBillDetail> convertBillItemsToDTO(DeliveryPickingEditDTO editDTO) {
+    private Set<DeliveryBillDetail> convertBillItemsToDTO(DeliveryPickingEditDTO editDTO) throws DataException {
 
         Set<DeliveryBillDetail> billDetails = new HashSet<>();
         for (DeliveryPickingEditItemDTO item : editDTO.getBillDetails()) {
@@ -158,6 +175,22 @@ public class DeliveryPickingEditDTO implements Serializable {
             billDetails.add(tempBillDetail);
         }
         return billDetails;
+    }
+
+    public String getBelongStationCode() {
+        return belongStationCode;
+    }
+
+    public void setBelongStationCode(String belongStationCode) {
+        this.belongStationCode = belongStationCode;
+    }
+
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
     }
 
     public PickingTypeEnum getPickingTypeEnum() {
