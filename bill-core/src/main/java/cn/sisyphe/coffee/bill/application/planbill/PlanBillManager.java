@@ -271,6 +271,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         //2 根据配送出库查询可能会有多条
         //3 所有都是模糊匹配
         //所有的产品表中的数据
+
+        //查询总部计划
+        conditionQueryPlanBill.setHqBill("true");
         Page<PlanBill> planBillPage = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
         return planBillPage.map(this::planBillToResultPlanBillDTO);
 
@@ -387,6 +390,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
+        //查询总部子计划
+        conditionQueryPlanBill.setHqBill("false");
         Page<PlanBill> childPlanBill = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
         return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
