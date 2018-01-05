@@ -4,15 +4,14 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.StationCloudRepository;
 import cn.sisyphe.framework.web.ResponseResult;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.StationType.LOGISTICS;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.StationType.STORE;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.StationType.SUPPLIER;
 
 /**
  * @author ncmao
@@ -50,8 +49,8 @@ public class StationRepositoryImpl implements StationRepository {
     }
     private StationType getStationType(String siteType) {
 
-        if (SUPPLIER.name().equals(siteType)) {
-            return SUPPLIER;
+        if (LOGISTICS.name().equals(siteType)) {
+            return LOGISTICS;
         }
         return STORE;
     }
