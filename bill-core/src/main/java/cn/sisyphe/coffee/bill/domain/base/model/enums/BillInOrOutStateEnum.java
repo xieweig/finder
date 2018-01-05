@@ -11,13 +11,33 @@ public enum BillInOrOutStateEnum {
     /**
      * 未出库
      */
-    NOTOUT,
+    NOT_OUT,
+    /**
+     * 未入库
+     */
+    NOT_IN,
+    /**
+     * 入库中
+     */
+    IN_ING,
+    /**
+     * 出库中
+     */
+    OUT_ING,
     /**
      * 出库失败
      */
-    OUTFAILURE,
+    OUT_FAILURE,
     /**
      * 出库成功
      */
-    OUTSUCCESS;
+    OUT_SUCCESS,
+    /**
+     * 入库失败
+     */
+    IN_FAILURE,
+    /**
+     * 入库成功
+     */
+    IN_SUCCESS;
 }

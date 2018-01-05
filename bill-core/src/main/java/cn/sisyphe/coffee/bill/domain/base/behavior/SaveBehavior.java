@@ -1,9 +1,10 @@
 package cn.sisyphe.coffee.bill.domain.base.behavior;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum.UN_REVIEWED;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.*;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.UNCOMMITTED;
 
 /**
  * Created by heyong on 2017/12/19 12:03
@@ -33,19 +34,40 @@ public class SaveBehavior extends AbstractBillBehavior {
         return BillStateEnum.SAVED;
     }
 
+    /**
+     * 提交状态
+     *
+     * @return
+     */
     @Override
     public BillSubmitStateEnum submitState() {
-        return null;
+        return UNCOMMITTED;
     }
 
+    /**
+     * 审核状态
+     *
+     * @return
+     */
     @Override
     public BillAuditStateEnum auditState() {
-        return null;
+        return UN_REVIEWED;
     }
 
+    /**
+     * 出入库状态
+     *
+     * @return
+     */
     @Override
     public BillInOrOutStateEnum inOrOutState() {
-        return null;
+        if (BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+            return NOT_IN;
+        } else if (BillPurposeEnum.OutStorage.equals(getBillService().getBill().getBillPurpose())) {
+            return NOT_OUT;
+        } else {
+            return null;
+        }
     }
 
 }

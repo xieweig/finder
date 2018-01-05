@@ -11,17 +11,17 @@ public enum BillAuditStateEnum {
     /**
      * 未审核
      */
-    UNREVIEWED,
+    UN_REVIEWED,
     /**
      * 审核中
      */
-    AUDITING,
+    AUDIT_ING,
     /**
      * 审核通过
      */
-    AUDITSUCCESS,
+    AUDIT_SUCCESS,
     /**
      * 审核不通过
      */
-    AUDITFAILURE;
+    AUDIT_FAILURE;
 }

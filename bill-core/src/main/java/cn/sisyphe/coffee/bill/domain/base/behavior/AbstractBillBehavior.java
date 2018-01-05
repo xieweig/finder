@@ -42,11 +42,15 @@ public abstract class AbstractBillBehavior implements BillBehavior {
 
     /**
      * 提交状态
+     *
+     * @return
      */
     public abstract BillSubmitStateEnum submitState();
 
     /**
      * 审核状态
+     *
+     * @return
      */
     public abstract BillAuditStateEnum auditState();
 

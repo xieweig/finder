@@ -99,19 +99,19 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      * 提交状态
      */
     @Enumerated(EnumType.STRING)
-    private BillSubmitStateEnum submitState = BillSubmitStateEnum.UNCOMMITTED;
+    private BillSubmitStateEnum submitState;
 
     /**
      * 审核状态
      */
     @Enumerated(EnumType.STRING)
-    private BillAuditStateEnum auditState = BillAuditStateEnum.UNREVIEWED;
+    private BillAuditStateEnum auditState;
 
     /**
      * 出入库状态
      */
     @Enumerated(EnumType.STRING)
-    private BillInOrOutStateEnum inOrOutState = BillInOrOutStateEnum.NOTOUT;
+    private BillInOrOutStateEnum inOrOutState;
 
 
     /**
