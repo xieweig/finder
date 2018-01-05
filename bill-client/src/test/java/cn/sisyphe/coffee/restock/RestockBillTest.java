@@ -37,12 +37,6 @@ public class RestockBillTest {
     @Test
     public void save() {
         AddRestockBillDTO saveDto = new AddRestockBillDTO();
-        // 货运单号
-        saveDto.setFreightCode("hydh004");
-        // 发货件数
-        saveDto.setShippedAmount(30);
-        // 实收件数
-        saveDto.setActualAmount(30);
         // 备注
         saveDto.setMemo("测试保存单据4");
         // 操作人代码
@@ -56,7 +50,6 @@ public class RestockBillTest {
         Supplier supplier = new Supplier("supplier004");
         supplier.setSupplierName("测试供应商4");
         supplier.setAddress("重庆市4");
-        saveDto.setSupplier(supplier);
 
         // 站点
         Station station = new Station("CD39");
@@ -130,12 +123,6 @@ public class RestockBillTest {
     @Test
     public void commit() {
         AddRestockBillDTO saveDto = new AddRestockBillDTO();
-        // 货运单号
-        saveDto.setFreightCode("hydh002");
-        // 发货件数
-        saveDto.setShippedAmount(5);
-        // 实收件数
-        saveDto.setActualAmount(5);
         // 备注
         saveDto.setMemo("测试保存单据2");
         // 操作人代码
@@ -149,7 +136,6 @@ public class RestockBillTest {
         Supplier supplier = new Supplier("supplier002");
         supplier.setSupplierName("测试供应商2");
         supplier.setAddress("重庆市2");
-        saveDto.setSupplier(supplier);
 
         // 站点
         Station station = new Station("CD37");
@@ -207,12 +193,6 @@ public class RestockBillTest {
         String billCode = "bill003";
         AddRestockBillDTO saveDto = new AddRestockBillDTO();
         saveDto.setBillCode(billCode);
-        // 货运单号
-        saveDto.setFreightCode("hydh001");
-        // 发货件数
-        saveDto.setShippedAmount(10);
-        // 实收件数
-        saveDto.setActualAmount(10);
         // 备注
         saveDto.setMemo("测试保存单据-保存");
         // 操作人代码
@@ -226,7 +206,6 @@ public class RestockBillTest {
         Supplier supplier = new Supplier("supplier001-saved");
         supplier.setSupplierName("测试供应商-saved");
         supplier.setAddress("重庆市-saved");
-        saveDto.setSupplier(supplier);
 
         // 站点
         Station station = new Station("CD37-saved");
@@ -272,13 +251,6 @@ public class RestockBillTest {
         String billCode = "bill003";
         AddRestockBillDTO saveDto = new AddRestockBillDTO();
         saveDto.setBillCode(billCode);
-        // 货运单号
-        saveDto.setFreightCode("hydh001");
-        // 发货件数
-        saveDto.setShippedAmount(10);
-        // 实收件数
-        saveDto.setActualAmount(10);
-        // 备注
         saveDto.setMemo("测试保存单据-提交");
         // 操作人代码
         saveDto.setOperatorCode("xj0001");
@@ -291,7 +263,6 @@ public class RestockBillTest {
         Supplier supplier = new Supplier("supplier001-submit");
         supplier.setSupplierName("测试供应商-submit");
         supplier.setAddress("重庆市-submit");
-        saveDto.setSupplier(supplier);
 
         // 站点
         Station station = new Station("CD37-submit");

@@ -53,7 +53,7 @@ public class SaveCommitTest {
     private AddRestockBillDTO Create() {
         AddRestockBillDTO dto = new AddRestockBillDTO();
 
-        dto.setBillCode("0101" + random.nextInt(1000));
+       /* dto.setBillCode("0101" + random.nextInt(1000));
         dto.setActualAmount(random.nextInt(50));
         dto.setFreightCode("0901" + random.nextInt(200));
         dto.setShippedAmount(random.nextInt(10));
@@ -64,7 +64,7 @@ public class SaveCommitTest {
         supplier.setSupplierName("江苏第" + random.nextInt(100) + "供应商");
         supplier.setAddress("浙江");
         dto.setSupplier(supplier);
-
+*/
         Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
         station.setStationName("重庆" + random.nextInt(100) + "站");
         station.setStationType(StationType.STORE);
