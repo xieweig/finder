@@ -183,9 +183,7 @@ public class WayBillServiceImpl implements WayBillService {
     @Override
     public WayBill updateBill(WayBill wayBill) {
 
-        // TODO: 2017/12/29  修改方法实现
         //1先查询一条数据库里的内容
-        // WayBill wayBillDB = wayBillRepository.findOne(wayBill.getBillId());
         WayBill wayBillDB = wayBillRepository.findOneByCode(wayBill.getBillCode());
         //2设置值
         //公司名称

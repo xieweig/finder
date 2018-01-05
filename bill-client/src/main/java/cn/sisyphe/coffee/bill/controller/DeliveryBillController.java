@@ -35,28 +35,9 @@ public class DeliveryBillController {
     @Autowired
     private DeliveryBillManager deliveryBillManager;
 
-    // 计划单
+    //计划单
     @Autowired
     private PlanBillManager planBillManager;
-
-
-    /**
-     * 根据单据编号查询单据信息
-     *
-     * @param billCode
-     * @return
-     */
-    @ApiOperation(value = "根据单据编号查询单据信息")
-    @RequestMapping(path = "/findOneDeliveryBillByCode", method = RequestMethod.GET)
-    public ResponseResult findOneDeliveryBillByCode(@RequestParam("billCode") String billCode) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("deliveryBill", deliveryBillManager.findOneByBillCode(billCode));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
 
     /**
      * 计划单据多条件分页查询(根据传入的单据类型返回不同单据)
@@ -163,11 +144,9 @@ public class DeliveryBillController {
         } catch (DataException e) {
             responseResult.putException(e);
         }
-
         return responseResult;
 
     }
-
 
     /**
      * 运单多条件分页查询

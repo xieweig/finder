@@ -2,16 +2,21 @@ package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -49,6 +54,11 @@ public class DeliveryPickingEditDTO implements Serializable {
     private String operatorCode;
 
 
+    /**
+     * 拣货方式
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PickingTypeEnum pickingTypeEnum;
     /**
      * 计划单类型
      */
@@ -90,9 +100,15 @@ public class DeliveryPickingEditDTO implements Serializable {
     public DeliveryBill convertPickingDTOToBill(DeliveryPickingEditDTO dto) {
         DeliveryBill deliveryBill = new DeliveryBill();
 
-
+        // 假如首次添加默认一个暂时的单号
+        if (StringUtils.isEmpty(dto.getBillCode())) {
+            //测试使用
+            Random random = new Random();
+            //配送单号
+            deliveryBill.setBillCode("PS" + random.nextInt(10000));
+        }
         // bill code
-        deliveryBill.setBillCode(dto.getBillCode());
+        deliveryBill.setBillCode(dto.getBillCode());//
         //入库站点
         deliveryBill.setInLocation(dto.getInLocation());
         //出库站点
@@ -103,6 +119,10 @@ public class DeliveryPickingEditDTO implements Serializable {
         deliveryBill.setBillType(dto.getBillType());
         //单据用途
         deliveryBill.setBillPurpose(dto.getBillPurpose());
+        // 获取库房
+        Storage storage = deliveryBill.getStorage();
+        //库房
+        deliveryBill.setStorage(storage);
         //添加明细
         deliveryBill.setBillDetails(this.convertBillItemsToDTO(dto));
         return deliveryBill;
@@ -110,6 +130,8 @@ public class DeliveryPickingEditDTO implements Serializable {
     }
 
     /**
+     * 拣货明细(添加货物或者原料)
+     *
      * @param editDTO
      * @return
      */
@@ -124,10 +146,26 @@ public class DeliveryPickingEditDTO implements Serializable {
             tempBillDetail.setOutLocation(item.getOutLocation());
             //
             tempBillDetail.setInLocation(item.getInLocation());
+            // 设置货物和原料信息
+            RawMaterial rawMaterial = item.getRawMaterial();
+
+            tempBillDetail.setGoods(rawMaterial);
+            //实际数量
+            tempBillDetail.setAmount(item.getActualAmount());
+            //备注
+            item.setMemo(item.getMemo());
 
             billDetails.add(tempBillDetail);
         }
         return billDetails;
+    }
+
+    public PickingTypeEnum getPickingTypeEnum() {
+        return pickingTypeEnum;
+    }
+
+    public void setPickingTypeEnum(PickingTypeEnum pickingTypeEnum) {
+        this.pickingTypeEnum = pickingTypeEnum;
     }
 
     public BillPurposeEnum getBillPurpose() {

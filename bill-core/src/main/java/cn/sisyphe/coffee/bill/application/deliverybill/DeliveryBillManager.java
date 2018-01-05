@@ -1,12 +1,9 @@
 package cn.sisyphe.coffee.bill.application.deliverybill;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
-import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
+import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
@@ -35,20 +32,6 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     @Autowired
     public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
-    }
-
-
-    /**
-     * 根据单号查看单据
-     *
-     * @param billCode
-     * @return
-     */
-    public DeliveryBillDTO findOneByBillCode(String billCode) {
-
-        DeliveryBillDTO deliveryBillDTO = new DeliveryBillDTO();
-        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(billCode);
-        return deliveryBillDTO.convertBillToDTO(deliveryBill);
     }
 
 
@@ -113,25 +96,29 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
 
 
     /**
-     * 按货物拣货
+     * 按货物拣货，权限控制
      *
      * @param editDTO
      */
     public void pickingByCargo(DeliveryPickingEditDTO editDTO) throws DataException {
 
-        // TODO: 2018/1/4
-        this.savePicking(editDTO);
+        if (PickingTypeEnum.PICKING_BY_CARGO.equals(editDTO.getPickingTypeEnum())) {
+            this.savePicking(editDTO);
+        }
+
     }
 
     /**
-     * 按原料拣货
+     * 按原料拣货，权限控制
      *
      * @param editDTO
      */
     public void pickingByRawMaterial(DeliveryPickingEditDTO editDTO) throws DataException {
-        // TODO: 2018/1/4
 
-        this.savePicking(editDTO);
+        if (PickingTypeEnum.PICKING_BY_MATERIAL.equals(editDTO.getPickingTypeEnum())) {
+            this.savePicking(editDTO);
+        }
+
     }
 
     /**
@@ -141,6 +128,14 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      * @throws DataException
      */
     private void savePicking(DeliveryPickingEditDTO editDTO) throws DataException {
+
+        /**
+         *
+         *出库单的来源有两类：
+         * 1总部计划切片而来 2"站点退库拣货"页面而来，
+         * 这时 "来源单号 " 和 "出库单号" 一样，就是出库单号
+         *
+         */
         // 参数检查
         this.checkSaveParam(editDTO);
         // DTO转换为单据
@@ -162,16 +157,6 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     }
 
 
-    //如果前端传递过来类型是供应商，则new供应商对象
-    private AbstractLocation getLocation(Station station) {
-        if (StationType.SUPPLIER.equals(station.getStationType())) {
-            Supplier supplier = new Supplier(station.getStationCode());
-            supplier.setSupplierName(station.getStationName());
-            return supplier;
-        }
-        return new Station(station.getStationCode());
-    }
-
     /**
      * 保存前的参数检查
      *
@@ -186,6 +171,12 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         //
         if (StringUtils.isEmpty(editDTO.getOperatorCode())) {
             throw new DataException("30002", "操作人编码不能为空");
+        }
+        if (editDTO.getInLocation() == null) {
+            throw new DataException("30003", "操作入库站点不能为空");
+        }
+        if (editDTO.getOutLocation() == null) {
+            throw new DataException("30004", "操作出库站点不能为空");
         }
         //其他判断
     }

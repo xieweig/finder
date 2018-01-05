@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 
 import java.io.Serializable;
@@ -11,14 +12,11 @@ public class DeliveryPickingEditItemDTO implements Serializable {
 
 
     /**
-     * 货物编码
+     * 设置货物和原料信息
      */
-    private String cargoCode;
 
-    /**
-     * 源码编号
-     */
-    private String rawMaterialCode;
+    private RawMaterial rawMaterial;
+
     /**
      * 期望数量
      */
@@ -77,21 +75,6 @@ public class DeliveryPickingEditItemDTO implements Serializable {
         this.inLocation = inLocation;
     }
 
-    public String getCargoCode() {
-        return cargoCode;
-    }
-
-    public void setCargoCode(String cargoCode) {
-        this.cargoCode = cargoCode;
-    }
-
-    public String getRawMaterialCode() {
-        return rawMaterialCode;
-    }
-
-    public void setRawMaterialCode(String rawMaterialCode) {
-        this.rawMaterialCode = rawMaterialCode;
-    }
 
     public Integer getExpectedAmount() {
         return expectedAmount;
@@ -117,14 +100,30 @@ public class DeliveryPickingEditItemDTO implements Serializable {
         this.packageCode = packageCode;
     }
 
+    public RawMaterial getRawMaterial() {
+        return rawMaterial;
+    }
+
+    public void setRawMaterial(RawMaterial rawMaterial) {
+        this.rawMaterial = rawMaterial;
+    }
+
     @Override
     public String toString() {
         return "DeliveryBillEditItemDTO{" +
-                "cargoCode='" + cargoCode + '\'' +
-                ", rawMaterialCode='" + rawMaterialCode + '\'' +
                 ", expectedAmount=" + expectedAmount +
                 ", actualAmount=" + actualAmount +
                 ", packageCode='" + packageCode + '\'' +
                 '}';
     }
 }
+//
+//    /**
+//     * 货物编码
+//     */
+//    private String cargoCode;
+//
+//    /**
+//     * 源码编号
+//     */
+//    private String rawMaterialCode;

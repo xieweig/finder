@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.delivery;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,7 +16,6 @@ import java.util.Date;
 /**
  * Created by yichuan on 2017/12/19 17:33
  * Description: 配送单
- *
  */
 @Entity
 @Table
@@ -64,6 +64,13 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStockTime;
+
+
+    /**
+     * 库房
+     */
+    private Storage storage;
+
 
     /**
      * 备注
@@ -127,6 +134,14 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
 
     public void setOutStockTime(Date outStockTime) {
         this.outStockTime = outStockTime;
+    }
+
+    public Storage getStorage() {
+        return storage;
+    }
+
+    public void setStorage(Storage storage) {
+        this.storage = storage;
     }
 
     @Override
