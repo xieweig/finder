@@ -198,7 +198,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 设置入库位置
         restockBill.setInLocation(station);
         // 设置出库位置
-        restockBill.setOutLocation(addRestockBillDTO.getSupplier());
+        restockBill.setOutLocation(addRestockBillDTO.getStation());
         // 转换单据明细信息
         Set<RestockBillDetail> detailSet = listDetailMapToSetDetail(addRestockBillDTO.getBillDetails());
         // 设置单据明细信息

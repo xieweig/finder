@@ -11,20 +11,6 @@ import java.util.List;
  */
 public class AddRestockBillDTO {
     /**
-     * 货运单号
-     */
-    private String freightCode;
-
-    /**
-     * 发货件数
-     */
-    private Integer shippedAmount;
-
-    /**
-     * 实收件数
-     */
-    private Integer actualAmount;
-    /**
      * 备注
      */
     private String memo;
@@ -42,10 +28,6 @@ public class AddRestockBillDTO {
      */
     private Station station;
     /**
-     * 供应商信息
-     */
-    private Supplier supplier;
-    /**
      * 单据编码
      */
     private String billCode;
@@ -60,30 +42,6 @@ public class AddRestockBillDTO {
 
     public void setBillDetails(List<RestockBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
-    }
-
-    public String getFreightCode() {
-        return freightCode;
-    }
-
-    public void setFreightCode(String freightCode) {
-        this.freightCode = freightCode;
-    }
-
-    public Integer getShippedAmount() {
-        return shippedAmount;
-    }
-
-    public void setShippedAmount(Integer shippedAmount) {
-        this.shippedAmount = shippedAmount;
-    }
-
-    public Integer getActualAmount() {
-        return actualAmount;
-    }
-
-    public void setActualAmount(Integer actualAmount) {
-        this.actualAmount = actualAmount;
     }
 
     public String getMemo() {
@@ -116,14 +74,6 @@ public class AddRestockBillDTO {
 
     public void setStation(Station station) {
         this.station = station;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
     }
 
     public String getBillCode() {
