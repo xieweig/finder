@@ -106,15 +106,15 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     public QueryOnePurchaseBillDTO openBill(String purchaseBillCode) {
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
         // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的进货单据信息
-        if (purchaseBill.getBillState().equals(BillStateEnum.OPEN)
-                || purchaseBill.getBillState().equals(BillStateEnum.AUDIT_FAILURE)) {
+        if (purchaseBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
+            // 打开单据
+            purchaseBill = open(purchaseBill);
+            return mapOneToDTO(purchaseBill);
+
+        } else {
             return mapOneToDTO(purchaseBill);
         }
 
-        // 打开单据
-        purchaseBill = open(purchaseBill);
-
-        return mapOneToDTO(purchaseBill);
     }
 
 
@@ -165,7 +165,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
-        purchaseBill.setBillCode("bill004");
+        purchaseBill.setBillCode("bill005");
         // 货运单号
         purchaseBill.setFreightCode(addPurchaseBillDTO.getFreightCode());
         // 发货件数
