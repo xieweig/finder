@@ -10,7 +10,12 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ncmao
@@ -103,11 +108,23 @@ public class PlanBillController {
     }
 
     @ApiOperation(value = "根据单据编号查询单据信息")
+    @RequestMapping(path = "/hq/findByBillCode", method = RequestMethod.GET)
+    public ResponseResult findHqPlanBillByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.findHqPlanBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    @ApiOperation(value = "根据单据编号查询切分出来的信息")
     @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }

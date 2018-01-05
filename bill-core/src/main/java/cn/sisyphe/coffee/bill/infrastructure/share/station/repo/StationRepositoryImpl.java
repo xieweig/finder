@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.share.station.repo;
 
+import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.StationCloudRepository;
@@ -47,11 +48,11 @@ public class StationRepositoryImpl implements StationRepository {
         }
         return responseResult.getResult().get("logisticCode").toString();
     }
-    private StationType getStationType(String siteType) {
 
-        if (LOGISTICS.name().equals(siteType)) {
-            return LOGISTICS;
-        }
-        return STORE;
+    private StationType getStationType(String siteType) {
+        Switcher<StationType> stationTypeSwitcher = new Switcher<StationType>()
+                .addCase(LOGISTICS.name(), LOGISTICS)
+                .setDefault(STORE);
+        return stationTypeSwitcher.exec(siteType);
     }
 }
