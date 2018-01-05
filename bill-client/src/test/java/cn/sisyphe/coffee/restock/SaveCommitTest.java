@@ -3,17 +3,18 @@ package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
-import org.junit.Before;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,14 +23,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+
 import javax.annotation.Resource;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.Calendar;
 import java.util.Random;
-
+/**
+ * @Author: xie_wei_guang
+ * @Date: 2018/1/5
+ * @Description: manager 级别上的测试
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
 public class SaveCommitTest {
@@ -52,11 +57,11 @@ public class SaveCommitTest {
 //            e.printStackTrace();
 //        }
 //    }
-
-    protected AddRestockBillDTO createBill() {
+    //生成一个bill dto
+    private AddRestockBillDTO createBill() {
         AddRestockBillDTO dto = new AddRestockBillDTO();
 
-        dto.setBillCode("0101" + random.nextInt(1000));
+        //dto.setBillCode("0101" + random.nextInt(1000));后台生成 update delete select 用到
         dto.setMemo("Remarks: " + random.nextInt(20) + " ok!");
         dto.setOperatorCode("2200" + random.nextInt(100));
 
@@ -82,7 +87,8 @@ public class SaveCommitTest {
 
         return dto;
     }
-    protected RestockBillDetailDTO  createDetail(){
+    //生成一个detail dto
+    private RestockBillDetailDTO  createDetail(){
 
         RestockBillDetailDTO billDetailDTO = new RestockBillDetailDTO();
         billDetailDTO.setAmount(random.nextInt(100));
@@ -96,16 +102,40 @@ public class SaveCommitTest {
         return  billDetailDTO;
 
     }
-
+    //测试拣货界面保存
     @Test
     public void saveTest()  {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             AddRestockBillDTO dto = this.createBill();
 
             this.restockBillManager.saveBill(dto);
 
         }
 
+    }
+    //测试拣货界面提交
+    @Test
+    public void submitTest(){
+        for (int i = 0; i <4 ; i++) {
+            AddRestockBillDTO dto = this.createBill();
+            this.restockBillManager.submitBill(dto);
+        }
+    }
+    @Test
+    public void findOneTest(){
+        String billCode = "30580302";
+//        AddRestockBillDTO dto = this.createBill();
+//        dto.setBillCode(billCode);
+        QueryOneRestockBillDTO one = this.restockBillManager.openBill(billCode);
+        logger.info(one.toString());
 
     }
+    //测试修改界面修改
+    @Test
+    public void updateTest(){
+        //restockBillManager.getBillRepository().
+        //AddRestockBillDTO dto = this.createBill();
+       // dto.setBillCode();
+    }
+
 }
