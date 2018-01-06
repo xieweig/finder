@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.CoreApplication;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.Result;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -30,6 +32,8 @@ import java.util.Random;
 @SpringBootTest(classes = {CoreApplication.class, ClientApplication.class})
 @WebAppConfiguration
 public class ControllerTest {
+    private  String[] names={"牛奶","咖啡","乳酪","啤酒","面包","排骨","米饭","馒头","鸭肉","鸡肉"};
+    public static final String PREFIX = "localhost:15009/api/bill/restock/";
     @Resource
     private WebApplicationContext webApplicationContext;
     Logger logger = LoggerFactory.getLogger(ControllerTest.class);
@@ -46,11 +50,12 @@ public class ControllerTest {
 
     @Test
   public void funny() {
+        ResultActions resultActions;
         try {
-            mvc.perform(MockMvcRequestBuilders
-                    .get("/api/bill/returned/saveRestockBill")
+           resultActions=  mvc.perform(MockMvcRequestBuilders
+                    .get(PREFIX+"saveRestockBill")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("addRestockBillDTO",""));
+                    .param("addRestockBillDTO","{'billCode':'10001','memo':'remarks'}"));
         } catch (Exception e) {
             e.printStackTrace();
         }
