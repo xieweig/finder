@@ -10,6 +10,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 
+import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
@@ -43,6 +45,9 @@ public class SaveCommitTest {
     Logger logger = LoggerFactory.getLogger(SaveCommitTest.class);
     @Resource
     private RestockBillManager restockBillManager;
+    @Resource
+    RestockBillQueryService restockBillQueryService;
+
     private RandomAccessFile randomAccessFile;
 
     /**
@@ -123,18 +128,33 @@ public class SaveCommitTest {
     }
     @Test
     public void findOneTest(){
-        String billCode = "30580302";
-//        AddRestockBillDTO dto = this.createBill();
-//        dto.setBillCode(billCode);
-        QueryOneRestockBillDTO one = this.restockBillManager.openBill(billCode);
-        logger.info(one.toString());
+        String billCode = "7750302";
+
+        RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
+
+        logger.info(restockBill.toString());
+
+        logger.info("cargo_code before: " + restockBill.getBillDetails().iterator().next().getGoods().code());
+
+        AddRestockBillDTO dto = this.createBill();
+
+        dto.setBillCode(billCode);
+
+        this.restockBillManager.updateBillToSave(dto);
+
+        restockBill = restockBillQueryService.findByBillCode(billCode);
+        logger.info(restockBill.toString());
+        logger.info("cargo_code before: " + restockBill.getBillDetails().iterator().next().getGoods().code());
+
+       // logger.info(one.toString());13023024  00205176 {cargoCode='00205176', rawMaterialCode='03020199'}
 
     }
     //测试修改界面修改
     @Test
     public void updateTest(){
-        //restockBillManager.getBillRepository().
-        //AddRestockBillDTO dto = this.createBill();
+
+        AddRestockBillDTO dto = this.createBill();
+        dto.setBillCode("03020201");
        // dto.setBillCode();
     }
 
