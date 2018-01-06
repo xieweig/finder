@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -24,6 +26,39 @@ public class RestockBillController {
 
     @Resource
     private RestockBillManager restockBillManager;
+    @Resource
+    private PlanBillManager planBillManager;
+
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "子计划多条件查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        System.err.print("子计划多条件查询开始");
+        try {
+            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    @ApiOperation(value = "子计划单个查询")
+    @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
+    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
 
     /**
      * 保存退库出库单

@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -142,6 +143,25 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
              */
             if (conditionQueryRestockBill.getInOrOutStateCode() != null && conditionQueryRestockBill.getInOrOutStateCode().size() > 0) {
                 expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryRestockBill.getInOrOutStateCode()));
+            }
+            /**
+             * 配送总价
+             */
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getStartVariety())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("variety").as(Integer.class), conditionQueryRestockBill.getStartVariety()));
+            }
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getEndVariety())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("variety").as(Integer.class), conditionQueryRestockBill.getEndVariety()));
+            }
+
+            /**
+             * 配送总价
+             */
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getStartTotalPrice())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryRestockBill.getStartTotalPrice()));
+            }
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getEndTotalPrice())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryRestockBill.getEndTotalPrice()));
             }
 
 //            SetJoin<RestockBill, Long> restockBillLongSetJoin = root.join(root.getModel().getSet(""));

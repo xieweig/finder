@@ -385,8 +385,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
-        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+//        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+//        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         childPlanBillDTO.setOperatorCode(childPlanBill.getOperatorCode());
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());

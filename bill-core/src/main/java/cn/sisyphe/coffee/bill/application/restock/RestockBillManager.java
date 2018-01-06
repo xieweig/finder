@@ -56,7 +56,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         save(restockBill);
     }
 
-
     /**
      * 提交进货单
      *
@@ -68,8 +67,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         submit(restockBill);
     }
-
-
 
     /**
      * 修改退库单--保存
@@ -220,8 +217,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         }
         restockBill.setAmount(amount);
         //退货品种数
-        int species = detailDTOSet.size();
-        restockBill.setSpecies(species);
+        int variety = detailDTOSet.size();
+        restockBill.setVariety(variety);
         //配送总价
         restockBill.setTotalPrice(addRestockBillDTO.getTotalPrice());
         //按货物还是按原料
@@ -263,8 +260,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     private QueryOneRestockBillDTO mapOneToDTO(RestockBill restockBill) {
         QueryOneRestockBillDTO billDTO = new QueryOneRestockBillDTO();
         // 备注
-
-
         Station station = (Station) restockBill.getInLocation();
         // 库位名称
         billDTO.setInStorageCode(station.getStorage().getStorageCode());

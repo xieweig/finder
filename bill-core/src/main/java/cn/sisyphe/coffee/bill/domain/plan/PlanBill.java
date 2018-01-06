@@ -38,6 +38,11 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
+/*
+    //接受的单据编号
+    @Column
+    private String reciveBillCode;
+*/
 
     //是否是总部计划
     @Column
@@ -49,7 +54,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     //审核意见
     private String auditMemo;
-
 
     //完成度
     @Column
