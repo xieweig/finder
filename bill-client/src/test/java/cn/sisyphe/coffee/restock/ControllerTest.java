@@ -12,16 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: xie_wei_guang
@@ -33,7 +31,7 @@ import java.util.Random;
 @WebAppConfiguration
 public class ControllerTest {
     private  String[] names={"牛奶","咖啡","乳酪","啤酒","面包","排骨","米饭","馒头","鸭肉","鸡肉"};
-    public static final String PREFIX = "localhost:15009/api/bill/restock/";
+    public static final String PREFIX = "http://localhost:15009/api/bill/restock/";
     @Resource
     private WebApplicationContext webApplicationContext;
     Logger logger = LoggerFactory.getLogger(ControllerTest.class);
@@ -52,15 +50,21 @@ public class ControllerTest {
   public void funny() {
         ResultActions resultActions;
         try {
-           resultActions=  mvc.perform(MockMvcRequestBuilders
-                    .get(PREFIX+"saveRestockBill")
+            TimeUnit.SECONDS.sleep(2);
+            RequestBuilder requestBuilder =MockMvcRequestBuilders
+                    .post(PREFIX+"saveRestockBill")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("addRestockBillDTO","{'billCode':'10001','memo':'remarks'}"));
+                    .param("addRestockBillDTO","{'billCode':'10001','memo':'remarks'}");
+            logger.info("test:---"+requestBuilder.toString());
+             resultActions=  mvc.perform(requestBuilder);
+             resultActions.andReturn();
+
+          //  MvcResult mvcResult = resultActions.andReturn();
+
+            System.out.println("--------" );
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println("--------返回的json = " );
 
     }
 
