@@ -187,7 +187,7 @@ public class PurchaseBillConstroller {
          * 仓储库01
          */
         TempStorage storage = new TempStorage();
-        storage.setTempStorageId(1L);
+        storage.setTempStorageId(3L);
         storage.setTempStorageCode("Storage001");
         storage.setTempStorageName("仓储库01");
         storage.setCreateTime(new Date());
@@ -199,7 +199,7 @@ public class PurchaseBillConstroller {
          * 进货库01
          */
         TempStorage inStorage = new TempStorage();
-        inStorage.setTempStorageId(1L);
+        inStorage.setTempStorageId(4L);
         inStorage.setTempStorageCode("In001");
         inStorage.setTempStorageName("进货库01");
         inStorage.setCreateTime(new Date());
@@ -211,7 +211,7 @@ public class PurchaseBillConstroller {
          * 退货库01
          */
         TempStorage outStorage = new TempStorage();
-        outStorage.setTempStorageId(1L);
+        outStorage.setTempStorageId(5L);
         outStorage.setTempStorageCode("Out001");
         outStorage.setTempStorageName("退货库01");
         outStorage.setCreateTime(new Date());
@@ -223,7 +223,7 @@ public class PurchaseBillConstroller {
          * 在途库01
          */
         TempStorage onStorage = new TempStorage();
-        onStorage.setTempStorageId(1L);
+        onStorage.setTempStorageId(6L);
         onStorage.setTempStorageCode("On001");
         onStorage.setTempStorageName("在途库01");
         onStorage.setCreateTime(new Date());
@@ -235,12 +235,12 @@ public class PurchaseBillConstroller {
          * 预留库01
          */
         TempStorage reservedStorage = new TempStorage();
-        onStorage.setTempStorageId(1L);
-        onStorage.setTempStorageCode("Reserved001");
-        onStorage.setTempStorageName("预留库01");
-        onStorage.setCreateTime(new Date());
-        onStorage.setUpdateTime(new Date());
-        onStorage.setVersion(0L);
+        reservedStorage.setTempStorageId(7L);
+        reservedStorage.setTempStorageCode("Reserved001");
+        reservedStorage.setTempStorageName("预留库01");
+        reservedStorage.setCreateTime(new Date());
+        reservedStorage.setUpdateTime(new Date());
+        reservedStorage.setVersion(0L);
         tempStorageList.add(reservedStorage);
 
         responseResult.put("content", tempStorageList);
