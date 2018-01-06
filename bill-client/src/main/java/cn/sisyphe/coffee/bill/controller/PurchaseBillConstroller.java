@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
+import cn.sisyphe.coffee.bill.infrastructure.share.storage.TempStorage;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
@@ -10,7 +11,12 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @RequestMapping("/api/bill/purchase")
 @RestController
@@ -142,4 +148,104 @@ public class PurchaseBillConstroller {
         purchaseBillManager.auditBill(purchaseBillCode, auditPersonCode, false);
         return responseResult;
     }
+
+    @ApiOperation(value = "临时库房")
+    @RequestMapping(path = "/queryStorageByStationCode", method = RequestMethod.GET)
+    public ResponseResult queryStorageByStationCode(@RequestParam String stationCode) {
+        ResponseResult responseResult = new ResponseResult();
+        if(StringUtils.isEmpty(stationCode)){
+            DataException dataException = new DataException("404","站点编码为空");
+            responseResult.putException(dataException);
+            return responseResult;
+        }
+        List<TempStorage> tempStorageList = new ArrayList<>();
+        /**
+         * 正常库01
+         */
+        TempStorage noramlStorageOne = new TempStorage();
+        noramlStorageOne.setTempStorageId(1L);
+        noramlStorageOne.setTempStorageCode("Noraml001");
+        noramlStorageOne.setTempStorageName("正常库01");
+        noramlStorageOne.setCreateTime(new Date());
+        noramlStorageOne.setUpdateTime(new Date());
+        noramlStorageOne.setVersion(0L);
+        tempStorageList.add(noramlStorageOne);
+
+        /**
+         * 正常库02
+         */
+        TempStorage noramlStorageTwo = new TempStorage();
+        noramlStorageTwo.setTempStorageId(2L);
+        noramlStorageTwo.setTempStorageCode("Noraml002");
+        noramlStorageTwo.setTempStorageName("正常库02");
+        noramlStorageTwo.setCreateTime(new Date());
+        noramlStorageTwo.setUpdateTime(new Date());
+        noramlStorageTwo.setVersion(0L);
+        tempStorageList.add(noramlStorageTwo);
+
+        /**
+         * 仓储库01
+         */
+        TempStorage storage = new TempStorage();
+        storage.setTempStorageId(1L);
+        storage.setTempStorageCode("Storage001");
+        storage.setTempStorageName("仓储库01");
+        storage.setCreateTime(new Date());
+        storage.setUpdateTime(new Date());
+        storage.setVersion(0L);
+        tempStorageList.add(storage);
+
+        /**
+         * 进货库01
+         */
+        TempStorage inStorage = new TempStorage();
+        inStorage.setTempStorageId(1L);
+        inStorage.setTempStorageCode("In001");
+        inStorage.setTempStorageName("进货库01");
+        inStorage.setCreateTime(new Date());
+        inStorage.setUpdateTime(new Date());
+        inStorage.setVersion(0L);
+        tempStorageList.add(inStorage);
+
+        /**
+         * 退货库01
+         */
+        TempStorage outStorage = new TempStorage();
+        outStorage.setTempStorageId(1L);
+        outStorage.setTempStorageCode("Out001");
+        outStorage.setTempStorageName("退货库01");
+        outStorage.setCreateTime(new Date());
+        outStorage.setUpdateTime(new Date());
+        outStorage.setVersion(0L);
+        tempStorageList.add(outStorage);
+
+        /**
+         * 在途库01
+         */
+        TempStorage onStorage = new TempStorage();
+        onStorage.setTempStorageId(1L);
+        onStorage.setTempStorageCode("On001");
+        onStorage.setTempStorageName("在途库01");
+        onStorage.setCreateTime(new Date());
+        onStorage.setUpdateTime(new Date());
+        onStorage.setVersion(0L);
+        tempStorageList.add(onStorage);
+
+        /**
+         * 预留库01
+         */
+        TempStorage reservedStorage = new TempStorage();
+        onStorage.setTempStorageId(1L);
+        onStorage.setTempStorageCode("Reserved001");
+        onStorage.setTempStorageName("预留库01");
+        onStorage.setCreateTime(new Date());
+        onStorage.setUpdateTime(new Date());
+        onStorage.setVersion(0L);
+        tempStorageList.add(reservedStorage);
+
+        responseResult.put("content", tempStorageList);
+        return responseResult;
+    }
+
+
 }

@@ -39,9 +39,9 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     @Autowired
     private PurchaseBillQueryService purchaseBillQueryService;
 
-
     @Autowired
-    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
+    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository,
+                               ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
 
@@ -65,7 +65,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      */
     public void submitBill(AddPurchaseBillDTO addPurchaseBillDTO) {
         // 验证属性
-        verificationSubmit(addPurchaseBillDTO);
+        verification(addPurchaseBillDTO);
         // 转换单据
         PurchaseBill purchaseBill = dtoToMapPurchaseBill(addPurchaseBillDTO);
         submit(purchaseBill);
@@ -81,6 +81,8 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
             throw new DataException("404", "单据编码为空");
         }
+        // 验证属性
+        verification(billDTO);
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
         purchaseBill.getBillDetails().clear();
         // 转换单据
@@ -97,6 +99,8 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
             throw new DataException("404", "单据编码为空");
         }
+        // 验证属性
+        verification(billDTO);
         PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
         purchaseBill.getBillDetails().clear();
         // 转换单据
@@ -204,7 +208,6 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
             // 设置入库位置
             purchaseBill.setInLocation(station);
         }
-
         Supplier supplier = addPurchaseBillDTO.getSupplier();
         if (supplier != null) {
             // 设置出库位置
@@ -501,11 +504,31 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      *
      * @param addPurchaseBillDTO
      */
-    private void verificationSubmit(AddPurchaseBillDTO addPurchaseBillDTO) {
+    private void verification(AddPurchaseBillDTO addPurchaseBillDTO) {
+        if (StringUtils.isEmpty(addPurchaseBillDTO.getFreightCode())) {
+            throw new DataException("500", "货运单号为空");
+        }
+        if (addPurchaseBillDTO.getShippedAmount() == null) {
+            throw new DataException("500", "发货件数为空");
+        }
+        if (addPurchaseBillDTO.getActualAmount() == null) {
+            throw new DataException("500", "实收件数为空");
+        }
+        if (StringUtils.isEmpty(addPurchaseBillDTO.getOperatorCode())) {
+            throw new DataException("500", "操作人代码为空");
+        }
+        if (addPurchaseBillDTO.getStorage() == null) {
+            throw new DataException("500", "库房为空");
+        }
+        if (addPurchaseBillDTO.getStation() == null) {
+            throw new DataException("500", "站点为空");
+        }
+        if (addPurchaseBillDTO.getSupplier() == null) {
+            throw new DataException("500", "供应商为空");
+        }
         if (addPurchaseBillDTO.getBillDetails() == null) {
             throw new DataException("500", "进货单据明细为空");
         }
-
     }
 
 }
