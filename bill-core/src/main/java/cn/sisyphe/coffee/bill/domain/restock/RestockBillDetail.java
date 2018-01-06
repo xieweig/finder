@@ -23,24 +23,38 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class RestockBillDetail extends BillDetail {
 
+    private String rawMaterialCode;
+
+    private String cargoCode;
     /**
-     * 数量
+     * 应拣数量
      */
-    private int amount;
+    private int shippedAmount;
+
+    /**
+     * 实拣数量
+     */
+    private int actualAmount;
 
     /**
      * 备注
      */
     private String memo;
 
-    @Override
-    public int getAmount() {
-        return amount;
+    public int getShippedAmount() {
+        return shippedAmount;
     }
 
-    @Override
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setShippedAmount(int shippedAmount) {
+        this.shippedAmount = shippedAmount;
+    }
+
+    public int getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(int actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
     public String getMemo() {
@@ -49,5 +63,21 @@ public class RestockBillDetail extends BillDetail {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getRawMaterialCode() {
+        return rawMaterialCode;
+    }
+
+    public void setRawMaterialCode(String rawMaterialCode) {
+        this.rawMaterialCode = rawMaterialCode;
+    }
+
+    public String getCargoCode() {
+        return cargoCode;
+    }
+
+    public void setCargoCode(String cargoCode) {
+        this.cargoCode = cargoCode;
     }
 }

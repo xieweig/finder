@@ -13,9 +13,15 @@ import java.util.Date;
 public class RestockBillDetailDTO {
 
     /**
-     * 数量
+     * 应拣数量
      */
-    private Integer amount;
+    private int shippedAmount;
+
+    /**
+     * 实拣数量
+     */
+    private int actualAmount;
+
 
     /**
      * 原料
@@ -27,12 +33,20 @@ public class RestockBillDetailDTO {
      */
     private String memo;
 
-    public Integer getAmount() {
-        return amount;
+    public int getShippedAmount() {
+        return shippedAmount;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setShippedAmount(int shippedAmount) {
+        this.shippedAmount = shippedAmount;
+    }
+
+    public int getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(int actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
     public RawMaterial getRawMaterial() {
