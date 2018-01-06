@@ -54,7 +54,7 @@ public class ControllerTest {
             RequestBuilder requestBuilder =MockMvcRequestBuilders
                     .post(PREFIX+"saveRestockBill")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("addRestockBillDTO","{'billCode':'10001','memo':'remarks'}");
+                    .param("addRestockBillDTO","{\'billCode\':\'10001\',\'memo\':\'remarks\'}");
             logger.info("test:---"+requestBuilder.toString());
              resultActions=  mvc.perform(requestBuilder);
              resultActions.andReturn();
