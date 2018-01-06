@@ -2,10 +2,8 @@ package cn.sisyphe.coffee.bill.viewmodel.restock;
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,6 +14,11 @@ public class AddRestockBillDTO {
      * 按货物还是按种类
      */
     private BasicEnum basicEnum;
+
+    /**
+     * 来源单号
+     */
+    private String fromBillCode;
     /**
      * 计划备注
      */
@@ -133,5 +136,13 @@ public class AddRestockBillDTO {
 
     public void setBillCode(String billCode) {
         this.billCode = billCode;
+    }
+
+    public String getFromBillCode() {
+        return fromBillCode;
+    }
+
+    public void setFromBillCode(String fromBillCode) {
+        this.fromBillCode = fromBillCode;
     }
 }

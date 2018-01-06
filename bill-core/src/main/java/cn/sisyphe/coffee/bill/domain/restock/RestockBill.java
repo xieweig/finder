@@ -30,6 +30,11 @@ public class RestockBill extends Bill<RestockBillDetail> {
     private BasicEnum basicEnum;
 
     /**
+     * 来源单号
+     */
+    private String fromBillCode;
+
+    /**
      * 退货数量
      */
     private int amount;
@@ -59,6 +64,14 @@ public class RestockBill extends Bill<RestockBillDetail> {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
+
+    public String getFromBillCode() {
+        return fromBillCode;
+    }
+
+    public void setFromBillCode(String fromBillCode) {
+        this.fromBillCode = fromBillCode;
+    }
 
     public BasicEnum getBasicEnum() {
         return basicEnum;

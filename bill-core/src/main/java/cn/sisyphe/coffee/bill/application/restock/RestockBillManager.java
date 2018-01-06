@@ -185,6 +185,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //测试使用
         Random random = new Random();
         restockBill.setBillCode(random.nextInt(10000)+"0302");
+        // 来源单号
+        restockBill.setFromBillCode(addRestockBillDTO.getFromBillCode());
         // 计划备注
         restockBill.setPlanMemo(addRestockBillDTO.getPlanMemo());
         // 出库备注
@@ -363,6 +365,20 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             // 单据状态--主表
             toMapTwoState(restockBillDTO, restockBill.getBillState().name());
             // 备注--主表
+
+            // 单据提交状态--主表
+            if (restockBill.getSubmitState() != null) {
+                restockBillDTO.setSubmitState(restockBill.getSubmitState().name());
+            } else {
+                restockBillDTO.setSubmitState("-");
+            }
+            // 单据审核状态--主表
+            if (restockBill.getAuditState() != null) {
+                restockBillDTO.setAuditState(restockBill.getAuditState().name());
+            } else {
+                restockBillDTO.setAuditState("-");
+            }
+
             // 循环遍历明细信息，累加得到数据
             Set<RestockBillDetail> restockBillDetailSet = restockBill.getBillDetails();
             // 实收数量总计
