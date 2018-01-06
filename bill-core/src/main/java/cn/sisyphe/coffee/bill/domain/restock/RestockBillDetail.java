@@ -1,16 +1,11 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author ncmao
@@ -23,9 +18,6 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class RestockBillDetail extends BillDetail {
 
-    private String rawMaterialCode;
-
-    private String cargoCode;
     /**
      * 应拣数量
      */
@@ -63,21 +55,5 @@ public class RestockBillDetail extends BillDetail {
 
     public void setMemo(String memo) {
         this.memo = memo;
-    }
-
-    public String getRawMaterialCode() {
-        return rawMaterialCode;
-    }
-
-    public void setRawMaterialCode(String rawMaterialCode) {
-        this.rawMaterialCode = rawMaterialCode;
-    }
-
-    public String getCargoCode() {
-        return cargoCode;
-    }
-
-    public void setCargoCode(String cargoCode) {
-        this.cargoCode = cargoCode;
     }
 }

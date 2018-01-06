@@ -127,6 +127,7 @@ public class PlanBillController {
     @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
+        System.err.print("子计划多条件查询开始");
         try {
             responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
 
@@ -138,7 +139,7 @@ public class PlanBillController {
 
 
     @ApiOperation(value = "子计划单个查询")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
+    @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -29,7 +30,10 @@ public class RestockBill extends Bill<RestockBillDetail> {
      * 单据属性
      */
     private PropertyEnum billProperty;
-
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
     /**
      * 按货物还是按原料
      */
@@ -70,6 +74,14 @@ public class RestockBill extends Bill<RestockBillDetail> {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public PropertyEnum getBillProperty() {
         return billProperty;

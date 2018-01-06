@@ -1,13 +1,16 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  *@date: 2018/1/2
@@ -21,6 +24,20 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      */
     private String operatorName;
     /**
+     * 出库单号
+     */
+    private String billCode;
+    /**
+     * 入库站点编号集合
+     */
+    private Set<String> inStationCodeArray;
+
+    /**
+     * 出库站点编号集合
+     */
+    private Set<String> outStationCodeArray;
+
+    /**
      * 录单开始时间
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,25 +50,22 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createEndTime;
     /**
-     * 入库单号
-     */
-    private String billCode;
-    /**
-     * 入库开始时间
+     * 出库开始时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inStartTime;
     /**
-     * 入库结束时间
+     * 出库结束时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inEndTime;
+
     /**
-     * 供应商编码
+     * 单据属性
      */
-    private String supplierCode;
+    private PropertyEnum billProperty;
 
     /**
      * 提交状态
@@ -71,6 +85,80 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      * 录单人编码集合
      */
     private List<String> operatorCodeList;
+
+    /**
+     * 开始配送品种
+     */
+    private int startVariety;
+
+    /**
+     * 结束配送品种
+     */
+    private int endVariety;
+    /**
+     * 开始配送总价
+     */
+    private BigDecimal startTotalPrice;
+    /**
+     * 结束配送总价
+     */
+    private BigDecimal endTotalPrice;
+
+    public Set<String> getInStationCodeArray() {
+        return inStationCodeArray;
+    }
+
+    public void setInStationCodeArray(Set<String> inStationCodeArray) {
+        this.inStationCodeArray = inStationCodeArray;
+    }
+
+    public Set<String> getOutStationCodeArray() {
+        return outStationCodeArray;
+    }
+
+    public void setOutStationCodeArray(Set<String> outStationCodeArray) {
+        this.outStationCodeArray = outStationCodeArray;
+    }
+
+    public PropertyEnum getBillProperty() {
+        return billProperty;
+    }
+
+    public void setBillProperty(PropertyEnum billProperty) {
+        this.billProperty = billProperty;
+    }
+
+    public int getStartVariety() {
+        return startVariety;
+    }
+
+    public void setStartVariety(int startVariety) {
+        this.startVariety = startVariety;
+    }
+
+    public int getEndVariety() {
+        return endVariety;
+    }
+
+    public void setEndVariety(int endVariety) {
+        this.endVariety = endVariety;
+    }
+
+    public BigDecimal getStartTotalPrice() {
+        return startTotalPrice;
+    }
+
+    public void setStartTotalPrice(BigDecimal startTotalPrice) {
+        this.startTotalPrice = startTotalPrice;
+    }
+
+    public BigDecimal getEndTotalPrice() {
+        return endTotalPrice;
+    }
+
+    public void setEndTotalPrice(BigDecimal endTotalPrice) {
+        this.endTotalPrice = endTotalPrice;
+    }
 
     public String getOperatorName() {
         return operatorName;
@@ -118,14 +206,6 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
 
     public void setInEndTime(Date inEndTime) {
         this.inEndTime = inEndTime;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
     }
 
     public List<String> getSubmitStateCode() {

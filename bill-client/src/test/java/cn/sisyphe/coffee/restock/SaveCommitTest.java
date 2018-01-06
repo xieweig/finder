@@ -1,3 +1,4 @@
+/*
 
 package cn.sisyphe.coffee.restock;
 
@@ -32,11 +33,13 @@ import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.Calendar;
 import java.util.Random;
+*/
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/5
  * @Description: manager 级别上的测试
- */
+ *//*
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
 public class SaveCommitTest {
@@ -50,10 +53,12 @@ public class SaveCommitTest {
 
     private RandomAccessFile randomAccessFile;
 
-    /**
+    */
+/**
      * notes :
      * 随机生成 AddRestockBillDTO 的对象
-     */
+     *//*
+
 //    @Before
 //    public void init() {
 //        try {
@@ -158,4 +163,4 @@ public class SaveCommitTest {
        // dto.setBillCode();
     }
 
-}
+}*/
