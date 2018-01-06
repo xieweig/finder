@@ -52,11 +52,21 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      * 供应商编码
      */
     private String supplierCode;
-    /**
-     * 状态
-     */
-    private String statusCode;
 
+    /**
+     * 提交状态
+     */
+    private List<String> submitStateCode;
+
+    /**
+     * 审核状态
+     */
+    private List<String> auditStateCode;
+
+    /**
+     * 出入库状态
+     */
+    private List<String> inOrOutStateCode;
     /**
      * 录单人编码集合
      */
@@ -118,12 +128,28 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
         this.supplierCode = supplierCode;
     }
 
-    public String getStatusCode() {
-        return statusCode;
+    public List<String> getSubmitStateCode() {
+        return submitStateCode;
     }
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
+    public void setSubmitStateCode(List<String> submitStateCode) {
+        this.submitStateCode = submitStateCode;
+    }
+
+    public List<String> getAuditStateCode() {
+        return auditStateCode;
+    }
+
+    public void setAuditStateCode(List<String> auditStateCode) {
+        this.auditStateCode = auditStateCode;
+    }
+
+    public List<String> getInOrOutStateCode() {
+        return inOrOutStateCode;
+    }
+
+    public void setInOrOutStateCode(List<String> inOrOutStateCode) {
+        this.inOrOutStateCode = inOrOutStateCode;
     }
 
     public List<String> getOperatorCodeList() {
