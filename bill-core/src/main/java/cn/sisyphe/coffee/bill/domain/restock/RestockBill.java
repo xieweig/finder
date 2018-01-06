@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.restock;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,6 +24,11 @@ public class RestockBill extends Bill<RestockBillDetail> {
     public RestockBill() {
         setBillType(BillTypeEnum.RESTOCK);
     }
+
+    /**
+     * 单据属性
+     */
+    private PropertyEnum billProperty;
 
     /**
      * 按货物还是按原料
@@ -64,6 +70,14 @@ public class RestockBill extends Bill<RestockBillDetail> {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
+
+    public PropertyEnum getBillProperty() {
+        return billProperty;
+    }
+
+    public void setBillProperty(PropertyEnum billProperty) {
+        this.billProperty = billProperty;
+    }
 
     public String getFromBillCode() {
         return fromBillCode;

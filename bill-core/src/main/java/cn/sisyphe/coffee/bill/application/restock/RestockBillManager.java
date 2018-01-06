@@ -180,6 +180,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
         // 设置单据类型
         restockBill.setBillType(BillTypeEnum.RESTOCK);
+        //设置单据属性
+        restockBill.setBillProperty(addRestockBillDTO.getBillProperty());
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
@@ -229,6 +231,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         return restockBill;
     }
+
     /**
      * 保存、提交和修改操作需要用到的DTO转换单据明细信息
      *

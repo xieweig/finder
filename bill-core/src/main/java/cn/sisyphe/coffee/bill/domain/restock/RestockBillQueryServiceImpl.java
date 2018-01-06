@@ -116,10 +116,24 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
                 expressions.add(cb.equal(root.get("supplierCode").as(String.class), conditionQueryRestockBill.getSupplierCode()));
             }
             /**
-             * 拼接状态
+             * 拼接提交状态
              */
-            if (!StringUtils.isEmpty(conditionQueryRestockBill.getStatusCode())) {
-                expressions.add(cb.equal(root.get("billState").as(String.class), conditionQueryRestockBill.getStatusCode()));
+            if (conditionQueryRestockBill.getSubmitStateCode() != null && conditionQueryRestockBill.getSubmitStateCode().size() > 0) {
+                expressions.add(root.get("submitState").as(String.class).in(conditionQueryRestockBill.getSubmitStateCode()));
+            }
+
+            /**
+             * 拼接审核状态
+             */
+            if (conditionQueryRestockBill.getAuditStateCode() != null && conditionQueryRestockBill.getAuditStateCode().size() > 0) {
+                expressions.add(root.get("auditState").as(String.class).in(conditionQueryRestockBill.getSubmitStateCode()));
+            }
+
+            /**
+             * 拼接出入库状态
+             */
+            if (conditionQueryRestockBill.getInOrOutStateCode() != null && conditionQueryRestockBill.getInOrOutStateCode().size() > 0) {
+                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryRestockBill.getInOrOutStateCode()));
             }
 
 //            SetJoin<PlanBill, Long> planBillLongSetJoin = root.join(root.getModel().getSet(""));
