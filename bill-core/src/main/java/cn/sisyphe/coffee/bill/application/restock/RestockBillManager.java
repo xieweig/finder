@@ -222,6 +222,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //退货品种数
         int species = detailDTOSet.size();
         restockBill.setSpecies(species);
+        //配送总价
+        restockBill.setTotalPrice(addRestockBillDTO.getTotalPrice());
         //按货物还是按原料
         restockBill.setBasicEnum(addRestockBillDTO.getBasicEnum());
         // 转换单据明细信息

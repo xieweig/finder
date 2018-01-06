@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -58,6 +59,11 @@ public class AddRestockBillDTO {
      * 单据编码
      */
     private String billCode;
+
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
 
     /**
      * 退库详情
@@ -158,5 +164,13 @@ public class AddRestockBillDTO {
 
     public void setFromBillCode(String fromBillCode) {
         this.fromBillCode = fromBillCode;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
