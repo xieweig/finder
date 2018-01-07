@@ -17,11 +17,14 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -41,6 +44,10 @@ import java.util.*;
 @Service
 public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
+    @Autowired
+    private RestockBillRepository restockBillRepository;
+    @Autowired
+    private PlanBillRepository planBillRepository;
 
     public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
@@ -59,12 +66,15 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     @Transactional
     public void saveBill(AddRestockBillDTO addRestockBillDTO) {
+        verification(addRestockBillDTO);
         // 转换单据
         RestockBill restockBill = dtoToMapRestockBill(addRestockBillDTO);
         //若是计划转则保存PLANBILL的from
         if (addRestockBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
-           String planCode = addRestockBillDTO.getFromBillCode();
-
+            System.err.print("按计划计划");
+           PlanBill planBill = planBillRepository.findOneByBillCode(addRestockBillDTO.getFromBillCode());
+           planBill.setReceiveBillCode(addRestockBillDTO.getBillCode());
+           planBillRepository.save(planBill);
         }
 
 
@@ -495,4 +505,45 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         return billDTO;
     }
 
+    /**
+     * 验证提交数据信息
+     *
+     * @param addRestockBillDTO
+     */
+    private void verification(AddRestockBillDTO addRestockBillDTO) {
+        //来源单号
+        if (StringUtils.isEmpty(addRestockBillDTO.getFromBillCode())) {
+            throw new DataException("500", "来源单号为空");
+        }
+        if (addRestockBillDTO.getBillProperty() == null) {
+            throw new DataException("500", "单据属性为空");
+        }
+        if (addRestockBillDTO.getInStation() == null) {
+            throw new DataException("500", "入库站点为空");
+        }
+        if (StringUtils.isEmpty(addRestockBillDTO.getBillCode())) {
+            throw new DataException("500", "单据单号为空");
+        }
+        if (addRestockBillDTO.getOutStation() == null) {
+            throw new DataException("500", "出库站点为空");
+        }
+        if (addRestockBillDTO.getBillDetails() == null) {
+            throw new DataException("500", "货物详细为空");
+        }
+        if (StringUtils.isEmpty(addRestockBillDTO.getOperatorCode())) {
+            throw new DataException("500", "操作人编码为空");
+        }
+        if (addRestockBillDTO.getOutMemo() == null) {
+            addRestockBillDTO.setOutMemo("");
+        }
+        if (addRestockBillDTO.getPlanMemo() == null) {
+            addRestockBillDTO.setPlanMemo("");
+        }
+        if (addRestockBillDTO.getBasicEnum() == null) {
+            throw new DataException("500", "按货物按原料为空");
+        }
+        if (addRestockBillDTO.getTotalPrice() == null) {
+            throw new DataException("500", "总价为空");
+        }
+    }
 }

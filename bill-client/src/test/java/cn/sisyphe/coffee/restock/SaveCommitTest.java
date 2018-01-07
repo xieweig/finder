@@ -140,7 +140,7 @@ public class SaveCommitTest {
     //测试拣货界面保存
     @Test
     public void saveTest() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 5; i++) {
             AddRestockBillDTO dto = this.createBill();
 
             this.restockBillManager.saveBill(dto);

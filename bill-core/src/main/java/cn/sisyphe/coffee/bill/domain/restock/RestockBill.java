@@ -29,6 +29,7 @@ public class RestockBill extends Bill<RestockBillDetail> {
     /**
      * 单据属性
      */
+    @Enumerated(EnumType.STRING)
     private PropertyEnum billProperty;
     /**
      * 总价
@@ -37,6 +38,7 @@ public class RestockBill extends Bill<RestockBillDetail> {
     /**
      * 按货物还是按原料
      */
+    @Enumerated(EnumType.STRING)
     private BasicEnum basicEnum;
 
     /**
