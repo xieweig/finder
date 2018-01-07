@@ -32,7 +32,10 @@ public class ChildPlanBillDTO {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
-
+    /**
+     * 接收对应的编号
+     */
+    private String receiveBillCode;
 
     private String inStationCode;
     private String outStationCode;
@@ -42,6 +45,14 @@ public class ChildPlanBillDTO {
     private Integer totalAmount;
 
     private Integer typeAmount;
+
+    public String getReceiveBillCode() {
+        return receiveBillCode;
+    }
+
+    public void setReceiveBillCode(String receiveBillCode) {
+        this.receiveBillCode = receiveBillCode;
+    }
 
     public BillStateEnum getBillState() {
         return billState;

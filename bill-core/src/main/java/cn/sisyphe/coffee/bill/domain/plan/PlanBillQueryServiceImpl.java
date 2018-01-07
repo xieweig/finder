@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -86,9 +87,12 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
 
-            /*
-             * 计划编码
-             */
+            // 计划类型
+            if (conditionQueryPlanBill.getSpecificBillType() != null) {
+                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
+            }
+
+            // 计划编码
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillCode())) {
                 expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryPlanBill.getBillCode() + "%"));
             }

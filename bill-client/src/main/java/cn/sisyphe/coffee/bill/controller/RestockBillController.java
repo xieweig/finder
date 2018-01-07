@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
@@ -42,6 +43,8 @@ public class RestockBillController {
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
+        //设定查询退库分片
+        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         try {
             responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
 
@@ -52,7 +55,7 @@ public class RestockBillController {
     }
 
     @ApiOperation(value = "子计划单个查询")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
+    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {

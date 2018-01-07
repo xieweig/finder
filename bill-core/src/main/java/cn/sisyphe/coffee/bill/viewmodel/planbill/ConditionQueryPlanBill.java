@@ -16,6 +16,7 @@ import java.util.Set;
  */
 public class ConditionQueryPlanBill extends BaseConditionQuery implements Serializable {
 
+
     /**
      * 配送单编码
      */
