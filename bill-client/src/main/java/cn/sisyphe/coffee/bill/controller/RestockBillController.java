@@ -73,10 +73,6 @@ public class RestockBillController {
     public ResponseResult saveRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.saveBill(addRestockBillDTO);
-        //找到planBill
-        ChildPlanBillDTO planBillDTO = planBillManager.findChildPlanBillByBillCode(addRestockBillDTO.getFromBillCode());
-        //修改planBill的reciveBillCode
-
         return responseResult;
     }
 

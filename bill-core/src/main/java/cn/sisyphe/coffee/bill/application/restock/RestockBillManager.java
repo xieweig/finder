@@ -512,17 +512,16 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     private void verification(AddRestockBillDTO addRestockBillDTO) {
         //来源单号
-        if (StringUtils.isEmpty(addRestockBillDTO.getFromBillCode())) {
-            throw new DataException("500", "来源单号为空");
+        if (addRestockBillDTO.getBillProperty() != PropertyEnum.NOPLAN) {
+            if (StringUtils.isEmpty(addRestockBillDTO.getFromBillCode())) {
+                throw new DataException("500", "来源单号为空");
+            }
         }
         if (addRestockBillDTO.getBillProperty() == null) {
             throw new DataException("500", "单据属性为空");
         }
         if (addRestockBillDTO.getInStation() == null) {
             throw new DataException("500", "入库站点为空");
-        }
-        if (StringUtils.isEmpty(addRestockBillDTO.getBillCode())) {
-            throw new DataException("500", "单据单号为空");
         }
         if (addRestockBillDTO.getOutStation() == null) {
             throw new DataException("500", "出库站点为空");

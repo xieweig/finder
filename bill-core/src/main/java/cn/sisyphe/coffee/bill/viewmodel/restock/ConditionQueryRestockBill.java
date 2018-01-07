@@ -89,12 +89,12 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
     /**
      * 开始配送品种
      */
-    private int startVariety;
+    private Integer startVariety;
 
     /**
      * 结束配送品种
      */
-    private int endVariety;
+    private Integer endVariety;
     /**
      * 开始配送总价
      */
@@ -128,19 +128,19 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
         this.billProperty = billProperty;
     }
 
-    public int getStartVariety() {
+    public Integer getStartVariety() {
         return startVariety;
     }
 
-    public void setStartVariety(int startVariety) {
+    public void setStartVariety(Integer startVariety) {
         this.startVariety = startVariety;
     }
 
-    public int getEndVariety() {
+    public Integer getEndVariety() {
         return endVariety;
     }
 
-    public void setEndVariety(int endVariety) {
+    public void setEndVariety(Integer endVariety) {
         this.endVariety = endVariety;
     }
 
