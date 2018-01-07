@@ -191,7 +191,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 设置单据的作用
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
         // 设置单据类型
-        restockBill.setBillType(BillTypeEnum.RESTOCK);
+      //  restockBill.setBillType(BillTypeEnum.RESTOCK);
         //设置单据属性
         restockBill.setBillProperty(addRestockBillDTO.getBillProperty());
         // 单据编码生成器
@@ -214,7 +214,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 操作人代码
         restockBill.setOperatorCode(addRestockBillDTO.getOperatorCode());
         // 归属站点
-        /// TODO: 2018/1/6 前端没有数据 
+        /// TODO: 2018/1/6 前端没有数据
+
+        restockBill.setInLocation(addRestockBillDTO.getInStation());
+        restockBill.setOutLocation(addRestockBillDTO.getOutStation());
        /* restockBill.setBelongStationCode(addRestockBillDTO.getInStation().getStationCode());
         // 获取站点
         Station station = addRestockBillDTO.getInStation();
@@ -233,9 +236,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         Set<RestockBillDetailDTO> detailDTOSet = addRestockBillDTO.getBillDetails();
         //退货数量
         int amount = 0;
-        for (RestockBillDetailDTO detalDTO :
+        for (RestockBillDetailDTO detailDTO :
                 detailDTOSet) {
-            amount += detalDTO.getActualAmount();
+            amount += detailDTO.getActualAmount();
         }
         restockBill.setAmount(amount);
         //退货品种数
@@ -335,24 +338,33 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         restockBill.setOperatorCode(editRestockBillDTO.getOperatorCode());
         // 归属站点
         restockBill.setBelongStationCode(editRestockBillDTO.getOutStation().getStationCode());
-        // 获取站点
-        Station station = editRestockBillDTO.getInStation();
-        // 获取库房
-        Storage storage = editRestockBillDTO.getOutStorage();
-        // 组合站点和库房
-        station.setStorage(storage);
-        //出库站点和库房
-        restockBill.setInLocation(station);
+//        // 获取站点
+//        Station station = editRestockBillDTO.getInStation();
+//        // 获取库房
+//        Storage storage = editRestockBillDTO.getOutStorage();
+//        // 组合站点和库房
+//        station.setStorage(storage);
+//        //出库站点和库房
+//        restockBill.setInLocation(station);
+//
+//        // 设置入库站点和库房
+//        station = editRestockBillDTO.getInStation();
+//        storage = editRestockBillDTO.getOutStorage();
+//        station.setStorage(storage);
+//        restockBill.setInLocation(station);
+//
+//        station = editRestockBillDTO.getOutStation();
+//
+//        restockBill.setOutLocation(station);
+        // 获取站点 上面注释的下面4行先替代
+        Station inStation = editRestockBillDTO.getInStation();
+
+        restockBill.setInLocation(inStation);
 
         // 设置入库站点和库房
-        station = editRestockBillDTO.getInStation();
-        storage = editRestockBillDTO.getOutStorage();
-        station.setStorage(storage);
-        restockBill.setInLocation(station);
+        Station outStation = editRestockBillDTO.getInStation();
 
-        station = editRestockBillDTO.getOutStation();
-
-        restockBill.setOutLocation(station);
+        restockBill.setInLocation(outStation);
 
         // 转换单据明细信息
         Set<RestockBillDetail> detailSet = listDetailMapToSetDetail(editRestockBillDTO.getBillDetails());

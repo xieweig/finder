@@ -39,14 +39,14 @@ public class AddRestockBillDTO {
      * 操作人代码
      */
     private String operatorCode;
-    /**
-     * 入库库位
-     */
-    private Storage inStorage;
-    /**
-     * 出库库位
-     */
-    private Storage outStorage;
+//    /**
+//     * 入库库位
+//     */
+//    private Storage inStorage;
+//    /**
+//     * 出库库位
+//     */
+//    private Storage outStorage;
     /**
      * 入库站点
      */
@@ -85,14 +85,14 @@ public class AddRestockBillDTO {
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
-
-    public Storage getInStorage() {
-        return inStorage;
-    }
-
-    public void setInStorage(Storage inStorage) {
-        this.inStorage = inStorage;
-    }
+//
+//    public Storage getInStorage() {
+//        return inStorage;
+//    }
+//
+//    public void setInStorage(Storage inStorage) {
+//        this.inStorage = inStorage;
+//    }
 
     public Set<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
@@ -126,13 +126,13 @@ public class AddRestockBillDTO {
         this.operatorCode = operatorCode;
     }
 
-    public Storage getOutStorage() {
-        return outStorage;
-    }
-
-    public void setOutStorage(Storage outStorage) {
-        this.outStorage = outStorage;
-    }
+//    public Storage getOutStorage() {
+//        return outStorage;
+//    }
+//
+//    public void setOutStorage(Storage outStorage) {
+//        this.outStorage = outStorage;
+//    }
 
     public Station getInStation() {
         return inStation;
