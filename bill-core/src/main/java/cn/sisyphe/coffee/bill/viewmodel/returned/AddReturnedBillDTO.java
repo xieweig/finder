@@ -3,9 +3,8 @@ package cn.sisyphe.coffee.bill.viewmodel.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
+import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -43,14 +42,14 @@ public class AddReturnedBillDTO {
      * 操作人代码
      */
     private String operatorCode;
-    /**
-     * 入库库位
-     */
-    private Storage inStorage;
-    /**
-     * 出库库位
-     */
-    private Storage outStorage;
+//    /**
+//     * 入库库位
+//     */
+//    private Storage inStorage;
+//    /**
+//     * 出库库位
+//     */
+//    private Storage outStorage;
     /**
      * 入库站点
      */
@@ -74,14 +73,6 @@ public class AddReturnedBillDTO {
      */
     private Set<ReturnedBillDetailDTO> billDetails;
 
-    public Set<ReturnedBillDetailDTO> getBillDetails() {
-        return billDetails;
-    }
-
-    public void setBillDetails(Set<ReturnedBillDetailDTO> billDetails) {
-        this.billDetails = billDetails;
-    }
-
     public PropertyEnum getBillProperty() {
         return billProperty;
     }
@@ -98,15 +89,21 @@ public class AddReturnedBillDTO {
         this.basicEnum = basicEnum;
     }
 
-    public Storage getInStorage() {
-        return inStorage;
+//    public Storage getInStorage() {
+//        return inStorage;
+//    }
+//
+//    public void setInStorage(Storage inStorage) {
+//        this.inStorage = inStorage;
+//    }
+
+    public Set<ReturnedBillDetailDTO> getBillDetails() {
+        return billDetails;
     }
 
-    public void setInStorage(Storage inStorage) {
-        this.inStorage = inStorage;
+    public void setBillDetails(Set<ReturnedBillDetailDTO> billDetails) {
+        this.billDetails = billDetails;
     }
-
-
 
     public String getPlanMemo() {
         return planMemo;
@@ -132,13 +129,13 @@ public class AddReturnedBillDTO {
         this.operatorCode = operatorCode;
     }
 
-    public Storage getOutStorage() {
-        return outStorage;
-    }
-
-    public void setOutStorage(Storage outStorage) {
-        this.outStorage = outStorage;
-    }
+//    public Storage getOutStorage() {
+//        return outStorage;
+//    }
+//
+//    public void setOutStorage(Storage outStorage) {
+//        this.outStorage = outStorage;
+//    }
 
     public Station getInStation() {
         return inStation;

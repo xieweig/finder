@@ -6,36 +6,47 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Objects;
 
 /**
- * @author ncmao
- * @Date 2017/12/27 16:11
- * 退货计划详情
+ * @author mayupeng
+ * @Date 2018/01/07
+ * @description 退货计划详情
  */
 @Entity
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class ReturnedBillDetail extends BillDetail {
+
     /**
-     * 数量
+     * 应拣数量
      */
-    private int amount;
+    private int shippedAmount;
+
+    /**
+     * 实拣数量
+     */
+    private int actualAmount;
 
     /**
      * 备注
      */
     private String memo;
 
-    @Override
-    public int getAmount() {
-        return amount;
+    public int getShippedAmount() {
+        return shippedAmount;
     }
 
-    @Override
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setShippedAmount(int shippedAmount) {
+        this.shippedAmount = shippedAmount;
+    }
+
+    public int getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(int actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
     public String getMemo() {
@@ -44,24 +55,5 @@ public class ReturnedBillDetail extends BillDetail {
 
     public void setMemo(String memo) {
         this.memo = memo;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BillDetail that = (BillDetail) o;
-        return Objects.equals(getBillDetailId(), that.getBillDetailId());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getBillDetailId());
     }
 }
