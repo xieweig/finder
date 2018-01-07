@@ -15,6 +15,9 @@ public enum  PropertyEnum {
     //退货计划转
     RETURNED ,
 
+    //退库计划转
+    RESTOCK ,
+
     //无计划转
     NOPLAN
 }

@@ -33,7 +33,9 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
 
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryPlanBill.getPage() - 1, conditionQueryPlanBill.getPageSize());
-
+        // SpringCloud调用查询录单人编码
+        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPlanBill.getCreatorName());
+        conditionQueryPlanBill.setCreatorCodeList(userCodeList);
         Page<PlanBill> planBillPage;
         planBillPage = queryByParams(conditionQueryPlanBill, pageable);
 
@@ -112,9 +114,15 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
             }
 
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+           /* if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
-            }
+            }*/
+            /**
+             * 录单人模糊查询未完成
+             */
+           /*if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+                expressions.add(root.get("creatorCode").as(String.class).in(conditionQueryPlanBill.getCreatorCodeList()));
+            }*/
             expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), false));
             return predicate;
         }, pageable);
