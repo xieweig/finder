@@ -3,7 +3,6 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -11,6 +10,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+/**
+ * @author mayupeng
+ * @Date 2018/01/07
+ * @description 退货计划单
+ */
 
 @RequestMapping("/api/bill/returned")
 @RestController
@@ -64,12 +69,12 @@ public class ReturnedBillController {
     }
 
     /**
-     * 修改入库单据信息
+     * 修改退货单单据信息
      *
      * @param billDTO
      * @return
      */
-    @ApiOperation(value = "修改入库单据信息--保存")
+    @ApiOperation(value = "修改退货单单据信息--保存")
     @RequestMapping(path = "/updateReturnedBillToSave", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSaved(@RequestBody AddReturnedBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
@@ -82,12 +87,12 @@ public class ReturnedBillController {
     }
 
     /**
-     * 修改入库单据信息
+     * 修改退货单单据信息
      *
      * @param billDTO
      * @return
      */
-    @ApiOperation(value = "修改入库单据信息--提交审核")
+    @ApiOperation(value = "修改退货单单据信息--提交审核")
     @RequestMapping(path = "/updateReturnedBillToSubmit", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSubmit(@RequestBody AddReturnedBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
