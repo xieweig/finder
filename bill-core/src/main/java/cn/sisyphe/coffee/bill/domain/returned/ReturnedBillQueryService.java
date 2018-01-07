@@ -1,6 +1,10 @@
 package cn.sisyphe.coffee.bill.domain.returned;
 
 
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
+import org.springframework.data.domain.Page;
+
 /**
  * Created by Mayupeng on 2018/01/05.
  * remark：退货单查询服务接口
@@ -16,5 +20,5 @@ public interface ReturnedBillQueryService {
      * @param  conditionQueryReturnedBill查询条件
      * @return
      */
-    //Page<ReturnedBill> findPageByCondition(ConditionQueryReturnedBill conditionQueryReturnedBill);
+    Page<ReturnedBill> findPageByCondition(ConditionQueryReturnedBill conditionQueryReturnedBill);
 }

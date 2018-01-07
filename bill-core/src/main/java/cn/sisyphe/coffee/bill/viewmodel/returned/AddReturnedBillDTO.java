@@ -73,6 +73,9 @@ public class AddReturnedBillDTO {
      */
     private Set<ReturnedBillDetailDTO> billDetails;
 
+    public AddReturnedBillDTO() {
+    }
+
     public PropertyEnum getBillProperty() {
         return billProperty;
     }
