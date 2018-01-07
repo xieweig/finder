@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
@@ -15,10 +15,11 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
+import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 
-import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
+
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
 
@@ -38,6 +39,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.Calendar;
 import java.util.Random;
+
+import static cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum.BY_CARGO;
 
 /**
  * @Author: xie_wei_guang
@@ -78,17 +81,32 @@ public class SaveCommitTest {
 
         //dto.setBillCode("0101" + random.nextInt(1000));后台生成 update delete select 用到
         dto.setOutMemo("Remarks: " + random.nextInt(20) + " ok!");
+        dto.setPlanMemo("Remarks: " + random.nextInt(100) + " ok!");
         dto.setOperatorCode("2200" + random.nextInt(100));
+        dto.setBasicEnum(cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum.BY_CARGO);
+        dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
+        dto.setBillProperty(PropertyEnum.RESTOCK);
 
 
         Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
+        Storage inStorage = new Storage("01" + random.nextInt(80));
+        inStorage.setStorageCode("6611"+random.nextInt(100));
         station.setStationName("重庆" + random.nextInt(100) + "站");
+        station.setStationCode("88"+random.nextInt(122));
         station.setStationType(StationType.STORE);
+        station.setStorage(inStorage);
+
         dto.setInStation(station);
 
-        Storage storage = new Storage("00" + random.nextInt(8));
-        storage.setStorageName("xx库");
-        dto.setInStorage(storage);
+        Station outStation = new Station("1515"+random.nextInt(100));
+        Storage outStorage = new Storage("00" + random.nextInt(80));
+        outStorage.setStorageName("xx库");
+        outStorage.setStorageCode("66"+random.nextInt(100));
+        station.setStationType(StationType.STORE);
+        station.setStationCode("8822"+random.nextInt());
+        outStation.setStorage(outStorage);
+
+        dto.setOutStation(outStation);
 
         Set<RestockBillDetailDTO> list = new HashSet<>();
         for (int i = 0; i < 3; i++) {
