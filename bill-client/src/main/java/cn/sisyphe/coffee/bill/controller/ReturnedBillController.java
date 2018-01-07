@@ -1,7 +1,12 @@
 package cn.sisyphe.coffee.bill.controller;
 
 
+import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
+import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -10,6 +15,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author mayupeng
@@ -24,6 +31,41 @@ import org.springframework.web.bind.annotation.*;
 public class ReturnedBillController {
     @Autowired
     private ReturnedBillManager returnedBillManager;
+    @Autowired
+    private PlanBillManager planBillManager;
+
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "子计划多条件查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        System.err.print("子计划多条件查询开始");
+        //设定查询退库分片
+        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED);
+        try {
+            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    @ApiOperation(value = "子计划单个查询")
+    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
+    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
 
     /**
      * 保存退货单
@@ -50,6 +92,21 @@ public class ReturnedBillController {
     public ResponseResult submitReturnedBill(@RequestBody AddReturnedBillDTO addReturnedBillDTO) {
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.submitBill(addReturnedBillDTO);
+        return responseResult;
+    }
+    /**
+     * 多条件查询退库入库单
+     *
+     * @param conditionQueryReturnedBill
+     * @return
+     */
+    @ApiOperation(value = "多条件查询退库出库单")
+    @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
+    public ResponseResult findByConditions(@RequestBody ConditionQueryReturnedBill conditionQueryReturnedBill) {
+        ResponseResult responseResult = new ResponseResult();
+
+        QueryReturnedBillDTO billPage = returnedBillManager.findByConditions(conditionQueryReturnedBill);
+        responseResult.put("content", billPage);
         return responseResult;
     }
 
@@ -131,4 +188,6 @@ public class ReturnedBillController {
         returnedBillManager.auditBill(ReturnedBillCode, auditPersonCode, false);
         return responseResult;
     }
+    
+    
 }
