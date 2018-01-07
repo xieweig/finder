@@ -3,57 +3,123 @@ package cn.sisyphe.coffee.bill.viewmodel.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Set;
 
 /**
- * Created by ayupeng on 2018/01/05.
- * remark：保存退货单数据m
- * version: 1.0
- *
  * @author mayupeng
+ * @Date 2018/01/07
+ * @description 退货计划单
  */
 public class AddReturnedBillDTO {
+
     /**
-     * 备注
+     * 单据属性
      */
-    private String memo;
+    private PropertyEnum billProperty;
+    /**
+     * 按货物还是按种类
+     */
+    private BasicEnum basicEnum;
+
+    /**
+     * 来源单号
+     */
+    private String fromBillCode;
+    /**
+     * 计划备注
+     */
+    private String planMemo;
+    /**
+     * 出库备注
+     */
+    private String outMemo;
 
     /**
      * 操作人代码
      */
     private String operatorCode;
     /**
-     * 库房
+     * 入库库位
      */
-    private Storage storage;
+    private Storage inStorage;
     /**
-     * 站点
+     * 出库库位
      */
-    private Station station;
+    private Storage outStorage;
+    /**
+     * 入库站点
+     */
+    private Station inStation;
+    /**
+     * 出库站点
+     */
+    private Station outStation;
     /**
      * 单据编码
      */
     private String billCode;
-    /**
-     * 退货单明细信息
-     */
-    private List<ReturnedBillDetailDTO> billDetails;
 
-    public List<ReturnedBillDetailDTO> getBillDetails() {
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
+
+    /**
+     * 退库详情
+     */
+    private Set<RestockBillDetailDTO> billDetails;
+
+    public PropertyEnum getBillProperty() {
+        return billProperty;
+    }
+
+    public void setBillProperty(PropertyEnum billProperty) {
+        this.billProperty = billProperty;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+
+    public Storage getInStorage() {
+        return inStorage;
+    }
+
+    public void setInStorage(Storage inStorage) {
+        this.inStorage = inStorage;
+    }
+
+    public Set<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(List<ReturnedBillDetailDTO> billDetails) {
+    public void setBillDetails(Set<RestockBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 
-    public String getMemo() {
-        return memo;
+    public String getPlanMemo() {
+        return planMemo;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setPlanMemo(String planMemo) {
+        this.planMemo = planMemo;
+    }
+
+    public String getOutMemo() {
+        return outMemo;
+    }
+
+    public void setOutMemo(String outMemo) {
+        this.outMemo = outMemo;
     }
 
     public String getOperatorCode() {
@@ -64,20 +130,28 @@ public class AddReturnedBillDTO {
         this.operatorCode = operatorCode;
     }
 
-    public Storage getStorage() {
-        return storage;
+    public Storage getOutStorage() {
+        return outStorage;
     }
 
-    public void setStorage(Storage storage) {
-        this.storage = storage;
+    public void setOutStorage(Storage outStorage) {
+        this.outStorage = outStorage;
     }
 
-    public Station getStation() {
-        return station;
+    public Station getInStation() {
+        return inStation;
     }
 
-    public void setStation(Station station) {
-        this.station = station;
+    public void setInStation(Station inStation) {
+        this.inStation = inStation;
+    }
+
+    public Station getOutStation() {
+        return outStation;
+    }
+
+    public void setOutStation(Station outStation) {
+        this.outStation = outStation;
     }
 
     public String getBillCode() {
@@ -86,5 +160,21 @@ public class AddReturnedBillDTO {
 
     public void setBillCode(String billCode) {
         this.billCode = billCode;
+    }
+
+    public String getFromBillCode() {
+        return fromBillCode;
+    }
+
+    public void setFromBillCode(String fromBillCode) {
+        this.fromBillCode = fromBillCode;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

@@ -1,14 +1,15 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
-
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 import java.util.List;
 
 /**
- *
  * @author mayupeng
+ * @Date 2018/01/07
+ * @description 退货计划详情
  */
 public class QueryOneReturnedBillDTO {
+
     /**
      * 货运单号
      */
@@ -39,7 +40,7 @@ public class QueryOneReturnedBillDTO {
     /**
      * 进货单明细信息
      */
-    private List<ReturnedBillDetailDTO> billDetails;
+    private List<RestockBillDetailDTO> billDetails;
 
     public String getFreightCode() {
         return freightCode;
@@ -89,11 +90,11 @@ public class QueryOneReturnedBillDTO {
         this.inStorageCode = inStorageCode;
     }
 
-    public List<ReturnedBillDetailDTO> getBillDetails() {
+    public List<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(List<ReturnedBillDetailDTO> billDetails) {
+    public void setBillDetails(List<RestockBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 }
