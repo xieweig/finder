@@ -20,6 +20,8 @@ import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 
 
+import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
 
@@ -116,6 +118,7 @@ public class SaveCommitTest {
         logger.info("details 的详细数量 ：" + list.size());
 
 
+
         dto.setBillDetails(list);
 
         return dto;
@@ -131,6 +134,7 @@ public class SaveCommitTest {
         Cargo cargo = new Cargo("00205" + random.nextInt(1000));
         cargo.setCargoName("非持久化？" + random.nextInt(100));
         rawMaterial.setCargo(cargo);
+
 
         billDetailDTO.setRawMaterial(rawMaterial);
         return billDetailDTO;
@@ -231,8 +235,18 @@ public class SaveCommitTest {
     @Test
     public void insertTest(){
         for (int i = 0; i <6 ; i++) {
-           this.planBillRepository.save(this.createPlanBill());
+            this.planBillRepository.save(this.createPlanBill());
         }
     }
+
+    //测试多条件查询
+    @Test
+    public void selectByConditions(){
+        ConditionQueryRestockBill queryRestockBill = new ConditionQueryRestockBill();
+
+        QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
+
+    }
+
 }
 
