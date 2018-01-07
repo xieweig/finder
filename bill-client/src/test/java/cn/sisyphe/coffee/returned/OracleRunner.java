@@ -85,7 +85,7 @@ public class OracleRunner {
     private  ReturnedBillDetailDTO createReturnedDetail(){
         ReturnedBillDetailDTO billDetailDTO = new ReturnedBillDetailDTO();
 
-        billDetailDTO.setAmount(random.nextInt(1200));
+//        billDetailDTO.setAmount(random.nextInt(1200));
 
         billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
         RawMaterial rawMaterial = new RawMaterial("030201" + random.nextInt(2000));

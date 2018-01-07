@@ -126,16 +126,18 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      *
      * @param restockBillCode
      */
-    public QueryOneRestockBillDTO openBill(String restockBillCode) {
+    public RestockBill openBill(String restockBillCode) {
         RestockBill restockBill = restockBillQueryService.findByBillCode(restockBillCode);
         // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退库单据信息
         // 如果单据是提交状态，则进行打开动作
         if (restockBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
             restockBill = open(restockBill);
-            return mapOneToDTO(restockBill);
+//            return mapOneToDTO(restockBill);
+            return restockBill;
         } else {
-            return mapOneToDTO(restockBill);
+//            return mapOneToDTO(restockBill);
+            return restockBill;
         }
     }
 
@@ -294,6 +296,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
     private QueryOneRestockBillDTO mapOneToDTO(RestockBill restockBill) {
         QueryOneRestockBillDTO billDTO = new QueryOneRestockBillDTO();
+
         // 备注
 //        Station station = (Station) restockBill.getInLocation();
      /*   // 库位名称

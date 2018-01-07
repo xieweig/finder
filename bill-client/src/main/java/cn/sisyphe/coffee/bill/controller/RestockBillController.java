@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
@@ -116,7 +117,8 @@ public class RestockBillController {
     @RequestMapping(path = "/findByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCode(@RequestParam String RestockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
+//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
+        RestockBill billDTO = restockBillManager.openBill(RestockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
     }
