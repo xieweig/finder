@@ -2,6 +2,8 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
@@ -71,6 +73,10 @@ public class RestockBillController {
     public ResponseResult saveRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.saveBill(addRestockBillDTO);
+        //找到planBill
+        ChildPlanBillDTO planBillDTO = planBillManager.findChildPlanBillByBillCode(addRestockBillDTO.getFromBillCode());
+        //修改planBill的reciveBillCode
+
         return responseResult;
     }
 

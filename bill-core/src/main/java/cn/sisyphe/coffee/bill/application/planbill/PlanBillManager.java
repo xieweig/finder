@@ -391,12 +391,15 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setOperatorCode(childPlanBill.getOperatorCode());
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
         childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
+        childPlanBillDTO.setBillState(childPlanBill.getBillState());
+
         List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS = new ArrayList<>();
         for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
             ChildPlanBillDetailDTO childPlanBillDetailDTO = new ChildPlanBillDetailDTO();
             childPlanBillDetailDTO.setAmount(planBillDetail.getAmount());
             childPlanBillDetailDTO.setGoodsCode(planBillDetail.getGoods().code());
             childPlanBillDetailDTOS.add(childPlanBillDetailDTO);
+
         }
         childPlanBillDTO.setChildPlanBillDetails(childPlanBillDetailDTOS);
         return childPlanBillDTO;

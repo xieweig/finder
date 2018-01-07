@@ -38,11 +38,10 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
-/*
+
     //接受的单据编号
     @Column
-    private String reciveBillCode;
-*/
+    private String receiveBillCode;
 
     //是否是总部计划
     @Column
@@ -63,6 +62,13 @@ public class PlanBill extends Bill<PlanBillDetail> {
         setBillType(BillTypeEnum.PLAN);
     }
 
+    public String getReceiveBillCode() {
+        return receiveBillCode;
+    }
+
+    public void setReceiveBillCode(String receiveBillCode) {
+        this.receiveBillCode = receiveBillCode;
+    }
 
     public String getBillName() {
         return billName;
