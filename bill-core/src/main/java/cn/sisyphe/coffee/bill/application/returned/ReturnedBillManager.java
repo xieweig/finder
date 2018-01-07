@@ -9,19 +9,23 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillQueryService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
+import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -257,11 +261,15 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      * @param billDTO
      */
     public void updateBillToSave(AddReturnedBillDTO billDTO) {
+        if (StringUtils.isEmpty(billDTO.getBillCode())) {
+            throw new DataException("404", "单据编码为空");
+        }
+        // 验证属性
+        verification(billDTO);
         ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(billDTO.getBillCode());
         returnedBill.getBillDetails().clear();
         // 转换单据
         ReturnedBill mapBillAfter = dtoToMapReturnedBillForEdit(billDTO, returnedBill);
-
         save(mapBillAfter);
     }
 
@@ -271,6 +279,11 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      * @param billDTO
      */
     public void updateBillToSubmit(AddReturnedBillDTO billDTO) {
+        if (StringUtils.isEmpty(billDTO.getBillCode())) {
+            throw new DataException("404", "单据编码为空");
+        }
+        // 验证属性
+        verification(billDTO);
         ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(billDTO.getBillCode());
         returnedBill.getBillDetails().clear();
         // 转换单据
@@ -287,44 +300,109 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      */
     private ReturnedBill dtoToMapReturnedBillForEdit(AddReturnedBillDTO editReturnedBillDTO, ReturnedBill returnedBill) {
 
-        // 备注
+        // 设置单据的作用
+        returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        // 设置单据类型
+        //  returnedBill.setBillType(BillTypeEnum.RETURNED);
+        //设置单据属性
+        returnedBill.setBillProperty(editReturnedBillDTO.getBillProperty());
+
+        // 来源单号
+        if (StringUtils.isEmpty(editReturnedBillDTO.getFromBillCode())) {
+            returnedBill.setFromBillCode(editReturnedBillDTO.getFromBillCode());
+        }
+        // 计划备注
+        if (!StringUtils.isEmpty(editReturnedBillDTO.getPlanMemo())) {
+            returnedBill.setPlanMemo(editReturnedBillDTO.getPlanMemo());
+        }
+        // 出库备注
+        if (!StringUtils.isEmpty(editReturnedBillDTO.getOutMemo())) {
+            returnedBill.setOutMemo(editReturnedBillDTO.getOutMemo());
+        }
         // 操作人代码
         returnedBill.setOperatorCode(editReturnedBillDTO.getOperatorCode());
         // 归属站点
-        returnedBill.setBelongStationCode(editReturnedBillDTO.getOutStation().getStationCode());
-//        // 获取站点
-//        Station station = editReturnedBillDTO.getInStation();
-//        // 获取库房
-//        Storage storage = editReturnedBillDTO.getOutStorage();
-//        // 组合站点和库房
-//        station.setStorage(storage);
-//        //出库站点和库房
-//        returnedBill.setInLocation(station);
-//
-//        // 设置入库站点和库房
-//        station = editReturnedBillDTO.getInStation();
-//        storage = editReturnedBillDTO.getOutStorage();
-//        station.setStorage(storage);
-//        returnedBill.setInLocation(station);
-//
-//        station = editReturnedBillDTO.getOutStation();
-//
-//        returnedBill.setOutLocation(station);
-        // 获取站点 上面注释的下面4行先替代
-        Station inStation = editReturnedBillDTO.getInStation();
+        /// TODO: 2018/1/6 前端没有数据
 
-        returnedBill.setInLocation(inStation);
-
-        // 设置入库站点和库房
-        Station outStation = editReturnedBillDTO.getInStation();
-
-        returnedBill.setInLocation(outStation);
-
+        returnedBill.setInLocation(editReturnedBillDTO.getInStation());
+        returnedBill.setOutLocation(editReturnedBillDTO.getOutStation());
+       /* returnedBill.setBelongStationCode(addReturnedBillDTO.getInStation().getStationCode());
+        // 获取站点
+        Station station = addReturnedBillDTO.getInStation();
+        // 获取库房
+        Storage storage = addReturnedBillDTO.getInStorage();
+        // 组合站点和库房
+        station.setStorage(storage);
+        // 设置入库位置
+        returnedBill.setInLocation(station);
+        // 设置出库位置
+        storage = addReturnedBillDTO.getOutStorage();
+        station = addReturnedBillDTO.getOutStation();
+        station.setStorage(storage);
+        returnedBill.setOutLocation(station);
+*/
+        Set<ReturnedBillDetailDTO> detailDTOSet = editReturnedBillDTO.getBillDetails();
+        //退货数量
+        int amount = 0;
+        for (ReturnedBillDetailDTO detailDTO :
+                detailDTOSet) {
+            amount += detailDTO.getActualAmount();
+        }
+        returnedBill.setAmount(amount);
+        //退货品种数
+        int variety = detailDTOSet.size();
+        returnedBill.setVariety(variety);
+        //配送总价
+        returnedBill.setTotalPrice(editReturnedBillDTO.getTotalPrice());
+        //按货物还是按原料
+        returnedBill.setBasicEnum(editReturnedBillDTO.getBasicEnum());
         // 转换单据明细信息
-        Set<ReturnedBillDetail> detailSet = listDetailMapToSetDetail(editReturnedBillDTO.getBillDetails());
+        Set<ReturnedBillDetail> detailSet = listDetailMapToSetDetail(detailDTOSet);
         // 设置单据明细信息
         returnedBill.setBillDetails(detailSet);
 
         return returnedBill;
     }
+
+    /**
+     * 验证提交数据信息
+     *
+     * @param addReturnedBillDTO
+     */
+    private void verification(AddReturnedBillDTO addReturnedBillDTO) {
+        //来源单号
+        if (addReturnedBillDTO.getBillProperty() != PropertyEnum.NOPLAN) {
+            if (StringUtils.isEmpty(addReturnedBillDTO.getFromBillCode())) {
+                throw new DataException("500", "来源单号为空");
+            }
+        }
+        if (addReturnedBillDTO.getBillProperty() == null) {
+            throw new DataException("500", "单据属性为空");
+        }
+        if (addReturnedBillDTO.getInStation() == null) {
+            throw new DataException("500", "入库站点为空");
+        }
+        if (addReturnedBillDTO.getOutStation() == null) {
+            throw new DataException("500", "出库站点为空");
+        }
+        if (addReturnedBillDTO.getBillDetails() == null) {
+            throw new DataException("500", "货物详细为空");
+        }
+        if (StringUtils.isEmpty(addReturnedBillDTO.getOperatorCode())) {
+            throw new DataException("500", "操作人编码为空");
+        }
+        if (addReturnedBillDTO.getOutMemo() == null) {
+            addReturnedBillDTO.setOutMemo("");
+        }
+        if (addReturnedBillDTO.getPlanMemo() == null) {
+            addReturnedBillDTO.setPlanMemo("");
+        }
+        if (addReturnedBillDTO.getBasicEnum() == null) {
+            throw new DataException("500", "按货物按原料为空");
+        }
+        if (addReturnedBillDTO.getTotalPrice() == null) {
+            throw new DataException("500", "总价为空");
+        }
+    }
+
 }
