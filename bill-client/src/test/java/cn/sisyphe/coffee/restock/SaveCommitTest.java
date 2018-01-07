@@ -88,7 +88,7 @@ public class SaveCommitTest {
         dto.setBasicEnum(cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum.BY_CARGO);
         dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
         dto.setBillProperty(PropertyEnum.RESTOCK);
-     //   dto.setFromBillCode(this.PLANCODES[0]);
+        dto.setFromBillCode(this.PLANCODES[0]);
 
         Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
         Storage inStorage = new Storage("01" + random.nextInt(80));
@@ -143,7 +143,7 @@ public class SaveCommitTest {
 
     //测试拣货界面保存
     @Test
-    public void saveTest() {
+    public void saveRestockTest() {
         for (int i = 0; i < 6; i++) {
             AddRestockBillDTO dto = this.createBill();
 
@@ -155,7 +155,7 @@ public class SaveCommitTest {
 
     //测试拣货界面提交
     @Test
-    public void submitTest() {
+    public void submitRestockTest() {
         for (int i = 0; i < 4; i++) {
             AddRestockBillDTO dto = this.createBill();
             this.restockBillManager.submitBill(dto);
