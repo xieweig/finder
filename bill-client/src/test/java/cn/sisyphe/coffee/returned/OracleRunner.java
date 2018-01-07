@@ -56,7 +56,7 @@ public class OracleRunner {
         station.setStationType(StationType.STORE);
         station.setStorage(inStorage);
 
-        dto.setInStation(station);
+        //dto.setInStation(station);
 
         Station outStation = new Station("1515"+random.nextInt(100));
         Storage outStorage = new Storage("00" + random.nextInt(80));
@@ -66,7 +66,7 @@ public class OracleRunner {
         station.setStationCode("8822"+random.nextInt());
         outStation.setStorage(outStorage);
 
-        dto.setOutStation(outStation);
+       // dto.setOutStation(outStation);
 
         Set<ReturnedBillDetailDTO> list = new HashSet<>();
         for (int i = 0; i < 3; i++) {
@@ -76,7 +76,7 @@ public class OracleRunner {
         logger.info("details 的详细数量 ：" + list.size());
 
 
-        dto.setBillDetails(list);
+       // dto.setBillDetails(list);
 
         return dto;
 
