@@ -72,7 +72,15 @@ public class AddReturnedBillDTO {
     /**
      * 退库详情
      */
-    private Set<RestockBillDetailDTO> billDetails;
+    private Set<ReturnedBillDetailDTO> billDetails;
+
+    public Set<ReturnedBillDetailDTO> getBillDetails() {
+        return billDetails;
+    }
+
+    public void setBillDetails(Set<ReturnedBillDetailDTO> billDetails) {
+        this.billDetails = billDetails;
+    }
 
     public PropertyEnum getBillProperty() {
         return billProperty;
@@ -98,13 +106,7 @@ public class AddReturnedBillDTO {
         this.inStorage = inStorage;
     }
 
-    public Set<RestockBillDetailDTO> getBillDetails() {
-        return billDetails;
-    }
 
-    public void setBillDetails(Set<RestockBillDetailDTO> billDetails) {
-        this.billDetails = billDetails;
-    }
 
     public String getPlanMemo() {
         return planMemo;
