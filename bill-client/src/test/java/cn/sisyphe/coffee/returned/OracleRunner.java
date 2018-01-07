@@ -111,9 +111,9 @@ public class OracleRunner {
         billDetailDTO.setRawMaterial(rawMaterial);
         return billDetailDTO;
     }
-
+    //测试return bill 保存 提交
     @Test
-    public void leaf() {
+    public void leafSave() {
         for (int i = 0; i < 3; i++) {
 
             AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
@@ -121,12 +121,28 @@ public class OracleRunner {
 
         }
     }
+    @Test
+    public void leafSubmit() {
+        for (int i = 0; i < 3; i++) {
 
+            AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
+            this.returnedBillManager.submitBill(addReturnedBillDTO);
+
+        }
+    }
+    //测试 return bill 修改后保存提交
     @Test
     public void alertAndSave() {
         AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
         addReturnedBillDTO.setBillCode("27850302");
         this.returnedBillManager.updateBillToSave(addReturnedBillDTO);
+
+    }
+    @Test
+    public void alertAndSubmit() {
+        AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
+        addReturnedBillDTO.setBillCode("82090302");
+        this.returnedBillManager.updateBillToSubmit(addReturnedBillDTO);
 
     }
 }
