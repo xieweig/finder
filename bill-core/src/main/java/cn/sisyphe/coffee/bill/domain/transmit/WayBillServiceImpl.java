@@ -112,8 +112,11 @@ public class WayBillServiceImpl implements WayBillService {
                         "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
             //收货状态receivedStatus
-            if (conditionQueryWayBill.getReceivedStatus() != null) {
-                expressions.add(cb.equal(root.get("receivedStatus").as(ReceivedStatusEnum.class),
+            if (conditionQueryWayBill.getReceivedStatus() != null
+                    && !StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
+//                expressions.add(cb.equal(root.get("receivedStatus").as(ReceivedStatusEnum.class),
+//                        conditionQueryWayBill.getReceivedStatus()));
+                expressions.add(cb.equal(root.get("receivedStatus").as(String.class),
                         conditionQueryWayBill.getReceivedStatus()));
             }
             // 录单时间
@@ -193,17 +196,26 @@ public class WayBillServiceImpl implements WayBillService {
 
         //1先查询一条数据库里的内容
         WayBill wayBillDB = wayBillRepository.findOneByCode(wayBill.getBillCode());
+        //清除
+        wayBillDB.getWayBillDetailSet().clear();
+
+        // 入库站点
+        if (StringUtils.isEmpty(wayBill.getInStationCode())) {
+            wayBillDB.setInStationCode(wayBill.getInStationCode());
+        }
+        //出库站点
+        if (StringUtils.isEmpty(wayBill.getOutStationCode())) {
+            wayBillDB.setOutStationCode(wayBill.getOutStationCode());
+        }
         //2设置值
         //公司名称
         if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
             wayBillDB.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());
-
         }
         //目的地
         if (!StringUtils.isEmpty(wayBill.getDestination())) {
             wayBillDB.setDestination(wayBill.getDestination());
         }
-
         //备注
         if (!StringUtils.isEmpty(wayBill.getMemo())) {
             wayBillDB.setMemo(wayBill.getMemo());
@@ -211,7 +223,6 @@ public class WayBillServiceImpl implements WayBillService {
         //到货时间
         if (!StringUtils.isEmpty(wayBill.getPlanArrivalTime())) {
             wayBillDB.setPlanArrivalTime(wayBill.getPlanArrivalTime());
-
         }
         //发货时间
         if (!StringUtils.isEmpty(wayBill.getDeliveryTime())) {
@@ -230,7 +241,8 @@ public class WayBillServiceImpl implements WayBillService {
         if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
             throw new DataException("50003", "已经确定了收货不能修改");
         }
-        //3保存
+        // 设置明细的方法
+        wayBillDB.getWayBillDetailSet().addAll(wayBill.getWayBillDetailSet());//
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;
     }

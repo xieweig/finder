@@ -17,8 +17,11 @@ import java.util.Set;
 @Table
 public class WayBill extends BaseEntity {
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    // 去掉外健
     @org.hibernate.annotations.ForeignKey(name = "none")
+    // 设置子类的 billCode
+    @JoinColumn(name = "billCode", referencedColumnName = "billCode")
     private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
 
     @Id
@@ -29,7 +32,7 @@ public class WayBill extends BaseEntity {
      * 单据code
      * tip: 必须加name="bill_code" ,否则子类找不到外键
      */
-    @Column(name = "bill_code", length = 255, nullable = false, unique = true)
+    @Column(length = 255, nullable = false, unique = true)
     private String billCode;
 
 

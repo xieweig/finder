@@ -68,7 +68,6 @@ public class WayBillManager {
      */
 
     public void updateWayBillWithDTO(EditWayBillDTO editWayBillDTO) throws DataException {
-
         //参数检查
         this.checkParams(editWayBillDTO);
         //修改转DTO
@@ -200,7 +199,7 @@ public class WayBillManager {
         for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSet()) {
             EditWayBillDetailDTO wayBillDetailDTO = new EditWayBillDetailDTO();
             //
-            wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
+            //wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
             //出库时间
             wayBillDetailDTO.setOutStorageTime(wayBillDetail.getOutStorageTime());
             // 配送单号
@@ -255,8 +254,13 @@ public class WayBillManager {
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
+        wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
+
+        wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
+
         //添加明细
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
+        //
         return wayBill;
     }
 
@@ -329,8 +333,9 @@ public class WayBillManager {
                 throw new DataException("40006", "出库时间不能为空");
             }
             WayBillDetail wayBillDetail = new WayBillDetail();
-            wayBillDetail.setWayBill(wayBill);
 
+            // TODO: 2018/1/8
+            // wayBillDetail.setWayBill(wayBill);
             wayBillDetail.setSourceCode(item.getOutStorageBillCode());//出库单号
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量
