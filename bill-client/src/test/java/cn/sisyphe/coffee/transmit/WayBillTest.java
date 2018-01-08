@@ -86,7 +86,7 @@ public class WayBillTest {
         ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
         conditionQueryWayBill.setOperatorName("超级管理员");
         conditionQueryWayBill.setPageSize(100);
-        conditionQueryWayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);
+        //conditionQueryWayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);
 
         conditionQueryWayBill.setPage(1);
 
@@ -104,10 +104,10 @@ public class WayBillTest {
     public void testFindByPage() {
         ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
         conditionQueryWayBill.setOperatorName("小明");
-        conditionQueryWayBill.setInStationCode("jd");
+//        conditionQueryWayBill.setInStationCode("jd");
         conditionQueryWayBill.setPageSize(100);
         conditionQueryWayBill.setLogisticsCompanyName("韵达");
-        conditionQueryWayBill.setInStationCode("cq12");
+//        conditionQueryWayBill.setInStationCode("cq12");
         conditionQueryWayBill.setPage(1);
         Page<WayBill> billPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
         if (billPage != null) {
