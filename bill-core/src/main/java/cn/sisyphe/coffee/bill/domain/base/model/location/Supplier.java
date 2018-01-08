@@ -23,6 +23,9 @@ public class Supplier extends AbstractLocation {
      */
     private String address;
 
+    public Supplier() {
+    }
+
     public Supplier(String supplierCode) {
         this.supplierCode = supplierCode;
     }

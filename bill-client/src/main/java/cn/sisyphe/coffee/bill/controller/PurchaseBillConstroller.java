@@ -1,8 +1,9 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.infrastructure.share.storage.TempStorage;
-import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +36,9 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "保存进货单")
     @RequestMapping(path = "/savePurchaseBill", method = RequestMethod.POST)
-    public ResponseResult savePurchaseBill(@RequestBody AddPurchaseBillDTO addPurchaseBillDTO) {
+    public ResponseResult savePurchaseBill(HttpServletRequest request, @RequestBody AddPurchaseBillDTO addPurchaseBillDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addPurchaseBillDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         purchaseBillManager.saveBill(addPurchaseBillDTO);
         return responseResult;
@@ -48,7 +52,9 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "提交进货单")
     @RequestMapping(path = "/submitPurchaseBill", method = RequestMethod.POST)
-    public ResponseResult submitPurchaseBill(@RequestBody AddPurchaseBillDTO addPurchaseBillDTO) {
+    public ResponseResult submitPurchaseBill(HttpServletRequest request, @RequestBody AddPurchaseBillDTO addPurchaseBillDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addPurchaseBillDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         purchaseBillManager.submitBill(addPurchaseBillDTO);
         return responseResult;
@@ -93,9 +99,13 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "修改进货单据信息--保存")
     @RequestMapping(path = "/updatePurchaseBillToSave", method = RequestMethod.POST)
-    public ResponseResult updatePurchaseBillToSaved(@RequestBody AddPurchaseBillDTO billDTO) {
+    public ResponseResult updatePurchaseBillToSaved(HttpServletRequest request, @RequestBody AddPurchaseBillDTO billDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        billDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
+            // TODO: 2018/1/6 操作人编码和当前站点从HEAD中获取
+            billDTO.setOperatorCode("test001");
             purchaseBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -111,9 +121,12 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "修改进货单据信息--提交审核")
     @RequestMapping(path = "/updatePurchaseBillToSubmit", method = RequestMethod.POST)
-    public ResponseResult updatePurchaseBillToSubmit(@RequestBody AddPurchaseBillDTO billDTO) {
+    public ResponseResult updatePurchaseBillToSubmit(HttpServletRequest request, @RequestBody AddPurchaseBillDTO billDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        billDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
+            billDTO.setOperatorCode("test001");
             purchaseBillManager.updateBillToSubmit(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -129,9 +142,10 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(@RequestParam String purchaseBillCode, @RequestParam String auditPersonCode) {
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String purchaseBillCode) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditBill(purchaseBillCode, auditPersonCode, true);
+        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), true);
         return responseResult;
     }
 
@@ -143,9 +157,10 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(@RequestParam String purchaseBillCode, @RequestParam String auditPersonCode) {
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String purchaseBillCode) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditBill(purchaseBillCode, auditPersonCode, false);
+        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), false);
         return responseResult;
     }
 
@@ -153,8 +168,8 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/queryStorageByStationCode", method = RequestMethod.GET)
     public ResponseResult queryStorageByStationCode(@RequestParam String stationCode) {
         ResponseResult responseResult = new ResponseResult();
-        if(StringUtils.isEmpty(stationCode)){
-            DataException dataException = new DataException("404","站点编码为空");
+        if (StringUtils.isEmpty(stationCode)) {
+            DataException dataException = new DataException("404", "站点编码为空");
             responseResult.putException(dataException);
             return responseResult;
         }

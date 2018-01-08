@@ -1,5 +1,6 @@
-package cn.sisyphe.coffee.bill.viewmodel;
+package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
+import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
