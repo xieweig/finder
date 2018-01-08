@@ -6,13 +6,15 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Entity;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Created by yichuan on 2017/12/26 11:56
  * Description: 配送单明细
- *
  */
 @Entity
 @Table
@@ -20,11 +22,6 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class DeliveryBillDetail extends BillDetail {
 
-    /**
-     * 完成度
-     */
-    @Column
-    private BigDecimal progress;
     /**
      * 出库位置
      */
@@ -111,19 +108,10 @@ public class DeliveryBillDetail extends BillDetail {
         this.transferLocation = transferLocation;
     }
 
-    public BigDecimal getProgress() {
-        return progress;
-    }
-
-    public void setProgress(BigDecimal progress) {
-        this.progress = progress;
-    }
-
     @Override
     public String toString() {
         return "DeliveryBillDetail{" +
-                "progress=" + progress +
-                ", outLocation=" + outLocation +
+                "outLocation=" + outLocation +
                 ", inLocation=" + inLocation +
                 ", transferLocation=" + transferLocation +
                 ", dbStation=" + dbStation +

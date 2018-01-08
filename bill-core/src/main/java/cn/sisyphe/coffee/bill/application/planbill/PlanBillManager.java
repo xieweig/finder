@@ -23,6 +23,7 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +60,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     @Autowired
     private PlanBillQueryService planBillQueryService;
+
+    @Autowired
+    private PlanBillRepository planBillRepository;
 
     @Autowired
     private SharedManager sharedManager;
@@ -378,9 +383,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());
-        // TODO: 2018/1/7 站点还未实现
-//        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-//        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         childPlanBillDTO.setOperatorCode(childPlanBill.getOperatorCode());
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
@@ -402,5 +406,11 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
         Page<PlanBill> childPlanBill = planBillQueryService.findChildPlanBillBy(conditionQueryPlanBill);
         return childPlanBill.map(this::mapChildPlanBillToDTO);
+    }
+
+    public void updateChildProgress(String billCode, BigDecimal progress) {
+        PlanBill planBill = planBillQueryService.findByBillCode(billCode);
+        planBill.setProgress(progress);
+        planBillRepository.save(planBill);
     }
 }
