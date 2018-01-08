@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan.child;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -45,6 +46,8 @@ public class ChildPlanBillDTO {
     private Integer totalAmount;
 
     private Integer typeAmount;
+
+    private BillTypeEnum billType;
 
     public String getReceiveBillCode() {
         return receiveBillCode;
@@ -142,5 +145,13 @@ public class ChildPlanBillDTO {
 
     public void setTypeAmount(Integer typeAmount) {
         this.typeAmount = typeAmount;
+    }
+
+    public BillTypeEnum getBillType() {
+        return billType;
+    }
+
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
     }
 }
