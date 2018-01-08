@@ -71,7 +71,7 @@ public class WayBillServiceImpl implements WayBillService {
     private Page<WayBill> pageCondition(final ConditionQueryWayBill conditionQueryWayBill,
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
-            // 去重复
+            // 分组后去重复
             query.distinct(true);
 
             Predicate predicate = cb.conjunction();
@@ -114,6 +114,7 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.equal(root.<String>get("receivedStatus"),
                         "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
             }
+
             // 录单时间
             if (conditionQueryWayBill.getCreateStartTime() != null &&
                     conditionQueryWayBill.getCreateEndTime() != null) {
@@ -165,6 +166,12 @@ public class WayBillServiceImpl implements WayBillService {
 
     }
 
+    /**
+     * 创建运单
+     *
+     * @param wayBill
+     * @return
+     */
     @Override
     public WayBill createBill(WayBill wayBill) {
         // 运货件数
@@ -218,7 +225,6 @@ public class WayBillServiceImpl implements WayBillService {
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
         }
-
         //
         if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
             throw new DataException("50003", "已经确定了收货不能修改");

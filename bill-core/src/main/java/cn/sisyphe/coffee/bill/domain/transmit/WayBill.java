@@ -4,10 +4,11 @@ package cn.sisyphe.coffee.bill.domain.transmit;
 import cn.sisyphe.coffee.bill.domain.base.model.BaseEntity;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 运货单
@@ -19,7 +20,6 @@ public class WayBill extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "wayBill")
     @org.hibernate.annotations.ForeignKey(name = "none")
     private Set<WayBillDetail> wayBillDetailSet = new HashSet<>();
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -116,25 +116,23 @@ public class WayBill extends BaseEntity {
      *
      * @return
      */
-    private int calcTotalPackageAmount() {
-        //包号
-        List<String> packAgesList = new ArrayList<>();
-        if (wayBillDetailSet == null || wayBillDetailSet.isEmpty()) {
-            return 0;
-        }
-        for (WayBillDetail wayBillDetail : wayBillDetailSet) {
-            //包号不为空
-            if (!StringUtils.isEmpty(wayBillDetail.getPackageCode())) {
-                //
-                if (!packAgesList.contains(wayBillDetail.getPackageCode())) {
-                    packAgesList.add(wayBillDetail.getPackageCode());//
-                }
-            }
-        }
-        return packAgesList.size();
-    }
-
-
+//    private int calcTotalPackageAmount() {
+//        //包号
+//        List<String> packAgesList = new ArrayList<>();
+//        if (wayBillDetailSet == null || wayBillDetailSet.isEmpty()) {
+//            return 0;
+//        }
+//        for (WayBillDetail wayBillDetail : wayBillDetailSet) {
+//            //包号不为空
+//            if (!StringUtils.isEmpty(wayBillDetail.getPackageCode())) {
+//                //
+//                if (!packAgesList.contains(wayBillDetail.getPackageCode())) {
+//                    packAgesList.add(wayBillDetail.getPackageCode());//
+//                }
+//            }
+//        }
+//        return packAgesList.size();
+//    }
     public String getOperatorCode() {
         return operatorCode;
     }
@@ -198,10 +196,6 @@ public class WayBill extends BaseEntity {
      * @return
      */
     public Integer getAmountOfPackages() {
-        if (!this.getWayBillDetailSet().isEmpty()) {
-
-            return this.calcTotalPackageAmount();
-        }
         return amountOfPackages;
     }
 
