@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.purchase;
 
 
-import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import org.springframework.data.domain.Page;
 
 /**

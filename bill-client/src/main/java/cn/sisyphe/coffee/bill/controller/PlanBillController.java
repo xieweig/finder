@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ncmao
@@ -34,10 +38,11 @@ public class PlanBillController {
 
     @ApiOperation(value = "新建总部计划，暂存")
     @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO) {
+    public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO, HttpServletRequest httpServletRequest) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("billCode", planBillManager.create(planBillDTO));
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            responseResult.put("billCode", planBillManager.create(planBillDTO, loginInfo.getOperatorCode()));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -46,10 +51,11 @@ public class PlanBillController {
 
     @ApiOperation(value = "提交总部计划")
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
-    public ResponseResult submitPlanBill(@RequestBody PlanBillDTO planBillDTO) {
+    public ResponseResult submitPlanBill(@RequestBody PlanBillDTO planBillDTO, HttpServletRequest httpServletRequest) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("billCode", planBillManager.submit(planBillDTO));
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            responseResult.put("billCode", planBillManager.submit(planBillDTO, loginInfo.getOperatorCode()));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -58,10 +64,11 @@ public class PlanBillController {
 
     @ApiOperation(value = "打开总部计划")
     @RequestMapping(path = "/open", method = RequestMethod.POST)
-    public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
+    public ResponseResult openPlanBill(@RequestParam("billCode") String billCode, HttpServletRequest httpServletRequest) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.open(billCode));
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            responseResult.put("planBill", planBillManager.open(billCode, loginInfo.getOperatorCode()));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -70,10 +77,11 @@ public class PlanBillController {
 
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/unpass", method = RequestMethod.POST)
-    public ResponseResult unpass(@RequestBody AuditPlanBillDTO auditPlanBillDTO) {
+    public ResponseResult unpass(@RequestBody AuditPlanBillDTO auditPlanBillDTO, HttpServletRequest httpServletRequest) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            planBillManager.unPass(auditPlanBillDTO);
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            planBillManager.unPass(auditPlanBillDTO, loginInfo.getOperatorCode());
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -82,10 +90,11 @@ public class PlanBillController {
 
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/pass", method = RequestMethod.POST)
-    public ResponseResult pass(@RequestBody AuditPlanBillDTO auditPlanBillDTO) {
+    public ResponseResult pass(@RequestBody AuditPlanBillDTO auditPlanBillDTO, HttpServletRequest httpServletRequest) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            planBillManager.pass(auditPlanBillDTO);
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            planBillManager.pass(auditPlanBillDTO, loginInfo.getOperatorCode());
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -140,10 +149,10 @@ public class PlanBillController {
 
     @ApiOperation(value = "子计划单个查询")
     @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
-    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
+    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode, @RequestParam(value = "billType", required = false)BillTypeEnum billType) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, billType));
         } catch (DataException e) {
             responseResult.putException(e);
         }

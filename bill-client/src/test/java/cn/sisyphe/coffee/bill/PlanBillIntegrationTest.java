@@ -138,7 +138,7 @@ public class PlanBillIntegrationTest {
         planBillDetailDTO.setPlanBillStationDTOS(Collections.singletonList(planBillStationDTO));
         planBillDTO.setPlanBillDetailDTOS(Collections.singletonList(planBillDetailDTO));
 
-        planBillController.createPlanBill(planBillDTO);
+        planBillController.createPlanBill(planBillDTO, null);
 
     }
 
@@ -167,14 +167,14 @@ public class PlanBillIntegrationTest {
         planBillDetailDTO.setPlanBillStationDTOS(Collections.singletonList(planBillStationDTO));
         planBillDTO.setPlanBillDetailDTOS(Collections.singletonList(planBillDetailDTO));
 
-        planBillController.submitPlanBill(planBillDTO);
+        planBillController.submitPlanBill(planBillDTO, null);
 
     }
 
     @Test
     public void shouldOpenAPlanBill() {
 
-        planBillController.openPlanBill(billCode);
+        planBillController.openPlanBill(billCode, null);
 
     }
 
@@ -185,7 +185,7 @@ public class PlanBillIntegrationTest {
         auditPlanBillDTO.setBillCode(billCode);
         auditPlanBillDTO.setAuditMemo("没毛病，老铁");
 
-        planBillController.pass(auditPlanBillDTO);
+        planBillController.pass(auditPlanBillDTO, null);
 
     }
 

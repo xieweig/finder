@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.AuditDeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
@@ -12,7 +13,12 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 配送单
@@ -59,7 +65,7 @@ public class DeliveryBillController {
     public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.DELIVERY));
         } catch (DataException e) {
             responseResult.putException(e);
         }
