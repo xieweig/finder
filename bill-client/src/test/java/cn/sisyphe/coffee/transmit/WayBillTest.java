@@ -30,10 +30,6 @@ import java.util.UUID;
 @SpringBootTest(classes = ClientApplication.class)
 public class WayBillTest {
 
-//    @Autowired
-//    private SharedManager sharedManager;
-
-
     @Autowired
     private WayBillManager wayBillManager;
 
