@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 
 import java.util.Date;
@@ -47,12 +48,12 @@ public class AddAdjustBillDTO {
     /**
      * 单据属性
      */
-    private String billType;
+    private String billTypeStr;
 
     /**
      * 出库状态编码
      */
-    private String outStatusCode;
+    private BillOutStateEnum outStatusCode;
 
     /**
      * 提交状态
@@ -150,19 +151,19 @@ public class AddAdjustBillDTO {
         this.inStationCode = inStationCode;
     }
 
-    public String getBillType() {
-        return billType;
+    public String getBillTypeStr() {
+        return billTypeStr;
     }
 
-    public void setBillType(String billType) {
-        this.billType = billType;
+    public void setBillTypeStr(String billTypeStr) {
+        this.billTypeStr = billTypeStr;
     }
 
-    public String getOutStatusCode() {
+    public BillOutStateEnum getOutStatusCode() {
         return outStatusCode;
     }
 
-    public void setOutStatusCode(String outStatusCode) {
+    public void setOutStatusCode(BillOutStateEnum outStatusCode) {
         this.outStatusCode = outStatusCode;
     }
 
@@ -240,8 +241,8 @@ public class AddAdjustBillDTO {
                 ", outStationCode='" + outStationCode + '\'' +
                 ", outStorage=" + outStorage +
                 ", inStationCode='" + inStationCode + '\'' +
-                ", billType='" + billType + '\'' +
-                ", outStatusCode='" + outStatusCode + '\'' +
+                ", billTypeStr='" + billTypeStr + '\'' +
+                ", outStatusCode=" + outStatusCode +
                 ", submitState='" + submitState + '\'' +
                 ", auditState='" + auditState + '\'' +
                 ", adjustNumber=" + adjustNumber +
