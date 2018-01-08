@@ -17,7 +17,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillQueryService;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +58,7 @@ import static ch.lambdaj.Lambda.sum;
 public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     @Autowired
-    private PlanBillQueryService planBillQueryService;
+    private PlanBillExtraService planBillExtraService;
 
     @Autowired
     private SharedManager sharedManager;
@@ -88,7 +89,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         PlanBill planBill;
         if (!StringUtils.isEmpty(planBillDTO.getBillCode())) {
             //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
-            planBill = planBillQueryService.findByBillCode(planBillDTO.getBillCode());
+            planBill = planBillExtraService.findByBillCode(planBillDTO.getBillCode());
             if (planBill == null) {
                 throw new DataException("xxxx", "没有找到该计划单");
             }
@@ -135,7 +136,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return ResultPlanBillDTO
      */
     public ResultPlanBillDTO open(String billCode) {
-        PlanBill planBill = planBillQueryService.findByBillCode(billCode);
+        PlanBill planBill = planBillExtraService.findByBillCode(billCode);
         //TODO 还需要加上当前查看的不是提交人条件
         if (BillStateEnum.SUBMITTED.equals(planBill.getBillState())) {
             open(planBill);
@@ -151,7 +152,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
 
     public void unPass(AuditPlanBillDTO auditPlanBillDTO) {
-        PlanBill planBill = planBillQueryService.findByBillCode(auditPlanBillDTO.getBillCode());
+        PlanBill planBill = planBillExtraService.findByBillCode(auditPlanBillDTO.getBillCode());
         planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
         audit(planBill, false);
 
@@ -165,7 +166,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     @Transactional(rollbackFor = RuntimeException.class)
     public void pass(AuditPlanBillDTO auditPlanBillDTO) {
-        PlanBill planBill = planBillQueryService.findByBillCode(auditPlanBillDTO.getBillCode());
+        PlanBill planBill = planBillExtraService.findByBillCode(auditPlanBillDTO.getBillCode());
         planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
         mapForSplit(planBill);
         audit(planBill, true);
@@ -269,7 +270,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
         //查询总部计划
         conditionQueryPlanBill.setHqBill("true");
-        Page<PlanBill> planBillPage = planBillQueryService.findPageByCondition(conditionQueryPlanBill);
+        Page<PlanBill> planBillPage = planBillExtraService.findPageByCondition(conditionQueryPlanBill);
         return planBillPage.map(this::planBillToResultPlanBillDTO);
 
     }
@@ -282,7 +283,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return
      */
     public ResultPlanBillDTO findHqPlanBillByBillCode(String billCode) throws DataException {
-        return planBillToResultPlanBillDTO(planBillQueryService.findByBillCode(billCode));
+        return planBillToResultPlanBillDTO(planBillExtraService.findByBillCode(billCode));
     }
 
     /**
@@ -362,7 +363,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return ChildPlanBillDTO
      */
     public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode) {
-        PlanBill planBill = planBillQueryService.findByBillCode(billCode);
+        PlanBill planBill = planBillExtraService.findByBillCode(billCode);
         return mapChildPlanBillToDTO(planBill);
     }
 
@@ -378,9 +379,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());
-        // TODO: 2018/1/7 站点还未实现
-//        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-//        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         childPlanBillDTO.setOperatorCode(childPlanBill.getOperatorCode());
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
@@ -400,7 +400,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
-        Page<PlanBill> childPlanBill = planBillQueryService.findChildPlanBillBy(conditionQueryPlanBill);
+        Page<PlanBill> childPlanBill = planBillExtraService.findChildPlanBillBy(conditionQueryPlanBill);
         return childPlanBill.map(this::mapChildPlanBillToDTO);
+    }
+
+    public void updateChildProgress(String billCode, BigDecimal progress) {
+        PlanBill planBill = planBillExtraService.findByBillCode(billCode);
+        planBill.setProgress(progress);
+        planBillExtraService.save(planBill);
     }
 }

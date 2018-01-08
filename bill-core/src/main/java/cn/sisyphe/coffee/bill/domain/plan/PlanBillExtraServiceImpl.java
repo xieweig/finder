@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class PlanBillQueryServiceImpl implements PlanBillQueryService {
+public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
     @Autowired
     private PlanBillRepository planBillRepository;
@@ -78,6 +78,11 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
             planBillPage = queryChildByParams(conditionQueryPlanBill, pageable);
         }
         return planBillPage;
+    }
+
+    @Override
+    public void save(PlanBill planBill) {
+        planBillRepository.save(planBill);
     }
 
     private Page<PlanBill> queryChildByParams(final ConditionQueryPlanBill conditionQueryPlanBill,

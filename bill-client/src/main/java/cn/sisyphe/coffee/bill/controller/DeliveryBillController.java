@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.AuditDeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -11,12 +12,7 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 配送单
@@ -167,4 +163,41 @@ public class DeliveryBillController {
         return responseResult;
     }
 
+
+    /**
+     * 审核不通过
+     *
+     * @param auditDeliveryBillDTO
+     * @return
+     */
+    @ApiOperation(value = "审核不通过")
+    @RequestMapping(path = "/auditNotPass", method = RequestMethod.POST)
+    public ResponseResult auditNotPass(@RequestBody AuditDeliveryBillDTO auditDeliveryBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            deliveryBillManager.auditNotPass(auditDeliveryBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+
+    /**
+     * 审核通过
+     *
+     * @param auditDeliveryBillDTO
+     * @return
+     */
+    @ApiOperation(value = "审核通过")
+    @RequestMapping(path = "/auditPass", method = RequestMethod.POST)
+    public ResponseResult auditPass(@RequestBody AuditDeliveryBillDTO auditDeliveryBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            deliveryBillManager.auditPass(auditDeliveryBillDTO);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
 }
