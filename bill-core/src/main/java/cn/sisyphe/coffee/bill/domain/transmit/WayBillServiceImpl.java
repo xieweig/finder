@@ -74,8 +74,7 @@ public class WayBillServiceImpl implements WayBillService {
             // 分组后去重复
             query.distinct(true);
 
-            System.out.println("getReceivedStatus :" + conditionQueryWayBill.getReceivedStatus());
-
+//            System.out.println("getReceivedStatus :" + conditionQueryWayBill.getReceivedStatus());
             Predicate predicate = cb.conjunction();
             //左连接
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
@@ -91,15 +90,16 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
                         "%" + conditionQueryWayBill.getOutStorageBillCode() + "%"));
             }
+            // expressions.add(root.<String>get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
             // 入库站点
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getInStationCode())) {
-                expressions.add(cb.equal(root.<String>get("inStationCode"),
-                        "" + conditionQueryWayBill.getInStationCode() + ""));
+            if (conditionQueryWayBill.getInStationCode() != null
+                    && conditionQueryWayBill.getInStationCode().size() > 0) {
+                expressions.add(root.<String>get("inStationCode").in(conditionQueryWayBill.getInStationCode()));
             }
             //出库站点
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStationCode())) {
-                expressions.add(cb.equal(root.<String>get("outStationCode"),
-                        "" + conditionQueryWayBill.getOutStationCode() + ""));
+            if (conditionQueryWayBill.getOutStationCode() != null && conditionQueryWayBill.getOutStationCode().size() > 0) {
+                //outStationCode
+                expressions.add(root.<String>get("outStationCode").in(conditionQueryWayBill.getOutStationCode()));
             }
             //物流公司名称
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
@@ -114,8 +114,6 @@ public class WayBillServiceImpl implements WayBillService {
             //收货状态receivedStatus
             if (conditionQueryWayBill.getReceivedStatus() != null
                     && !StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
-//                expressions.add(cb.equal(root.get("receivedStatus").as(ReceivedStatusEnum.class),
-//                        conditionQueryWayBill.getReceivedStatus()));
                 expressions.add(cb.equal(root.get("receivedStatus").as(String.class),
                         conditionQueryWayBill.getReceivedStatus()));
             }
