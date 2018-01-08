@@ -8,9 +8,9 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class PurchaseBillTest {
     public void save() {
         AddPurchaseBillDTO saveDto = new AddPurchaseBillDTO();
         // 货运单号
-        saveDto.setFreightCode("hydh004");
+//        saveDto.setFreightCode("hydh004");
         // 发货件数
         saveDto.setShippedAmount(30);
         // 实收件数
@@ -258,32 +258,32 @@ public class PurchaseBillTest {
         saveDto.setStation(station);
 
         List<BillDetailDTO> billDetails = new ArrayList<>();
-        BillDetailDTO detailDTO = new BillDetailDTO();
-
-        // 实收数量
-        detailDTO.setAmount(88);
-        // 包号
-        detailDTO.setPackageCode("package001-saved");
-        // 生产日期
-        detailDTO.setDateInProduced(new Date());
-        // 单位进价
-        detailDTO.setUnitPrice(new BigDecimal(10));
-        // 发货数量
-        detailDTO.setShippedNumber(88);
-        // 数量差值
-        detailDTO.setDifferenceNumber(0);
-        // 总价差值
-        detailDTO.setDifferencePrice(new BigDecimal(0));
-
-        RawMaterial rawMaterial = new RawMaterial("ylbm001");
-        rawMaterial.setRawMaterialName("原料001");
-        Cargo cargo = new Cargo("cargo001");
-        cargo.setCargoName("货物001");
-        rawMaterial.setCargo(cargo);
-        detailDTO.setRawMaterial(rawMaterial);
-
-
-        billDetails.add(detailDTO);
+//        BillDetailDTO detailDTO = new BillDetailDTO();
+//
+//        // 实收数量
+//        detailDTO.setAmount(88);
+//        // 包号
+//        detailDTO.setPackageCode("package001-saved");
+//        // 生产日期
+//        detailDTO.setDateInProduced(new Date());
+//        // 单位进价
+//        detailDTO.setUnitPrice(new BigDecimal(10));
+//        // 发货数量
+//        detailDTO.setShippedNumber(88);
+//        // 数量差值
+//        detailDTO.setDifferenceNumber(0);
+//        // 总价差值
+//        detailDTO.setDifferencePrice(new BigDecimal(0));
+//
+//        RawMaterial rawMaterial = new RawMaterial("ylbm001");
+//        rawMaterial.setRawMaterialName("原料001");
+//        Cargo cargo = new Cargo("cargo001");
+//        cargo.setCargoName("货物001");
+//        rawMaterial.setCargo(cargo);
+//        detailDTO.setRawMaterial(rawMaterial);
+//
+//
+//        billDetails.add(detailDTO);
         saveDto.setBillDetails(billDetails);
         purchaseBillManager.updateBillToSave(saveDto);
     }
@@ -367,8 +367,8 @@ public class PurchaseBillTest {
      */
     @Test
     public void AuditSuccessBill() {
-        String billCode = "bill003";
-        String auditPersonCode = "admin003 ";
+        String billCode = "bill001";
+        String auditPersonCode = "admin001 ";
         purchaseBillManager.auditBill(billCode,auditPersonCode,true);
     }
     /**
