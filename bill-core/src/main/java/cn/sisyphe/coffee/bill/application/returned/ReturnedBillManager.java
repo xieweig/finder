@@ -7,32 +7,17 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillQueryService;
+import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
-import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -86,17 +71,17 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 设置单据的作用
         returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
         // 设置单据类型
-        //  returnedBill.setBillType(BillTypeEnum.RETURNED);
+        // returnedBill.setBillType(BillTypeEnum.RETURNED);
         //设置单据属性
         returnedBill.setBillProperty(addReturnedBillDTO.getBillProperty());
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
         Random random = new Random();
-        returnedBill.setBillCode(random.nextInt(10000)+"0302");
+        returnedBill.setBillCode(random.nextInt(10000) + "0302");
         // 来源单号
-        if (StringUtils.isEmpty(addReturnedBillDTO.getFromBillCode())) {
-            returnedBill.setFromBillCode(addReturnedBillDTO.getFromBillCode());
+        if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
+            returnedBill.setSourceCode(addReturnedBillDTO.getSourceCode());
         }
         // 计划备注
         if (!StringUtils.isEmpty(addReturnedBillDTO.getPlanMemo())) {
@@ -277,7 +262,9 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 验证属性
         verification(billDTO);
         ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(billDTO.getBillCode());
-        returnedBill.getBillDetails().clear();
+        if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
+            returnedBill.getBillDetails().clear();
+        }
         // 转换单据
         ReturnedBill mapBillAfter = dtoToMapReturnedBillForEdit(billDTO, returnedBill);
         save(mapBillAfter);
@@ -295,7 +282,9 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 验证属性
         verification(billDTO);
         ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(billDTO.getBillCode());
-        returnedBill.getBillDetails().clear();
+        if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
+            returnedBill.getBillDetails().clear();
+        }
         // 转换单据
         ReturnedBill mapBillAfter = dtoToMapReturnedBillForEdit(billDTO, returnedBill);
 
@@ -313,13 +302,13 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 设置单据的作用
         returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
         // 设置单据类型
-        //  returnedBill.setBillType(BillTypeEnum.RETURNED);
+        returnedBill.setBillType(BillTypeEnum.RETURNED);
         //设置单据属性
         returnedBill.setBillProperty(editReturnedBillDTO.getBillProperty());
 
         // 来源单号
-        if (StringUtils.isEmpty(editReturnedBillDTO.getFromBillCode())) {
-            returnedBill.setFromBillCode(editReturnedBillDTO.getFromBillCode());
+        if (StringUtils.isEmpty(editReturnedBillDTO.getSourceCode())) {
+            returnedBill.setSourceCode(editReturnedBillDTO.getSourceCode());
         }
         // 计划备注
         if (!StringUtils.isEmpty(editReturnedBillDTO.getPlanMemo())) {
@@ -382,7 +371,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
     private void verification(AddReturnedBillDTO addReturnedBillDTO) {
         //来源单号
         if (addReturnedBillDTO.getBillProperty() != PropertyEnum.NOPLAN) {
-            if (StringUtils.isEmpty(addReturnedBillDTO.getFromBillCode())) {
+            if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
                 throw new DataException("500", "来源单号为空");
             }
         }
@@ -414,6 +403,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             throw new DataException("500", "总价为空");
         }
     }
+
     /**
      * 根据多条件查询退库单据信息
      *
@@ -433,124 +423,57 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
 
         return QueryReturnedBillDTO;
     }
+
     private List<ReturnedBillDTO> toMapDTO(List<ReturnedBill> returnedBillList) {
         List<ReturnedBillDTO> returnedBillDTOList = new ArrayList<>();
         for (ReturnedBill returnedBill : returnedBillList) {
             ReturnedBillDTO returnedBillDTO = new ReturnedBillDTO();
-            // 退库单号-主表
             returnedBillDTO.setBillCode(returnedBill.getBillCode());
-            // 入库时间-主表
+            returnedBillDTO.setAuditState(returnedBill.getAuditState());
+            returnedBillDTO.setSubmitState(returnedBill.getSubmitState());
+            returnedBillDTO.setAmount(returnedBill.getAmount());
+
+            returnedBillDTO.setAuditMemo(returnedBill.getAuditMemo());
+
+            // TODO: 2018/1/8 测试使用假数据
+//            returnedBillDTO.setAuditPersonCode("");
+//            returnedBillDTO.setOperatorName("");
+//            returnedBillDTO.setOperatorCode(returnedBill.getOperatorCode());
+//            returnedBillDTO.setAuditPersonCode(returnedBill.getAuditPersonCode());
+            returnedBillDTO.setBasicEnum(returnedBill.getBasicEnum());
+            returnedBillDTO.setBillDetails(billDetailsToReturnedBillDetailDTO(returnedBill.getBillDetails()));
             returnedBillDTO.setInWareHouseTime(returnedBill.getInWareHouseTime());
-            // 录单时间-主表
+            returnedBillDTO.setBillProperty(returnedBill.getBillProperty());
+            returnedBillDTO.setBillPurpose(returnedBill.getBillPurpose());
+            returnedBillDTO.setBillState(returnedBill.getBillState());
+            returnedBillDTO.setBillType(returnedBill.getBillType());
+            returnedBillDTO.setInLocation(returnedBill.getInLocation());
+            returnedBillDTO.setInOrOutState(returnedBill.getInOrOutState());
+            returnedBillDTO.setOutLocation(returnedBill.getOutLocation());
+            returnedBillDTO.setOutMemo(returnedBill.getOutMemo());
+            returnedBillDTO.setPlanMemo(returnedBill.getPlanMemo());
+            returnedBillDTO.setProgress(returnedBill.getProgress());
+            returnedBillDTO.setRootCode(returnedBill.getRootCode());
+            returnedBillDTO.setSourceCode(returnedBill.getSourceCode());
+            returnedBillDTO.setTotalPrice(returnedBill.getTotalPrice());
+            returnedBillDTO.setVariety(returnedBill.getVariety());
             returnedBillDTO.setCreateTime(returnedBill.getCreateTime());
-            // 录单人-主表
-            returnedBillDTO.setOperatorCode(returnedBill.getOperatorCode());
-            // 审核人-主表
-           /* returnedBillDTO.setAuditPersonCode(returnedBill.getAuditPersonCode());
-            // 入库站点-主表
-            Station station = (Station) returnedBill.getInLocation();
-            returnedBillDTO.setInStationCode(station.getStationCode());
-            // 入库库房-主表
-            returnedBillDTO.setInStorageCode(station.getStorage().getStorageCode());*/
-            // 单据状态--主表
-            toMapTwoState(returnedBillDTO, returnedBill.getBillState().name());
-            // 备注--主表
-
-            // 单据提交状态--主表
-            if (returnedBill.getSubmitState() != null) {
-                returnedBillDTO.setSubmitState(returnedBill.getSubmitState().name());
-            } else {
-                returnedBillDTO.setSubmitState("-");
-            }
-            // 单据审核状态--主表
-            if (returnedBill.getAuditState() != null) {
-                returnedBillDTO.setAuditState(returnedBill.getAuditState().name());
-            } else {
-                returnedBillDTO.setAuditState("-");
-            }
-
-            // 循环遍历明细信息，累加得到数据
-            Set<ReturnedBillDetail> returnedBillDetailSet = returnedBill.getBillDetails();
-            // 实收数量总计
-            Integer amount = 0;
-            // 数量差值总计
-            Integer differenceNumber = 0;
-            // 退库总价
-            BigDecimal inTotalPrice = BigDecimal.ZERO;
-            // 差价总和
-            BigDecimal differencePrice = BigDecimal.ZERO;
-           /* for (ReturnedBillDetail returnedBillDetail : returnedBillDetailSet) {
-                // 累加实收数量
-                amount += returnedBillDetail.getAmount();
-                // 累加数量差值
-                differenceNumber += returnedBillDetail.getDifferenceNumber();
-                // 累加退库总价
-                inTotalPrice = inTotalPrice.add(returnedBillDetail.getUnitPrice().multiply(new BigDecimal(returnedBillDetail.getAmount())));
-                // 累加差价总和
-                differencePrice = differencePrice.add(returnedBillDetail.getDifferencePrice());
-            }*/
-            // 实收数量--明细表
-            returnedBillDTO.setAmount(amount);
-            // 数量差值--明细表
-            returnedBillDTO.setDifferenceNumber(differenceNumber);
-            // 总价差值--明细表
-            returnedBillDTO.setDifferencePrice(differencePrice);
-            // 退库实洋
-            returnedBillDTO.setInTotalPrice(inTotalPrice);
-
             returnedBillDTOList.add(returnedBillDTO);
         }
         return returnedBillDTOList;
     }
-    /**
-     * map状态
-     *
-     * @param billDTO
-     * @param stateName
-     * @return
-     */
-    private ReturnedBillDTO toMapTwoState(ReturnedBillDTO billDTO, String stateName) {
 
-        switch (stateName) {
-
-            case "SAVED":
-                billDTO.setSubmitState("未提交");
-                billDTO.setAuditState("未审核");
-                break;
-            case "SUBMITTED":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("未审核");
-                break;
-            case "OPEN":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("未审核");
-                break;
-            case "AUDIT_FAILURE":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核不通过");
-                break;
-            case "AUDIT_SUCCESS":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            case "OUT_STORAGING":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            case "IN_STORAGING":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            case "DONE":
-                billDTO.setSubmitState("已提交");
-                billDTO.setAuditState("审核通过");
-                break;
-            default:
-                break;
-
+    private Set<ReturnedBillDetailDTO> billDetailsToReturnedBillDetailDTO(Set<ReturnedBillDetail> returnedBillDetails){
+        Set<ReturnedBillDetailDTO> returnedBillDetailDTOSet = new HashSet<>();
+        for (ReturnedBillDetail returnedBillDetail : returnedBillDetails) {
+            ReturnedBillDetailDTO returnedBillDetailDTO = new ReturnedBillDetailDTO();
+            returnedBillDetailDTO.setRawMaterial((RawMaterial) returnedBillDetail.getGoods());
+            returnedBillDetailDTO.setActualAmount(returnedBillDetail.getActualAmount());
+            returnedBillDetailDTO.setMemo(returnedBillDetail.getMemo());
+            returnedBillDetailDTO.setShippedAmount(returnedBillDetail.getShippedAmount());
+            returnedBillDetailDTOSet.add(returnedBillDetailDTO);
         }
-
-        return billDTO;
+        return returnedBillDetailDTOSet;
     }
 
 }

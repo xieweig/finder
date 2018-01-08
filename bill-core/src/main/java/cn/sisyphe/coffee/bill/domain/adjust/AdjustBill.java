@@ -84,6 +84,10 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
      * 完成度
      */
     private BigDecimal progress;
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
 
     public Date getOutWareHouseTime() {
         return outWareHouseTime;
@@ -165,6 +169,14 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
         this.progress = progress;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     @Override
     public String toString() {
         return "AdjustBill{" +
@@ -178,6 +190,7 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
                 ", auditMemo='" + auditMemo + '\'' +
                 ", basicEnum=" + basicEnum +
                 ", progress=" + progress +
+                ", totalPrice=" + totalPrice +
                 "} " + super.toString();
     }
 }

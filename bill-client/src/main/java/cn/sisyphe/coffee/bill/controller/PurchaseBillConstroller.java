@@ -5,13 +5,14 @@ import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.infrastructure.share.storage.TempStorage;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,8 +72,8 @@ public class PurchaseBillConstroller {
     public ResponseResult findByConditions(@RequestBody ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        QueryPurchaseBillDTO billPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
-        responseResult.put("content", billPage);
+        Page<PurchaseBillDTO> purchaseBillPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
+        responseResult.put("content", purchaseBillPage);
         return responseResult;
     }
 

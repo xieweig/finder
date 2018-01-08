@@ -11,11 +11,12 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -379,8 +380,9 @@ public class PurchaseBillTest {
         ConditionQueryPurchaseBill bill = new ConditionQueryPurchaseBill();
         bill.setPage(1);
         bill.setPageSize(10);
-        bill.setBillCode("bill001");
-        QueryPurchaseBillDTO dto = purchaseBillManager.findByConditions(bill);
-        System.out.println(dto.toString());
+//        bill.setBillCode("bill001");
+        Page<PurchaseBillDTO> purchaseBillDTOPage = purchaseBillManager.findByConditions(bill);
+        System.err.println(purchaseBillDTOPage.getTotalPages());
+        System.err.println(purchaseBillDTOPage.getContent().toString());
     }
 }

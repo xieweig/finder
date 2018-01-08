@@ -108,7 +108,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
              * 入库开始时间
              */
             if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getInStartTime())) {
-                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPurchaseBill.getInStartTime()));
+                expressions.add(cb.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryPurchaseBill.getInStartTime()));
             }
             /**
              * 入库结束时间
