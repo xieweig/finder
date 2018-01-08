@@ -64,7 +64,7 @@ public class SaveCommitTest {
     RestockBillQueryService restockBillQueryService;
 
     private RandomAccessFile randomAccessFile;
-    public static final String[] PLANCODES = {"010696","010507","010702"};
+    public static final String[] PLANCODES = {"010523","010507","010702"};
 
     /**
      * notes :

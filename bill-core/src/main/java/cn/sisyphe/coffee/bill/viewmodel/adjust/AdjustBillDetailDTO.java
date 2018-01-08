@@ -21,7 +21,6 @@ public class AdjustBillDetailDTO {
      */
     private Integer actualAmount;
 
-
     /**
      * 原料
      */

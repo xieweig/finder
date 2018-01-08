@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,27 @@ public class ChildPlanBillDTO {
     private Integer typeAmount;
 
     private BillTypeEnum billType;
+
+    //起始单号
+    private String rootCode;
+
+    private BigDecimal progress;
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
 
     public String getReceiveBillCode() {
         return receiveBillCode;

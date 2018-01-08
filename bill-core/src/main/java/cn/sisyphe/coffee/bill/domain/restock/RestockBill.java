@@ -47,11 +47,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
     private String operatorCode;
 
     /**
-     * 来源单号
-     */
-    private String fromBillCode;
-
-    /**
      * 退货数量
      */
     private int amount;
@@ -119,14 +114,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
 
     public void setBillProperty(PropertyEnum billProperty) {
         this.billProperty = billProperty;
-    }
-
-    public String getFromBillCode() {
-        return fromBillCode;
-    }
-
-    public void setFromBillCode(String fromBillCode) {
-        this.fromBillCode = fromBillCode;
     }
 
     public BasicEnum getBasicEnum() {
