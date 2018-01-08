@@ -12,10 +12,12 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+//import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 
@@ -25,7 +27,7 @@ import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
 
-import javafx.scene.paint.Material;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -42,7 +44,7 @@ import java.util.*;
 import java.util.Calendar;
 import java.util.Random;
 
-import static cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum.BY_CARGO;
+
 
 /**
  * @Author: xie_wei_guang
@@ -85,7 +87,8 @@ public class SaveCommitTest {
         dto.setOutMemo("Remarks: " + random.nextInt(20) + " ok!");
         dto.setPlanMemo("Remarks: " + random.nextInt(100) + " ok!");
         dto.setOperatorCode("2200" + random.nextInt(100));
-        dto.setBasicEnum(cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum.BY_CARGO);
+        dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
+
         dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
         dto.setBillProperty(PropertyEnum.RESTOCK);
         dto.setFromBillCode(this.PLANCODES[0]);
@@ -195,49 +198,49 @@ public class SaveCommitTest {
         // dto.setBillCode();
     }
 
-    @Resource
-    private PlanBillRepository planBillRepository;
-
-    private PlanBillDetail createPlanBillDetail() {
-        PlanBillDetail planBillDetail = new PlanBillDetail();
-        planBillDetail.setAmount(random.nextInt(100));
-        planBillDetail.setPackageCode("test:03" + random.nextInt(100));
-        RawMaterial rawMaterial = new RawMaterial();
-        rawMaterial.setCargo(new Cargo("3002" + random.nextInt()));
-        rawMaterial.setRawMaterialName("测试原料名称" + random.nextInt(1000));
-        planBillDetail.setGoods(rawMaterial);
-        planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
-        return planBillDetail;
-    }
-
-    private PlanBill createPlanBill() {
-        PlanBill planBill = new PlanBill();
-        planBill.setHqBill(false);
-        planBill.setSpecificBillType(BillTypeEnum.PLAN);
-        planBill.setAuditMemo("remarks: " + random.nextInt(1000));
-        planBill.setBasicEnum(BasicEnum.BY_MATERIAL);
-        planBill.setBillName("all" + random.nextInt(100));
-        planBill.setProgress(new BigDecimal(random.nextInt(1200)));
-        planBill.setBillState(BillStateEnum.SAVED);
-        planBill.setAuditState(BillAuditStateEnum.AUDIT_SUCCESS);
-        planBill.setSubmitState(BillSubmitStateEnum.SUBMITTED);
-        planBill.setAuditPersonCode(random.nextInt(100) + "0302");
-        planBill.setBillCode("010" + random.nextInt(1000));
-        planBill.setBillType(BillTypeEnum.PLAN);
-        Set<PlanBillDetail> details = new HashSet<>();
-        for (int i = 0; i < 3; i++) {
-
-            details.add(this.createPlanBillDetail());
-        }
-        planBill.setBillDetails(details);
-        return  planBill;
-    }
-    @Test
-    public void insertTest(){
-        for (int i = 0; i <6 ; i++) {
-            this.planBillRepository.save(this.createPlanBill());
-        }
-    }
+//    @Resource
+//    private PlanBillRepository planBillRepository;
+//
+//    private PlanBillDetail createPlanBillDetail() {
+//        PlanBillDetail planBillDetail = new PlanBillDetail();
+//        planBillDetail.setAmount(random.nextInt(100));
+//        planBillDetail.setPackageCode("test:03" + random.nextInt(100));
+//        RawMaterial rawMaterial = new RawMaterial();
+//        rawMaterial.setCargo(new Cargo("3002" + random.nextInt()));
+//        rawMaterial.setRawMaterialName("测试原料名称" + random.nextInt(1000));
+//        planBillDetail.setGoods(rawMaterial);
+//        planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
+//        return planBillDetail;
+//    }
+//
+//    private PlanBill createPlanBill() {
+//        PlanBill planBill = new PlanBill();
+//        planBill.setHqBill(false);
+//        planBill.setSpecificBillType(BillTypeEnum.PLAN);
+//        planBill.setAuditMemo("remarks: " + random.nextInt(1000));
+//      //  dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
+//        planBill.setBillName("all" + random.nextInt(100));
+//        planBill.setProgress(new BigDecimal(random.nextInt(1200)));
+//        planBill.setBillState(BillStateEnum.SAVED);
+//        planBill.setAuditState(BillAuditStateEnum.AUDIT_SUCCESS);
+//        planBill.setSubmitState(BillSubmitStateEnum.SUBMITTED);
+//        planBill.setAuditPersonCode(random.nextInt(100) + "0302");
+//        planBill.setBillCode("010" + random.nextInt(1000));
+//        planBill.setBillType(BillTypeEnum.PLAN);
+//        Set<PlanBillDetail> details = new HashSet<>();
+//        for (int i = 0; i < 3; i++) {
+//
+//            details.add(this.createPlanBillDetail());
+//        }
+//        planBill.setBillDetails(details);
+//        return  planBill;
+//    }
+//    @Test
+//    public void insertTest(){
+//        for (int i = 0; i <6 ; i++) {
+//            this.planBillRepository.save(this.createPlanBill());
+//        }
+//    }
 
     //测试多条件查询
     @Test
