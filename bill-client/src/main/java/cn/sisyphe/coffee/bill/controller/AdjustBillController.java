@@ -1,15 +1,20 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +25,15 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author XiongJing
  */
+@RestController
+@RequestMapping("/api/bill/adjustBill")
+@Api(description = "调剂计划相关接口")
+@CrossOrigin(origins = "*")
 public class AdjustBillController {
+
+
+    @Autowired
+    private AdjustBillManager adjustBillManager;
 
     /**
      * 多条件查询调剂单据
@@ -62,6 +75,7 @@ public class AdjustBillController {
     public ResponseResult saveAdjustBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        adjustBillManager.create(addAdjustBillDTO);
         ResponseResult responseResult = new ResponseResult();
 
         return responseResult;

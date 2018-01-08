@@ -26,6 +26,9 @@ public class AdjustBillDetailDTO {
      */
     private RawMaterial rawMaterial;
 
+
+    private String memo;
+
     public Integer getShippedAmount() {
         return shippedAmount;
     }
@@ -48,6 +51,14 @@ public class AdjustBillDetailDTO {
 
     public void setRawMaterial(RawMaterial rawMaterial) {
         this.rawMaterial = rawMaterial;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
     @Override

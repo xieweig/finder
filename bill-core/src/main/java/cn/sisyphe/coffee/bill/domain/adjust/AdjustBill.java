@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.domain.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,10 +26,13 @@ import java.util.Date;
 @Table(name = "adjust_bill")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class AdjustBill  extends Bill<AdjustBillDetail> {
+public class AdjustBill extends Bill<AdjustBillDetail> {
+
+
     public AdjustBill() {
         setBillType(BillTypeEnum.ADJUST);
     }
+
     /**
      * 出库时间
      */

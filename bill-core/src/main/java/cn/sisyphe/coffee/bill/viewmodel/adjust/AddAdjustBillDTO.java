@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,12 @@ public class AddAdjustBillDTO {
      * 单据编码
      */
     private String billCode;
+
+    /**
+     * 源单据编码
+     */
+    private String rootCode;
+
     /**
      * 出库时间
      */
@@ -89,6 +96,8 @@ public class AddAdjustBillDTO {
      * 审核意见
      */
     private String auditMemo;
+
+    private BasicEnum basicEnum;
 
     /**
      * 货物/原料明细信息
@@ -229,6 +238,22 @@ public class AddAdjustBillDTO {
 
     public void setDetails(List<AdjustBillDetailDTO> details) {
         this.details = details;
+    }
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
     }
 
     @Override

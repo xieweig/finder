@@ -5,5 +5,7 @@ package cn.sisyphe.coffee.bill.domain.adjust;
  * remark：
  * version:
  */
-public interface AdjustBillQueryService {
+public interface AdjustBillExtraService {
+
+    AdjustBill findByBillCode(String billCode);
 }
