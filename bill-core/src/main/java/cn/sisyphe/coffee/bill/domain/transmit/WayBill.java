@@ -74,6 +74,18 @@ public class WayBill extends BaseEntity {
 
 
     /**
+     * 入库站点名称
+     */
+    private String inStationName;
+
+
+    /**
+     * 出库站点名称
+     */
+    private String outStationName;
+
+
+    /**
      * 运货件数
      */
     @Column(nullable = false)
@@ -110,6 +122,22 @@ public class WayBill extends BaseEntity {
     @Column(length = 255)
     private String memo;
 
+
+    public String getInStationName() {
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
+    public String getOutStationName() {
+        return outStationName;
+    }
+
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
+    }
 
     /**
      * 总运货件数

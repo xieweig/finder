@@ -30,6 +30,10 @@ import java.util.UUID;
 @SpringBootTest(classes = ClientApplication.class)
 public class WayBillTest {
 
+//    @Autowired
+//    private SharedManager sharedManager;
+
+
     @Autowired
     private WayBillManager wayBillManager;
 
@@ -38,13 +42,25 @@ public class WayBillTest {
 
 
     @Autowired
-    WayBillRepository wayBillRepository;
+    private WayBillRepository wayBillRepository;
 
     @Test
     public void testFindByCode() {
 
         wayBillRepository.findOneByCode("a");
     }
+
+    /**
+     *
+     */
+    @Test
+    public void testFindStationByCode() {
+
+//        Station station = sharedManager.findStationByStationCode("CKGC07");
+//        System.out.println("code " + station.getStationCode());
+//        System.out.println("name " + station.getStationName());
+    }
+
 
     /**
      * 查找单个
@@ -66,13 +82,12 @@ public class WayBillTest {
      */
     @Test
     public void testFindByConditions() {
-
+        //
         ConditionQueryWayBill conditionQueryWayBill = new ConditionQueryWayBill();
-        conditionQueryWayBill.setOperatorName("小明");
-        // conditionQueryWayBill.setInStationCode("jd");
+        conditionQueryWayBill.setOperatorName("超级管理员");
         conditionQueryWayBill.setPageSize(100);
-        //conditionQueryWayBill.setLogisticsCompanyName("韵达");
-        //conditionQueryWayBill.setInStationCode("cq12");
+        conditionQueryWayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);
+
         conditionQueryWayBill.setPage(1);
 
         QueryWayBillDTO queryWayBillDTO = wayBillManager.findPageByCondition(conditionQueryWayBill);

@@ -41,10 +41,15 @@ public class EditWayBillDTO implements Serializable {
     @Column(length = 255)
     private String outStorageBillCode;//
 
+    /**
+     * 出库站点code
+     */
+    private String outStationCode;//
 
-    private String outStationCode;// 出库站点
-
-    private String outStationName;// 出库站点
+    /**
+     * 出库站点名称
+     */
+    private String outStationName;//
 
 
     /**
@@ -94,11 +99,13 @@ public class EditWayBillDTO implements Serializable {
      * 总重量
      */
     private Long totalWeight;
-
+    /**
+     * 录单人code
+     */
 
     private String operatorCode;
     /**
-     *
+     * 录单人name
      */
     private String operatorName;
 
@@ -107,7 +114,6 @@ public class EditWayBillDTO implements Serializable {
      * 收货状态
      */
     private ReceivedStatusEnum receivedStatus;
-
 
 
     public String getInStationCode() {
