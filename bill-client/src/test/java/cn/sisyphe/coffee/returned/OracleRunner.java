@@ -48,7 +48,7 @@ public class OracleRunner {
     @Resource
     private ReturnedBillManager returnedBillManager;
     private ReturnedBillRepository returnedBillRepository;
-    private String[] names = {"牛奶", "咖啡", "乳酪", "啤酒", "面包", "排骨", "米饭", "馒头", "鸭肉", "鸡肉"};
+    private String[] names = {"milk", "coffee", "cheese", "beer", "juice", "meat", "duck", "chicken", "goal", "apple"};
 
     private AddReturnedBillDTO createReturnedBill() {
         AddReturnedBillDTO dto = new AddReturnedBillDTO();
