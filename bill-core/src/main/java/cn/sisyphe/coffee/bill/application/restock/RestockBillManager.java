@@ -7,11 +7,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillQueryService;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
@@ -56,7 +53,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     @Autowired
     private RestockBillQueryService restockBillQueryService;
     @Autowired
-    private PlanBillQueryService planBillQueryService;
+    private PlanBillExtraService planBillExtraService;
     
     
     /**

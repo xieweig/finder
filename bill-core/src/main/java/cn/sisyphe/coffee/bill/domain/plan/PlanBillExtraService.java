@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.domain.plan;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import org.springframework.data.domain.Page;
 
-public interface PlanBillQueryService {
+public interface PlanBillExtraService {
     /**
      * 多条件查询计划单数据
      *
@@ -21,4 +21,6 @@ public interface PlanBillQueryService {
     PlanBill findByBillCode(String planBillCode);
 
     Page<PlanBill> findChildPlanBillBy(ConditionQueryPlanBill conditionQueryPlanBill);
+
+    void save(PlanBill planBill);
 }
