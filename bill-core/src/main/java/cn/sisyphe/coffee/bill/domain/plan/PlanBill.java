@@ -29,11 +29,16 @@ public class PlanBill extends Bill<PlanBillDetail> {
     private String billName;
 
 
+    /**
+     * 按货物还是按原料拣货
+      */
     @Column
     @Enumerated(value = EnumType.STRING)
     private BasicEnum basicEnum;
 
-
+    /**
+     * 具体的单据类型
+      */
     @Column
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;

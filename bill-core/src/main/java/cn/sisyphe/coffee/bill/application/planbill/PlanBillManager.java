@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.planbill;
 
 import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
@@ -22,9 +23,6 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
@@ -62,13 +60,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     private PlanBillQueryService planBillQueryService;
 
     @Autowired
-    private PlanBillRepository planBillRepository;
-
-    @Autowired
-    private SupplierRepository supplierRepository;
-
-    @Autowired
-    private StationRepository stationRepository;
+    private SharedManager sharedManager;
 
     @Autowired
     public PlanBillManager(BillRepository<PlanBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
@@ -96,7 +88,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         PlanBill planBill;
         if (!StringUtils.isEmpty(planBillDTO.getBillCode())) {
             //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
-            planBill = planBillRepository.findOneByBillCode(planBillDTO.getBillCode());
+            planBill = planBillQueryService.findByBillCode(planBillDTO.getBillCode());
             if (planBill == null) {
                 throw new DataException("xxxx", "没有找到该计划单");
             }
@@ -143,7 +135,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return ResultPlanBillDTO
      */
     public ResultPlanBillDTO open(String billCode) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+        PlanBill planBill = planBillQueryService.findByBillCode(billCode);
         //TODO 还需要加上当前查看的不是提交人条件
         if (BillStateEnum.SUBMITTED.equals(planBill.getBillState())) {
             open(planBill);
@@ -159,7 +151,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
 
     public void unPass(AuditPlanBillDTO auditPlanBillDTO) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(auditPlanBillDTO.getBillCode());
+        PlanBill planBill = planBillQueryService.findByBillCode(auditPlanBillDTO.getBillCode());
         planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
         audit(planBill, false);
 
@@ -173,7 +165,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     @Transactional(rollbackFor = RuntimeException.class)
     public void pass(AuditPlanBillDTO auditPlanBillDTO) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(auditPlanBillDTO.getBillCode());
+        PlanBill planBill = planBillQueryService.findByBillCode(auditPlanBillDTO.getBillCode());
         planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
         mapForSplit(planBill);
         audit(planBill, true);
@@ -202,10 +194,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     private AbstractLocation getRealLocation(AbstractLocation abstractLocation) {
         if (abstractLocation instanceof Station) {
-            return stationRepository.findByStationCode(abstractLocation.code());
+            return sharedManager.findStationByStationCode(abstractLocation.code());
         }
         if (abstractLocation instanceof Supplier) {
-            return supplierRepository.findBySupplierCode(abstractLocation.code());
+            return sharedManager.findSupplierBySupplierCode(abstractLocation.code());
         }
         throw new DataException("xxx", "站点转换错误");
     }
@@ -256,7 +248,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     private Station getTransferLocation(PlanBillDetail planBillDetail) {
         if (planBillDetail.getOutLocation() instanceof Station && StationType.STORE.equals(((Station) planBillDetail.getOutLocation()).getStationType())
                 && planBillDetail.getInLocation() instanceof Supplier) {
-            Station transferStation = new Station(stationRepository.findLogisticCodeByStationCode(planBillDetail.getOutLocation().code()));
+            Station transferStation = new Station(sharedManager.findLogisticCodeByStationCode(planBillDetail.getOutLocation().code()));
             transferStation.setStationType(StationType.LOGISTICS);
             return transferStation;
         }
@@ -290,7 +282,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return
      */
     public ResultPlanBillDTO findHqPlanBillByBillCode(String billCode) throws DataException {
-        return planBillToResultPlanBillDTO(planBillRepository.findOneByBillCode(billCode));
+        return planBillToResultPlanBillDTO(planBillQueryService.findByBillCode(billCode));
     }
 
     /**
@@ -370,7 +362,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @return ChildPlanBillDTO
      */
     public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode) {
-        PlanBill planBill = planBillRepository.findOneByBillCode(billCode);
+        PlanBill planBill = planBillQueryService.findByBillCode(billCode);
         return mapChildPlanBillToDTO(planBill);
     }
 
