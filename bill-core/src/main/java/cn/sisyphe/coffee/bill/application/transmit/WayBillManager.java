@@ -255,9 +255,11 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
-
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
-
+        //出入库站点名称
+        wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
+        wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
+        //
         //添加明细
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
         //
