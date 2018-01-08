@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -75,6 +76,11 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
      */
     @Enumerated(EnumType.STRING)
     private BasicEnum basicEnum;
+
+    /**
+     * 完成度
+     */
+    private BigDecimal progress;
 
     public Date getOutWareHouseTime() {
         return outWareHouseTime;
@@ -148,6 +154,14 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
         this.basicEnum = basicEnum;
     }
 
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
     @Override
     public String toString() {
         return "AdjustBill{" +
@@ -160,6 +174,7 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
                 ", basicEnum=" + basicEnum +
+                ", progress=" + progress +
                 "} " + super.toString();
     }
 }

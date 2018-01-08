@@ -1,6 +1,11 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -9,6 +14,10 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
  *
  * @author XiongJing
  */
+@Entity
+@Table
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class AdjustBillDetail extends BillDetail {
 
     /**
