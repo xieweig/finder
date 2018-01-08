@@ -73,8 +73,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     }
 
     private void mapBill(AdjustBill adjustBill, AddAdjustBillDTO addAdjustBillDTO) {
-        //设置单据编码
-        adjustBill.setBillCode(generateBillCode());
         //设置单据作用
         adjustBill.setBillPurpose(BillPurposeEnum.OutStorage);
         //设置出库站点
@@ -94,7 +92,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         //设置计划备注
         adjustBill.setPlanMemo(addAdjustBillDTO.getPlanMemo());
         //设置计划详情
-        adjustBill.setBillDetails(mapDetails(addAdjustBillDTO));
+        adjustBill.getBillDetails().clear();
+        adjustBill.getBillDetails().addAll(mapDetails(addAdjustBillDTO));
         //设置是按原料还是货物拣货
         adjustBill.setBasicEnum(addAdjustBillDTO.getBasicEnum());
 
