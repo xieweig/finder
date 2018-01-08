@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum.UN_REVIEWED;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.Plan;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.UNCOMMITTED;
 
 /**
  * @author ncmao
@@ -48,6 +50,8 @@ public abstract class AbstractCastableStrategy {
         }
         planBill.setBillDetails(planBillDetails);
         planBill.setBillState(BillStateEnum.SAVED);
+        planBill.setSubmitState(UNCOMMITTED);
+        planBill.setAuditState(UN_REVIEWED);
         executor.exec(planBill);
         return planBill;
     }

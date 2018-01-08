@@ -39,6 +39,10 @@ public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBil
 
     @Override
     public RestockBill findOneByBillCode(String billCode) {
-        return null;
+
+        return jpaRestockBillRepository.findOneByBillCode(billCode);
     }
+
+
+
 }

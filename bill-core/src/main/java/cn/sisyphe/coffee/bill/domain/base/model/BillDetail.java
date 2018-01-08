@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * 单据明细
@@ -22,6 +23,12 @@ public class BillDetail {
      */
     @Transient
     private AbstractGoods goods;
+
+    /**
+     * 完成度
+     */
+    @Column
+    private BigDecimal progress;
 
     /**
      * 实收最小单位数量
@@ -94,6 +101,14 @@ public class BillDetail {
 
     public void setPackageCode(String packageCode) {
         this.packageCode = packageCode;
+    }
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
     }
 
     @Override

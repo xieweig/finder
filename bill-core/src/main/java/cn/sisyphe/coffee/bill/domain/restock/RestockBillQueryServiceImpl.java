@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -80,6 +81,24 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryRestockBill.getOperatorCodeList()));
             }
             /**
+             * 出库单编码
+             */
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getBillCode())) {
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%"+conditionQueryRestockBill.getBillCode()+"%"));
+            }
+            /**
+             * 入库站点集合
+             */
+            if (conditionQueryRestockBill.getInStationCodeArray() != null && conditionQueryRestockBill.getInStationCodeArray().size() > 0) {
+                expressions.add(root.<String>get("inStationCode").in(conditionQueryRestockBill.getInStationCodeArray()));
+            }
+            /**
+             * 出库站点集合
+             */
+            if (conditionQueryRestockBill.getOutStationCodeArray() != null && conditionQueryRestockBill.getOutStationCodeArray().size() > 0) {
+                expressions.add(root.<String>get("outStationCode").in(conditionQueryRestockBill.getOutStationCodeArray()));
+            }
+            /**
              * 录单开始时间
              */
             if (!StringUtils.isEmpty(conditionQueryRestockBill.getCreateStartTime())) {
@@ -91,12 +110,7 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
             if (!StringUtils.isEmpty(conditionQueryRestockBill.getCreateEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryRestockBill.getCreateEndTime()));
             }
-            /**
-             * 进货单编码
-             */
-            if (!StringUtils.isEmpty(conditionQueryRestockBill.getBillCode())) {
-                expressions.add(cb.equal(root.get("billCode").as(String.class), conditionQueryRestockBill.getBillCode()));
-            }
+
             /**
              * 入库开始时间
              */
@@ -109,20 +123,48 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
             if (!StringUtils.isEmpty(conditionQueryRestockBill.getInEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryRestockBill.getInEndTime()));
             }
+
             /**
-             * 供应商
+             * 拼接提交状态
              */
-            if (!StringUtils.isEmpty(conditionQueryRestockBill.getSupplierCode())) {
-                expressions.add(cb.equal(root.get("supplierCode").as(String.class), conditionQueryRestockBill.getSupplierCode()));
-            }
-            /**
-             * 拼接状态
-             */
-            if (!StringUtils.isEmpty(conditionQueryRestockBill.getStatusCode())) {
-                expressions.add(cb.equal(root.get("billState").as(String.class), conditionQueryRestockBill.getStatusCode()));
+            if (conditionQueryRestockBill.getSubmitStateCode() != null && conditionQueryRestockBill.getSubmitStateCode().size() > 0) {
+                expressions.add(root.get("submitState").as(String.class).in(conditionQueryRestockBill.getSubmitStateCode()));
             }
 
-//            SetJoin<PlanBill, Long> planBillLongSetJoin = root.join(root.getModel().getSet(""));
+            /**
+             * 拼接审核状态
+             */
+            if (conditionQueryRestockBill.getAuditStateCode() != null && conditionQueryRestockBill.getAuditStateCode().size() > 0) {
+                expressions.add(root.get("auditState").as(String.class).in(conditionQueryRestockBill.getSubmitStateCode()));
+            }
+
+            /**
+             * 拼接出入库状态
+             */
+            if (conditionQueryRestockBill.getInOrOutStateCode() != null && conditionQueryRestockBill.getInOrOutStateCode().size() > 0) {
+                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryRestockBill.getInOrOutStateCode()));
+            }
+            /**
+             * 配送总价
+             */
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getStartVariety())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("variety").as(Integer.class), conditionQueryRestockBill.getStartVariety()));
+            }
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getEndVariety())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("variety").as(Integer.class), conditionQueryRestockBill.getEndVariety()));
+            }
+
+            /**
+             * 配送总价
+             */
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getStartTotalPrice())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryRestockBill.getStartTotalPrice()));
+            }
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getEndTotalPrice())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryRestockBill.getEndTotalPrice()));
+            }
+
+//            SetJoin<RestockBill, Long> restockBillLongSetJoin = root.join(root.getModel().getSet(""));
            /* //分组查询
             query.groupBy(root.get("billCode"));
             //*/

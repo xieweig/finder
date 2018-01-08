@@ -1,16 +1,11 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 
 /**
  * @author ncmao
@@ -24,23 +19,34 @@ import java.util.Objects;
 public class RestockBillDetail extends BillDetail {
 
     /**
-     * 数量
+     * 应拣数量
      */
-    private int amount;
+    private Integer shippedAmount;
+
+    /**
+     * 实拣数量
+     */
+    private Integer actualAmount;
 
     /**
      * 备注
      */
     private String memo;
 
-    @Override
-    public int getAmount() {
-        return amount;
+    public Integer getShippedAmount() {
+        return shippedAmount;
     }
 
-    @Override
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setShippedAmount(Integer shippedAmount) {
+        this.shippedAmount = shippedAmount;
+    }
+
+    public Integer getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(Integer actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
     public String getMemo() {

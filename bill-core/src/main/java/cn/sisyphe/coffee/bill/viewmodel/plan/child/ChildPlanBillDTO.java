@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan.child;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -19,6 +20,7 @@ public class ChildPlanBillDTO {
      * 计划单编码
      */
     private String billCode;
+    private BillStateEnum billState;
 
     /**
      * 备注
@@ -30,7 +32,10 @@ public class ChildPlanBillDTO {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
-
+    /**
+     * 接收对应的编号
+     */
+    private String receiveBillCode;
 
     private String inStationCode;
     private String outStationCode;
@@ -41,6 +46,21 @@ public class ChildPlanBillDTO {
 
     private Integer typeAmount;
 
+    public String getReceiveBillCode() {
+        return receiveBillCode;
+    }
+
+    public void setReceiveBillCode(String receiveBillCode) {
+        this.receiveBillCode = receiveBillCode;
+    }
+
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
+    }
 
     private List<ChildPlanBillDetailDTO> childPlanBillDetails;
 

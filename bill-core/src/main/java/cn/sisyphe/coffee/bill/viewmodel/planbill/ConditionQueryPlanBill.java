@@ -16,11 +16,11 @@ import java.util.Set;
  */
 public class ConditionQueryPlanBill extends BaseConditionQuery implements Serializable {
 
+
     /**
      * 配送单编码
      */
     private String billCode;
-
 
     /**
      * 录单开始时间
@@ -49,6 +49,8 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      */
     private String creatorName;
 
+    private List<String> creatorCodeList;
+
     private BillStateEnum billState;
 
     private BillPurposeEnum billPurpose;
@@ -75,6 +77,13 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
 
     private List<String> operatorCodes;
 
+    public List<String> getCreatorCodeList() {
+        return creatorCodeList;
+    }
+
+    public void setCreatorCodeList(List<String> creatorCodeList) {
+        this.creatorCodeList = creatorCodeList;
+    }
 
     public BillStateEnum getBillState() {
         return billState;

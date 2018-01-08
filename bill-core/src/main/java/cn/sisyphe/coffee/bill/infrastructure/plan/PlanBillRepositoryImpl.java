@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.plan;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
@@ -28,5 +29,10 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
     @Override
     public Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable) {
         return jpaPlanBillRepository.findAll(ta, pageable);
+    }
+
+    @Override
+    public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
+        return jpaPlanBillRepository.findByBillCodeAndSpecificBillType(billCode, billType);
     }
 }

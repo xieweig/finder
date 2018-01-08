@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -20,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class PlanBillQueryServiceImpl implements PlanBillQueryService {
+public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
     @Autowired
     private PlanBillRepository planBillRepository;
@@ -33,7 +34,9 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
 
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryPlanBill.getPage() - 1, conditionQueryPlanBill.getPageSize());
-
+        // SpringCloud调用查询录单人编码
+        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPlanBill.getCreatorName());
+        conditionQueryPlanBill.setCreatorCodeList(userCodeList);
         Page<PlanBill> planBillPage;
         planBillPage = queryByParams(conditionQueryPlanBill, pageable);
 
@@ -51,6 +54,19 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
             throw new DataException("20011", "进货单编码为空");
         }
         PlanBill planBill = planBillRepository.findOneByBillCode(planBillCode);
+        if (planBill != null) {
+            return planBill;
+        } else {
+            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
+        }
+    }
+
+    @Override
+    public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("20011", "进货单编码为空");
+        }
+        PlanBill planBill = planBillRepository.findByBillCodeAndType(billCode, billType);
         if (planBill != null) {
             return planBill;
         } else {
@@ -77,6 +93,11 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
         return planBillPage;
     }
 
+    @Override
+    public void save(PlanBill planBill) {
+        planBillRepository.save(planBill);
+    }
+
     private Page<PlanBill> queryChildByParams(final ConditionQueryPlanBill conditionQueryPlanBill,
                                               Pageable pageable) {
         return planBillRepository.findAll((root, criteriaQuery, cb) -> {
@@ -84,9 +105,12 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
 
-            /*
-             * 计划编码
-             */
+            // 计划类型
+            if (conditionQueryPlanBill.getSpecificBillType() != null) {
+                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
+            }
+
+            // 计划编码
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillCode())) {
                 expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryPlanBill.getBillCode() + "%"));
             }
@@ -112,9 +136,15 @@ public class PlanBillQueryServiceImpl implements PlanBillQueryService {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
             }
 
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+           /* if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
-            }
+            }*/
+            /**
+             * 录单人模糊查询未完成
+             */
+           /*if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+                expressions.add(root.get("creatorCode").as(String.class).in(conditionQueryPlanBill.getCreatorCodeList()));
+            }*/
             expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), false));
             return predicate;
         }, pageable);
