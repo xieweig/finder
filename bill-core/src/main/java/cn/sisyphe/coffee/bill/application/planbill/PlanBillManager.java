@@ -392,7 +392,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
         childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
-        childPlanBillDTO.setOperatorCode(childPlanBill.getOperatorCode());
+        //通过springCloud设置operatorName
+        String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());
+        childPlanBillDTO.setOperatorName(userName);
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
         childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
         childPlanBillDTO.setBillState(childPlanBill.getBillState());
@@ -411,6 +413,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
         Page<PlanBill> childPlanBill = planBillExtraService.findChildPlanBillBy(conditionQueryPlanBill);
+
+
         return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
 

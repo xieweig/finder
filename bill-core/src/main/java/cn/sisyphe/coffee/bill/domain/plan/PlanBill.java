@@ -43,7 +43,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
-
     //接受的单据编号
     @Column
     private String receiveBillCode;

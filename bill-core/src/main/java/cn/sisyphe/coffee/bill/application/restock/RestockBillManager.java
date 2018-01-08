@@ -74,7 +74,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
            planBillRepository.save(planBill);
         }
 
-
         // 保存单据
         save(restockBill);
     }

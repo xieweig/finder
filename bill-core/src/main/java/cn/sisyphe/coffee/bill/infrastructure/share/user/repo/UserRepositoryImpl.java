@@ -39,4 +39,15 @@ public class UserRepositoryImpl implements UserRepository {
         List<String> userCodeList = (ArrayList) resultMap.get("result");
         return userCodeList;
     }
+
+    @Override
+    public String findOneByUserCode(String userCode){
+        ResponseResult responseResult = userCloudRepository.findOneByUserCode(userCode);
+        Map<String, Object> resultMap = responseResult.getResult();
+        if (!resultMap.containsKey("result")) {
+            return null;
+        }
+        return (String) resultMap.get("result");
+    }
+
 }

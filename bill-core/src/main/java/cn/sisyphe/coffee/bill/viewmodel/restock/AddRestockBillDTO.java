@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -69,6 +70,17 @@ public class AddRestockBillDTO {
      * 退库详情
      */
     private Set<RestockBillDetailDTO> billDetails;
+
+    //完成度
+    private BigDecimal progress;
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
 
     public PropertyEnum getBillProperty() {
         return billProperty;

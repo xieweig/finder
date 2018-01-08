@@ -82,6 +82,19 @@ public class RestockBill extends Bill<RestockBillDetail> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
 
+    /**
+     * 完成度
+     */
+    private BigDecimal progress;
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
     @Override
     public String getOperatorCode() {
         return operatorCode;

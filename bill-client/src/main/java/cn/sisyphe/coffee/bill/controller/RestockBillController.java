@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -36,6 +37,9 @@ public class RestockBillController {
     private RestockBillManager restockBillManager;
     @Resource
     private PlanBillManager planBillManager;
+    @Resource
+    private SharedManager sharedManager;
+
 
     /**
      * 计划单据多条件分页查询

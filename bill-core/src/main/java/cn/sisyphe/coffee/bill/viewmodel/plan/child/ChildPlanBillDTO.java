@@ -41,7 +41,7 @@ public class ChildPlanBillDTO {
     private String inStationCode;
     private String outStationCode;
     private BasicEnum basicEnum;
-    private String operatorCode;
+    private String operatorName;
     //数量
     private Integer totalAmount;
 
@@ -123,12 +123,12 @@ public class ChildPlanBillDTO {
         this.basicEnum = basicEnum;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
     public Integer getTotalAmount() {

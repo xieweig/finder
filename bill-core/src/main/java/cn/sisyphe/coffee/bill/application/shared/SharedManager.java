@@ -47,4 +47,14 @@ public class SharedManager {
     public List<String> findByLikeUserName(String userName) {
         return userRepository.findByLikeUserName(userName);
     }
+
+    /**
+     * 根据用户编码称查询用户姓名
+     *
+     * @param userCode 用户名称
+     * @return
+     */
+    public String findOneByUserCode(String userCode){
+        return userRepository.findOneByUserCode(userCode);
+    }
 }

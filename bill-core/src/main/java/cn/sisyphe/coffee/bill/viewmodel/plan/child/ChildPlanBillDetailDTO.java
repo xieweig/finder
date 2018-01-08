@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan.child;
 
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -14,6 +15,11 @@ public class ChildPlanBillDetailDTO {
      * 编码
      */
     private String goodsCode;
+
+    /**
+     *
+     */
+    private RawMaterial rawMaterial;
 
 
     /**
