@@ -90,8 +90,12 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             adjustBill.setRootCode(addAdjustBillDTO.getRootCode());
             adjustBill.setSourceCode(addAdjustBillDTO.getRootCode());
         }
+
+        //设置计划备注
         adjustBill.setPlanMemo(addAdjustBillDTO.getPlanMemo());
+        //设置计划详情
         adjustBill.setBillDetails(mapDetails(addAdjustBillDTO));
+        //设置是按原料还是货物拣货
         adjustBill.setBasicEnum(addAdjustBillDTO.getBasicEnum());
 
     }

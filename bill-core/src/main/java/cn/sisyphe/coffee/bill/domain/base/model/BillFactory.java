@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.base.model;
 
+import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
@@ -39,6 +40,9 @@ public class BillFactory {
                 break;
             case RESTOCK:
                 bill = new RestockBill();
+                break;
+            case ADJUST:
+                bill = new AdjustBill();
                 break;
             default:
                 break;
