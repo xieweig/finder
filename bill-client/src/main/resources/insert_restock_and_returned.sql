@@ -80,7 +80,7 @@ INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, upd
  VALUES (5026, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '4', 'BILL005006001', '修改进货单据信息--保存', 'BILL,BILL005,BILL005006,BILL005006001', '/api/bill/restock/updateRestockBillToSave', 5007, '\0');
 
 INSERT INTO `oauth_database`.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
- VALUES (5027, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '4', 'BILL005006002', '修改入库单据信息--提交审核', 'BILL,BILL005,BILL005006,BILL005006002', '/api/bill/restock/updateRestockBillToSubmit', 5007, '\0');
+ VALUES (5027, '2017-12-14 18:47:12', '2017-12-14 18:47:14', '0', '4', 'BILL005006002', '修改出库单据信息--提交审核', 'BILL,BILL005,BILL005006,BILL005006002', '/api/bill/restock/updateRestockBillToSubmit', 5007, '\0');
 
 
 -- BILL005007 页面审核
