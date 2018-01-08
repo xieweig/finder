@@ -47,11 +47,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
     private String operatorCode;
 
     /**
-     * 来源单号
-     */
-    private String fromBillCode;
-
-    /**
      * 退货数量
      */
     private int amount;
@@ -82,6 +77,19 @@ public class RestockBill extends Bill<RestockBillDetail> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
 
+    /**
+     * 完成度
+     */
+    private BigDecimal progress;
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
     @Override
     public String getOperatorCode() {
         return operatorCode;
@@ -106,14 +114,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
 
     public void setBillProperty(PropertyEnum billProperty) {
         this.billProperty = billProperty;
-    }
-
-    public String getFromBillCode() {
-        return fromBillCode;
-    }
-
-    public void setFromBillCode(String fromBillCode) {
-        this.fromBillCode = fromBillCode;
     }
 
     public BasicEnum getBasicEnum() {

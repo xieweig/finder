@@ -15,4 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserCloudRepository {
     @RequestMapping(path = "/api/oauth/user/findByLikeUserName", method = RequestMethod.GET)
     ResponseResult findByLikeUserName(@RequestParam("userName") String supplierCode);
+
+    @RequestMapping(path = "/api/oauth/user/findOneByUserCode", method = RequestMethod.GET)
+    ResponseResult findOneByUserCode(@RequestParam("userCode") String userCode);
 }

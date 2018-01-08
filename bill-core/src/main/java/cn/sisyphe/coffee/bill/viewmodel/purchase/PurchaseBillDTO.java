@@ -66,8 +66,9 @@ public class PurchaseBillDTO {
      * 总价差值--明细表
      */
     private BigDecimal differencePrice;
+
     /**
-     * 供应商名称--主表
+     * 供应商编码--主表
      */
     private String supplierCode;
 

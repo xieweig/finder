@@ -17,4 +17,11 @@ public class LocalUserCloudRepository implements UserCloudRepository {
     public ResponseResult findByLikeUserName(@RequestParam("userName") String supplierCode) {
         return new ResponseResult();
     }
+
+    @Override
+    public ResponseResult findOneByUserCode(@RequestParam("userCode") String userCode) {
+        return new ResponseResult();
+    }
+
+
 }

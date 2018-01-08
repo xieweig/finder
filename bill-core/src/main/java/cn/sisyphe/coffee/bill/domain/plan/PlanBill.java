@@ -28,7 +28,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private String billName;
 
-
     /**
      * 按货物还是按原料拣货
       */
@@ -43,7 +42,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
-
     //接受的单据编号
     @Column
     private String receiveBillCode;
@@ -57,6 +55,7 @@ public class PlanBill extends Bill<PlanBillDetail> {
     private String memo;
 
     //审核意见
+    @Column
     private String auditMemo;
 
     //完成度
@@ -100,7 +99,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.specificBillType = specificBillType;
     }
 
-
     public BigDecimal getProgress() {
         return progress;
     }
@@ -132,4 +130,5 @@ public class PlanBill extends Bill<PlanBillDetail> {
     public void setAuditMemo(String auditMemo) {
         this.auditMemo = auditMemo;
     }
+
 }

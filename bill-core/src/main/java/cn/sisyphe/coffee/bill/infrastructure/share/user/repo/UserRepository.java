@@ -21,4 +21,13 @@ public interface UserRepository {
      * @return
      */
     List<String> findByLikeUserName(String userName);
+
+    /**
+     * 根据用户编码称查询用户姓名
+     *
+     * @param userCode 用户名称
+     * @return
+     */
+    String findOneByUserCode(String userCode);
+
 }

@@ -1,11 +1,13 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan.child;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -40,11 +42,34 @@ public class ChildPlanBillDTO {
     private String inStationCode;
     private String outStationCode;
     private BasicEnum basicEnum;
-    private String operatorCode;
+    private String operatorName;
     //数量
     private Integer totalAmount;
 
     private Integer typeAmount;
+
+    private BillTypeEnum billType;
+
+    //起始单号
+    private String rootCode;
+
+    private BigDecimal progress;
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
 
     public String getReceiveBillCode() {
         return receiveBillCode;
@@ -120,12 +145,12 @@ public class ChildPlanBillDTO {
         this.basicEnum = basicEnum;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
     public Integer getTotalAmount() {
@@ -142,5 +167,13 @@ public class ChildPlanBillDTO {
 
     public void setTypeAmount(Integer typeAmount) {
         this.typeAmount = typeAmount;
+    }
+
+    public BillTypeEnum getBillType() {
+        return billType;
+    }
+
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
     }
 }

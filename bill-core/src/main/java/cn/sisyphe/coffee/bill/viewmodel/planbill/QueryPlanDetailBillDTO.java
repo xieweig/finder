@@ -62,10 +62,24 @@ public class QueryPlanDetailBillDTO implements Serializable{
      * 状态
      */
     private BillStateEnum billState;
+
+    /**
+     * 起始单号
+     */
+    private String rootCode;
+
     /**
      * 详情
      */
     private Set<PlanBillDetail> billDetails = new HashSet<>();
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
 
     public BillStateEnum getBillState() {
         return billState;

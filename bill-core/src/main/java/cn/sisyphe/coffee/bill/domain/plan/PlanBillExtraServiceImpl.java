@@ -62,6 +62,19 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
     }
 
     @Override
+    public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("20011", "进货单编码为空");
+        }
+        PlanBill planBill = planBillRepository.findByBillCodeAndType(billCode, billType);
+        if (planBill != null) {
+            return planBill;
+        } else {
+            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
+        }
+    }
+
+    @Override
     public Page<PlanBill> findChildPlanBillBy(ConditionQueryPlanBill conditionQueryPlanBill) {
 
         List<String> operatorCodes = userRepository.findByLikeUserName(conditionQueryPlanBill.getCreatorName());
@@ -91,6 +104,9 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             criteriaQuery.distinct(true);
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
+
+            //设置为查询子计划
+            expressions.add(root.get("hqBill").as(Boolean.class).in(false));
 
             // 计划类型
             if (conditionQueryPlanBill.getSpecificBillType() != null) {

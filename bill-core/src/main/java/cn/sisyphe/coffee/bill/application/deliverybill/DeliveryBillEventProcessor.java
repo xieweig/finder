@@ -41,4 +41,25 @@ public class DeliveryBillEventProcessor {
     }
 
 
+    /**
+     * 审核失败事件
+     *
+     * @param event
+     */
+    @EventListener(condition = "#event.billType.toString() ==  'DELIVERY' and #event.billState.toString() == 'AUDIT_FAILURE'")
+    public void billFailure(BehaviorEvent event) {
+        System.err.println(event.getBill());
+    }
+
+
+    /**
+     * 审核成功事件
+     *
+     * @param event
+     */
+    @EventListener(condition = "#event.billType.toString() ==  'DELIVERY' and #event.billState.toString() == 'AUDIT_SUCCESS'")
+    public void billSuccess(BehaviorEvent event) {
+        System.err.println(event.getBill());
+    }
+
 }

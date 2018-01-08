@@ -1,8 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.purchase;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
-import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +27,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
 
     @Autowired
     private PurchaseBillRepository purchaseBillRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     /**
      * 根据单据编码查询单据信息
@@ -60,10 +57,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
     public Page<PurchaseBill> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryPurchaseBill.getPage() - 1, conditionQueryPurchaseBill.getPageSize());
-        // SpringCloud调用查询录单人编码
-        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
-        conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
-
         Page<PurchaseBill> purchaseBillPage = queryByParams(conditionQueryPurchaseBill, pageable);
 
         // 改变页码导致的页面为空时，获取最后一页

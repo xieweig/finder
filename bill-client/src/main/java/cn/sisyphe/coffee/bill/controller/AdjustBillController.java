@@ -1,0 +1,146 @@
+package cn.sisyphe.coffee.bill.controller;
+
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
+import cn.sisyphe.framework.web.ResponseResult;
+import cn.sisyphe.framework.web.exception.DataException;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Created by XiongJing on 2018/1/8.
+ * remark：调剂业务控制层
+ * version: 1.0
+ *
+ * @author XiongJing
+ */
+public class AdjustBillController {
+
+    /**
+     * 多条件查询调剂单据
+     *
+     * @param conditionQueryAdjustBill 查询条件
+     * @return
+     */
+    @ApiOperation(value = "多条件查询调剂单据")
+    @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
+    public ResponseResult findByPurchaseBillCode(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
+
+        ResponseResult responseResult = new ResponseResult();
+
+        return responseResult;
+    }
+
+    /**
+     * 根据调剂单号查询详细信息
+     *
+     * @param adjustBillCode 调剂单号
+     * @return
+     */
+    @ApiOperation(value = "根据调剂单号查询详细信息")
+    @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.POST)
+    public ResponseResult findByAdjustBillCode(@RequestParam String adjustBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+
+        return responseResult;
+    }
+
+    /**
+     * 保存调剂单据信息
+     *
+     * @param addAdjustBillDTO
+     * @return
+     */
+    @ApiOperation(value = "保存调剂单据信息  ")
+    @RequestMapping(path = "/saveAdjustBill", method = RequestMethod.POST)
+    public ResponseResult saveAdjustBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        ResponseResult responseResult = new ResponseResult();
+
+        return responseResult;
+    }
+
+    /**
+     * 提交调剂单据信息
+     *
+     * @param addAdjustBillDTO
+     * @return
+     */
+    @ApiOperation(value = "提交调剂单据信息")
+    @RequestMapping(path = "/submitAdjustBill", method = RequestMethod.POST)
+    public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        ResponseResult responseResult = new ResponseResult();
+        return responseResult;
+    }
+
+    /**
+     * 修改退库出库单单据信息
+     *
+     * @param addAdjustBillDTO
+     * @return
+     */
+    @ApiOperation(value = "修改退库出库单单据信息--保存")
+    @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
+    public ResponseResult updateRestockBillToSaved(@RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 修改入库单据信息
+     *
+     * @param addAdjustBillDTO
+     * @return
+     */
+    @ApiOperation(value = "修改退库出库单单据信息--提交审核")
+    @RequestMapping(path = "/updateRestockBillToSubmit", method = RequestMethod.POST)
+    public ResponseResult updateRestockBillToSubmit(@RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 审核不通过
+     *
+     * @param adjustBillCode 调剂单编码
+     * @return
+     */
+    @ApiOperation(value = "审核不通过")
+    @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String adjustBillCode) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        ResponseResult responseResult = new ResponseResult();
+        return responseResult;
+    }
+
+    /**
+     * 审核通过
+     *
+     * @param adjustBillCode 调剂单编码
+     * @return
+     */
+    @ApiOperation(value = "审核通过")
+    @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String adjustBillCode) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        ResponseResult responseResult = new ResponseResult();
+        return responseResult;
+    }
+}

@@ -2,25 +2,30 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.*;
+import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
 /**
- *@date: 2018/1/3
- *@description:
- *@author：bifenglin
+ * @date: 2018/1/3
+ * @description:
+ * @author：bifenglin
  */
 @RequestMapping("/api/bill/restock")
 @RestController
@@ -32,6 +37,9 @@ public class RestockBillController {
     private RestockBillManager restockBillManager;
     @Resource
     private PlanBillManager planBillManager;
+    @Resource
+    private SharedManager sharedManager;
+
 
     /**
      * 计划单据多条件分页查询
@@ -59,7 +67,7 @@ public class RestockBillController {
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.RESTOCK));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -111,8 +119,6 @@ public class RestockBillController {
     }
 
     /**
-     *
-     *
      * @param RestockBillCode
      * @return
      */
