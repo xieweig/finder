@@ -24,9 +24,15 @@ public class AddRestockBillDTO {
     private BasicEnum basicEnum;
 
     /**
-     * 来源单号
+     * 源单号
      */
-    private String fromBillCode;
+    private String sourceCode;
+
+    /**
+     * 发起单号
+     */
+    private String rootCode;
+
     /**
      * 计划备注
      */
@@ -40,14 +46,6 @@ public class AddRestockBillDTO {
      * 操作人代码
      */
     private String operatorCode;
-//    /**
-//     * 入库库位
-//     */
-//    private Storage inStorage;
-//    /**
-//     * 出库库位
-//     */
-//    private Storage outStorage;
     /**
      * 入库站点
      */
@@ -60,10 +58,6 @@ public class AddRestockBillDTO {
      * 单据编码
      */
     private String billCode;
-    /**
-     * 起始单号
-     */
-    private String rootCode;
 
     /**
      * 总价
@@ -109,14 +103,6 @@ public class AddRestockBillDTO {
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
-//
-//    public Storage getInStorage() {
-//        return inStorage;
-//    }
-//
-//    public void setInStorage(Storage inStorage) {
-//        this.inStorage = inStorage;
-//    }
 
     public Set<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
@@ -182,19 +168,19 @@ public class AddRestockBillDTO {
         this.billCode = billCode;
     }
 
-    public String getFromBillCode() {
-        return fromBillCode;
-    }
-
-    public void setFromBillCode(String fromBillCode) {
-        this.fromBillCode = fromBillCode;
-    }
-
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
     }
 }

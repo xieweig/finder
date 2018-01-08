@@ -3,31 +3,19 @@ package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-
-import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
-//import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
-
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
+import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-
-
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
-
-
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,14 +23,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 import javax.annotation.Resource;
-
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
-import java.util.*;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+
+//import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 
 
 
@@ -91,7 +80,7 @@ public class SaveCommitTest {
 
         dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
         dto.setBillProperty(PropertyEnum.RESTOCK);
-        dto.setFromBillCode(this.PLANCODES[0]);
+        dto.setSourceCode(this.PLANCODES[0]);
 
         Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
         Storage inStorage = new Storage("01" + random.nextInt(80));
