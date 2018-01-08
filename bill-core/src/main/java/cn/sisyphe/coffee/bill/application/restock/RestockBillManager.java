@@ -230,23 +230,12 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 操作人代码
         restockBill.setOperatorCode(addRestockBillDTO.getOperatorCode());
         // 归属站点
+        restockBill.setBelongStationCode(addRestockBillDTO.getOutStation().code());
+        //入库站点
         restockBill.setInLocation(addRestockBillDTO.getInStation());
+        //出库站点
         restockBill.setOutLocation(addRestockBillDTO.getOutStation());
-       /* restockBill.setBelongStationCode(addRestockBillDTO.getInStation().getStationCode());
-        // 获取站点
-        Station station = addRestockBillDTO.getInStation();
-        // 获取库房
-        Storage storage = addRestockBillDTO.getInStorage();
-        // 组合站点和库房
-        station.setStorage(storage);
-        // 设置入库位置
-        restockBill.setInLocation(station);
-        // 设置出库位置
-        storage = addRestockBillDTO.getOutStorage();
-        station = addRestockBillDTO.getOutStation();
-        station.setStorage(storage);
-        restockBill.setOutLocation(station);
-*/
+
         Set<RestockBillDetailDTO> detailDTOSet = addRestockBillDTO.getBillDetails();
         //退货数量
         int amount = 0;
