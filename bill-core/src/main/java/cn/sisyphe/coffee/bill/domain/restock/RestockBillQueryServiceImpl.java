@@ -115,7 +115,7 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
              * 入库开始时间
              */
             if (!StringUtils.isEmpty(conditionQueryRestockBill.getInStartTime())) {
-                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryRestockBill.getInStartTime()));
+                expressions.add(cb.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryRestockBill.getInStartTime()));
             }
             /**
              * 入库结束时间
