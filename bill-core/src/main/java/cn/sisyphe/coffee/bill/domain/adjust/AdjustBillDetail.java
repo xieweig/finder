@@ -29,6 +29,10 @@ public class AdjustBillDetail extends BillDetail {
      * 实拣数量
      */
     private Integer actualAmount;
+    /**
+     * 备注
+     */
+    private String memo;
 
     public Integer getShippedAmount() {
         return shippedAmount;
@@ -46,11 +50,20 @@ public class AdjustBillDetail extends BillDetail {
         this.actualAmount = actualAmount;
     }
 
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     @Override
     public String toString() {
         return "AdjustBillDetail{" +
                 "shippedAmount=" + shippedAmount +
                 ", actualAmount=" + actualAmount +
+                ", memo='" + memo + '\'' +
                 "} " + super.toString();
     }
 }
