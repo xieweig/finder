@@ -12,14 +12,18 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,6 +51,65 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+    /**
+     * 根据多条件查询调拨单据信息
+     *
+     * @param conditionQueryAdjustBill 查询条件
+     * @return
+     */
+    public Page<AdjustBillDTO> findByConditions(ConditionQueryAdjustBill conditionQueryAdjustBill) {
+        // SpringCloud调用查询用户编码
+        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
+        conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
+        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
+        return adjustBillPage.map(source -> toMapDTO(source));
+    }
+
+    /**
+     * 前端多条件查询转换DTO
+     *
+     * @param adjustBill
+     * @return
+     */
+    private AdjustBillDTO toMapDTO(AdjustBill adjustBill) {
+                AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
+                // 单据属性
+                adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+                // 出库状态
+                adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
+                // 提交状态
+                adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
+                // 审核状态
+                adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
+                // 来源单号
+                adjustBillDTO.setRootCode(adjustBill.getRootCode());
+                // 单据编码
+                adjustBillDTO.setBillCode(adjustBill.getBillCode());
+                // 录单时间
+                adjustBillDTO.setCreateTime(adjustBill.getCreateTime());
+                // 出库时间
+                adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
+                // 录单人编码
+                adjustBillDTO.setOperatorCode(adjustBill.getOperatorCode());
+                // 审核人编码
+                adjustBillDTO.setAuditPersonCode(adjustBill.getAuditPersonCode());
+                // 出库站点
+                Station outLocation = (Station) adjustBill.getOutLocation();
+                if (outLocation != null) {
+                    adjustBillDTO.setOutStationCode(outLocation.getStationCode());
+                }
+                // 入库站点
+                Station inLocation = (Station) adjustBill.getInLocation();
+                if (inLocation != null) {
+                    adjustBillDTO.setInStationCode(inLocation.getStationCode());
+                }
+                // 配送数量
+                adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
+                // 配送品种数
+                adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+            return adjustBillDTO;
+
+    }
 
     /**
      * 暂存调剂计划

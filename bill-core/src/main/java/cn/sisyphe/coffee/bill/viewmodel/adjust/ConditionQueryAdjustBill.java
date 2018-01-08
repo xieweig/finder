@@ -57,13 +57,13 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
     private Date createEndTime;
 
     /**
-     * 入库开始时间
+     * 出库开始时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStartTime;
     /**
-     * 入库结束时间
+     * 出库结束时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

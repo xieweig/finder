@@ -41,7 +41,7 @@ public class AdjustBillDTO {
     /**
      * 出库单号
      */
-    private String outStrogeCode;
+    private String billCode;
 
     /**
      * 录单时间
@@ -84,7 +84,6 @@ public class AdjustBillDTO {
      * 配送品种数
      */
     private Integer varietyNumber;
-
     public String getBillTypeStr() {
         return billTypeStr;
     }
@@ -125,12 +124,12 @@ public class AdjustBillDTO {
         this.rootCode = rootCode;
     }
 
-    public String getOutStrogeCode() {
-        return outStrogeCode;
+    public String getBillCode() {
+        return billCode;
     }
 
-    public void setOutStrogeCode(String outStrogeCode) {
-        this.outStrogeCode = outStrogeCode;
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
     }
 
     public Date getCreateTime() {
@@ -200,12 +199,12 @@ public class AdjustBillDTO {
     @Override
     public String toString() {
         return "AdjustBillDTO{" +
-                "billTypeStr='" + billTypeStr + '\'' +
+                ", billTypeStr='" + billTypeStr + '\'' +
                 ", outStatusCode=" + outStatusCode +
                 ", submitState='" + submitState + '\'' +
                 ", auditState='" + auditState + '\'' +
                 ", rootCode='" + rootCode + '\'' +
-                ", outStrogeCode='" + outStrogeCode + '\'' +
+                ", billCode='" + billCode + '\'' +
                 ", createTime=" + createTime +
                 ", outWareHouseTime=" + outWareHouseTime +
                 ", operatorCode='" + operatorCode + '\'' +
