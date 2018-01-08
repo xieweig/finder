@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.restock;
+package cn.sisyphe.coffee.returned;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
+import cn.sisyphe.coffee.restock.SaveCommitTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -33,8 +34,7 @@ import java.util.Set;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
-public class JustForPlan {
-
+public class JustForPlanReturned {
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
     Logger logger = LoggerFactory.getLogger(SaveCommitTest.class);
@@ -44,7 +44,7 @@ public class JustForPlan {
 
     private PlanBillDetail createPlanBillDetail() {
         PlanBillDetail planBillDetail = new PlanBillDetail();
-        planBillDetail.setAmount(random.nextInt(100));
+        planBillDetail.setAmount(random.nextInt(1000));
         planBillDetail.setPackageCode("test:03" + random.nextInt(100));
         RawMaterial rawMaterial = new RawMaterial();
         rawMaterial.setCargo(new Cargo("3002" + random.nextInt()));
@@ -53,13 +53,13 @@ public class JustForPlan {
         planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
         return planBillDetail;
     }
-//为restock生成plan测试用
+    //为restock生成plan测试用
     private PlanBill createPlanBill() {
         PlanBill planBill = new PlanBill();
         planBill.setHqBill(false);
         /*
-        * bill plan 生成对应的restock*/
-        planBill.setSpecificBillType(BillTypeEnum.RESTOCK);
+         * bill plan 生成对应的restock*/
+        planBill.setSpecificBillType(BillTypeEnum.RETURNED);
         planBill.setAuditMemo("remarks: " + random.nextInt(1000));
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
 
