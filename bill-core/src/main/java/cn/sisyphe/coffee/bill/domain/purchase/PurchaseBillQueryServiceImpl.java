@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.purchase;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -30,8 +29,6 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
     @Autowired
     private PurchaseBillRepository purchaseBillRepository;
     @Autowired
-    private SupplierRepository supplierRepository;
-    @Autowired
     private UserRepository userRepository;
 
     /**
@@ -52,7 +49,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
         }
     }
-    
+
     /**
      * 多条件查询
      *
@@ -93,8 +90,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 录单人
              */
-            if (conditionQueryPurchaseBill.getOperatorCodeList() != null
-                    && conditionQueryPurchaseBill.getOperatorCodeList().size() > 0) {
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getOperatorName())) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPurchaseBill.getOperatorCodeList()));
             }
             /**
@@ -130,14 +126,28 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
             /**
              * 供应商
              */
-            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getSupplierCode())){
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getSupplierCode())) {
                 expressions.add(cb.equal(root.get("supplierCode").as(String.class), conditionQueryPurchaseBill.getSupplierCode()));
             }
             /**
-             * 拼接状态
+             * 拼接提交状态
              */
-            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getStatusCode())) {
-                expressions.add(cb.equal(root.get("billState").as(String.class), conditionQueryPurchaseBill.getStatusCode()));
+            if (conditionQueryPurchaseBill.getSubmitStateCode() != null && conditionQueryPurchaseBill.getSubmitStateCode().size() > 0) {
+                expressions.add(root.get("submitState").as(String.class).in(conditionQueryPurchaseBill.getSubmitStateCode()));
+            }
+
+            /**
+             * 拼接审核状态
+             */
+            if (conditionQueryPurchaseBill.getAuditStateCode() != null && conditionQueryPurchaseBill.getAuditStateCode().size() > 0) {
+                expressions.add(root.get("auditState").as(String.class).in(conditionQueryPurchaseBill.getSubmitStateCode()));
+            }
+
+            /**
+             * 拼接出入库状态
+             */
+            if (conditionQueryPurchaseBill.getInOrOutStateCode() != null && conditionQueryPurchaseBill.getInOrOutStateCode().size() > 0) {
+                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryPurchaseBill.getInOrOutStateCode()));
             }
 
             return predicate;

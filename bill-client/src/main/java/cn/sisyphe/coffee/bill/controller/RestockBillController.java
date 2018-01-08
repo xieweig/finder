@@ -1,6 +1,13 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -9,89 +16,91 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+
 /**
  *@date: 2018/1/3
  *@description:
- *@author：xieweiguang
+ *@author：bifenglin
  */
 @RequestMapping("/api/bill/restock")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "退库相关操作")
 public class RestockBillController {
+
     @Resource
     private RestockBillManager restockBillManager;
+    @Resource
+    private PlanBillManager planBillManager;
 
-/**
- *
- *notes :
- *
- */
-    @ApiOperation(value = "站点自主退库拣货保存")
-    @PostMapping(path ="/saveBySelf")
-    public ResponseResult saveBySelf(@RequestBody SaveBySelfDTO saveBySelfDTO) {
-
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "子计划多条件查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-//        restockBillManager.saveBySelf(saveBySelfDTO);
+        System.err.print("子计划多条件查询开始");
+        //设定查询退库分片
+        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK);
+        try {
+            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 
-
-    @ApiOperation(value = "站点计划退库按货物拣货第一步保存")
-    @PostMapping(path ="/saveByCargo")
-    public ResponseResult saveByCargo(@RequestBody SaveByRestockBillDTO saveByCargoDTO) {
-
+    @ApiOperation(value = "子计划单个查询")
+    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
+    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
-        saveByCargoDTO.setReadyByCargo(true);
-//        restockBillManager.saveByRestockBill(saveByCargoDTO);
+        try {
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 
-
-    @ApiOperation(value = "站点计划退库按原料拣货第一步保存")
-    @PostMapping(path ="/saveByRawMaterial")
-    public ResponseResult saveByRawMaterial(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
-
+    /**
+     * 保存退库出库单
+     *
+     * @param addRestockBillDTO
+     * @return
+     */
+    @ApiOperation(value = "保存退库出库单  ")
+    @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
+    public ResponseResult saveRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        saveByRawMaterialDTO.setReadyByCargo(false);
-//        restockBillManager.saveByRestockBill(saveByRawMaterialDTO);
-        return responseResult;
-    }
-    @ApiOperation(value = "站点计划退库按货物拣货第二步提交")
-    @PostMapping(path ="/submitByCargo")
-    public ResponseResult submitByCargo(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        saveByRawMaterialDTO.setReadyByCargo(true);
-//        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
-        return responseResult;
-    }
-    @ApiOperation(value = "站点计划退库按原料拣货第二步提交")
-    @PostMapping(path ="/submitByRawMaterial")
-    public ResponseResult submitByRawMaterial(@RequestBody SaveByRestockBillDTO saveByRawMaterialDTO) {
-
-        ResponseResult responseResult = new ResponseResult();
-        saveByRawMaterialDTO.setReadyByCargo(false);
-//        restockBillManager.submitByRestockBill(saveByRawMaterialDTO);
+        restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
     }
 
-
-    @ApiOperation(value = "可退库货物查询")
-    @PostMapping(path ="/queryCargo")
-    public ResponseResult queryCargo(@RequestParam String cargoName, @RequestParam String cargoCode){
+    /**
+     * 提交退库单
+     *
+     * @param addRestockBillDTO
+     * @return
+     */
+    @ApiOperation(value = "保存退库出库单")
+    @RequestMapping(path = "/submitRestockBill", method = RequestMethod.POST)
+    public ResponseResult submitRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.queryCargo(cargoName, cargoCode);
-
+        restockBillManager.submitBill(addRestockBillDTO);
         return responseResult;
     }
+
     /**
      * 多条件查询退库入库单
      *
      * @param conditionQueryRestockBill
      * @return
      */
-    @ApiOperation(value = "多条件查询退库入库单")
+    @ApiOperation(value = "多条件查询退库出库单")
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
     public ResponseResult findByConditions(@RequestBody ConditionQueryRestockBill conditionQueryRestockBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -100,28 +109,30 @@ public class RestockBillController {
         responseResult.put("content", billPage);
         return responseResult;
     }
+
     /**
      *
      *
      * @param RestockBillCode
      * @return
      */
-    @ApiOperation(value = "根据入库单编码查询图库出库单详细信息")
+    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息")
     @RequestMapping(path = "/findByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCode(@RequestParam String RestockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
+//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
+        RestockBill billDTO = restockBillManager.openBill(RestockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
     }
 
     /**
-     * 修改入库单据信息
+     * 修改退库出库单单据信息
      *
      * @param billDTO
      * @return
      */
-    @ApiOperation(value = "修改入库单据信息--保存")
+    @ApiOperation(value = "修改退库出库单单据信息--保存")
     @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
     public ResponseResult updateRestockBillToSaved(@RequestBody AddRestockBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
@@ -139,7 +150,7 @@ public class RestockBillController {
      * @param billDTO
      * @return
      */
-    @ApiOperation(value = "修改入库单据信息--提交审核")
+    @ApiOperation(value = "修改退库出库单单据信息--提交审核")
     @RequestMapping(path = "/updateRestockBillToSubmit", method = RequestMethod.POST)
     public ResponseResult updateRestockBillToSubmit(@RequestBody AddRestockBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
@@ -154,7 +165,7 @@ public class RestockBillController {
     /**
      * 审核不通过
      *
-     * @param RestockBillCode 入库单编码
+     * @param RestockBillCode 退库出库单单编码
      * @return
      */
     @ApiOperation(value = "审核不通过")
@@ -168,7 +179,7 @@ public class RestockBillController {
     /**
      * 审核通过
      *
-     * @param RestockBillCode 入库单编码
+     * @param RestockBillCode 退库出库单单编码
      * @return
      */
     @ApiOperation(value = "审核通过")
@@ -178,5 +189,23 @@ public class RestockBillController {
         restockBillManager.auditBill(RestockBillCode, auditPersonCode, false);
         return responseResult;
     }
+
+    /**
+     * 修改入库单据信息
+     *
+     * @param billDTO
+     * @return
+     *//*
+    @ApiOperation(value = "修改退库出库单单据信息--保存")
+    @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
+    public ResponseResult updateRestockBillToSaved(@RequestBody AddRestockBillDTO billDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            restockBillManager.updateBillToSave(billDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }*/
 
 }

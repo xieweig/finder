@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.base.model.goods;
 /**
  * Created by heyong on 2017/12/21 10:44
  * Description: 货物
+ *
  * @author heyong
  */
 public class Cargo extends AbstractGoods {
@@ -16,6 +17,9 @@ public class Cargo extends AbstractGoods {
      * 货物名称
      */
     private String cargoName;
+
+    public Cargo() {
+    }
 
     public Cargo(String cargoCode) {
         this.cargoCode = cargoCode;

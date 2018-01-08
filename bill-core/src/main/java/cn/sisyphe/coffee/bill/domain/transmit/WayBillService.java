@@ -33,11 +33,6 @@ public interface WayBillService {
      */
     WayBill findOneBillByCode(String billCode);
 
-    /**
-     * @param id
-     * @return
-     */
-    WayBill findOne(Long id);
 
     /**
      * 多条件查询运单

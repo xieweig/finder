@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ public class PlanBillTest {
 
     @Autowired
     private PlanBillManager planBillManager;
+
     /**
      * 测试多条件查询
      */
@@ -25,9 +25,8 @@ public class PlanBillTest {
         conditionQueryPlanBill.setPage(1);
         conditionQueryPlanBill.setPageSize(10);
 //        planBillManager.findPageByCondition(conditionQueryPlanBill);
-        QueryPlanBillDTO queryPlanBillDTO = planBillManager.findPageByCondition(conditionQueryPlanBill);
+        planBillManager.findPageByCondition(conditionQueryPlanBill);
 
-        System.err.print(queryPlanBillDTO.toString());
     }
 
     /**
@@ -37,7 +36,7 @@ public class PlanBillTest {
     public void findPlanBillByBillCode() {
         ConditionQueryPlanBill conditionQueryPlanBill = new ConditionQueryPlanBill();
         String billCode = "1";
-        planBillManager.findByBillCode(billCode);
+        planBillManager.findHqPlanBillByBillCode(billCode);
 
     }
 }

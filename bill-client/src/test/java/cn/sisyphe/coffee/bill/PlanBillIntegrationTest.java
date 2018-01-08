@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill;
 
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.controller.PlanBillController;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.PurposeBehavior;
@@ -12,8 +13,12 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
+import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
+import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import org.junit.Test;
@@ -23,7 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +45,7 @@ public class PlanBillIntegrationTest {
 
 
     @Autowired
-    private JPAPlanBillRepository jpaPlanBillRepository;
+    private PlanBillController planBillController;
 
     @Autowired
     private PlanBillRepository planBillRepository;
@@ -51,7 +56,7 @@ public class PlanBillIntegrationTest {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
-
+    private static String billCode = "ZBJH003";
 
     @Test
     public void test1() {
@@ -92,7 +97,6 @@ public class PlanBillIntegrationTest {
         AbstractBillService billService = new BillServiceFactory().createBillService(planBill);
         billService.setBillRepository(planBillRepository);
         billService.dispose(new PurposeBehavior());
-        billService.save();
     }
 
     @Test
@@ -106,8 +110,83 @@ public class PlanBillIntegrationTest {
     @Test
     public void findByBillCode() {
         String billCode = "ADJUST20180102173046";
-        ResultPlanBillDTO resultPlanBillDTO = planBillManager.findByBillCode(billCode);
+        ResultPlanBillDTO resultPlanBillDTO = planBillManager.findHqPlanBillByBillCode(billCode);
         System.out.println(resultPlanBillDTO);
+    }
+
+    @Test
+    public void shouldCreateAPlanBill() {
+        PlanBillDTO planBillDTO = new PlanBillDTO();
+        planBillDTO.setBillName("总部计划1");
+        planBillDTO.setMemo(billCode);
+        planBillDTO.setBillType(BillTypeEnum.RESTOCK);
+        planBillDTO.setBasicEnum(BasicEnum.BY_MATERIAL);
+
+        PlanBillDetailDTO planBillDetailDTO = new PlanBillDetailDTO();
+        planBillDetailDTO.setRawMaterialCode("YL001");
+
+
+        Station avab01 = new Station("AVAB01");
+        avab01.setStationType(StationType.STORE);
+        Station duyb01 = new Station("DUYB01");
+        duyb01.setStationType(StationType.STORE);
+
+        PlanBillStationDTO planBillStationDTO = new PlanBillStationDTO();
+        planBillStationDTO.setAmount(2);
+        planBillStationDTO.setInStation(avab01);
+        planBillStationDTO.setOutStation(duyb01);
+        planBillDetailDTO.setPlanBillStationDTOS(Collections.singletonList(planBillStationDTO));
+        planBillDTO.setPlanBillDetailDTOS(Collections.singletonList(planBillDetailDTO));
+
+        planBillController.createPlanBill(planBillDTO);
+
+    }
+
+    @Test
+    public void shouldSubmitAPlanBill() {
+        PlanBillDTO planBillDTO = new PlanBillDTO();
+        planBillDTO.setBillName("总部计划1");
+        planBillDTO.setMemo(billCode);
+        planBillDTO.setBillCode(billCode);
+        planBillDTO.setBillType(BillTypeEnum.DELIVERY);
+        planBillDTO.setBasicEnum(BasicEnum.BY_MATERIAL);
+
+        PlanBillDetailDTO planBillDetailDTO = new PlanBillDetailDTO();
+        planBillDetailDTO.setRawMaterialCode("YL001");
+
+
+        Station avab01 = new Station("AVAB01");
+        avab01.setStationType(StationType.STORE);
+        Station duyb01 = new Station("DUYB01");
+        duyb01.setStationType(StationType.STORE);
+
+        PlanBillStationDTO planBillStationDTO = new PlanBillStationDTO();
+        planBillStationDTO.setAmount(2);
+        planBillStationDTO.setInStation(avab01);
+        planBillStationDTO.setOutStation(duyb01);
+        planBillDetailDTO.setPlanBillStationDTOS(Collections.singletonList(planBillStationDTO));
+        planBillDTO.setPlanBillDetailDTOS(Collections.singletonList(planBillDetailDTO));
+
+        planBillController.submitPlanBill(planBillDTO);
+
+    }
+
+    @Test
+    public void shouldOpenAPlanBill() {
+
+        planBillController.openPlanBill(billCode);
+
+    }
+
+    @Test
+    public void shouldPassAPlanBill() {
+
+        AuditPlanBillDTO auditPlanBillDTO = new AuditPlanBillDTO();
+        auditPlanBillDTO.setBillCode(billCode);
+        auditPlanBillDTO.setAuditMemo("没毛病，老铁");
+
+        planBillController.pass(auditPlanBillDTO);
+
     }
 
 }

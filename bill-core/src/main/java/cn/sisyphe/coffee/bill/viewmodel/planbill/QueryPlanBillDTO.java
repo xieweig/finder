@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
-import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
 
 import java.util.List;
 

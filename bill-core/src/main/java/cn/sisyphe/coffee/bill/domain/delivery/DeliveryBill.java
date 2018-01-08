@@ -2,18 +2,19 @@ package cn.sisyphe.coffee.bill.domain.delivery;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by yichuan on 2017/12/19 17:33
  * Description: 配送单
- *
- * @author heyong
  */
 @Entity
 @Table
@@ -24,7 +25,6 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
     public DeliveryBill() {
         setBillType(BillTypeEnum.DELIVERY);
     }
-
 
     /**
      * 总数量
@@ -49,11 +49,28 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
      */
     @Column
     private String operatorName;
+
+
+    /**
+     * 完成度
+     */
+    @Column
+    private BigDecimal progress;
+
+    /**
+     * 出库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outStockTime;
+
+
     /**
      * 备注
      */
     @Column(length = 255)
     private String memo;
+
+
 
     public Integer getTotalAmount() {
         return totalAmount;
@@ -97,13 +114,31 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
         this.memo = memo;
     }
 
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
+    public Date getOutStockTime() {
+        return outStockTime;
+    }
+
+    public void setOutStockTime(Date outStockTime) {
+        this.outStockTime = outStockTime;
+    }
+
+
     @Override
     public String toString() {
         return "DeliveryBill{" +
-                ", totalAmount=" + totalAmount +
+                "totalAmount=" + totalAmount +
                 ", totalCount=" + totalCount +
                 ", operatorCode='" + operatorCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +
+                ", progress=" + progress +
                 ", memo='" + memo + '\'' +
                 '}';
     }

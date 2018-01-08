@@ -1,8 +1,10 @@
 package cn.sisyphe.coffee.bill.domain.base.behavior;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum.AUDIT_SUCCESS;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.DONE;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.SUBMITTED;
 
 /**
  * Created by heyong on 2017/12/19 14:36
@@ -31,6 +33,38 @@ public class PurposeBehavior extends AbstractBillBehavior {
     public BillStateEnum billState() {
         // 只处可不回写，交给handle处理
         return DONE;
+    }
+
+    /**
+     * 提交状态
+     *
+     * @return
+     */
+    @Override
+    public BillSubmitStateEnum submitState() {
+        return SUBMITTED;
+    }
+
+    /**
+     * 审核状态
+     *
+     * @return
+     */
+    @Override
+    public BillAuditStateEnum auditState() {
+        return AUDIT_SUCCESS;
+    }
+
+    /**
+     * 出入库状态
+     *
+     * @return
+     */
+    @Override
+    public BillInOrOutStateEnum inOrOutState() {
+        BillTypeEnum type = getBillService().getBill().getBillType();
+
+        return null;
     }
 
     /**

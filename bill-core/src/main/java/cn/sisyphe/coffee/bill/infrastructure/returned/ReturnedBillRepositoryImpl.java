@@ -3,7 +3,9 @@ package cn.sisyphe.coffee.bill.infrastructure.returned;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.returned.jpa.JPAReturnedBillRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,14 +21,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReturnedBillRepositoryImpl extends AbstractBillRepository<ReturnedBill> implements ReturnedBillRepository {
 
+    private JPAReturnedBillRepository jpaReturnedBillRepository;
+
+
     /**
-     * 按单号查询
-     *
-     * @param billCode
+     * 多条件查询
+     * @param ta
+     * @param pageable
      * @return
      */
     @Override
+    public Page<ReturnedBill> findAll(Specification<ReturnedBill> ta, Pageable pageable) {
+        return jpaReturnedBillRepository.findAll(ta, pageable);
+    }
+
+    @Override
     public ReturnedBill findOneByBillCode(String billCode) {
-        return null;
+
+        return jpaReturnedBillRepository.findOneByBillCode(billCode);
     }
 }

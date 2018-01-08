@@ -2,25 +2,10 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -109,6 +94,24 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private BillStateEnum billState = BillStateEnum.SAVED;
+
+    /**
+     * 提交状态
+     */
+    @Enumerated(EnumType.STRING)
+    private BillSubmitStateEnum submitState;
+
+    /**
+     * 审核状态
+     */
+    @Enumerated(EnumType.STRING)
+    private BillAuditStateEnum auditState;
+
+    /**
+     * 出入库状态
+     */
+    @Enumerated(EnumType.STRING)
+    private BillInOrOutStateEnum inOrOutState;
 
 
     /**
@@ -247,6 +250,30 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.billDetails.add(billDetails);
     }
 
+    public BillSubmitStateEnum getSubmitState() {
+        return submitState;
+    }
+
+    public void setSubmitState(BillSubmitStateEnum submitState) {
+        this.submitState = submitState;
+    }
+
+    public BillAuditStateEnum getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(BillAuditStateEnum auditState) {
+        this.auditState = auditState;
+    }
+
+    public BillInOrOutStateEnum getInOrOutState() {
+        return inOrOutState;
+    }
+
+    public void setInOrOutState(BillInOrOutStateEnum inOrOutState) {
+        this.inOrOutState = inOrOutState;
+    }
+
     @Override
     public String toString() {
         return "Bill{" +
@@ -260,9 +287,13 @@ public class Bill<T extends BillDetail> extends BaseEntity {
                 ", dbStation=" + dbStation +
                 ", sourceCode='" + sourceCode + '\'' +
                 ", rootCode='" + rootCode + '\'' +
-                ", auditPersonCode='" + auditPersonCode + '\'' +
                 ", operatorCode='" + operatorCode + '\'' +
+                ", auditPersonCode='" + auditPersonCode + '\'' +
+                ", billDetails=" + billDetails +
                 ", billState=" + billState +
+                ", submitState=" + submitState +
+                ", auditState=" + auditState +
+                ", inOrOutState=" + inOrOutState +
                 "} " + super.toString();
     }
 }

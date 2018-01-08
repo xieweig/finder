@@ -29,19 +29,24 @@ public class PlanBill extends Bill<PlanBillDetail> {
     private String billName;
 
 
+    /**
+     * 按货物还是按原料拣货
+      */
     @Column
     @Enumerated(value = EnumType.STRING)
     private BasicEnum basicEnum;
 
-
+    /**
+     * 具体的单据类型
+      */
     @Column
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
-    //创建人名称
-    @Column
-    private String creatorName;
 
+    //接受的单据编号
+    @Column
+    private String receiveBillCode;
 
     //是否是总部计划
     @Column
@@ -54,7 +59,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     //审核意见
     private String auditMemo;
 
-
     //完成度
     @Column
     private BigDecimal progress;
@@ -63,6 +67,13 @@ public class PlanBill extends Bill<PlanBillDetail> {
         setBillType(BillTypeEnum.PLAN);
     }
 
+    public String getReceiveBillCode() {
+        return receiveBillCode;
+    }
+
+    public void setReceiveBillCode(String receiveBillCode) {
+        this.receiveBillCode = receiveBillCode;
+    }
 
     public String getBillName() {
         return billName;
@@ -87,14 +98,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setSpecificBillType(BillTypeEnum specificBillType) {
         this.specificBillType = specificBillType;
-    }
-
-    public String getCreatorName() {
-        return creatorName;
-    }
-
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
     }
 
 

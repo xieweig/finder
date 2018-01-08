@@ -3,9 +3,14 @@ package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+
 /**
- * Created by Administrator on 2018/1/4.
- */
+ * 配送item DTO
+ *
+ * @author yichuan
+ * @company 西西弗文化传播
+ * @Date 2018/1/4 10:21
+ **/
 public class DeliveryBillDetailDTO implements Serializable {
 
 
@@ -25,18 +30,6 @@ public class DeliveryBillDetailDTO implements Serializable {
      */
     private BigDecimal progress;
 
-    /**
-     * 备注
-     */
-    private String memo;
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 
     public BigDecimal getProgress() {
         return progress;
@@ -69,7 +62,6 @@ public class DeliveryBillDetailDTO implements Serializable {
                 "inStation='" + inStation + '\'' +
                 ", outStation='" + outStation + '\'' +
                 ", progress=" + progress +
-                ", memo='" + memo + '\'' +
                 '}';
     }
 }

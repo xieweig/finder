@@ -4,10 +4,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Objects;
 
 /**
  * @author ncmao
@@ -20,72 +18,42 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class RestockBillDetail extends BillDetail {
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BillDetail that = (BillDetail) o;
-        return Objects.equals(getBillDetailId(), that.getBillDetailId());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getBillDetailId());
-    }
-
-    public Integer getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Integer totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getDetailsRemarks() {
-        return detailsRemarks;
-    }
-
-    public void setDetailsRemarks(String detailsRemarks) {
-        this.detailsRemarks = detailsRemarks;
-    }
+    /**
+     * 应拣数量
+     */
+    private Integer shippedAmount;
 
     /**
-     *
-     *notes :
-     *  配送总价
+     * 实拣数量
      */
-    private Integer totalPrice;
+    private Integer actualAmount;
+
     /**
-     *
-     *notes :
-     *  货物数量
+     * 备注
      */
-    @Column
-    private Integer actualNumber;
-    @Column
-    private Integer expectedNumber;
-    @Column(length = 500)
-    private String detailsRemarks;
+    private String memo;
 
-    public Integer getActualNumber() {
-        return actualNumber;
+    public Integer getShippedAmount() {
+        return shippedAmount;
     }
 
-    public void setActualNumber(Integer actualNumber) {
-        this.actualNumber = actualNumber;
+    public void setShippedAmount(Integer shippedAmount) {
+        this.shippedAmount = shippedAmount;
     }
 
-    public Integer getExpectedNumber() {
-        return expectedNumber;
+    public Integer getActualAmount() {
+        return actualAmount;
     }
 
-    public void setExpectedNumber(Integer expectedNumber) {
-        this.expectedNumber = expectedNumber;
+    public void setActualAmount(Integer actualAmount) {
+        this.actualAmount = actualAmount;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 }

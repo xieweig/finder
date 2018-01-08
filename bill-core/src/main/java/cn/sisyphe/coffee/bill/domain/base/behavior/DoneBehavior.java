@@ -1,6 +1,10 @@
 package cn.sisyphe.coffee.bill.domain.base.behavior;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum.AUDIT_SUCCESS;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.*;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.SUBMITTED;
 
 /**
  * Created by XiongJing on 2017/12/27.
@@ -29,5 +33,40 @@ public class DoneBehavior extends AbstractBillBehavior {
     @Override
     public BillStateEnum billState() {
         return BillStateEnum.DONE;
+    }
+
+    /**
+     * 提交状态
+     *
+     * @return
+     */
+    @Override
+    public BillSubmitStateEnum submitState() {
+        return SUBMITTED;
+    }
+
+    /**
+     * 审核状态
+     *
+     * @return
+     */
+    @Override
+    public BillAuditStateEnum auditState() {
+        return AUDIT_SUCCESS;
+    }
+
+    /**
+     * 出入库状态
+     *
+     * @return
+     */
+    @Override
+    public BillInOrOutStateEnum inOrOutState() {
+        if (BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+            return IN_SUCCESS;
+        } else if (BillPurposeEnum.OutStorage.equals(getBillService().getBill().getBillPurpose())) {
+            return OUT_SUCCESS;
+        }
+        return null;
     }
 }

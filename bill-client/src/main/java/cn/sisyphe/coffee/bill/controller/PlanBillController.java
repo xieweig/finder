@@ -4,7 +4,6 @@ import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @description
  */
 @RestController
-@RequestMapping("/api/bill/planbill")
+@RequestMapping("/api/bill/planBill")
 @Api(description = "总部计划中心")
 @CrossOrigin(origins = "*")
 public class PlanBillController {
@@ -57,7 +56,7 @@ public class PlanBillController {
         return responseResult;
     }
 
-    @ApiOperation(value = "审核总部计划")
+    @ApiOperation(value = "打开总部计划")
     @RequestMapping(path = "/open", method = RequestMethod.POST)
     public ResponseResult openPlanBill(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
@@ -98,21 +97,53 @@ public class PlanBillController {
      *
      * @return
      */
-    @ApiOperation(value = "计划单据多条件分页查询")
-    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    @ApiOperation(value = "总部计划多条件查询")
+    @RequestMapping(path = "/hq/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-        QueryPlanBillDTO billPage = planBillManager.findPageByCondition(conditionQueryPlanBill);
-        responseResult.put("content", billPage);
+        responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
         return responseResult;
     }
 
-    @ApiOperation(value = "根据单据编号查询单据信息")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
+    @ApiOperation(value = "总部计划单个查询")
+    @RequestMapping(path = "/hq/findByBillCode", method = RequestMethod.GET)
+    public ResponseResult findHqPlanBillByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("planBill", planBillManager.findHqPlanBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+
+    /**
+     * 计划单据多条件分页查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "子计划多条件查询")
+    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+        ResponseResult responseResult = new ResponseResult();
+        System.err.print("子计划多条件查询开始");
+        try {
+            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+
+    @ApiOperation(value = "子计划单个查询")
+    @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
