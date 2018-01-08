@@ -39,7 +39,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
 
     @Autowired
     private PurchaseBillQueryService purchaseBillQueryService;
-
+    @Autowired
     private SharedManager sharedManager;
 
     @Autowired
