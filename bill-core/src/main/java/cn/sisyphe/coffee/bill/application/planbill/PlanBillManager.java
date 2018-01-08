@@ -71,16 +71,15 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 创建计划单
      *
-     * @param planBillDTO 计划单DTO
+     * @param operatorCode
+     * @param planBillDTO  计划单DTO
+     * @param operatorCode
      * @return billcode
      */
 
-    public String create(PlanBillDTO planBillDTO) {
+    public String create(PlanBillDTO planBillDTO, String operatorCode) {
         PlanBill planBill = preparePlanBill(planBillDTO);
-        if (planBill == null) {
-            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
-            planBill.setBillCode(generateBillCode());
-        }
+        planBill.setOperatorCode(operatorCode);
         map(planBill, planBillDTO);
         return save(planBill).getBillCode();
     }
@@ -93,9 +92,11 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             if (planBill == null) {
                 throw new DataException("xxxx", "没有找到该计划单");
             }
-            return planBill;
+        } else {
+            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
+            planBill.setBillCode(generateBillCode());
         }
-        return null;
+        return planBill;
     }
 
     //todo 测试
@@ -116,15 +117,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 提交计划单进行审核
      *
-     * @param planBillDTO 前端传过来的DTO
+     * @param planBillDTO  前端传过来的DTO
+     * @param operatorCode
      */
-    public String submit(PlanBillDTO planBillDTO) {
+    public String submit(PlanBillDTO planBillDTO, String operatorCode) {
         validate(planBillDTO);
         PlanBill planBill = preparePlanBill(planBillDTO);
-        if (planBill == null) {
-            planBill = (PlanBill) new BillFactory().createBill(BillTypeEnum.PLAN);
-            planBill.setBillCode(generateBillCode());
-        }
+        planBill.setOperatorCode(operatorCode);
         map(planBill, planBillDTO);
         return submit(planBill).getBillCode();
     }
@@ -132,13 +131,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     /**
      * 查看总部计划，状态变更为审核中，两种情况，一种点击查看按钮，一种点击审核按钮
      *
-     * @param billCode 计划单编码
+     * @param billCode     计划单编码
+     * @param operatorCode
      * @return ResultPlanBillDTO
      */
-    public ResultPlanBillDTO open(String billCode) {
+    public ResultPlanBillDTO open(String billCode, String operatorCode) {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
-        //TODO 还需要加上当前查看的不是提交人条件
-        if (BillStateEnum.SUBMITTED.equals(planBill.getBillState())) {
+        if (BillStateEnum.SUBMITTED.equals(planBill.getBillState()) && !planBill.getOperatorCode().equals(operatorCode)) {
             open(planBill);
             return planBillToResultPlanBillDTO(planBill);
         }
@@ -151,9 +150,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param auditPlanBillDTO 计划单审核DTO
      */
 
-    public void unPass(AuditPlanBillDTO auditPlanBillDTO) {
+    public void unPass(AuditPlanBillDTO auditPlanBillDTO, String operatorCode) {
         PlanBill planBill = planBillExtraService.findByBillCode(auditPlanBillDTO.getBillCode());
         planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
+        planBill.setAuditPersonCode(operatorCode);
         audit(planBill, false);
 
     }
@@ -162,12 +162,14 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * 审核通过，然后进行计划单切片
      *
      * @param auditPlanBillDTO 计划单审核DTO
+     * @param operatorCode
      */
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public void pass(AuditPlanBillDTO auditPlanBillDTO) {
+    public void pass(AuditPlanBillDTO auditPlanBillDTO, String operatorCode) {
         PlanBill planBill = planBillExtraService.findByBillCode(auditPlanBillDTO.getBillCode());
         planBill.setAuditMemo(auditPlanBillDTO.getAuditMemo());
+        planBill.setAuditPersonCode(operatorCode);
         mapForSplit(planBill);
         audit(planBill, true);
 
@@ -319,7 +321,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-            if(firstPlanBillDetail.getGoods()!=null && !"".equals(firstPlanBillDetail.getGoods().code())){
+            if (firstPlanBillDetail.getGoods() != null && !"".equals(firstPlanBillDetail.getGoods().code())) {
                 resultPlanBillGoodsDTO.setGoodsCode(firstPlanBillDetail.getGoods().code());
             }
             Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
