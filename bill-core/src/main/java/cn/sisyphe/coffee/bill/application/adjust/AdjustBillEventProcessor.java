@@ -7,12 +7,15 @@ import org.springframework.context.event.EventListener;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：
- * version:
+ * remark：调拨单据协调层
+ * version: 1.0
+ *
+ * @author XiongJing
  */
 public class AdjustBillEventProcessor {
     @Autowired
     private AdjustBillManager adjustBillManager;
+
     /**
      * 已创建事件
      *
