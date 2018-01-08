@@ -326,7 +326,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
-            resultPlanBillGoodsDTO.setGoodsCode(firstPlanBillDetail.getGoods().code());
+            if(firstPlanBillDetail.getGoods()!=null && !"".equals(firstPlanBillDetail.getGoods().code())){
+                resultPlanBillGoodsDTO.setGoodsCode(firstPlanBillDetail.getGoods().code());
+            }
             Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
