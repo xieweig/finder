@@ -5,18 +5,21 @@ import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
-import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author mayupeng
@@ -60,7 +63,7 @@ public class ReturnedBillController {
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.RETURNED));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -94,6 +97,7 @@ public class ReturnedBillController {
         returnedBillManager.submitBill(addReturnedBillDTO);
         return responseResult;
     }
+
     /**
      * 多条件查询退库入库单
      *
@@ -188,6 +192,6 @@ public class ReturnedBillController {
         returnedBillManager.auditBill(ReturnedBillCode, auditPersonCode, false);
         return responseResult;
     }
-    
-    
+
+
 }

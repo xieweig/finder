@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -140,10 +141,10 @@ public class PlanBillController {
 
     @ApiOperation(value = "子计划单个查询")
     @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
-    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
+    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode, @RequestParam(value = "billType", required = false)BillTypeEnum billType) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCode(billCode));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, billType));
         } catch (DataException e) {
             responseResult.putException(e);
         }

@@ -360,9 +360,14 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * 查询切分出来的子计划单
      *
      * @param billCode 计划单编码
+     * @param billType
      * @return ChildPlanBillDTO
      */
-    public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode) {
+    public ChildPlanBillDTO findChildPlanBillByBillCodeAndType(String billCode, BillTypeEnum billType) {
+        if (billType != null) {
+            PlanBill planBill = planBillExtraService.findByBillCodeAndType(billCode, billType);
+            return mapChildPlanBillToDTO(planBill);
+        }
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
         return mapChildPlanBillToDTO(planBill);
     }

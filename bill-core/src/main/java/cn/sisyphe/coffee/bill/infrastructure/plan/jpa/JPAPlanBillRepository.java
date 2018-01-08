@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.plan.jpa;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,11 @@ public interface JPAPlanBillRepository extends JpaRepository<PlanBill, Long>, Jp
      */
     @Override
     Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable );
+
+    /**
+     * 根据单据编号查询单据信息
+     * @param billCode
+     * @return
+     */
+    PlanBill findByBillCodeAndSpecificBillType(String billCode, BillTypeEnum billType);
 }

@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import org.springframework.data.domain.Page;
 
@@ -19,6 +20,9 @@ public interface PlanBillExtraService {
      * @return
      */
     PlanBill findByBillCode(String planBillCode);
+
+
+    PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType);
 
     Page<PlanBill> findChildPlanBillBy(ConditionQueryPlanBill conditionQueryPlanBill);
 
