@@ -3,11 +3,14 @@ package cn.sisyphe.coffee.bill.domain.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -66,6 +69,12 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
      * 审核意见
      */
     private String auditMemo;
+
+    /**
+     * 按货物还是按原料
+     */
+    @Enumerated(EnumType.STRING)
+    private BasicEnum basicEnum;
 
     public Date getOutWareHouseTime() {
         return outWareHouseTime;
@@ -131,6 +140,14 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
         this.auditMemo = auditMemo;
     }
 
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+
     @Override
     public String toString() {
         return "AdjustBill{" +
@@ -142,6 +159,7 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
                 ", planMemo='" + planMemo + '\'' +
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
+                ", basicEnum=" + basicEnum +
                 "} " + super.toString();
     }
 }
