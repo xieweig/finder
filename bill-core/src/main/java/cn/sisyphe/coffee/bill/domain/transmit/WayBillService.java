@@ -15,14 +15,27 @@ public interface WayBillService {
 
     /**
      * 收货
+     *
      * @param billCode
      */
     void confirmReceiptBill(String billCode);
 
 
+    /**
+     * 创建运单
+     *
+     * @param wayBill
+     * @return
+     */
     WayBill createBill(WayBill wayBill);
 
 
+    /**
+     * 修改运单
+     *
+     * @param wayBill
+     * @return
+     */
     WayBill updateBill(WayBill wayBill);
 
     /**

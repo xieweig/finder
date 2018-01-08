@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.transmit.WayBillManager;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ConditionQueryWayBill;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.EditWayBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -9,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 运单
@@ -28,11 +31,21 @@ public class WayBillController {
      */
     @ApiOperation(value = "创建运单")
     @RequestMapping(path = "/createWayBill", method = RequestMethod.POST)
-    public ResponseResult createWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
-
+    public ResponseResult createWayBill(@RequestBody EditWayBillDTO editWayBillDTO, HttpServletRequest httpServletRequest) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("wayBill", wayBillManager.createWayBillWithDTO(editWayBillDTO));
+
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            // 操作人code
+            editWayBillDTO.setOperatorCode(loginInfo.getOperatorCode());//
+            editWayBillDTO.setOperatorName(loginInfo.getOperatorName());
+            responseResult.put("wayBill", wayBillManager.createWayBillWithDTO(editWayBillDTO));
+
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
+
     }
 
     /**
@@ -40,9 +53,16 @@ public class WayBillController {
      */
     @ApiOperation(value = "修改运单")
     @RequestMapping(path = "/updateWayBill", method = RequestMethod.POST)
-    public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO) {
+    public ResponseResult updateWayBill(@RequestBody EditWayBillDTO editWayBillDTO,
+                                        HttpServletRequest httpServletRequest) {
+
         ResponseResult responseResult = new ResponseResult();
         try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
+            // 操作人code
+            editWayBillDTO.setOperatorCode(loginInfo.getOperatorCode());//
+            editWayBillDTO.setOperatorName(loginInfo.getOperatorName());
+
             wayBillManager.updateWayBillWithDTO(editWayBillDTO);
         } catch (DataException data) {
             responseResult.putException(data);

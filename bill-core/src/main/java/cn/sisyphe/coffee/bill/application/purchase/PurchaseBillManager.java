@@ -466,10 +466,10 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
                         purchaseBillDTO.setInStorageCode(storage.getStorageCode());
                     }
                 }
-                // 供应商名称--主表
+                // 供应商编码--主表
                 Supplier supplier = (Supplier) purchaseBill.getOutLocation();
                 if (supplier != null) {
-                    purchaseBillDTO.setSupplierCode(supplier.getSupplierName());
+                    purchaseBillDTO.setSupplierCode(supplier.getSupplierCode());
                 }
                 // 单据提交状态--主表
                 if (purchaseBill.getSubmitState() != null) {

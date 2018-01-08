@@ -71,8 +71,10 @@ public class WayBillServiceImpl implements WayBillService {
     private Page<WayBill> pageCondition(final ConditionQueryWayBill conditionQueryWayBill,
                                         Pageable pageable) throws DataException {
         return wayBillRepository.findAll((root, query, cb) -> {
-            // 去重复
+            // 分组后去重复
             query.distinct(true);
+
+            System.out.println("getReceivedStatus :" + conditionQueryWayBill.getReceivedStatus());
 
             Predicate predicate = cb.conjunction();
             //左连接
@@ -109,10 +111,10 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.like(root.<String>get("operatorName"),
                         "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
-            //收货状态
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
-                expressions.add(cb.equal(root.<String>get("receivedStatus"),
-                        "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
+            //收货状态receivedStatus
+            if (conditionQueryWayBill.getReceivedStatus() != null) {
+                expressions.add(cb.equal(root.get("receivedStatus").as(ReceivedStatusEnum.class),
+                        conditionQueryWayBill.getReceivedStatus()));
             }
             // 录单时间
             if (conditionQueryWayBill.getCreateStartTime() != null &&
@@ -165,6 +167,12 @@ public class WayBillServiceImpl implements WayBillService {
 
     }
 
+    /**
+     * 创建运单
+     *
+     * @param wayBill
+     * @return
+     */
     @Override
     public WayBill createBill(WayBill wayBill) {
         // 运货件数
@@ -218,7 +226,6 @@ public class WayBillServiceImpl implements WayBillService {
         if (wayBill.getAmountOfPackages() != null) {
             wayBillDB.setAmountOfPackages(wayBill.getAmountOfPackages());
         }
-
         //
         if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
             throw new DataException("50003", "已经确定了收货不能修改");

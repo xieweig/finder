@@ -44,16 +44,6 @@ public class WayBillRepositoryImpl implements WayBillRepository {
     }
 
     /**
-     * @param id
-     * @return
-     */
-
-    @Override
-    public WayBill findOne(Long id) {
-        return jpaWayBillRepository.findOne(id);
-    }
-
-    /**
      * @param wayBill
      * @return
      */

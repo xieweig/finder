@@ -15,7 +15,6 @@ import java.util.Date;
 @Table
 public class WayBillDetail extends BaseEntity {
 
-    //
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long billDetailId;
@@ -40,7 +39,7 @@ public class WayBillDetail extends BaseEntity {
     private String packageCode;
 
     /**
-     * 录单人
+     * 指来源单号录单人(和需求方已经确定)
      */
     @Column(length = 255)
     private String operatorName;
@@ -98,7 +97,7 @@ public class WayBillDetail extends BaseEntity {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(nullable = false)
+    @Column
     private Date outStorageTime;
 
 
@@ -110,7 +109,6 @@ public class WayBillDetail extends BaseEntity {
 
 
     public String getInStationCode() {
-
         return inStationCode;
     }
 
