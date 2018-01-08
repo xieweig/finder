@@ -4,6 +4,8 @@ import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -89,12 +91,11 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     /**
      * 单据状态
      */
-    private String wayBillStatus;
-
 
     /**
      * 收货状态
      */
+    @Enumerated(value = EnumType.STRING)
     private ReceivedStatusEnum receivedStatus;
 
 
@@ -211,13 +212,13 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
         this.outStationCode = outStationCode;
     }
 
-    public String getWayBillStatus() {
-        return wayBillStatus;
-    }
-
-    public void setWayBillStatus(String wayBillStatus) {
-        this.wayBillStatus = wayBillStatus;
-    }
+//    public String getWayBillStatus() {
+//        return wayBillStatus;
+//    }
+//
+//    public void setWayBillStatus(String wayBillStatus) {
+//        this.wayBillStatus = wayBillStatus;
+//    }
 
     public String getOperatorName() {
 

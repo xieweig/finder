@@ -25,7 +25,6 @@ public interface WayBillRepository {
      */
     WayBill findOneByCode(String billCode);
 
-    WayBill findOne(Long id);
 
     WayBill createBill(WayBill wayBill);
 

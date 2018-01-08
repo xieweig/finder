@@ -74,6 +74,8 @@ public class WayBillServiceImpl implements WayBillService {
             // 分组后去重复
             query.distinct(true);
 
+            System.out.println("getReceivedStatus :" + conditionQueryWayBill.getReceivedStatus());
+
             Predicate predicate = cb.conjunction();
             //左连接
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
@@ -109,12 +111,11 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.like(root.<String>get("operatorName"),
                         "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
-            //收货状态
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
-                expressions.add(cb.equal(root.<String>get("receivedStatus"),
-                        "%" + conditionQueryWayBill.getReceivedStatus() + "%"));
+            //收货状态receivedStatus
+            if (conditionQueryWayBill.getReceivedStatus() != null) {
+                expressions.add(cb.equal(root.get("receivedStatus").as(ReceivedStatusEnum.class),
+                        conditionQueryWayBill.getReceivedStatus()));
             }
-
             // 录单时间
             if (conditionQueryWayBill.getCreateStartTime() != null &&
                     conditionQueryWayBill.getCreateEndTime() != null) {
