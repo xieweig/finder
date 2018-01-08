@@ -1,7 +1,13 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * bifenglin
@@ -9,78 +15,123 @@ import java.util.Date;
 public class RestockBillDTO {
 
     /**
-     * 进货单号-主表
+     * 单据号
      */
     private String billCode;
 
     /**
-     * 入库时间-主表
+     * 单据种类
      */
-    private Date inWareHouseTime;
+    private BillTypeEnum billType;
+    /**
+     * 单据作用
+     */
+    private BillPurposeEnum billPurpose;
 
     /**
-     * 录单时间-主表
+     * 出库位置
      */
-    private Date createTime;
+    private AbstractLocation outLocation;
 
     /**
-     * 录单人-主表
+     * 入库位置
+     */
+    private AbstractLocation inLocation;
+
+    /**
+     * 源单号
+     */
+    private String sourceCode;
+
+    /**
+     * 发起单号
+     */
+    private String rootCode;
+
+    /**
+     * 操作人代码
      */
     private String operatorCode;
-
     /**
-     * 审核人-主表
+     * 审核人编码
      */
     private String auditPersonCode;
 
     /**
-     * 入库站点-主表
+     * 单据属性
      */
-    private String inStationCode;
+    private PropertyEnum billProperty;
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
 
     /**
-     * 入库库房-主表
+     * 按货物还是按原料
      */
-    private String inStorageCode;
+    private BasicEnum basicEnum;
 
     /**
-     * 实收数量--明细表
+     * 来源单号
      */
-    private Integer amount;
+    private String fromBillCode;
 
     /**
-     * 数量差值--明细表
+     * 退货数量
      */
-    private Integer differenceNumber;
+    private int amount;
 
     /**
-     * 进货实洋--明细表
+     * 退货品种数
      */
-    private BigDecimal inTotalPrice;
+    private int variety;
 
     /**
-     * 总价差值--明细表
+     * 出库备注
      */
-    private BigDecimal differencePrice;
-    /**
-     * 供应商名称--主表
-     */
-    private String supplierCode;
+    private String outMemo;
 
     /**
-     * 单据审核状态--主表
+     * 入库备注
      */
-    private String auditState;
+    private String planMemo;
 
     /**
-     * 单据提交状态--主表
+     * 审核意见
      */
-    private String submitState;
+    private String auditMemo;
 
     /**
-     * 备注--主表
+     * 入库时间
      */
-    private String memo;
+    private Date inWareHouseTime;
+
+    /**
+     * 完成度
+     */
+    private BigDecimal progress;
+
+    /**
+     * 单据状态
+     */
+    private BillStateEnum billState = BillStateEnum.SAVED;
+
+    /**
+     * 提交状态
+     */
+    private BillSubmitStateEnum submitState;
+
+    /**
+     * 审核状态
+     */
+    private BillAuditStateEnum auditState;
+
+    /**
+     * 出入库状态
+     */
+    private BillInOrOutStateEnum inOrOutState;
+
+    private Set<RestockBillDetailDTO> billDetails;
 
     public String getBillCode() {
         return billCode;
@@ -90,28 +141,52 @@ public class RestockBillDTO {
         this.billCode = billCode;
     }
 
-    public Date getInWareHouseTime() {
-        return inWareHouseTime;
+    public BillTypeEnum getBillType() {
+        return billType;
     }
 
-    public void setInWareHouseTime(Date inWareHouseTime) {
-        this.inWareHouseTime = inWareHouseTime;
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public BillPurposeEnum getBillPurpose() {
+        return billPurpose;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setBillPurpose(BillPurposeEnum billPurpose) {
+        this.billPurpose = billPurpose;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public AbstractLocation getOutLocation() {
+        return outLocation;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOutLocation(AbstractLocation outLocation) {
+        this.outLocation = outLocation;
+    }
+
+    public AbstractLocation getInLocation() {
+        return inLocation;
+    }
+
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
+    }
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
     }
 
     public String getAuditPersonCode() {
@@ -122,83 +197,139 @@ public class RestockBillDTO {
         this.auditPersonCode = auditPersonCode;
     }
 
-    public String getInStationCode() {
-        return inStationCode;
+    public BillStateEnum getBillState() {
+        return billState;
     }
 
-    public void setInStationCode(String inStationCode) {
-        this.inStationCode = inStationCode;
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
     }
 
-    public String getInStorageCode() {
-        return inStorageCode;
-    }
-
-    public void setInStorageCode(String inStorageCode) {
-        this.inStorageCode = inStorageCode;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Integer getDifferenceNumber() {
-        return differenceNumber;
-    }
-
-    public void setDifferenceNumber(Integer differenceNumber) {
-        this.differenceNumber = differenceNumber;
-    }
-
-    public BigDecimal getInTotalPrice() {
-        return inTotalPrice;
-    }
-
-    public void setInTotalPrice(BigDecimal inTotalPrice) {
-        this.inTotalPrice = inTotalPrice;
-    }
-
-    public BigDecimal getDifferencePrice() {
-        return differencePrice;
-    }
-
-    public void setDifferencePrice(BigDecimal differencePrice) {
-        this.differencePrice = differencePrice;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
-    }
-
-    public String getAuditState() {
-        return auditState;
-    }
-
-    public void setAuditState(String auditState) {
-        this.auditState = auditState;
-    }
-
-    public String getSubmitState() {
+    public BillSubmitStateEnum getSubmitState() {
         return submitState;
     }
 
-    public void setSubmitState(String submitState) {
+    public void setSubmitState(BillSubmitStateEnum submitState) {
         this.submitState = submitState;
     }
 
-    public String getMemo() {
-        return memo;
+    public BillAuditStateEnum getAuditState() {
+        return auditState;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setAuditState(BillAuditStateEnum auditState) {
+        this.auditState = auditState;
+    }
+
+    public BillInOrOutStateEnum getInOrOutState() {
+        return inOrOutState;
+    }
+
+    public void setInOrOutState(BillInOrOutStateEnum inOrOutState) {
+        this.inOrOutState = inOrOutState;
+    }
+
+    public Set<RestockBillDetailDTO> getBillDetails() {
+        return billDetails;
+    }
+
+    public void setBillDetails(Set<RestockBillDetailDTO> billDetails) {
+        this.billDetails = billDetails;
+    }
+
+    public PropertyEnum getBillProperty() {
+        return billProperty;
+    }
+
+    public void setBillProperty(PropertyEnum billProperty) {
+        this.billProperty = billProperty;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
+    }
+
+    public String getFromBillCode() {
+        return fromBillCode;
+    }
+
+    public void setFromBillCode(String fromBillCode) {
+        this.fromBillCode = fromBillCode;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getVariety() {
+        return variety;
+    }
+
+    public void setVariety(int variety) {
+        this.variety = variety;
+    }
+
+    public String getOutMemo() {
+        return outMemo;
+    }
+
+    public void setOutMemo(String outMemo) {
+        this.outMemo = outMemo;
+    }
+
+    public String getPlanMemo() {
+        return planMemo;
+    }
+
+    public void setPlanMemo(String planMemo) {
+        this.planMemo = planMemo;
+    }
+
+    public String getAuditMemo() {
+        return auditMemo;
+    }
+
+    public void setAuditMemo(String auditMemo) {
+        this.auditMemo = auditMemo;
+    }
+
+    public Date getInWareHouseTime() {
+        return inWareHouseTime;
+    }
+
+    public void setInWareHouseTime(Date inWareHouseTime) {
+        this.inWareHouseTime = inWareHouseTime;
+    }
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
     }
 }
