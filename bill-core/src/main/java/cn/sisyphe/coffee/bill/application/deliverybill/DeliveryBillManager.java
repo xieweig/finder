@@ -5,10 +5,7 @@ import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
 import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.QueryDeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -83,7 +80,6 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     private List<DeliveryBillDTO> convertToQueryPageDTO(List<DeliveryBill> deliveryBills) {
         List<DeliveryBillDTO> deliveryBillDTOS = new ArrayList<>();
         for (DeliveryBill deliveryBill : deliveryBills) {
-
             //
             DeliveryBillDTO deliveryBillDTO = new DeliveryBillDTO();
             //在DTO子方法转换
@@ -152,15 +148,69 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
 
     }
 
+
     /**
      * 拣货提交
      *
      * @param editDTO
      */
     public void submitWhenDone(DeliveryPickingEditDTO editDTO) throws DataException {
+        //参数检查
+        this.checkSaveParam(editDTO);
+
+        this.checkBeforeSubmit(editDTO);
+
+        DeliveryBill deliveryBill = editDTO.convertPickingDTOToBill(editDTO);
+        // 拣货提交生成出库单
+
+        //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
+        deliveryBill = deliveryBillQueryService.findOneByBillCode(editDTO.getBillCode());
+
+        //
+        submit(deliveryBill);
 
     }
 
+    /**
+     * 审核通过
+     *
+     * @param deliveryBillDTO
+     */
+    public void auditPass(AuditDeliveryBillDTO deliveryBillDTO) {
+
+        //审核参数检查
+        this.checkAuditParam(deliveryBillDTO);
+
+        deliveryBillDTO.setAuditPass(true);
+        //找到单据
+        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(deliveryBillDTO.getBillCode());
+        //意见
+        deliveryBill.setAuditOpinion(deliveryBillDTO.getAuditOpinion());
+        // 设置审核人code
+        deliveryBill.setAuditPersonCode(deliveryBillDTO.getAuditOperatorCode());
+        //审核
+        audit(deliveryBill, deliveryBillDTO.getAuditPass());
+    }
+
+
+    /**
+     * 审核不通过
+     *
+     * @param deliveryBillDTO
+     */
+    public void auditNotPass(AuditDeliveryBillDTO deliveryBillDTO) {
+        //审核参数检查
+        this.checkAuditParam(deliveryBillDTO);
+        deliveryBillDTO.setAuditPass(false);
+        //找到单据
+        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(deliveryBillDTO.getBillCode());
+        //意见
+        deliveryBill.setAuditOpinion(deliveryBillDTO.getAuditOpinion());
+        // 设置审核人code
+        deliveryBill.setAuditPersonCode(deliveryBillDTO.getAuditOperatorCode());
+        //审核
+        audit(deliveryBill, deliveryBillDTO.getAuditPass());
+    }
 
     /**
      * 保存前的参数检查
@@ -170,10 +220,9 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      */
     private void checkSaveParam(DeliveryPickingEditDTO editDTO) throws DataException {
 
-//        if (StringUtils.isEmpty(editDTO.getBillCode())) {
-//            throw new DataException("30001", "单据编码不能为空");
-//        }
-        //
+        if (StringUtils.isEmpty(editDTO.getBillCode())) {
+            throw new DataException("30001", "单据编码不能为空");
+        }
         if (StringUtils.isEmpty(editDTO.getOperatorCode())) {
             throw new DataException("30002", "操作人编码不能为空");
         }
@@ -184,6 +233,40 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
             throw new DataException("30004", "操作出库站点不能为空");
         }
         //其他判断
+    }
+
+    /**
+     * 审核通过or不通过参数检查
+     *
+     * @param dto
+     * @throws DataException
+     */
+    private void checkAuditParam(AuditDeliveryBillDTO dto) throws DataException {
+        if (dto == null) {
+            throw new DataException("30005", "审核条件为空");
+        }
+        if (StringUtils.isEmpty(dto.getBillCode())) {
+            throw new DataException("30001", "单据编码不能为空");
+        }
+        if (StringUtils.isEmpty(dto.getAuditOperatorCode())) {
+            throw new DataException("30002", "审核人编码不能为空");
+        }
+        if (StringUtils.isEmpty(dto.getAuditOpinion())) {
+            throw new DataException("30007", "审核意见不能为空");
+        }
+    }
+
+    /**
+     * 提交前检查
+     *
+     * @param editDTO
+     * @throws DataException
+     */
+    private void checkBeforeSubmit(DeliveryPickingEditDTO editDTO) throws DataException {
+        if (editDTO.getBillDetails() == null) {
+            throw new DataException("30005", "出库单明细为空，不能提交");
+        }
+
     }
 
 

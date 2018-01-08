@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
@@ -35,12 +36,10 @@ public class DeliveryPickingEditDTO implements Serializable {
      */
     private String belongStationCode;
 
-
 //    /**
 //     * 库房
 //     */
 //    private Storage storage;
-
 
     @JsonIgnore
     private Long billId;
@@ -101,6 +100,7 @@ public class DeliveryPickingEditDTO implements Serializable {
         //出库
         this.outLocation = deliveryBill.getOutLocation();
 
+        //明细对象添加
         return this;
     }
 
@@ -111,8 +111,11 @@ public class DeliveryPickingEditDTO implements Serializable {
      * @return
      */
     public DeliveryBill convertPickingDTOToBill(DeliveryPickingEditDTO dto) throws DataException {
-        DeliveryBill deliveryBill = new DeliveryBill();
+        DeliveryBill deliveryBill = null;
 
+        //通过工厂方法生成具体种类的单据
+        BillFactory billFactory = new BillFactory();
+        deliveryBill = (DeliveryBill) billFactory.createBill(BillTypeEnum.DELIVERY);
         // 假如首次添加默认一个暂时的单号
         if (!StringUtils.isEmpty(dto.getBillCode())) {
             // bill code
@@ -141,6 +144,7 @@ public class DeliveryPickingEditDTO implements Serializable {
         deliveryBill.setTotalCount(this.calcTotalCount(dto));
         //添加明细
         deliveryBill.setBillDetails(this.convertBillItemsToDTO(dto));
+
         return deliveryBill;
 
     }

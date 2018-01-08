@@ -71,6 +71,11 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
     private String memo;
 
 
+    /**
+     *  审核意见
+     */
+    private String auditOpinion;
+
 
     public Integer getTotalAmount() {
         return totalAmount;
@@ -130,6 +135,13 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
         this.outStockTime = outStockTime;
     }
 
+    public String getAuditOpinion() {
+        return auditOpinion;
+    }
+
+    public void setAuditOpinion(String auditOpinion) {
+        this.auditOpinion = auditOpinion;
+    }
 
     @Override
     public String toString() {
@@ -139,7 +151,9 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
                 ", operatorCode='" + operatorCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +
                 ", progress=" + progress +
+                ", outStockTime=" + outStockTime +
                 ", memo='" + memo + '\'' +
+                ", auditOpinion='" + auditOpinion + '\'' +
                 '}';
     }
 }
