@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -99,6 +100,8 @@ public class AddAdjustBillDTO {
 
     private BasicEnum basicEnum;
 
+
+    private SourcePlanTypeEnum sourcePlanType;
     /**
      * 货物/原料明细信息
      */
@@ -277,5 +280,13 @@ public class AddAdjustBillDTO {
                 ", auditMemo='" + auditMemo + '\'' +
                 ", details=" + details +
                 '}';
+    }
+
+    public SourcePlanTypeEnum getSourcePlanType() {
+        return sourcePlanType;
+    }
+
+    public void setSourcePlanType(SourcePlanTypeEnum sourcePlanType) {
+        this.sourcePlanType = sourcePlanType;
     }
 }

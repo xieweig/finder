@@ -73,11 +73,15 @@ public class AdjustBillController {
     @ApiOperation(value = "保存调剂单据信息  ")
     @RequestMapping(path = "/saveAdjustBill", method = RequestMethod.POST)
     public ResponseResult saveAdjustBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-        addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        adjustBillManager.create(addAdjustBillDTO);
-        ResponseResult responseResult = new ResponseResult();
 
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            responseResult.put("billCode", adjustBillManager.create(addAdjustBillDTO));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 
@@ -90,9 +94,14 @@ public class AdjustBillController {
     @ApiOperation(value = "提交调剂单据信息")
     @RequestMapping(path = "/submitAdjustBill", method = RequestMethod.POST)
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-        addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            responseResult.put("billCode", adjustBillManager.submit(addAdjustBillDTO));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 
