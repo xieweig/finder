@@ -73,8 +73,6 @@ public class WayBillServiceImpl implements WayBillService {
         return wayBillRepository.findAll((root, query, cb) -> {
             // 分组后去重复
             query.distinct(true);
-
-//            System.out.println("getReceivedStatus :" + conditionQueryWayBill.getReceivedStatus());
             Predicate predicate = cb.conjunction();
             //左连接
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
@@ -90,7 +88,6 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
                         "%" + conditionQueryWayBill.getOutStorageBillCode() + "%"));
             }
-            // expressions.add(root.<String>get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
             // 入库站点
             if (conditionQueryWayBill.getInStationCode() != null
                     && conditionQueryWayBill.getInStationCode().size() > 0) {
