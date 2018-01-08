@@ -199,15 +199,14 @@ public class WayBillServiceImpl implements WayBillService {
         //清除
         wayBillDB.getWayBillDetailSet().clear();
 
-        // 入库站点
+        // 入库站点code
         if (StringUtils.isEmpty(wayBill.getInStationCode())) {
             wayBillDB.setInStationCode(wayBill.getInStationCode());
         }
-        //出库站点
+        //出库站点code
         if (StringUtils.isEmpty(wayBill.getOutStationCode())) {
             wayBillDB.setOutStationCode(wayBill.getOutStationCode());
         }
-        //2设置值
         //公司名称
         if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
             wayBillDB.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());
@@ -243,6 +242,7 @@ public class WayBillServiceImpl implements WayBillService {
         }
         // 设置明细的方法
         wayBillDB.getWayBillDetailSet().addAll(wayBill.getWayBillDetailSet());//
+        //
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;
     }
