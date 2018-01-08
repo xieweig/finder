@@ -60,6 +60,10 @@ public class AddRestockBillDTO {
      * 单据编码
      */
     private String billCode;
+    /**
+     * 起始单号
+     */
+    private String rootCode;
 
     /**
      * 总价
@@ -73,6 +77,14 @@ public class AddRestockBillDTO {
 
     //完成度
     private BigDecimal progress;
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
 
     public BigDecimal getProgress() {
         return progress;

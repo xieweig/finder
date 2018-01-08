@@ -72,11 +72,6 @@ public class RestockBillDTO {
     private BasicEnum basicEnum;
 
     /**
-     * 来源单号
-     */
-    private String fromBillCode;
-
-    /**
      * 退货数量
      */
     private int amount;
@@ -269,13 +264,6 @@ public class RestockBillDTO {
         this.operatorCode = operatorCode;
     }
 
-    public String getFromBillCode() {
-        return fromBillCode;
-    }
-
-    public void setFromBillCode(String fromBillCode) {
-        this.fromBillCode = fromBillCode;
-    }
 
     public int getAmount() {
         return amount;

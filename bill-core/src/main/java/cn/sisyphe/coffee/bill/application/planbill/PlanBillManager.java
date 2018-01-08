@@ -192,7 +192,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
             planBillDetail.setOutLocation(getRealLocation(planBillDetail.getOutLocation()));
             planBillDetail.setTransferLocation(getTransferLocation(planBillDetail));
         }
-
     }
 
     private AbstractLocation getRealLocation(AbstractLocation abstractLocation) {
@@ -222,7 +221,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
                 planBillDetail.setGoods(mapGoods(planBillDetailDTO.getRawMaterialCode(), planBillDetailDTO.getCargoCode(), planBill.getBasicEnum()));
                 planBill.getBillDetails().add(planBillDetail);
             }
-
         }
         planBill.setBillPurpose(BillPurposeEnum.Plan);
 
@@ -389,8 +387,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());
-        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+//        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+//        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         //通过springCloud设置operatorName
         String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());
@@ -398,6 +396,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
         childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
         childPlanBillDTO.setBillState(childPlanBill.getBillState());
+        childPlanBillDTO.setProgress(childPlanBill.getProgress());
+        childPlanBillDTO.setRootCode(childPlanBill.getRootCode());
 
         List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS = new ArrayList<>();
         for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
