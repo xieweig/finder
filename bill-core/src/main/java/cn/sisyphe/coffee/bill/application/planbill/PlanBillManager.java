@@ -44,7 +44,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -333,6 +336,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setCreateTime(planBill.getCreateTime());
         resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
         resultPlanBillDTO.setAuditState(planBill.getAuditState());
+        resultPlanBillDTO.setBillState(planBill.getBillState());
         resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
         resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
         resultPlanBillDTO.setMemo(planBill.getMemo());
@@ -414,7 +418,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
-/*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
+        /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
         childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
         childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
@@ -424,6 +428,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
         childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
         childPlanBillDTO.setBillState(childPlanBill.getBillState());
+        childPlanBillDTO.setSubmitState(childPlanBill.getSubmitState());
+        childPlanBillDTO.setAuditState(childPlanBill.getAuditState());
         childPlanBillDTO.setProgress(childPlanBill.getProgress());
         childPlanBillDTO.setRootCode(childPlanBill.getRootCode());
 
