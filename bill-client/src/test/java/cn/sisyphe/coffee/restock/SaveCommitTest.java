@@ -83,7 +83,7 @@ public class SaveCommitTest extends InstanceFactory{
     //测试拣货界面保存
     @Test
     public void saveByAddRestockBillDTO() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 2; i++) {
             AddRestockBillDTO dto = this.nextRandomRestockBillDTO();
 
             this.restockBillManager.saveBill(dto);

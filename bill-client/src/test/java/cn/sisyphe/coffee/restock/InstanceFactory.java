@@ -113,6 +113,7 @@ public class InstanceFactory {
         restockBill.setTotalPrice(new BigDecimal(random.nextInt(600)+100));
         restockBill.setAmount(random.nextInt(100));
         restockBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
+        //restockBill.setRootCode();
         return  restockBill;
     }
 
