@@ -255,6 +255,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //退货品种数
         int variety = detailDTOSet.size();
         restockBill.setVariety(variety);
+        //进度
+        restockBill.setProgress(addRestockBillDTO.getProgress());
         //配送总价
         restockBill.setTotalPrice(addRestockBillDTO.getTotalPrice());
         //按货物还是按原料
