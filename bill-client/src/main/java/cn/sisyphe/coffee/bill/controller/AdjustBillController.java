@@ -3,12 +3,14 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,23 +46,28 @@ public class AdjustBillController {
     @ApiOperation(value = "多条件查询调剂单据")
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
     public ResponseResult findByPurchaseBillCode(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
-
         ResponseResult responseResult = new ResponseResult();
-
+        Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditions(conditionQueryAdjustBill);
+        responseResult.put("content", dtoPage);
         return responseResult;
     }
 
     /**
      * 根据调剂单号查询详细信息
      *
-     * @param adjustBillCode 调剂单号
+     * @param billCode 调剂单号
      * @return
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
     @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.POST)
-    public ResponseResult findByAdjustBillCode(@RequestParam String adjustBillCode) {
+    public ResponseResult findByAdjustBillCode(@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
 
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 

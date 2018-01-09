@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PlanBill extends Bill<PlanBillDetail> {
 
+
     @Column
     private String billName;
 
@@ -41,10 +42,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
-
-    //接受的单据编号
-    @Column
-    private String receiveBillCode;
 
     //是否是总部计划
     @Column
@@ -64,14 +61,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public PlanBill() {
         setBillType(BillTypeEnum.PLAN);
-    }
-
-    public String getReceiveBillCode() {
-        return receiveBillCode;
-    }
-
-    public void setReceiveBillCode(String receiveBillCode) {
-        this.receiveBillCode = receiveBillCode;
     }
 
     public String getBillName() {

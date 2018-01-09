@@ -138,6 +138,7 @@ public class ReturnedBillController {
     @ApiOperation(value = "修改退货单单据信息--保存")
     @RequestMapping(path = "/updateReturnedBillToSave", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSaved(@RequestBody AddReturnedBillDTO billDTO) {
+        //从head中查看
         ResponseResult responseResult = new ResponseResult();
         try {
             returnedBillManager.updateBillToSave(billDTO);

@@ -9,7 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
  *
  * @author XiongJing
  */
-public class AdjustBillDetailDTO {
+public class AddAdjustBillDetailDTO {
 
     /**
      * 应拣数量
@@ -30,6 +30,7 @@ public class AdjustBillDetailDTO {
      * 所属原料编码
      */
     private String belongMaterialCode;
+
 
     /**
      * 详情备注

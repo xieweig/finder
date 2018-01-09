@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/8
- * @Description:
+ * @Description:仅仅服务于restock测试用，数据做的字段不全
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
