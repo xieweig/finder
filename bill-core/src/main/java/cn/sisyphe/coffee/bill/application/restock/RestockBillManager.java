@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
@@ -219,11 +220,11 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         Random random = new Random();
         restockBill.setBillCode(random.nextInt(10000)+"0302");
         // 来源单号
-        if (StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
+        if (!StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(addRestockBillDTO.getSourceCode());
         }
         // 发起单号
-        if (StringUtils.isEmpty(addRestockBillDTO.getRootCode())) {
+        if (!StringUtils.isEmpty(addRestockBillDTO.getRootCode())) {
             restockBill.setRootCode(addRestockBillDTO.getRootCode());
         }
         // 计划备注
@@ -425,7 +426,14 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         Set<RestockBillDetailDTO> restockBillDetailDTOSet = new HashSet<>();
         for (RestockBillDetail restockBillDetail : restockBillDetails) {
             RestockBillDetailDTO restockBillDetailDTO = new RestockBillDetailDTO();
-            restockBillDetailDTO.setRawMaterial((RawMaterial) restockBillDetail.getGoods());
+            if (restockBillDetail.getGoods() instanceof RawMaterial) {
+                restockBillDetailDTO.setRawMaterial((RawMaterial) restockBillDetail.getGoods());
+            } else {
+                //若没有原料
+                RawMaterial rawMaterial = new RawMaterial();
+                rawMaterial.setCargo((Cargo)restockBillDetail.getGoods());
+                restockBillDetailDTO.setRawMaterial(rawMaterial);
+            }
             restockBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
             restockBillDetailDTO.setMemo(restockBillDetail.getMemo());
             restockBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
