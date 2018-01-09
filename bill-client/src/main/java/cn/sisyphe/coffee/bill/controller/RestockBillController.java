@@ -174,8 +174,10 @@ public class RestockBillController {
      */
     @ApiOperation(value = "修改退库出库单单据信息--保存")
     @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
-    public ResponseResult updateRestockBillToSaved(@RequestBody AddRestockBillDTO billDTO) {
+    public ResponseResult updateRestockBillToSaved(HttpServletRequest request, @RequestBody AddRestockBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        billDTO.setOperatorCode(loginInfo.getOperatorCode());
         try {
             restockBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
@@ -210,9 +212,10 @@ public class RestockBillController {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(@RequestParam String RestockBillCode, @RequestParam String auditPersonCode) {
+    public ResponseResult auditFailure(@RequestParam String RestockBillCode, HttpServletRequest request) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.auditBill(RestockBillCode, auditPersonCode, true);
+        restockBillManager.auditBill(RestockBillCode, loginInfo.getOperatorCode(), false);
         return responseResult;
     }
 
@@ -224,28 +227,13 @@ public class RestockBillController {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(@RequestParam String RestockBillCode, @RequestParam String auditPersonCode) {
+    public ResponseResult auditSuccess(@RequestParam String RestockBillCode, HttpServletRequest request) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.auditBill(RestockBillCode, auditPersonCode, false);
+        restockBillManager.auditBill(RestockBillCode,  loginInfo.getOperatorCode(), true);
         return responseResult;
     }
 
-    /**
-     * 修改入库单据信息
-     *
-     * @param billDTO
-     * @return
-     *//*
-    @ApiOperation(value = "修改退库出库单单据信息--保存")
-    @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
-    public ResponseResult updateRestockBillToSaved(@RequestBody AddRestockBillDTO billDTO) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            restockBillManager.updateBillToSave(billDTO);
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }*/
+
 
 }
