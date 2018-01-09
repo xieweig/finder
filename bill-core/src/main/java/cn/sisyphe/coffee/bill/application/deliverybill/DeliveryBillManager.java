@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.application.deliverybill;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
 import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
@@ -15,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2018/1/4.
@@ -29,6 +32,49 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     @Autowired
     public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
+    }
+
+    /**
+     * 出库单打包汇总
+     *
+     * @param billCode
+     * @return
+     */
+    public ScanFillBillDTO scanQueryBill(String billCode) {
+
+        ScanFillBillDTO scanFillBillDTO = new ScanFillBillDTO();
+        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(billCode);
+
+        if (deliveryBill == null) {
+            return null;
+        }
+        Set<DeliveryBillDetail> details = deliveryBill.getBillDetails();
+        //
+        int totalAmount = 0;
+        int totalCount = 0;
+        List<String> packNumbers = new ArrayList<>();
+        for (DeliveryBillDetail detail : details) {
+            totalCount += 1;// 总品种
+            totalAmount += detail.getAmount();// 总数量
+            if (!packNumbers.contains(detail.getPackageCode())) {
+                //添加包号
+                packNumbers.add(detail.getPackageCode());
+            }
+        }
+        //单据类型
+        scanFillBillDTO.setBillType(BillTypeEnum.DELIVERY.name());
+        //bill code
+        scanFillBillDTO.setBillCode(deliveryBill.getBillCode());
+        //录单人
+        scanFillBillDTO.setOperatorCode(deliveryBill.getOperatorCode());
+        //包号
+        scanFillBillDTO.setPackNumbers(packNumbers);
+        //总品种
+        scanFillBillDTO.setTotalCount(totalCount);
+        //总数量
+        scanFillBillDTO.setTotalAmount(totalAmount);
+        //
+        return scanFillBillDTO;
     }
 
 

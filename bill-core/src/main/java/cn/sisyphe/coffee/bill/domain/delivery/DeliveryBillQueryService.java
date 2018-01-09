@@ -33,4 +33,5 @@ public interface DeliveryBillQueryService {
     Page<DeliveryBill> findPageByCondition(ConditionQueryDeliveryBill conditionQueryDeliveryBill)  throws DataException;
 
 
+
 }

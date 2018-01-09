@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.transmit;
 
 
+import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
@@ -8,6 +9,7 @@ import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,54 @@ public class WayBillManager {
     //公共信息
     @Autowired
     private SharedManager sharedManager;
+    @Autowired
+    private DeliveryBillManager deliveryBillManager;
     //事件
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
     //运单服务类
     @Autowired
     private WayBillService iWayBillService;
+
+
+    /**
+     * 通过单据code 汇总包号，总数量，品种
+     *
+     * @param billCode
+     * @return
+     */
+    public ScanFillBillDTO scanQueryBill(String billCode) {
+
+        // TODO: 2018/1/9  通过不同的单据查询数据
+        //
+//
+//        现在在"运单跟踪"的出库单测试时使用以下临时规则：
+//        配送出库单 psckd+6为流水，比如psckd000001
+//        调剂出库单 tjckd+6位流水，比如tjckd000001
+//        退库出库单 tkckd+6位流水，比如tkckd000001
+//        退货出库单 thckd+6位流水，比如thckd000001
+
+        if (StringUtils.isEmpty(billCode)) {
+            return null;
+        }
+        //配送出库
+        if (billCode.toUpperCase().startsWith("PSCKD")) {
+            //return deliveryBillManager.scanQueryBill(billCode);
+        }
+        //调剂出库单
+        if (billCode.toUpperCase().startsWith("TJCKD")) {
+        }
+        // 退库出库单
+        if (billCode.toUpperCase().startsWith("TKCKD")) {
+
+        }
+        //退货出库单
+        if (billCode.toUpperCase().startsWith("TKCKD")) {
+
+        }
+        return deliveryBillManager.scanQueryBill(billCode);
+
+    }
 
 
     /**
