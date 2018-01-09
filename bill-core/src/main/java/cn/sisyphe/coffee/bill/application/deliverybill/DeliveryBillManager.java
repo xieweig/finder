@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
 import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.*;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -56,6 +57,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         for (DeliveryBillDetail detail : details) {
             totalCount += 1;// 总品种
             totalAmount += detail.getAmount();// 总数量
+            //包号不重复则添加
             if (!packNumbers.contains(detail.getPackageCode())) {
                 //添加包号
                 packNumbers.add(detail.getPackageCode());
@@ -67,12 +69,24 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         scanFillBillDTO.setBillCode(deliveryBill.getBillCode());
         //录单人
         scanFillBillDTO.setOperatorCode(deliveryBill.getOperatorCode());
+        //录单人姓名
+        scanFillBillDTO.setOperatorName(deliveryBill.getOperatorName());
         //包号
         scanFillBillDTO.setPackNumbers(packNumbers);
         //总品种
         scanFillBillDTO.setTotalCount(totalCount);
         //总数量
         scanFillBillDTO.setTotalAmount(totalAmount);
+        //出库时间
+        scanFillBillDTO.setOutStockTime(deliveryBill.getOutStockTime());
+        //入库站点
+        if (deliveryBill.getInLocation() != null) {
+            scanFillBillDTO.setInStationCode(deliveryBill.getInLocation().code());
+        }
+        //出库站点
+        if (deliveryBill.getOutLocation() != null) {
+            scanFillBillDTO.setOutStationCode(deliveryBill.getOutLocation().code());
+        }
         //
         return scanFillBillDTO;
     }

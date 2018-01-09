@@ -9,7 +9,7 @@ import cn.sisyphe.coffee.bill.domain.transmit.WayBillDetail;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBillService;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.PackAgeTypeEnum;
 import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ScanFillBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;

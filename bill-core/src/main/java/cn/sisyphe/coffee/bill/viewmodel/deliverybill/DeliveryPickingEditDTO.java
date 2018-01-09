@@ -36,10 +36,6 @@ public class DeliveryPickingEditDTO implements Serializable {
      */
     private String belongStationCode;
 
-//    /**
-//     * 库房
-//     */
-//    private Storage storage;
 
     @JsonIgnore
     private Long billId;

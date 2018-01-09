@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
+package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -25,6 +25,17 @@ public class ScanFillBillDTO implements Serializable {
     private Integer totalCount;
     // 录单人
     private String operatorCode;
+
+
+    /**
+     * 出库站点code
+     */
+    private String outStationCode;//
+
+    /**
+     * 入库站点
+     */
+    private String inStationCode;
 
     private String operatorName;
     //包号
@@ -101,6 +112,22 @@ public class ScanFillBillDTO implements Serializable {
         this.billType = billType;
     }
 
+    public String getOutStationCode() {
+        return outStationCode;
+    }
+
+    public void setOutStationCode(String outStationCode) {
+        this.outStationCode = outStationCode;
+    }
+
+    public String getInStationCode() {
+        return inStationCode;
+    }
+
+    public void setInStationCode(String inStationCode) {
+        this.inStationCode = inStationCode;
+    }
+
     @Override
     public String toString() {
         return "ScanFillBillDTO{" +
@@ -109,6 +136,9 @@ public class ScanFillBillDTO implements Serializable {
                 ", totalAmount=" + totalAmount +
                 ", totalCount=" + totalCount +
                 ", operatorCode='" + operatorCode + '\'' +
+                ", outStationCode='" + outStationCode + '\'' +
+                ", inStationCode='" + inStationCode + '\'' +
+                ", operatorName='" + operatorName + '\'' +
                 ", packNumbers=" + packNumbers +
                 ", outStockTime=" + outStockTime +
                 '}';

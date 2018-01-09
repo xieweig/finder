@@ -6,7 +6,7 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ScanFillBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @date: 2018/1/3

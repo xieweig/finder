@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.application.restock;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -10,7 +9,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
@@ -19,7 +17,7 @@ import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ScanFillBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
@@ -33,7 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 
