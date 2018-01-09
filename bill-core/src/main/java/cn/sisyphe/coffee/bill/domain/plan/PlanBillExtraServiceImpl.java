@@ -105,9 +105,6 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
 
-            //设置为查询子计划
-            expressions.add(root.get("hqBill").as(Boolean.class).in(false));
-
             // 计划类型
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
