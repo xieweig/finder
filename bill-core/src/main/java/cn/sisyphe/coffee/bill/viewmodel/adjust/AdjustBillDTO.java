@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -79,6 +80,8 @@ public class AdjustBillDTO {
      * 配送数量
      */
     private Integer adjustNumber;
+
+    private BillStateEnum billState;
 
     /**
      * 配送品种数
@@ -194,6 +197,14 @@ public class AdjustBillDTO {
 
     public void setVarietyNumber(Integer varietyNumber) {
         this.varietyNumber = varietyNumber;
+    }
+
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
     }
 
     @Override

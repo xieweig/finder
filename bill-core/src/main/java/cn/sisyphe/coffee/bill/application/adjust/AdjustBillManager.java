@@ -26,6 +26,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
+
 /**
  * Created by XiongJing on 2018/1/8.
  * remark：调剂业务
@@ -81,6 +84,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
         // 审核状态
         adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
+        //单据状态
+        adjustBillDTO.setBillState(adjustBill.getBillState());
         // 来源单号
         adjustBillDTO.setRootCode(adjustBill.getRootCode());
         // 单据编码
@@ -159,8 +164,14 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBill.getBillDetails().addAll(mapDetails(addAdjustBillDTO));
         //设置是按原料还是货物拣货
         adjustBill.setBasicEnum(addAdjustBillDTO.getBasicEnum());
+        //设置出库备注
         adjustBill.setOutStorageMemo(addAdjustBillDTO.getOutStorageMemo());
+        //设置所属站点
         adjustBill.setBelongStationCode(addAdjustBillDTO.getOutStationCode());
+        //设置调剂数量
+        adjustBill.setAdjustNumber(sum(addAdjustBillDTO.getDetails(), on(AdjustBillDetailDTO.class).getShippedAmount()));
+        //设置调剂种类
+        adjustBill.setVarietyNumber(addAdjustBillDTO.getDetails().size());
 
     }
 
