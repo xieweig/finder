@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
@@ -26,10 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 //import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 
@@ -50,8 +48,9 @@ public class SaveCommitTest {
     @Resource
     private RestockBillManager restockBillManager;
     @Resource
-    RestockBillQueryService restockBillQueryService;
-
+    private RestockBillQueryService restockBillQueryService;
+    @Resource
+    private RestockBillRepository restockBillRepository;
     private RandomAccessFile randomAccessFile;
     public static final String[] PLANCODES = {"010523","010507","010702"};
 
@@ -80,6 +79,7 @@ public class SaveCommitTest {
 
         dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
         dto.setBillProperty(PropertyEnum.RESTOCK);
+
         dto.setSourceCode(this.PLANCODES[0]);
 
         Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
@@ -132,7 +132,9 @@ public class SaveCommitTest {
         return billDetailDTO;
 
     }
+    public static void setUp(){
 
+    }
     //测试拣货界面保存
     @Test
     public void saveRestockTest() {
@@ -187,55 +189,22 @@ public class SaveCommitTest {
         // dto.setBillCode();
     }
 
-//    @Resource
-//    private PlanBillRepository planBillRepository;
-//
-//    private PlanBillDetail createPlanBillDetail() {
-//        PlanBillDetail planBillDetail = new PlanBillDetail();
-//        planBillDetail.setAmount(random.nextInt(100));
-//        planBillDetail.setPackageCode("test:03" + random.nextInt(100));
-//        RawMaterial rawMaterial = new RawMaterial();
-//        rawMaterial.setCargo(new Cargo("3002" + random.nextInt()));
-//        rawMaterial.setRawMaterialName("测试原料名称" + random.nextInt(1000));
-//        planBillDetail.setGoods(rawMaterial);
-//        planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
-//        return planBillDetail;
-//    }
-//
-//    private PlanBill createPlanBill() {
-//        PlanBill planBill = new PlanBill();
-//        planBill.setHqBill(false);
-//        planBill.setSpecificBillType(BillTypeEnum.PLAN);
-//        planBill.setAuditMemo("remarks: " + random.nextInt(1000));
-//      //  dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
-//        planBill.setBillName("all" + random.nextInt(100));
-//        planBill.setProgress(new BigDecimal(random.nextInt(1200)));
-//        planBill.setBillState(BillStateEnum.SAVED);
-//        planBill.setAuditState(BillAuditStateEnum.AUDIT_SUCCESS);
-//        planBill.setSubmitState(BillSubmitStateEnum.SUBMITTED);
-//        planBill.setAuditPersonCode(random.nextInt(100) + "0302");
-//        planBill.setBillCode("010" + random.nextInt(1000));
-//        planBill.setBillType(BillTypeEnum.PLAN);
-//        Set<PlanBillDetail> details = new HashSet<>();
-//        for (int i = 0; i < 3; i++) {
-//
-//            details.add(this.createPlanBillDetail());
-//        }
-//        planBill.setBillDetails(details);
-//        return  planBill;
-//    }
-//    @Test
-//    public void insertTest(){
-//        for (int i = 0; i <6 ; i++) {
-//            this.planBillRepository.save(this.createPlanBill());
-//        }
-//    }
-
-    //测试多条件查询
+   //测试多条件查询
     @Test
     public void selectByConditions(){
         ConditionQueryRestockBill queryRestockBill = new ConditionQueryRestockBill();
         queryRestockBill.setBillCode("98650302");
+        Date basicDate = new Date();
+        calendar.setTime(basicDate);
+
+        calendar.add(Calendar.DATE, 2);
+        queryRestockBill.setInStartTime(calendar.getTime());
+        calendar.add(Calendar.DATE, random.nextInt(20)+5);
+        queryRestockBill.setInEndTime(calendar.getTime());
+        calendar.add(Calendar.DATE,random.nextInt(20)+10 );
+        queryRestockBill.setCreateStartTime(calendar.getTime());
+        calendar.add(Calendar.DATE,random.nextInt(20)+5);
+        queryRestockBill.setCreateEndTime(calendar.getTime());
      //   queryRestockBill.setCreateStartTime();
      //   queryRestockBill.setCreateEndTime();
         queryRestockBill.setPage(1);

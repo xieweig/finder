@@ -28,7 +28,8 @@ public class AddReturnedBillDTO {
     /**
      * 来源单号
      */
-    private String fromBillCode;
+    private String SourceCode;
+
     /**
      * 计划备注
      */
@@ -164,19 +165,19 @@ public class AddReturnedBillDTO {
         this.billCode = billCode;
     }
 
-    public String getFromBillCode() {
-        return fromBillCode;
-    }
-
-    public void setFromBillCode(String fromBillCode) {
-        this.fromBillCode = fromBillCode;
-    }
-
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getSourceCode() {
+        return SourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        SourceCode = sourceCode;
     }
 }
