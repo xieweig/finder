@@ -87,15 +87,9 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     private List<String> outStationCode;
 
     /**
-     * 单据状态
-     */
-
-    /**
      * 收货状态
      */
-    // @Enumerated(value = EnumType.STRING)
 
-    //  private ReceivedStatusEnum receivedStatus;
     private String receivedStatus;
 
     public List<String> getInStationCode() {
@@ -217,12 +211,9 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     }
 
 
-
-
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
     }
-
 
 
 }
