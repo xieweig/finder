@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
+
 /**
  * Created by XiongJing on 2018/1/8.
  * remark：调剂单
@@ -48,7 +50,7 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
     /**
      * 出库状态编码
      */
-    private BillOutStateEnum outStateEnum;
+    private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
 
     /**
      * 调剂数量
