@@ -64,7 +64,6 @@ public class AdjustBillController {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
-
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -113,40 +112,6 @@ public class AdjustBillController {
     }
 
     /**
-     * 修改退库出库单单据信息
-     *
-     * @param addAdjustBillDTO
-     * @return
-     */
-    @ApiOperation(value = "修改退库出库单单据信息--保存")
-    @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
-    public ResponseResult updateRestockBillToSaved(@RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }
-
-    /**
-     * 修改入库单据信息
-     *
-     * @param addAdjustBillDTO
-     * @return
-     */
-    @ApiOperation(value = "修改退库出库单单据信息--提交审核")
-    @RequestMapping(path = "/updateRestockBillToSubmit", method = RequestMethod.POST)
-    public ResponseResult updateRestockBillToSubmit(@RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }
-
-    /**
      * 审核不通过
      *
      * @param adjustBillCode 调剂单编码
@@ -157,6 +122,7 @@ public class AdjustBillController {
     public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
+        adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),false);
         return responseResult;
     }
 
@@ -171,6 +137,7 @@ public class AdjustBillController {
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
+        adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),true);
         return responseResult;
     }
 }

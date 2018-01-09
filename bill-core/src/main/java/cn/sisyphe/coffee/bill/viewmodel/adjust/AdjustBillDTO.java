@@ -6,7 +6,6 @@ import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -21,7 +20,6 @@ public class AdjustBillDTO {
      * 单据属性
      */
     private String billTypeStr;
-
     /**
      * 出库状态
      */
@@ -30,77 +28,60 @@ public class AdjustBillDTO {
      * 提交状态
      */
     private String submitState;
-
     /**
      * 审核状态
      */
     private String auditState;
-
     /**
      * 来源单号
      */
     private String rootCode;
-
     /**
      * 出库单号
      */
     private String billCode;
-
     /**
      * 录单时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-
     /**
      * 出库时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
-
     /**
      * 录单人编码
      */
     private String operatorName;
-
     /**
      * 审核人
      */
     private String auditorName;
-
     /**
      * 出库站点
      */
     private String outStationCode;
-
     /**
      * 入库站点
      */
     private String inStationCode;
-
+    /**
+     * 按照原料还是按照货物拣货
+     */
     private BasicEnum basicEnum;
-
     /**
      * 配送数量
      */
     private Integer adjustNumber;
-
+    /**
+     * 单据主状态
+     */
     private BillStateEnum billState;
-
     /**
      * 配送品种数
      */
     private Integer varietyNumber;
-
-    /**
-     * 调剂货物计划详情
-      */
-    private List<AdjustBillDetailDTO> details;
-
-    /**
-     * 调剂原料计划详情
-     */
-    private List<AdjustBillMaterialDetailDTO> materialDetails;
 
     public String getBillTypeStr() {
         return billTypeStr;
@@ -174,14 +155,6 @@ public class AdjustBillDTO {
         this.operatorName = operatorName;
     }
 
-    public String getAuditorName() {
-        return auditorName;
-    }
-
-    public void setAuditorName(String auditorName) {
-        this.auditorName = auditorName;
-    }
-
     public String getOutStationCode() {
         return outStationCode;
     }
@@ -198,20 +171,20 @@ public class AdjustBillDTO {
         this.inStationCode = inStationCode;
     }
 
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+
     public Integer getAdjustNumber() {
         return adjustNumber;
     }
 
     public void setAdjustNumber(Integer adjustNumber) {
         this.adjustNumber = adjustNumber;
-    }
-
-    public Integer getVarietyNumber() {
-        return varietyNumber;
-    }
-
-    public void setVarietyNumber(Integer varietyNumber) {
-        this.varietyNumber = varietyNumber;
     }
 
     public BillStateEnum getBillState() {
@@ -222,28 +195,20 @@ public class AdjustBillDTO {
         this.billState = billState;
     }
 
-    public List<AdjustBillDetailDTO> getDetails() {
-        return details;
+    public Integer getVarietyNumber() {
+        return varietyNumber;
     }
 
-    public void setDetails(List<AdjustBillDetailDTO> details) {
-        this.details = details;
+    public void setVarietyNumber(Integer varietyNumber) {
+        this.varietyNumber = varietyNumber;
     }
 
-    public BasicEnum getBasicEnum() {
-        return basicEnum;
+    public String getAuditorName() {
+        return auditorName;
     }
 
-    public void setBasicEnum(BasicEnum basicEnum) {
-        this.basicEnum = basicEnum;
-    }
-
-    public List<AdjustBillMaterialDetailDTO> getMaterialDetails() {
-        return materialDetails;
-    }
-
-    public void setMaterialDetails(List<AdjustBillMaterialDetailDTO> materialDetails) {
-        this.materialDetails = materialDetails;
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
     }
 
     @Override
@@ -265,8 +230,6 @@ public class AdjustBillDTO {
                 ", adjustNumber=" + adjustNumber +
                 ", billState=" + billState +
                 ", varietyNumber=" + varietyNumber +
-                ", details=" + details +
-                ", materialDetails=" + materialDetails +
                 '}';
     }
 }

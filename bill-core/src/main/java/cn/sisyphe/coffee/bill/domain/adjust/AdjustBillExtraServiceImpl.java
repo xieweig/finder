@@ -80,14 +80,14 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             /**
              * 出库站点
              */
-            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getOutStationCode())) {
-                expressions.add(cb.equal(root.get("outStationCode").as(String.class), conditionQueryAdjustBill.getOutStationCode()));
+            if (conditionQueryAdjustBill.getOutStationCodeList() != null && conditionQueryAdjustBill.getOutStationCodeList().size() > 0) {
+                expressions.add(root.get("outStationCode").as(String.class).in(conditionQueryAdjustBill.getOutStationCodeList()));
             }
             /**
              * 入库站点
              */
-            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getInStationCode())) {
-                expressions.add(cb.equal(root.get("inStationCode").as(String.class), conditionQueryAdjustBill.getInStationCode()));
+            if (conditionQueryAdjustBill.getInStationCodeList() != null && conditionQueryAdjustBill.getInStationCodeList().size() > 0) {
+                expressions.add(root.get("inStationCode").as(String.class).in(conditionQueryAdjustBill.getInStationCodeList()));
             }
 
             /**
@@ -102,7 +102,6 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             if (!StringUtils.isEmpty(conditionQueryAdjustBill.getCreateEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryAdjustBill.getCreateEndTime()));
             }
-
             /**
              * 出库开始时间
              */
@@ -121,7 +120,6 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             if (conditionQueryAdjustBill.getSubmitStateCode() != null && conditionQueryAdjustBill.getSubmitStateCode().size() > 0) {
                 expressions.add(root.get("submitState").as(String.class).in(conditionQueryAdjustBill.getSubmitStateCode()));
             }
-
             /**
              * 拼接审核状态
              */
@@ -131,8 +129,8 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             /**
              * 单据属性
              */
-            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getBillTypeCode())) {
-                expressions.add(cb.equal(root.get("billTypeStr").as(String.class), conditionQueryAdjustBill.getBillTypeCode()));
+            if (conditionQueryAdjustBill.getBillTypeCodeList() != null && conditionQueryAdjustBill.getBillTypeCodeList().size() > 0) {
+                expressions.add(root.get("billTypeStr").as(String.class).in(conditionQueryAdjustBill.getBillTypeCodeList()));
             }
             /**
              * 配送品种开始数量
@@ -146,7 +144,6 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             if (conditionQueryAdjustBill.getVarietyEnd() > 0) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("adjustNumber").as(Integer.class), conditionQueryAdjustBill.getVarietyEnd()));
             }
-
             /**
              * 配送总价开始
              */
