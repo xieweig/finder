@@ -1,52 +1,54 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by XiongJing on 2018/1/8.
- * remark：新增和修改调剂单DTO
- * version: 1.0
+ * Created by XiongJing on 2018/1/9.
+ * remark：
+ * version:
  *
  * @author XiongJing
  */
-public class AddAdjustBillDTO {
+public class QueryOneAdjustDTO {
 
     /**
      * 单据编码
      */
     private String billCode;
     /**
-     * 源单据编码
+     * 录单时间
      */
-    private String rootCode;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
     /**
      * 出库时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
     /**
-     * 录单人编码
+     * 录单人
      */
-    private String operatorCode;
+    private String operatorName;
     /**
-     * 审核人编码
+     * 审核人
      */
-    private String auditPersonCode;
+    private String auditorName;
     /**
-     * 出库站点编码
+     * 出库站点
      */
     private String outStationCode;
     /**
      * 出库库位
      */
-    private Storage outStorage;
+    private String outStorageCode;
     /**
-     * 入库站点编码
+     * 入库站点
      */
     private String inStationCode;
     /**
@@ -54,17 +56,17 @@ public class AddAdjustBillDTO {
      */
     private String billTypeStr;
     /**
-     * 出库状态编码
+     * 出库状态
      */
-    private BillOutStateEnum outStatusCode;
+    private BillOutStateEnum outStateEnum;
     /**
      * 提交状态
      */
-    private String submitState;
+    private BillSubmitStateEnum submitState;
     /**
      * 审核状态
      */
-    private String auditState;
+    private BillAuditStateEnum auditState;
     /**
      * 调剂数量
      */
@@ -86,17 +88,13 @@ public class AddAdjustBillDTO {
      */
     private String auditMemo;
     /**
-     * 按照货物还是原料拣货
+     * 调剂货物计划详情
      */
-    private BasicEnum basicEnum;
+    private List<AdjustBillDetailDTO> details;
     /**
-     * 单据来源类型
+     * 调剂原料计划详情
      */
-    private SourcePlanTypeEnum sourcePlanType;
-    /**
-     * 货物/原料明细信息
-     */
-    private List<AddAdjustBillDetailDTO> details;
+    private List<AdjustBillMaterialDetailDTO> materialDetails;
 
     public String getBillCode() {
         return billCode;
@@ -104,6 +102,14 @@ public class AddAdjustBillDTO {
 
     public void setBillCode(String billCode) {
         this.billCode = billCode;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getOutWareHouseTime() {
@@ -114,20 +120,20 @@ public class AddAdjustBillDTO {
         this.outWareHouseTime = outWareHouseTime;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
-    public String getAuditPersonCode() {
-        return auditPersonCode;
+    public String getAuditorName() {
+        return auditorName;
     }
 
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
     }
 
     public String getOutStationCode() {
@@ -138,12 +144,12 @@ public class AddAdjustBillDTO {
         this.outStationCode = outStationCode;
     }
 
-    public Storage getOutStorage() {
-        return outStorage;
+    public String getOutStorageCode() {
+        return outStorageCode;
     }
 
-    public void setOutStorage(Storage outStorage) {
-        this.outStorage = outStorage;
+    public void setOutStorageCode(String outStorageCode) {
+        this.outStorageCode = outStorageCode;
     }
 
     public String getInStationCode() {
@@ -162,27 +168,27 @@ public class AddAdjustBillDTO {
         this.billTypeStr = billTypeStr;
     }
 
-    public BillOutStateEnum getOutStatusCode() {
-        return outStatusCode;
+    public BillOutStateEnum getOutStateEnum() {
+        return outStateEnum;
     }
 
-    public void setOutStatusCode(BillOutStateEnum outStatusCode) {
-        this.outStatusCode = outStatusCode;
+    public void setOutStateEnum(BillOutStateEnum outStateEnum) {
+        this.outStateEnum = outStateEnum;
     }
 
-    public String getSubmitState() {
+    public BillSubmitStateEnum getSubmitState() {
         return submitState;
     }
 
-    public void setSubmitState(String submitState) {
+    public void setSubmitState(BillSubmitStateEnum submitState) {
         this.submitState = submitState;
     }
 
-    public String getAuditState() {
+    public BillAuditStateEnum getAuditState() {
         return auditState;
     }
 
-    public void setAuditState(String auditState) {
+    public void setAuditState(BillAuditStateEnum auditState) {
         this.auditState = auditState;
     }
 
@@ -226,60 +232,44 @@ public class AddAdjustBillDTO {
         this.auditMemo = auditMemo;
     }
 
-    public List<AddAdjustBillDetailDTO> getDetails() {
+    public List<AdjustBillDetailDTO> getDetails() {
         return details;
     }
 
-    public void setDetails(List<AddAdjustBillDetailDTO> details) {
+    public void setDetails(List<AdjustBillDetailDTO> details) {
         this.details = details;
     }
 
-    public String getRootCode() {
-        return rootCode;
+    public List<AdjustBillMaterialDetailDTO> getMaterialDetails() {
+        return materialDetails;
     }
 
-    public void setRootCode(String rootCode) {
-        this.rootCode = rootCode;
-    }
-
-    public BasicEnum getBasicEnum() {
-        return basicEnum;
-    }
-
-    public void setBasicEnum(BasicEnum basicEnum) {
-        this.basicEnum = basicEnum;
-    }
-    public SourcePlanTypeEnum getSourcePlanType() {
-        return sourcePlanType;
-    }
-
-    public void setSourcePlanType(SourcePlanTypeEnum sourcePlanType) {
-        this.sourcePlanType = sourcePlanType;
+    public void setMaterialDetails(List<AdjustBillMaterialDetailDTO> materialDetails) {
+        this.materialDetails = materialDetails;
     }
 
     @Override
     public String toString() {
-        return "AddAdjustBillDTO{" +
+        return "QueryOneAdjustDTO{" +
                 "billCode='" + billCode + '\'' +
-                ", rootCode='" + rootCode + '\'' +
+                ", createTime=" + createTime +
                 ", outWareHouseTime=" + outWareHouseTime +
-                ", operatorCode='" + operatorCode + '\'' +
-                ", auditPersonCode='" + auditPersonCode + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", auditorName='" + auditorName + '\'' +
                 ", outStationCode='" + outStationCode + '\'' +
-                ", outStorage=" + outStorage +
+                ", outStorageCode='" + outStorageCode + '\'' +
                 ", inStationCode='" + inStationCode + '\'' +
                 ", billTypeStr='" + billTypeStr + '\'' +
-                ", outStatusCode=" + outStatusCode +
-                ", submitState='" + submitState + '\'' +
-                ", auditState='" + auditState + '\'' +
+                ", outStateEnum=" + outStateEnum +
+                ", submitState=" + submitState +
+                ", auditState=" + auditState +
                 ", adjustNumber=" + adjustNumber +
                 ", varietyNumber=" + varietyNumber +
                 ", planMemo='" + planMemo + '\'' +
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
-                ", basicEnum=" + basicEnum +
-                ", sourcePlanType=" + sourcePlanType +
                 ", details=" + details +
+                ", materialDetails=" + materialDetails +
                 '}';
     }
 }

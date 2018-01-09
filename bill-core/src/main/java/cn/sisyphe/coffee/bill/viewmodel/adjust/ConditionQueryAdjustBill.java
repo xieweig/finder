@@ -36,12 +36,12 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
     /**
      * 出库站点
      */
-    private String outStationCode;
+    private List<String> outStationCodeList;
 
     /**
      * 入库站点
      */
-    private String inStationCode;
+    private List<String> inStationCodeList;
 
     /**
      * 录单开始时间
@@ -87,7 +87,7 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
     /**
      * 单据属性
      */
-    private String billTypeCode;
+    private List<String> billTypeCodeList;
 
     /**
      * 配送品种开始数量
@@ -133,20 +133,20 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.billCode = billCode;
     }
 
-    public String getOutStationCode() {
-        return outStationCode;
+    public List<String> getOutStationCodeList() {
+        return outStationCodeList;
     }
 
-    public void setOutStationCode(String outStationCode) {
-        this.outStationCode = outStationCode;
+    public void setOutStationCodeList(List<String> outStationCodeList) {
+        this.outStationCodeList = outStationCodeList;
     }
 
-    public String getInStationCode() {
-        return inStationCode;
+    public List<String> getInStationCodeList() {
+        return inStationCodeList;
     }
 
-    public void setInStationCode(String inStationCode) {
-        this.inStationCode = inStationCode;
+    public void setInStationCodeList(List<String> inStationCodeList) {
+        this.inStationCodeList = inStationCodeList;
     }
 
     public Date getCreateStartTime() {
@@ -205,12 +205,12 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.inOrOutStateCode = inOrOutStateCode;
     }
 
-    public String getBillTypeCode() {
-        return billTypeCode;
+    public List<String> getBillTypeCodeList() {
+        return billTypeCodeList;
     }
 
-    public void setBillTypeCode(String billTypeCode) {
-        this.billTypeCode = billTypeCode;
+    public void setBillTypeCodeList(List<String> billTypeCodeList) {
+        this.billTypeCodeList = billTypeCodeList;
     }
 
     public Integer getVarietyStart() {
@@ -251,8 +251,8 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
                 "operatorName='" + operatorName + '\'' +
                 ", operatorCodeList=" + operatorCodeList +
                 ", billCode='" + billCode + '\'' +
-                ", outStationCode='" + outStationCode + '\'' +
-                ", inStationCode='" + inStationCode + '\'' +
+                ", outStationCodeList=" + outStationCodeList +
+                ", inStationCodeList=" + inStationCodeList +
                 ", createStartTime=" + createStartTime +
                 ", createEndTime=" + createEndTime +
                 ", outStartTime=" + outStartTime +
@@ -260,7 +260,7 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
                 ", submitStateCode=" + submitStateCode +
                 ", auditStateCode=" + auditStateCode +
                 ", inOrOutStateCode=" + inOrOutStateCode +
-                ", billTypeCode='" + billTypeCode + '\'' +
+                ", billTypeCodeList=" + billTypeCodeList +
                 ", varietyStart=" + varietyStart +
                 ", varietyEnd=" + varietyEnd +
                 ", totalPriceStart=" + totalPriceStart +
