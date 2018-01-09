@@ -111,6 +111,7 @@ public class WayBillServiceImpl implements WayBillService {
             //收货状态receivedStatus
             if (conditionQueryWayBill.getReceivedStatus() != null
                     && !StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
+
                 expressions.add(cb.equal(root.get("receivedStatus").as(String.class),
                         conditionQueryWayBill.getReceivedStatus()));
             }

@@ -257,6 +257,8 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
         //出入库站点名称
+
+        // TODO: 2018/1/8  juge
         wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
         wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
         //
@@ -275,9 +277,10 @@ public class WayBillManager {
      */
     private Station findStationByCode(String stationCode) {
         if (!StringUtils.isEmpty(stationCode)) {
+
             return sharedManager.findStationByStationCode(stationCode);
         }
-        return null;
+        return new Station(stationCode);
     }
 
     /**
@@ -305,6 +308,8 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//入库站点code
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());//出库站点code
         //出入库站点名称
+        // TODO: 2018/1/8 判断空指针   
+
         wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
         wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
         //
@@ -337,7 +342,6 @@ public class WayBillManager {
             WayBillDetail wayBillDetail = new WayBillDetail();
 
             // TODO: 2018/1/8
-            // wayBillDetail.setWayBill(wayBill);
             wayBillDetail.setSourceCode(item.getOutStorageBillCode());//出库单号
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量

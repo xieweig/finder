@@ -24,7 +24,6 @@ public class WayBillDetail extends BaseEntity {
 //    @JoinColumn(referencedColumnName = "bill_code")//外键名称
 //    private WayBill wayBill;
 
-
     /**
      * 出库单号(来源单号)
      */
