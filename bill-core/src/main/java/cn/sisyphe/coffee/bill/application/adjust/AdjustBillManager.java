@@ -8,10 +8,12 @@ import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
@@ -22,9 +24,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -81,6 +87,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
         // 审核状态
         adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
+        //单据状态
+        adjustBillDTO.setBillState(adjustBill.getBillState());
         // 来源单号
         adjustBillDTO.setRootCode(adjustBill.getRootCode());
         // 单据编码
@@ -93,6 +101,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBillDTO.setOperatorCode(adjustBill.getOperatorCode());
         // 审核人编码
         adjustBillDTO.setAuditPersonCode(adjustBill.getAuditPersonCode());
+        adjustBillDTO.setBasicEnum(adjustBill.getBasicEnum());
         // 出库站点
         Station outLocation = (Station) adjustBill.getOutLocation();
         if (outLocation != null) {
@@ -107,6 +116,18 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
         // 配送品种数
         adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+
+        List<AdjustBillDetailDTO> detailDTOS = new ArrayList<>();
+        for (AdjustBillDetail adjustBillDetail : adjustBill.getBillDetails()) {
+            AdjustBillDetailDTO adjustBillDetailDTO = new AdjustBillDetailDTO();
+            adjustBillDetailDTO.setActualAmount(adjustBillDetail.getActualAmount());
+            adjustBillDetailDTO.setShippedAmount(adjustBillDetail.getShippedAmount());
+            adjustBillDetailDTO.setRawMaterial((RawMaterial) adjustBillDetail.getGoods());
+            adjustBillDetailDTO.setMemo(adjustBillDetail.getMemo());
+            detailDTOS.add(adjustBillDetailDTO);
+        }
+        adjustBillDTO.setDetails(detailDTOS);
+
         return adjustBillDTO;
 
     }
@@ -159,8 +180,14 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBill.getBillDetails().addAll(mapDetails(addAdjustBillDTO));
         //设置是按原料还是货物拣货
         adjustBill.setBasicEnum(addAdjustBillDTO.getBasicEnum());
+        //设置出库备注
         adjustBill.setOutStorageMemo(addAdjustBillDTO.getOutStorageMemo());
+        //设置所属站点
         adjustBill.setBelongStationCode(addAdjustBillDTO.getOutStationCode());
+        //设置调剂数量
+        adjustBill.setAdjustNumber(sum(addAdjustBillDTO.getDetails(), on(AddAdjustBillDetailDTO.class).getShippedAmount()));
+        //设置调剂种类
+        adjustBill.setVarietyNumber(addAdjustBillDTO.getDetails().size());
 
     }
 
@@ -193,18 +220,18 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      */
     private Set<AdjustBillDetail> mapDetails(AddAdjustBillDTO addAdjustBillDTO) {
         Set<AdjustBillDetail> billDetails = new HashSet<>();
-        for (AdjustBillDetailDTO adjustBillDetailDTO : addAdjustBillDTO.getDetails()) {
+        for (AddAdjustBillDetailDTO addAdjustBillDetailDTO : addAdjustBillDTO.getDetails()) {
             AdjustBillDetail adjustBillDetail = new AdjustBillDetail();
             //原料或货物编码
-            adjustBillDetail.setGoods(adjustBillDetailDTO.getRawMaterial());
+            adjustBillDetail.setGoods(addAdjustBillDetailDTO.getRawMaterial());
             //设置所属原料编码便于分类
-            adjustBillDetail.setBelongMaterialCode(adjustBillDetailDTO.getBelongMaterialCode());
+            adjustBillDetail.setBelongMaterialCode(addAdjustBillDetailDTO.getBelongMaterialCode());
             //应拣数量
-            adjustBillDetail.setShippedAmount(adjustBillDetailDTO.getShippedAmount());
+            adjustBillDetail.setShippedAmount(addAdjustBillDetailDTO.getShippedAmount());
             //实拣数量
-            adjustBillDetail.setActualAmount(adjustBillDetailDTO.getActualAmount());
+            adjustBillDetail.setActualAmount(addAdjustBillDetailDTO.getActualAmount());
             //备注信息
-            adjustBillDetail.setMemo(adjustBillDetailDTO.getMemo());
+            adjustBillDetail.setMemo(addAdjustBillDetailDTO.getMemo());
             billDetails.add(adjustBillDetail);
         }
         return billDetails;
@@ -218,5 +245,16 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     private boolean isFromPlanBill(AddAdjustBillDTO addAdjustBillDTO) {
 
         return !StringUtils.isEmpty(addAdjustBillDTO.getRootCode());
+    }
+
+    /**
+     * 调剂出库单单个查询
+     *
+     * @param billCode 单据编号
+     * @return AdjustBillDTO
+     */
+    public AdjustBillDTO findByBillCode(String billCode) {
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
+        return toMapDTO(adjustBill);
     }
 }

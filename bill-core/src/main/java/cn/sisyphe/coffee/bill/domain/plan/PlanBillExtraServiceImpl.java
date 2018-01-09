@@ -105,9 +105,6 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
 
-            //设置为查询子计划
-            expressions.add(root.get("hqBill").as(Boolean.class).in(false));
-
             // 计划类型
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
@@ -120,11 +117,11 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             // 入库站点集合
             if (conditionQueryPlanBill.getInStationCodeArray() != null && conditionQueryPlanBill.getInStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
+                expressions.add(root.get("dbStation").get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
             }
             //出库站点集合
             if (conditionQueryPlanBill.getOutStationCodeArray() != null && conditionQueryPlanBill.getOutStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("outStationCode").in(conditionQueryPlanBill.getOutStationCodeArray()));
+                expressions.add(root.get("dbStation").get("outStationCode").in(conditionQueryPlanBill.getOutStationCodeArray()));
             }
             /*
              * 录单开始时间
@@ -138,16 +135,13 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
             }
-
-           /* if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
-                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
-            }*/
-            /**
-             * 录单人模糊查询未完成
+            /*
+             * 录单人
              */
-           /*if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
-                expressions.add(root.get("creatorCode").as(String.class).in(conditionQueryPlanBill.getCreatorCodeList()));
-            }*/
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
+            }
+
             expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), false));
             return predicate;
         }, pageable);

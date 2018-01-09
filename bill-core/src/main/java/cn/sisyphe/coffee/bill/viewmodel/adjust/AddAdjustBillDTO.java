@@ -105,7 +105,7 @@ public class AddAdjustBillDTO {
     /**
      * 货物/原料明细信息
      */
-    private List<AdjustBillDetailDTO> details;
+    private List<AddAdjustBillDetailDTO> details;
 
     public String getBillCode() {
         return billCode;
@@ -235,11 +235,11 @@ public class AddAdjustBillDTO {
         this.auditMemo = auditMemo;
     }
 
-    public List<AdjustBillDetailDTO> getDetails() {
+    public List<AddAdjustBillDetailDTO> getDetails() {
         return details;
     }
 
-    public void setDetails(List<AdjustBillDetailDTO> details) {
+    public void setDetails(List<AddAdjustBillDetailDTO> details) {
         this.details = details;
     }
 

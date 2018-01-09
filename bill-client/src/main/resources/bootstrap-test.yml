@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: coffee-bill
+
+info:
+  name: 单据客户端
+
+
+logging:
+  file: target/${spring.application.name}.log
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://192.168.21.141:${eureka.port:8761}/eureka/ #5
+
+sisyphe:
+  exception:
+    frontendMessage:
+      51000: 登录失效，请重新登录
+      41000: 操作数据库出错了

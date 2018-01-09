@@ -44,10 +44,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.by;
-import static ch.lambdaj.Lambda.group;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sum;
+import static ch.lambdaj.Lambda.*;
 
 /**
  * 计划单据manager
@@ -387,8 +384,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());
-//        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-//        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         //通过springCloud设置operatorName
         String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());

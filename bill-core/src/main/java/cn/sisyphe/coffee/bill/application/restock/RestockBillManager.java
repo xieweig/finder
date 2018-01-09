@@ -73,7 +73,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         if (addRestockBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
             System.err.print("按计划计划");
            PlanBill planBill = planBillRepository.findOneByBillCode(addRestockBillDTO.getSourceCode());
-           planBill.setReceiveBillCode(addRestockBillDTO.getBillCode());
+           planBill.setReceiveBillCode(addRestockBillDTO.getSourceCode());
            planBillRepository.save(planBill);
         }
 
@@ -99,7 +99,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param billDTO
      */
     public void updateBillToSave(AddRestockBillDTO billDTO) {
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billDTO.getBillCode());
+        RestockBill restockBill = restockBillQueryService.findByBillCode(billDTO.getSourceCode());
         restockBill.getBillDetails().clear();
         // 转换单据
         RestockBill mapBillAfter = dtoToMapRestockBillForEdit(billDTO, restockBill);
@@ -113,7 +113,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param billDTO
      */
     public void updateBillToSubmit(AddRestockBillDTO billDTO) {
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billDTO.getBillCode());
+        RestockBill restockBill = restockBillQueryService.findByBillCode(billDTO.getSourceCode());
         restockBill.getBillDetails().clear();
         // 转换单据
         RestockBill mapBillAfter = dtoToMapRestockBillForEdit(billDTO, restockBill);
@@ -176,7 +176,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @return
      */
     public QueryRestockBillDTO findByConditions(ConditionQueryRestockBill conditionQueryRestockBill) {
-
+        // SpringCloud调用查询录单人编码
+        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryRestockBill.getOperatorName());
+        conditionQueryRestockBill.setOperatorCodeList(userCodeList);
         Page<RestockBill> restockBillPage = restockBillQueryService.findPageByCondition(conditionQueryRestockBill);
 
         QueryRestockBillDTO QueryRestockBillDTO = new QueryRestockBillDTO();
@@ -389,11 +391,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
             restockBillDTO.setAuditMemo(restockBill.getAuditMemo());
 
-            // TODO: 2018/1/8 测试使用假数据
-            restockBillDTO.setAuditPersonCode("审核人：海绵宝宝");
-            restockBillDTO.setOperatorName("操作人：派大星");
-//            restockBillDTO.setOperatorCode(restockBill.getOperatorCode());
-//            restockBillDTO.setAuditPersonCode(restockBill.getAuditPersonCode());
+            restockBillDTO.setOperatorName(restockBill.getOperatorCode());
+            restockBillDTO.setAuditPersonCode(restockBill.getAuditPersonCode());
             restockBillDTO.setBasicEnum(restockBill.getBasicEnum());
             restockBillDTO.setBillDetails(billDetailsToRestockBillDetailDTO(restockBill.getBillDetails()));
             restockBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());

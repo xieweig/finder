@@ -1,9 +1,12 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -75,15 +78,22 @@ public class AdjustBillDTO {
      */
     private String inStationCode;
 
+    private BasicEnum basicEnum;
+
     /**
      * 配送数量
      */
     private Integer adjustNumber;
 
+    private BillStateEnum billState;
+
     /**
      * 配送品种数
      */
     private Integer varietyNumber;
+
+    private List<AdjustBillDetailDTO> details;
+
     public String getBillTypeStr() {
         return billTypeStr;
     }
@@ -194,6 +204,30 @@ public class AdjustBillDTO {
 
     public void setVarietyNumber(Integer varietyNumber) {
         this.varietyNumber = varietyNumber;
+    }
+
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
+    }
+
+    public List<AdjustBillDetailDTO> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<AdjustBillDetailDTO> details) {
+        this.details = details;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
     }
 
     @Override
