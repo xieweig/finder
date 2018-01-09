@@ -53,10 +53,10 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     /**
      * 单据状态
      */
-    private BillSubmitStateEnum submitState;
+    private List<BillSubmitStateEnum> submitStates;
 
 
-    private BillAuditStateEnum auditState;
+    private List<BillAuditStateEnum> auditStates;
     /**
      * 单据作用
      */
@@ -94,20 +94,20 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.creatorCodeList = creatorCodeList;
     }
 
-    public BillSubmitStateEnum getSubmitState() {
-        return submitState;
+    public List<BillSubmitStateEnum> getSubmitStates() {
+        return submitStates;
     }
 
-    public void setSubmitState(BillSubmitStateEnum submitState) {
-        this.submitState = submitState;
+    public void setSubmitStates(List<BillSubmitStateEnum> submitStates) {
+        this.submitStates = submitStates;
     }
 
-    public BillAuditStateEnum getAuditState() {
-        return auditState;
+    public List<BillAuditStateEnum> getAuditStates() {
+        return auditStates;
     }
 
-    public void setAuditState(BillAuditStateEnum auditState) {
-        this.auditState = auditState;
+    public void setAuditStates(List<BillAuditStateEnum> auditStates) {
+        this.auditStates = auditStates;
     }
 
     public String getBillPurpose() {
