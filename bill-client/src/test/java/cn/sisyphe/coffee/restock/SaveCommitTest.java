@@ -83,7 +83,7 @@ public class SaveCommitTest extends InstanceFactory{
     //测试拣货界面保存
     @Test
     public void saveByAddRestockBillDTO() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 6; i++) {
             AddRestockBillDTO dto = this.nextRandomRestockBillDTO();
 
             this.restockBillManager.saveBill(dto);
@@ -221,8 +221,17 @@ public class SaveCommitTest extends InstanceFactory{
      //   queryRestockBill.setCreateEndTime();
         queryRestockBill.setPage(1);
         queryRestockBill.setPageSize(5);
+        logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
         QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
         logger.info(queryRestockBillDTO.toString());
+    }
+    @Test
+    public void selectByBasicCondition(){
+        ConditionQueryRestockBill queryRestockBill = new ConditionQueryRestockBill();
+        queryRestockBill.setBillCode("74780302");
+        QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
+        logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
+        logger.info(queryRestockBillDTO.getTotalNumber()+queryRestockBillDTO.getContent().toString());
     }
 
 }
