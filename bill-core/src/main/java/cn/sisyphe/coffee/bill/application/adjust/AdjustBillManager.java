@@ -147,7 +147,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBill.setInLocation(new Station(addAdjustBillDTO.getInStationCode()));
         //设置源单号
         if (isFromPlanBill(addAdjustBillDTO)) {
-            adjustBill.setPlanMemo(addAdjustBillDTO.getSourcePlanType().getDescription());
+            adjustBill.setBillTypeStr(addAdjustBillDTO.getSourcePlanType().getDescription());
             adjustBill.setRootCode(addAdjustBillDTO.getRootCode());
             adjustBill.setSourceCode(addAdjustBillDTO.getRootCode());
         }
@@ -159,6 +159,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBill.getBillDetails().addAll(mapDetails(addAdjustBillDTO));
         //设置是按原料还是货物拣货
         adjustBill.setBasicEnum(addAdjustBillDTO.getBasicEnum());
+        adjustBill.setOutStorageMemo(addAdjustBillDTO.getOutStorageMemo());
+        adjustBill.setBelongStationCode(addAdjustBillDTO.getOutStationCode());
 
     }
 
