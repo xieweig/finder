@@ -185,6 +185,8 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         PurchaseBill purchaseBill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
         // 设置单据的作用
         purchaseBill.setBillPurpose(BillPurposeEnum.InStorage);
+        // 设置初始值
+        purchaseBill.setBillState(BillStateEnum.SAVED);
         // 设置单据类型
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 单据编码生成器

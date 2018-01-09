@@ -93,9 +93,14 @@ public class AdjustBillDTO {
     private Integer varietyNumber;
 
     /**
-     * 调剂计划详情
+     * 调剂货物计划详情
       */
     private List<AdjustBillDetailDTO> details;
+
+    /**
+     * 调剂原料计划详情
+     */
+    private List<AdjustBillMaterialDetailDTO> materialDetails;
 
     public String getBillTypeStr() {
         return billTypeStr;
@@ -233,6 +238,14 @@ public class AdjustBillDTO {
         this.basicEnum = basicEnum;
     }
 
+    public List<AdjustBillMaterialDetailDTO> getMaterialDetails() {
+        return materialDetails;
+    }
+
+    public void setMaterialDetails(List<AdjustBillMaterialDetailDTO> materialDetails) {
+        this.materialDetails = materialDetails;
+    }
+
     @Override
     public String toString() {
         return "AdjustBillDTO{" +
@@ -253,6 +266,7 @@ public class AdjustBillDTO {
                 ", billState=" + billState +
                 ", varietyNumber=" + varietyNumber +
                 ", details=" + details +
+                ", materialDetails=" + materialDetails +
                 '}';
     }
 }

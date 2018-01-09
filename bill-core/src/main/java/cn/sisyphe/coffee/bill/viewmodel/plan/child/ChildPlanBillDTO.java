@@ -55,6 +55,8 @@ public class ChildPlanBillDTO {
 
     private BigDecimal progress;
 
+    private List<ChildPlanBillDetailDTO> childPlanBillDetails;
+
     public BigDecimal getProgress() {
         return progress;
     }
@@ -86,8 +88,6 @@ public class ChildPlanBillDTO {
     public void setBillState(BillStateEnum billState) {
         this.billState = billState;
     }
-
-    private List<ChildPlanBillDetailDTO> childPlanBillDetails;
 
     public String getBillCode() {
         return billCode;
