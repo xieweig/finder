@@ -1,14 +1,15 @@
 package cn.sisyphe.coffee.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
@@ -39,6 +40,7 @@ public class InstanceFactory {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private BufferedInputStream bufferedInputStream;
+    //依赖数据库表内容 plan表的bill code
     public static final String[] PLANCODES = {"010293","010160","010476"};
     public static final String[] ROOTCODES = {"010293","010160","010476"};
     //默认一个bill三个detail
@@ -110,13 +112,36 @@ public class InstanceFactory {
         BillFactory factory = new BillFactory();
         RestockBill restockBill = (RestockBill) factory.createBill(BillTypeEnum.RESTOCK);
         restockBill.setBillCode(""+random.nextInt(9000)+10000);
+        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
         restockBill.setProgress(new BigDecimal(random.nextInt(100)+1));
         restockBill.setTotalPrice(new BigDecimal(random.nextInt(600)+100));
         restockBill.setAmount(random.nextInt(100));
         restockBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
         restockBill.setSubmitState(BillSubmitStateEnum.values()[random.nextInt(BillSubmitStateEnum.values().length)]);
-        //restockBill.setRootCode();
+
+        restockBill.setRootCode(""+random.nextInt(1000)+100);
+        restockBill.setRootCode(""+random.nextInt(1000)+100);
+        restockBill.setInLocation(new Station());
+        restockBill.setOutLocation(new Station());
+        Set<RestockBillDetail> billDetails = new HashSet<>();
+        for (int i = 0; i <2 ; i++) {
+           billDetails.add(this.nextRandomBillDetail());
+        }
+
+        restockBill.setBillDetails(billDetails);
         return  restockBill;
+    }
+
+    private RestockBillDetail nextRandomBillDetail(){
+        RawMaterial rawMaterial = new RawMaterial("030201" + random.nextInt(2000));
+        Cargo cargo = new Cargo("00205" + random.nextInt(1000));
+        cargo.setCargoName("cargoName:" + random.nextInt(100));
+        rawMaterial.setCargo(cargo);
+
+        RestockBillDetail billDetail = new RestockBillDetail();
+        billDetail.setGoods(rawMaterial);
+        billDetail.setProgress(new BigDecimal(random.nextInt(100)));
+        return  billDetail;
     }
 
 }
