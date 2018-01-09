@@ -58,6 +58,11 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     private RestockBillQueryService restockBillQueryService;
     @Autowired
     private PlanBillExtraService planBillExtraService;
+
+    public RestockBill findRestockBillBySourceCode(String sourceCode) {
+        RestockBill restockBill = restockBillQueryService.findBySourceCode(sourceCode);
+        return restockBill;
+    }
     
     /**
      * 保存进货单
@@ -70,12 +75,12 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 转换单据
         RestockBill restockBill = dtoToMapRestockBill(addRestockBillDTO);
         //若是计划转则保存PLANBILL的from
-        if (addRestockBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
+      /*  if (addRestockBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
             System.err.print("按计划计划");
            PlanBill planBill = planBillRepository.findOneByBillCode(addRestockBillDTO.getSourceCode());
            planBill.setReceiveBillCode(addRestockBillDTO.getSourceCode());
            planBillRepository.save(planBill);
-        }
+        }*/
 
         // 保存单据
         save(restockBill);
@@ -388,11 +393,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             restockBillDTO.setAuditState(restockBill.getAuditState());
             restockBillDTO.setSubmitState(restockBill.getSubmitState());
             restockBillDTO.setAmount(restockBill.getAmount());
-
             restockBillDTO.setAuditMemo(restockBill.getAuditMemo());
-
-            restockBillDTO.setOperatorName(restockBill.getOperatorCode());
-            restockBillDTO.setAuditPersonCode(restockBill.getAuditPersonCode());
+            restockBillDTO.setOperatorName(sharedManager.findOneByUserCode(restockBill.getOperatorCode()));
+            restockBillDTO.setAuditPersonName(sharedManager.findOneByUserCode(restockBill.getAuditPersonCode()));
             restockBillDTO.setBasicEnum(restockBill.getBasicEnum());
             restockBillDTO.setBillDetails(billDetailsToRestockBillDetailDTO(restockBill.getBillDetails()));
             restockBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
@@ -521,4 +524,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             throw new DataException("500", "总价为空");
         }
     }
+
+
 }

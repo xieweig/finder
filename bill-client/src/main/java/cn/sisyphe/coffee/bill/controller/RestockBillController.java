@@ -73,6 +73,19 @@ public class RestockBillController {
         return responseResult;
     }
 
+    @ApiOperation(value = "子计划直接查看已保存的拣货单")
+    @RequestMapping(path = "/findRestockBillBySourceCode", method = RequestMethod.GET)
+    public ResponseResult findRestockBillBySourceCode(@RequestParam("sourceCode") String sourceCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("restockBill", restockBillManager.findRestockBillBySourceCode(sourceCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+
     @ApiOperation(value = "子计划单个查询")
     @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
@@ -131,7 +144,7 @@ public class RestockBillController {
         //测试使用
         for (RestockBillDTO restockBillDTO:
              list) {
-            restockBillDTO.setAuditPersonCode("审核人：海绵宝宝");
+            restockBillDTO.setAuditPersonName("审核人：海绵宝宝");
             restockBillDTO.setOperatorName("操作人：派大星");
         }
         responseResult.put("content", billPage);

@@ -58,7 +58,7 @@ public class RestockBillDTO {
     /**
      * 审核人编码
      */
-    private String auditPersonCode;
+    private String auditPersonName;
 
     /**
      * 单据属性
@@ -195,12 +195,12 @@ public class RestockBillDTO {
         this.rootCode = rootCode;
     }
 
-    public String getAuditPersonCode() {
-        return auditPersonCode;
+    public String getAuditPersonName() {
+        return auditPersonName;
     }
 
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
+    public void setAuditPersonName(String auditPersonName) {
+        this.auditPersonName = auditPersonName;
     }
 
     public BillStateEnum getBillState() {
