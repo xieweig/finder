@@ -271,7 +271,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         //所有的产品表中的数据
 
         //查询总部计划
-        conditionQueryPlanBill.setHqBill("true");
         Page<PlanBill> planBillPage = planBillExtraService.findPageByCondition(conditionQueryPlanBill);
         return planBillPage.map(this::planBillToResultPlanBillDTO);
 
@@ -283,13 +282,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param conditionQueryPlanBill
      */
     private void checkConditionParam(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
-        if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillState())) {
-            try {
-                BillStateEnum.valueOf(conditionQueryPlanBill.getBillState());
-            } catch (Exception e) {
-                throw new DataException("", "单据状态不存在");
-            }
-        }
         if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
             try {
                 BillPurposeEnum.valueOf(conditionQueryPlanBill.getBillPurpose());

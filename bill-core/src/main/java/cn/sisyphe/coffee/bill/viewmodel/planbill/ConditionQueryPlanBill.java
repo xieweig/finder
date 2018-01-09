@@ -1,8 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -54,7 +53,10 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     /**
      * 单据状态
      */
-    private String billState;
+    private BillSubmitStateEnum submitState;
+
+
+    private BillAuditStateEnum auditState;
     /**
      * 单据作用
      */
@@ -92,12 +94,20 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.creatorCodeList = creatorCodeList;
     }
 
-    public String getBillState() {
-        return billState;
+    public BillSubmitStateEnum getSubmitState() {
+        return submitState;
     }
 
-    public void setBillState(String billState) {
-        this.billState = billState;
+    public void setSubmitState(BillSubmitStateEnum submitState) {
+        this.submitState = submitState;
+    }
+
+    public BillAuditStateEnum getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(BillAuditStateEnum auditState) {
+        this.auditState = auditState;
     }
 
     public String getBillPurpose() {
