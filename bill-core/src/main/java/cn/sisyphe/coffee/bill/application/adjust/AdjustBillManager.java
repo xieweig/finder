@@ -98,9 +98,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 出库时间
         adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
         // 录单人编码
-        adjustBillDTO.setOperatorCode(adjustBill.getOperatorCode());
+        adjustBillDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
         // 审核人编码
-        adjustBillDTO.setAuditPersonCode(adjustBill.getAuditPersonCode());
+        adjustBillDTO.setAuditorName(sharedManager.findOneByUserCode(adjustBill.getAuditPersonCode()));
         adjustBillDTO.setBasicEnum(adjustBill.getBasicEnum());
         // 出库站点
         Station outLocation = (Station) adjustBill.getOutLocation();
