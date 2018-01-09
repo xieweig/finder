@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public class AdjustBillDTO {
     /**
      * 单据属性
      */
-    private String billTypeStr;
+    private SourcePlanTypeEnum billTypeStr;
     /**
      * 出库状态
      */
@@ -83,11 +84,11 @@ public class AdjustBillDTO {
      */
     private Integer varietyNumber;
 
-    public String getBillTypeStr() {
+    public SourcePlanTypeEnum getBillTypeStr() {
         return billTypeStr;
     }
 
-    public void setBillTypeStr(String billTypeStr) {
+    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
         this.billTypeStr = billTypeStr;
     }
 

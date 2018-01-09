@@ -126,7 +126,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             queryOneAdjustDTO.setInStationCode(inLocation.getStationCode());
         }
         // 单据属性
-        queryOneAdjustDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+        queryOneAdjustDTO.setBillTypeStr(adjustBill.getBillTypeStr().name());
         // 出库状态
         queryOneAdjustDTO.setOutStateEnum(adjustBill.getOutStateEnum());
         // 提交状态
@@ -285,7 +285,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBill.setInLocation(new Station(addAdjustBillDTO.getInStationCode()));
         //设置源单号
         if (isFromPlanBill(addAdjustBillDTO)) {
-            adjustBill.setBillTypeStr(addAdjustBillDTO.getSourcePlanType().getDescription());
+            adjustBill.setBillTypeStr(addAdjustBillDTO.getSourcePlanType());
             adjustBill.setRootCode(addAdjustBillDTO.getRootCode());
             adjustBill.setSourceCode(addAdjustBillDTO.getRootCode());
         }
