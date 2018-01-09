@@ -1,14 +1,17 @@
 
 package cn.sisyphe.coffee.restock;
 
+import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
@@ -17,17 +20,25 @@ import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.style.ToStringCreator;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 //import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 
@@ -40,8 +51,8 @@ import java.util.*;
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CoreApplication.class)
-public class SaveCommitTest {
+@SpringBootTest(classes = {CoreApplication.class , ClientApplication.class})
+public class SaveCommitTest extends InstanceFactory{
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
     Logger logger = LoggerFactory.getLogger(SaveCommitTest.class);
@@ -51,143 +62,115 @@ public class SaveCommitTest {
     private RestockBillQueryService restockBillQueryService;
     @Resource
     private RestockBillRepository restockBillRepository;
-    private RandomAccessFile randomAccessFile;
-    public static final String[] PLANCODES = {"010523","010507","010702"};
-
-    /**
-     * notes :
-     * 随机生成 AddRestockBillDTO 的对象
-     */
+    //暂时先凑合用吧 应该从数据库中读取或者从文件读取
+    public static final String[]  BILLCODES={"90530302","43490302","63390302","13910302"};
 
 //    @Before
-//    public void init() {
-//        try {
-//            this.randomAccessFile = new RandomAccessFile("E:/work_files/test/test_restock.txt", "rw");
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+//    public static void setUp(){
+//
 //    }
-    //生成一个bill dto
-    private AddRestockBillDTO createBill() {
-        AddRestockBillDTO dto = new AddRestockBillDTO();
 
-        //dto.setBillCode("0101" + random.nextInt(1000));后台生成 update delete select 用到
-        dto.setOutMemo("Remarks: " + random.nextInt(20) + " ok!");
-        dto.setPlanMemo("Remarks: " + random.nextInt(100) + " ok!");
-        dto.setOperatorCode("2200" + random.nextInt(100));
-        dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
-
-        dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
-        dto.setBillProperty(PropertyEnum.RESTOCK);
-
-        dto.setSourceCode(this.PLANCODES[0]);
-
-        Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
-        Storage inStorage = new Storage("01" + random.nextInt(80));
-        inStorage.setStorageCode("6611"+random.nextInt(100));
-        station.setStationName("重庆" + random.nextInt(100) + "站");
-        station.setStationCode("88"+random.nextInt(122));
-        station.setStationType(StationType.STORE);
-        station.setStorage(inStorage);
-
-        dto.setInStation(station);
-
-        Station outStation = new Station("1515"+random.nextInt(100));
-        Storage outStorage = new Storage("00" + random.nextInt(80));
-        outStorage.setStorageName("xx库");
-        outStorage.setStorageCode("66"+random.nextInt(100));
-        station.setStationType(StationType.STORE);
-        station.setStationCode("8822"+random.nextInt());
-        outStation.setStorage(outStorage);
-
-        dto.setOutStation(outStation);
-
-        Set<RestockBillDetailDTO> list = new HashSet<>();
-        for (int i = 0; i < 3; i++) {
-
-            list.add(this.createDetail());
-        }
-        logger.info("details 的详细数量 ：" + list.size());
-
-
-
-        dto.setBillDetails(list);
-
-        return dto;
-    }
-
-    //生成一个detail dto
-    private RestockBillDetailDTO createDetail() {
-
-        RestockBillDetailDTO billDetailDTO = new RestockBillDetailDTO();
-        billDetailDTO.setActualAmount(random.nextInt(100));
-        billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
-        RawMaterial rawMaterial = new RawMaterial("030201" + random.nextInt(2000));
-        Cargo cargo = new Cargo("00205" + random.nextInt(1000));
-        cargo.setCargoName("非持久化？" + random.nextInt(100));
-        rawMaterial.setCargo(cargo);
-
-
-        billDetailDTO.setRawMaterial(rawMaterial);
-        return billDetailDTO;
-
-    }
-    public static void setUp(){
-
-    }
     //测试拣货界面保存
     @Test
-    public void saveRestockTest() {
-        for (int i = 0; i < 6; i++) {
-            AddRestockBillDTO dto = this.createBill();
+    public void saveByAddRestockBillDTO() {
+        for (int i = 0; i < 3; i++) {
+            AddRestockBillDTO dto = this.nextRandomRestockBillDTO();
 
             this.restockBillManager.saveBill(dto);
-
         }
-
     }
-
     //测试拣货界面提交
     @Test
-    public void submitRestockTest() {
+    public void submitByAddRestockBillDTO() {
         for (int i = 0; i < 4; i++) {
-            AddRestockBillDTO dto = this.createBill();
+            AddRestockBillDTO dto = this.nextRandomRestockBillDTO(random.nextInt(3)+1);
             this.restockBillManager.submitBill(dto);
         }
     }
+    //查询界面 修改后保存
 
-    @Test
-    public void findOneTest() {
-        String billCode = "7750302";
+    private void saveModify(String billCode) throws InterruptedException {
 
+        //由于manager 封装了find 所以在此另外重复一遍
         RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
 
-        logger.info(restockBill.toString());
+        logger.info("===="+ToStringBuilder.reflectionToString(restockBill,ToStringStyle.SHORT_PREFIX_STYLE));
 
-        logger.info("cargo_code before: " + restockBill.getBillDetails().iterator().next().getGoods().code());
-
-        AddRestockBillDTO dto = this.createBill();
+        AddRestockBillDTO dto = this.nextRandomRestockBillDTO(4);
 
         dto.setBillCode(billCode);
 
         this.restockBillManager.updateBillToSave(dto);
 
-        restockBill = restockBillQueryService.findByBillCode(billCode);
-        logger.info(restockBill.toString());
-        logger.info("cargo_code before: " + restockBill.getBillDetails().iterator().next().getGoods().code());
+        RestockBill restockBilled = restockBillQueryService.findByBillCode(billCode);
 
-        // logger.info(one.toString());13023024  00205176 {cargoCode='00205176', rawMaterialCode='03020199'}
+        logger.info("===="+ ToStringBuilder.reflectionToString(restockBill), ToStringStyle.SHORT_PREFIX_STYLE);
+        //等一秒钟数据库查询
+        TimeUnit.SECONDS.sleep(1);
+        Iterator<RestockBillDetail> iter = restockBill.getBillDetails().iterator();
+        while (iter.hasNext()){
+            logger.info(billCode+" Before goods codes:"+ iter.next().getGoods().code());
+        }
+        Iterator<RestockBillDetail> iterd = restockBilled.getBillDetails().iterator();
+        while (iterd.hasNext()){
+            logger.info(billCode+" After goods codes:"+ iterd.next().getGoods().code());
+        }
 
+
+
+    }
+    @Test(timeout = 20000)
+    //批量修改后保存测试
+    public void saveAfterModify(){
+        for (int i = 0; i <BILLCODES.length ; i++) {
+
+            try {
+                this.saveModify(BILLCODES[i]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //测试修改界面修改
-    @Test
-    public void updateTest() {
 
-        AddRestockBillDTO dto = this.createBill();
-        dto.setBillCode("03020201");
-        // dto.setBillCode();
+    private void submitModify(String billCode) throws InterruptedException  {
+
+        RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
+        //模拟更新操作
+        AddRestockBillDTO dto = this.nextRandomRestockBillDTO(3);
+        dto.setBillCode(billCode);
+        this.restockBillManager.updateBillToSubmit(dto);
+
+        RestockBill restockBilled = restockBillQueryService.findByBillCode(billCode);
+
+        //等一秒钟数据库查询
+        TimeUnit.SECONDS.sleep(1);
+        Iterator<RestockBillDetail> iter = restockBill.getBillDetails().iterator();
+        while (iter.hasNext()){
+            logger.info(billCode+" Before goods codes:"+ iter.next().getGoods().code());
+        }
+        Iterator<RestockBillDetail> iterd = restockBilled.getBillDetails().iterator();
+        while (iterd.hasNext()){
+            logger.info(billCode+" After goods codes:"+ iterd.next().getGoods().code());
+        }
+
     }
+    @Transactional
+    @Rollback
+    @Test(timeout = 20000)
+    //批量修改后保存测试
+    public void submitAfterModify(){
+        for (int i = 0; i <BILLCODES.length ; i++) {
+
+            try {
+                this.submitModify(BILLCODES[i]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
    //测试多条件查询
     @Test
