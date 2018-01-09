@@ -73,9 +73,23 @@ public class RestockBill extends Bill<RestockBillDetail> {
     private Date inWareHouseTime;
 
     /**
+     * 出库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outWareHouseTime;
+
+    /**
      * 完成度
      */
     private BigDecimal progress;
+
+    public Date getOutWareHouseTime() {
+        return outWareHouseTime;
+    }
+
+    public void setOutWareHouseTime(Date outWareHouseTime) {
+        this.outWareHouseTime = outWareHouseTime;
+    }
 
     public BigDecimal getProgress() {
         return progress;
