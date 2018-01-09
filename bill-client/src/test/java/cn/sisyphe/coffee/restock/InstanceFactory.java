@@ -51,8 +51,12 @@ public class InstanceFactory {
         dto.setBillProperty(PropertyEnum.RESTOCK);
         //here attention!!
         dto.setSourceCode(this.PLANCODES[1]);
-        dto.setOutMemo("Remarks: " + random.nextInt(20) + " ok!");
-        dto.setPlanMemo("Remarks: " + random.nextInt(100) + " ok!");
+       // dto.setRootCode();
+
+        dto.setProgress(new BigDecimal(random.nextInt(100)+1));
+        ;
+        dto.setOutMemo("OutRemarks: " + random.nextInt(20) + " ok!");
+        dto.setPlanMemo("PlanRemarks: " + random.nextInt(100) + " ok!");
         dto.setOperatorCode("2200" + random.nextInt(100));
         dto.setTotalPrice(new BigDecimal(random.nextInt(1000)+500));
         dto.setInStation(this.nextRandomStation());
@@ -89,12 +93,12 @@ public class InstanceFactory {
     }
     private Station  nextRandomStation(){
         Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
-        Storage Storage = new Storage("01" + random.nextInt(80));
-        Storage.setStorageCode("6611"+random.nextInt(100));
+        Storage storage = new Storage("01" + random.nextInt(80));
+        storage.setStorageCode("6611"+random.nextInt(100));
         station.setStationName("重庆" + random.nextInt(100) + "站");
         station.setStationCode("88"+random.nextInt(122));
         station.setStationType(StationType.STORE);
-        station.setStorage(Storage);
+        station.setStorage(storage);
         return station;
     }
 
