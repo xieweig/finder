@@ -259,6 +259,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @throws DataException
      */
     public Page<ResultPlanBillDTO> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
+        //参数检查
+        checkConditionParam(conditionQueryPlanBill);
 
         //1 根据具体的运单号查询,只有唯一的显示，显示一条
         //2 根据配送出库查询可能会有多条
@@ -270,6 +272,35 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         Page<PlanBill> planBillPage = planBillExtraService.findPageByCondition(conditionQueryPlanBill);
         return planBillPage.map(this::planBillToResultPlanBillDTO);
 
+    }
+
+    /**
+     * 条件查询前的参数检查
+     *
+     * @param conditionQueryPlanBill
+     */
+    private void checkConditionParam(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillState())) {
+            try {
+                BillStateEnum.valueOf(conditionQueryPlanBill.getBillState());
+            } catch (Exception e) {
+                throw new DataException("", "单据状态不存在");
+            }
+        }
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
+            try {
+                BillPurposeEnum.valueOf(conditionQueryPlanBill.getBillPurpose());
+            } catch (Exception e) {
+                throw new DataException("", "单据作用不存在");
+            }
+        }
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())) {
+            try {
+                BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType());
+            } catch (Exception e) {
+                throw new DataException("", "单据种类不存在");
+            }
+        }
     }
 
 

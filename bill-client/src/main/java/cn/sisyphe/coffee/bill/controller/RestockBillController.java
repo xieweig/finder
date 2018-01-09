@@ -59,7 +59,7 @@ public class RestockBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
         //设定查询退库分片
-        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK);
+        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK.name());
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
