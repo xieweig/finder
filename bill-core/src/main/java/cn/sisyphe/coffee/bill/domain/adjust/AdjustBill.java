@@ -7,6 +7,7 @@ import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -175,6 +176,14 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    /**
+     * 是否是自主调剂
+     */
+
+    public boolean isSelfAdjust() {
+        return StringUtils.isEmpty(getRootCode());
     }
 
     @Override

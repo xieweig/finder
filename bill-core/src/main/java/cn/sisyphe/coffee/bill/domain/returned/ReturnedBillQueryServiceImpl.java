@@ -147,8 +147,8 @@ public class ReturnedBillQueryServiceImpl implements  ReturnedBillQueryService{
             /**
              * 拼接出入库状态
              */
-            if (conditionQueryReturnedBill.getInOrOutStateCode() != null && conditionQueryReturnedBill.getInOrOutStateCode().size() > 0) {
-                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryReturnedBill.getInOrOutStateCode()));
+            if (conditionQueryReturnedBill.getOutStateCode() != null && conditionQueryReturnedBill.getOutStateCode().size() > 0) {
+                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryReturnedBill.getOutStateCode()));
             }
             /**
              * 配送总价
