@@ -5,14 +5,18 @@ import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @date: 2018/1/3
@@ -54,7 +61,11 @@ public class RestockBillController {
         //设定查询退库分片
         conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         try {
-            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
+            for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
+                childPlanBillDTO.setOperatorName("操作人：懒羊羊");
+            }
+            responseResult.put("content", planBillDTOS);
 
         } catch (DataException e) {
             responseResult.putException(e);
@@ -82,7 +93,9 @@ public class RestockBillController {
      */
     @ApiOperation(value = "保存退库出库单  ")
     @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
-    public ResponseResult saveRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
+    public ResponseResult saveRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
@@ -114,6 +127,13 @@ public class RestockBillController {
         ResponseResult responseResult = new ResponseResult();
 
         QueryRestockBillDTO billPage = restockBillManager.findByConditions(conditionQueryRestockBill);
+        List<RestockBillDTO> list = billPage.getContent();
+        //测试使用
+        for (RestockBillDTO restockBillDTO:
+             list) {
+            restockBillDTO.setAuditPersonCode("审核人：海绵宝宝");
+            restockBillDTO.setOperatorName("操作人：派大星");
+        }
         responseResult.put("content", billPage);
         return responseResult;
     }

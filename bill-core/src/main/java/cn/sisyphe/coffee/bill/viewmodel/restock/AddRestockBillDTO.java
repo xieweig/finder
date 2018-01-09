@@ -14,6 +14,8 @@ import java.util.Set;
  */
 public class AddRestockBillDTO {
 
+    private String BillCode;
+
     /**
      * 单据属性
      */
@@ -57,7 +59,7 @@ public class AddRestockBillDTO {
     /**
      * 单据编码
      */
-    private String billCode;
+//    private String billCode;
 
     /**
      * 总价
@@ -78,6 +80,14 @@ public class AddRestockBillDTO {
 
     public void setRootCode(String rootCode) {
         this.rootCode = rootCode;
+    }
+
+    public String getBillCode() {
+        return BillCode;
+    }
+
+    public void setBillCode(String billCode) {
+        BillCode = billCode;
     }
 
     public BigDecimal getProgress() {
@@ -158,14 +168,6 @@ public class AddRestockBillDTO {
 
     public void setOutStation(Station outStation) {
         this.outStation = outStation;
-    }
-
-    public String getBillCode() {
-        return billCode;
-    }
-
-    public void setBillCode(String billCode) {
-        this.billCode = billCode;
     }
 
     public BigDecimal getTotalPrice() {

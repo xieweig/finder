@@ -138,16 +138,13 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
             }
-
-           /* if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
-                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
-            }*/
-            /**
-             * 录单人模糊查询未完成
+            /*
+             * 录单人
              */
-           /*if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
-                expressions.add(root.get("creatorCode").as(String.class).in(conditionQueryPlanBill.getCreatorCodeList()));
-            }*/
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
+                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
+            }
+
             expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), false));
             return predicate;
         }, pageable);
