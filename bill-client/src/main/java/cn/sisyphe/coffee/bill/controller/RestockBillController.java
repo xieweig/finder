@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
@@ -233,7 +234,24 @@ public class RestockBillController {
         restockBillManager.auditBill(RestockBillCode,  loginInfo.getOperatorCode(), true);
         return responseResult;
     }
+    /**
+     * 通过单据号billCode汇总查询出打包的信息
+     *
+     * @param billCode
+     * @return responseResult
+     */
+    @ApiOperation(value = "通过单据号billCode汇总查询出打包的信息")
+    @RequestMapping(path = "/findPackagInfoByBillCode", method = RequestMethod.GET)
+    public ResponseResult findPackagInfoByBillCode(@RequestParam String billCode) {
 
-
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            ScanFillBillDTO scanFillBillDTO = restockBillManager.findPackagInfoByBillCode(billCode);
+            responseResult.put("content", scanFillBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
 
 }

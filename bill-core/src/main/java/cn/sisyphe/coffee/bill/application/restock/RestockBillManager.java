@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.restock;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -18,6 +19,7 @@ import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
@@ -36,9 +38,9 @@ import java.util.*;
 
 
 /**
- *@date: 2018/1/2
- *@description: 
- *@author：xieweiguang
+ * @date: 2018/1/2
+ * @description:
+ * @author：xieweiguang
  */
 @Service
 public class RestockBillManager extends AbstractBillManager<RestockBill> {
@@ -64,7 +66,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         RestockBill restockBill = restockBillQueryService.findBySourceCode(sourceCode);
         return restockBill;
     }
-    
+
     /**
      * 保存进货单
      *
@@ -133,6 +135,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         submit(mapBillAfter);
     }
+
     /**
      * 打开退库单
      *
@@ -188,6 +191,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 处理完成
         done(bill);
     }
+
     /**
      * 根据多条件查询退库单据信息
      *
@@ -230,7 +234,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
         Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000)+"0302");
+        restockBill.setBillCode(random.nextInt(10000) + "0302");
         // 来源单号
         if (!StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(addRestockBillDTO.getSourceCode());
@@ -351,6 +355,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         }
         return detailDTOList;
     }
+
     /**
      * 修改需要转换DTO
      *
@@ -369,7 +374,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
         Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000)+"0302");
+        restockBill.setBillCode(random.nextInt(10000) + "0302");
         // 来源单号
         if (!StringUtils.isEmpty(editRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(editRestockBillDTO.getSourceCode());
@@ -455,7 +460,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         return restockBillDTOList;
     }
 
-    private Set<RestockBillDetailDTO> billDetailsToRestockBillDetailDTO(Set<RestockBillDetail> restockBillDetails){
+    private Set<RestockBillDetailDTO> billDetailsToRestockBillDetailDTO(Set<RestockBillDetail> restockBillDetails) {
         Set<RestockBillDetailDTO> restockBillDetailDTOSet = new HashSet<>();
         for (RestockBillDetail restockBillDetail : restockBillDetails) {
             RestockBillDetailDTO restockBillDetailDTO = new RestockBillDetailDTO();
@@ -464,7 +469,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             } else {
                 //若没有原料
                 RawMaterial rawMaterial = new RawMaterial();
-                rawMaterial.setCargo((Cargo)restockBillDetail.getGoods());
+                rawMaterial.setCargo((Cargo) restockBillDetail.getGoods());
                 restockBillDetailDTO.setRawMaterial(rawMaterial);
             }
             restockBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
@@ -566,6 +571,40 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         if (addRestockBillDTO.getTotalPrice() == null) {
             throw new DataException("500", "总价为空");
         }
+    }
+
+    /**
+     * 通过单据号billCode汇总查询出打包的信息
+     *
+     * @param billCode
+     * @return
+     */
+    public ScanFillBillDTO findPackagInfoByBillCode(String billCode) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
+        ScanFillBillDTO scanFillBillDTO = restockToMapScanFillBillDTO(restockBill);
+        return scanFillBillDTO;
+    }
+
+    private ScanFillBillDTO restockToMapScanFillBillDTO(RestockBill restockBill) {
+        ScanFillBillDTO scanFillBillDTO = new ScanFillBillDTO();
+        List<String> packNumberList = new ArrayList<>();
+        scanFillBillDTO.setTotalCount(restockBill.getVariety());
+        scanFillBillDTO.setTotalAmount(restockBill.getAmount());
+        scanFillBillDTO.setOperatorCode(restockBill.getOperatorCode());
+        scanFillBillDTO.setOutStockTime(restockBill.getOutWareHouseTime());
+        Set<RestockBillDetail> restockBillDetailSet = restockBill.getBillDetails();
+        Set<String> packageCodeSet = new HashSet<>();
+        for(RestockBillDetail restockBillDetail : restockBillDetailSet){
+            packageCodeSet.add(restockBillDetail.getPackageCode());
+        }
+        for(String packageCode : packageCodeSet){
+            packNumberList.add(packageCode);
+        }
+        scanFillBillDTO.setPackNumbers(packNumberList);
+        return scanFillBillDTO;
     }
 
 
