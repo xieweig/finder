@@ -4,43 +4,37 @@ package cn.sisyphe.coffee.restock;
 import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
-import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.style.ToStringCreator;
+
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
-import java.io.RandomAccessFile;
-import java.math.BigDecimal;
+
+
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-//import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 
 
 
@@ -58,31 +52,50 @@ public class SaveCommitTest extends InstanceFactory{
     Logger logger = LoggerFactory.getLogger(SaveCommitTest.class);
     @Resource
     private RestockBillManager restockBillManager;
+
+    //辅助提供findByCode
     @Resource
     private RestockBillQueryService restockBillQueryService;
+
     @Resource
     private RestockBillRepository restockBillRepository;
-    //暂时先凑合用吧 应该从数据库中读取或者从文件读取
-    public static final String[]  BILLCODES={"90530302","43490302","63390302","13910302"};
 
-//    @Before
-//    public static void setUp(){
-//
-//    }
+    public static final  String PATH ="F:/own/test.txt";
+    //暂时先凑合用吧 应该从数据库中读取或者从文件读取
+    public static final String[]  BILLCODES_SAVED={"90530302","43490302","63390302","13910302"};
+    public static final String[]  BILLCODES_SUBMITTED={"28500302","86710302","79960302","58300302"};
+    private BufferedWriter writer ;
+    @Before
+    public  void setUp(){
+        File file = new File(PATH);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+
+        try {
+            writer= new BufferedWriter(new FileWriter(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     //测试拣货界面保存
     @Test
     public void saveByAddRestockBillDTO() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             AddRestockBillDTO dto = this.nextRandomRestockBillDTO();
 
             this.restockBillManager.saveBill(dto);
+
         }
     }
     //测试拣货界面提交
+//    @Transactional
+//    @Rollback
     @Test
     public void submitByAddRestockBillDTO() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             AddRestockBillDTO dto = this.nextRandomRestockBillDTO(random.nextInt(3)+1);
             this.restockBillManager.submitBill(dto);
         }
@@ -119,13 +132,14 @@ public class SaveCommitTest extends InstanceFactory{
 
 
     }
+
     @Test(timeout = 20000)
     //批量修改后保存测试
     public void saveAfterModify(){
-        for (int i = 0; i <BILLCODES.length ; i++) {
+        for (int i = 0; i <BILLCODES_SAVED.length ; i++) {
 
             try {
-                this.saveModify(BILLCODES[i]);
+                this.saveModify(BILLCODES_SAVED[i]);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -155,20 +169,32 @@ public class SaveCommitTest extends InstanceFactory{
             logger.info(billCode+" After goods codes:"+ iterd.next().getGoods().code());
         }
 
+
     }
     @Transactional
     @Rollback
     @Test(timeout = 20000)
     //批量修改后保存测试
     public void submitAfterModify(){
-        for (int i = 0; i <BILLCODES.length ; i++) {
+        for (int i = 0; i <BILLCODES_SUBMITTED.length ; i++) {
 
             try {
-                this.submitModify(BILLCODES[i]);
+                this.submitModify(BILLCODES_SUBMITTED[i]);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+    @Test
+    public void auditTest(){
+        for (int i = 0; i <BILLCODES_SUBMITTED.length ; i++) {
+
+            Boolean isSuccess = random.nextBoolean();
+            String auditCode= "8866"+random.nextInt(1000)+1000;
+
+            this.restockBillManager.auditBill(BILLCODES_SUBMITTED[i], auditCode, isSuccess);
+        }
+
     }
 
 
@@ -180,14 +206,15 @@ public class SaveCommitTest extends InstanceFactory{
         Date basicDate = new Date();
         calendar.setTime(basicDate);
 
-        calendar.add(Calendar.DATE, 2);
+        calendar.add(Calendar.HOUR, -20);
         queryRestockBill.setInStartTime(calendar.getTime());
-        calendar.add(Calendar.DATE, random.nextInt(20)+5);
+        calendar.add(Calendar.HOUR, random.nextInt(10)+30);
         queryRestockBill.setInEndTime(calendar.getTime());
-        calendar.add(Calendar.DATE,random.nextInt(20)+10 );
+        calendar.add(Calendar.HOUR,-35 );
         queryRestockBill.setCreateStartTime(calendar.getTime());
-        calendar.add(Calendar.DATE,random.nextInt(20)+5);
+        calendar.add(Calendar.HOUR,random.nextInt(20)+15);
         queryRestockBill.setCreateEndTime(calendar.getTime());
+
      //   queryRestockBill.setCreateStartTime();
      //   queryRestockBill.setCreateEndTime();
         queryRestockBill.setPage(1);
