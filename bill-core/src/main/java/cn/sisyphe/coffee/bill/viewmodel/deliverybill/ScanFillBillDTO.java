@@ -13,13 +13,20 @@ import java.util.List;
  **/
 public class ScanFillBillDTO implements Serializable {
 
+    /**
+     * 单据类型
+     */
+    private String billType;
 
     private String billCode;
     //总数量
     private Integer totalAmount;
     //总品种
     private Integer totalCount;
+    // 录单人
     private String operatorCode;
+
+    private String operatorName;
     //包号
     private List<String> packNumbers;
     /**
@@ -77,13 +84,33 @@ public class ScanFillBillDTO implements Serializable {
         this.outStockTime = outStockTime;
     }
 
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public String getBillType() {
+
+        return billType;
+    }
+
+    public void setBillType(String billType) {
+        this.billType = billType;
+    }
+
     @Override
     public String toString() {
         return "ScanFillBillDTO{" +
-                "billCode='" + billCode + '\'' +
+                "billType='" + billType + '\'' +
+                ", billCode='" + billCode + '\'' +
                 ", totalAmount=" + totalAmount +
                 ", totalCount=" + totalCount +
+                ", operatorCode='" + operatorCode + '\'' +
                 ", packNumbers=" + packNumbers +
+                ", outStockTime=" + outStockTime +
                 '}';
     }
 }
