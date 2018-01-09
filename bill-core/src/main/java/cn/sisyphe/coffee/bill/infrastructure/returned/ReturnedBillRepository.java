@@ -19,6 +19,12 @@ public interface ReturnedBillRepository extends BillRepository<ReturnedBill> {
      * @return
      */
     Page<ReturnedBill> findAll(Specification<ReturnedBill> ta, Pageable pageable);
-
+    /**
+     * 根据单据单号查询
+     */
     ReturnedBill findOneByBillCode(String billCode);
+    /**
+     * 根据单据来源单号查询
+     */
+    ReturnedBill findOneBySourceCode(String sourceCode);
 }

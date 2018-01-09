@@ -2,9 +2,8 @@ package cn.sisyphe.coffee.bill.viewmodel.returned;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -26,9 +25,14 @@ public class AddReturnedBillDTO {
     private BasicEnum basicEnum;
 
     /**
-     * 来源单号
+     * 源单号
      */
-    private String SourceCode;
+    private String sourceCode;
+
+    /**
+     * 发起单号
+     */
+    private String rootCode;
 
     /**
      * 计划备注
@@ -43,14 +47,6 @@ public class AddReturnedBillDTO {
      * 操作人代码
      */
     private String operatorCode;
-//    /**
-//     * 入库库位
-//     */
-//    private Storage inStorage;
-//    /**
-//     * 出库库位
-//     */
-//    private Storage outStorage;
     /**
      * 入库站点
      */
@@ -74,32 +70,40 @@ public class AddReturnedBillDTO {
      */
     private Set<ReturnedBillDetailDTO> billDetails;
 
-    public AddReturnedBillDTO() {
+    //完成度
+    private BigDecimal progress;
+
+    public String getRootCode() {
+        return rootCode;
     }
 
-    public PropertyEnum getBillProperty() {
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
+    public cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(PropertyEnum billProperty) {
+    public void setBillProperty(cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum billProperty) {
         this.billProperty = billProperty;
     }
 
-    public BasicEnum getBasicEnum() {
+    public cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum getBasicEnum() {
         return basicEnum;
     }
 
-    public void setBasicEnum(BasicEnum basicEnum) {
+    public void setBasicEnum(cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
-
-//    public Storage getInStorage() {
-//        return inStorage;
-//    }
-//
-//    public void setInStorage(Storage inStorage) {
-//        this.inStorage = inStorage;
-//    }
 
     public Set<ReturnedBillDetailDTO> getBillDetails() {
         return billDetails;
@@ -132,14 +136,6 @@ public class AddReturnedBillDTO {
     public void setOperatorCode(String operatorCode) {
         this.operatorCode = operatorCode;
     }
-
-//    public Storage getOutStorage() {
-//        return outStorage;
-//    }
-//
-//    public void setOutStorage(Storage outStorage) {
-//        this.outStorage = outStorage;
-//    }
 
     public Station getInStation() {
         return inStation;
@@ -174,10 +170,10 @@ public class AddReturnedBillDTO {
     }
 
     public String getSourceCode() {
-        return SourceCode;
+        return sourceCode;
     }
 
     public void setSourceCode(String sourceCode) {
-        SourceCode = sourceCode;
+        this.sourceCode = sourceCode;
     }
 }

@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.returned;
 
 
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import org.springframework.data.domain.Page;
 
@@ -21,4 +20,7 @@ public interface ReturnedBillQueryService {
      * @return
      */
     Page<ReturnedBill> findPageByCondition(ConditionQueryReturnedBill conditionQueryReturnedBill);
+
+    ReturnedBill findBySourceCode(String sourceCode);
+    
 }

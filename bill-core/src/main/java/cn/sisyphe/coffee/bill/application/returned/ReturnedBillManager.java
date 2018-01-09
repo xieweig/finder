@@ -7,16 +7,11 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillQueryService;
-import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
+import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.returned.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -39,10 +33,17 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
     @Autowired
     private ReturnedBillQueryService returnedBillQueryService;
 
-
     @Autowired
+    private PlanBillRepository planBillRepository;
+
+
     public ReturnedBillManager(BillRepository<ReturnedBill> returnedBill, ApplicationEventPublisher applicationEventPublisher) {
         super(returnedBill, applicationEventPublisher);
+    }
+
+    public ReturnedBill findReturnedBillBySourceCode(String sourceCode) {
+        ReturnedBill returnedBill = returnedBillQueryService.findBySourceCode(sourceCode);
+        return returnedBill;
     }
 
     /**
@@ -51,9 +52,16 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      * @param addReturnedBillDTO
      */
     public void saveBill(AddReturnedBillDTO addReturnedBillDTO) {
+        verification(addReturnedBillDTO);
         // 转换单据
         ReturnedBill returnedBill = dtoToMapReturnedBill(addReturnedBillDTO);
-
+        //若是计划转则保存PLANBILL的from
+//        if (addReturnedBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
+//            System.err.print("按计划");
+//            PlanBill planBill = planBillRepository.findOneByBillCode(addReturnedBillDTO.getSourceCode());
+//            planBill.setReceiveBillCode(addReturnedBillDTO.getBillCode());
+//            planBillRepository.save(planBill);
+//        }
         // 保存单据
         save(returnedBill);
     }
@@ -71,7 +79,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 设置单据的作用
         returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
         // 设置单据类型
-        // returnedBill.setBillType(BillTypeEnum.RETURNED);
+        //  ReturnedBill.setBillType(BillTypeEnum.Returned);
         //设置单据属性
         returnedBill.setBillProperty(addReturnedBillDTO.getBillProperty());
         // 单据编码生成器
@@ -82,6 +90,10 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 来源单号
         if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
             returnedBill.setSourceCode(addReturnedBillDTO.getSourceCode());
+        }
+        // 发起单号
+        if (StringUtils.isEmpty(addReturnedBillDTO.getRootCode())) {
+            returnedBill.setRootCode(addReturnedBillDTO.getRootCode());
         }
         // 计划备注
         if (!StringUtils.isEmpty(addReturnedBillDTO.getPlanMemo())) {
@@ -94,25 +106,12 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 操作人代码
         returnedBill.setOperatorCode(addReturnedBillDTO.getOperatorCode());
         // 归属站点
-        /// TODO: 2018/1/6 前端没有数据
-
+        returnedBill.setBelongStationCode(addReturnedBillDTO.getOutStation().code());
+        //入库站点
         returnedBill.setInLocation(addReturnedBillDTO.getInStation());
+        //出库站点
         returnedBill.setOutLocation(addReturnedBillDTO.getOutStation());
-       /* returnedBill.setBelongStationCode(addReturnedBillDTO.getInStation().getStationCode());
-        // 获取站点
-        Station station = addReturnedBillDTO.getInStation();
-        // 获取库房
-        Storage storage = addReturnedBillDTO.getInStorage();
-        // 组合站点和库房
-        station.setStorage(storage);
-        // 设置入库位置
-        returnedBill.setInLocation(station);
-        // 设置出库位置
-        storage = addReturnedBillDTO.getOutStorage();
-        station = addReturnedBillDTO.getOutStation();
-        station.setStorage(storage);
-        returnedBill.setOutLocation(station);
-*/
+
         Set<ReturnedBillDetailDTO> detailDTOSet = addReturnedBillDTO.getBillDetails();
         //退货数量
         int amount = 0;
@@ -121,6 +120,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             amount += detailDTO.getActualAmount();
         }
         returnedBill.setAmount(amount);
+
         //退货品种数
         int variety = detailDTOSet.size();
         returnedBill.setVariety(variety);
@@ -179,18 +179,17 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      *
      * @param returnedBillCode
      */
-    public QueryOneReturnedBillDTO openBill(String returnedBillCode) {
+    public ReturnedBill openBill(String returnedBillCode) {
         ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(returnedBillCode);
-        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退货单据信息
-        if (returnedBill.getBillState().equals(BillStateEnum.OPEN)
-                || returnedBill.getBillState().equals(BillStateEnum.AUDIT_FAILURE)) {
-            return mapOneToDTO(returnedBill);
+        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退库单据信息
+        // 如果单据是提交状态，则进行打开动作
+        if (returnedBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
+            // 打开单据
+            returnedBill = open(returnedBill);
+            return returnedBill;
+        } else {
+            return returnedBill;
         }
-
-        // 打开单据
-        returnedBill = open(returnedBill);
-
-        return mapOneToDTO(returnedBill);
     }
 
     private QueryOneReturnedBillDTO mapOneToDTO(ReturnedBill returnedBill) {
@@ -243,6 +242,12 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      * @param returnedBillCode
      */
     public void auditBill(String returnedBillCode, String auditPersonCode, boolean isSuccess) {
+        if (StringUtils.isEmpty(returnedBillCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        if (StringUtils.isEmpty(auditPersonCode)) {
+            throw new DataException("404", "审核人编码为空");
+        }
         ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(returnedBillCode);
         // 设置审核人编码
         returnedBill.setAuditPersonCode(auditPersonCode);
@@ -370,7 +375,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      */
     private void verification(AddReturnedBillDTO addReturnedBillDTO) {
         //来源单号
-        if (addReturnedBillDTO.getBillProperty() != PropertyEnum.NOPLAN) {
+        if (addReturnedBillDTO.getBillProperty() != cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum.NOPLAN) {
             if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
                 throw new DataException("500", "来源单号为空");
             }
@@ -463,7 +468,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         return returnedBillDTOList;
     }
 
-    private Set<ReturnedBillDetailDTO> billDetailsToReturnedBillDetailDTO(Set<ReturnedBillDetail> returnedBillDetails){
+    private Set<ReturnedBillDetailDTO> billDetailsToReturnedBillDetailDTO(Set<ReturnedBillDetail> returnedBillDetails) {
         Set<ReturnedBillDetailDTO> returnedBillDetailDTOSet = new HashSet<>();
         for (ReturnedBillDetail returnedBillDetail : returnedBillDetails) {
             ReturnedBillDetailDTO returnedBillDetailDTO = new ReturnedBillDetailDTO();

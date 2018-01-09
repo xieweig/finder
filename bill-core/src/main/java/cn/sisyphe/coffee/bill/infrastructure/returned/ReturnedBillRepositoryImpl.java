@@ -40,4 +40,8 @@ public class ReturnedBillRepositoryImpl extends AbstractBillRepository<ReturnedB
 
         return jpaReturnedBillRepository.findOneByBillCode(billCode);
     }
+    @Override
+    public ReturnedBill findOneBySourceCode(String sourceCode) {
+        return jpaReturnedBillRepository.findOneBySourceCode(sourceCode);
+    }
 }
