@@ -105,9 +105,6 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             Predicate predicate = cb.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
 
-            //设置为查询子计划
-            expressions.add(root.get("hqBill").as(Boolean.class).in(false));
-
             // 计划类型
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
@@ -120,11 +117,11 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             // 入库站点集合
             if (conditionQueryPlanBill.getInStationCodeArray() != null && conditionQueryPlanBill.getInStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
+                expressions.add(root.get("dbStation").get("inStationCode").in(conditionQueryPlanBill.getInStationCodeArray()));
             }
             //出库站点集合
             if (conditionQueryPlanBill.getOutStationCodeArray() != null && conditionQueryPlanBill.getOutStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("outStationCode").in(conditionQueryPlanBill.getOutStationCodeArray()));
+                expressions.add(root.get("dbStation").get("outStationCode").in(conditionQueryPlanBill.getOutStationCodeArray()));
             }
             /*
              * 录单开始时间
