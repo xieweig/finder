@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan.child;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -23,6 +25,8 @@ public class ChildPlanBillDTO {
      */
     private String billCode;
     private BillStateEnum billState;
+    private BillAuditStateEnum auditState;
+    private BillSubmitStateEnum submitState;
 
     /**
      * 备注
@@ -175,5 +179,21 @@ public class ChildPlanBillDTO {
 
     public void setBillType(BillTypeEnum billType) {
         this.billType = billType;
+    }
+
+    public BillAuditStateEnum getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(BillAuditStateEnum auditState) {
+        this.auditState = auditState;
+    }
+
+    public BillSubmitStateEnum getSubmitState() {
+        return submitState;
+    }
+
+    public void setSubmitState(BillSubmitStateEnum submitState) {
+        this.submitState = submitState;
     }
 }

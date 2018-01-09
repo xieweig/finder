@@ -44,7 +44,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -268,7 +271,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         //所有的产品表中的数据
 
         //查询总部计划
-        conditionQueryPlanBill.setHqBill("true");
         Page<PlanBill> planBillPage = planBillExtraService.findPageByCondition(conditionQueryPlanBill);
         return planBillPage.map(this::planBillToResultPlanBillDTO);
 
@@ -280,13 +282,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @param conditionQueryPlanBill
      */
     private void checkConditionParam(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
-        if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillState())) {
-            try {
-                BillStateEnum.valueOf(conditionQueryPlanBill.getBillState());
-            } catch (Exception e) {
-                throw new DataException("", "单据状态不存在");
-            }
-        }
         if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
             try {
                 BillPurposeEnum.valueOf(conditionQueryPlanBill.getBillPurpose());
@@ -333,6 +328,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setCreateTime(planBill.getCreateTime());
         resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
         resultPlanBillDTO.setAuditState(planBill.getAuditState());
+        resultPlanBillDTO.setBillState(planBill.getBillState());
         resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
         resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
         resultPlanBillDTO.setMemo(planBill.getMemo());
@@ -414,7 +410,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
-/*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
+        /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
         childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
         childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
@@ -424,6 +420,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
         childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
         childPlanBillDTO.setBillState(childPlanBill.getBillState());
+        childPlanBillDTO.setSubmitState(childPlanBill.getSubmitState());
+        childPlanBillDTO.setAuditState(childPlanBill.getAuditState());
         childPlanBillDTO.setProgress(childPlanBill.getProgress());
         childPlanBillDTO.setRootCode(childPlanBill.getRootCode());
 
