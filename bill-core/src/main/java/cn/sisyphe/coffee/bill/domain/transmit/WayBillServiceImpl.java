@@ -136,11 +136,11 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("deliveryTime").as(Date.class),
                         conditionQueryWayBill.getCreateStartTime()));
             }
+
             if (!StringUtils.isEmpty(conditionQueryWayBill.getDeliveryEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("deliveryTime").as(Date.class),
                         conditionQueryWayBill.getCreateEndTime()));
             }
-
 
 //            // 录单时间
 //            if (conditionQueryWayBill.getCreateStartTime() != null &&
