@@ -1,10 +1,13 @@
 package cn.sisyphe.coffee.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.BillDetailDTO;
@@ -32,11 +35,11 @@ import java.util.Set;
 
 public class InstanceFactory {
     private Random random = new Random();
-//    private Calendar calendar = Calendar.getInstance();
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private BufferedInputStream bufferedInputStream;
-    public static final String[] PLANCODES = {"010638","010280","010487"};
-
+    public static final String[] PLANCODES = {"010293","010160","010476"};
+    public static final String[] ROOTCODES = {"010293","010160","010476"};
     //默认一个bill三个detail
     public AddRestockBillDTO nextRandomRestockBillDTO(){
        return this.nextRandomRestockBillDTO(3);
@@ -50,8 +53,8 @@ public class InstanceFactory {
         dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
         dto.setBillProperty(PropertyEnum.RESTOCK);
         //here attention!!
-        dto.setSourceCode(this.PLANCODES[1]);
-       // dto.setRootCode();
+        dto.setSourceCode(this.PLANCODES[random.nextInt(PLANCODES.length)]);
+        dto.setRootCode(this.ROOTCODES[random.nextInt(ROOTCODES.length)]);
 
         dto.setProgress(new BigDecimal(random.nextInt(100)+1));
         ;
@@ -100,6 +103,17 @@ public class InstanceFactory {
         station.setStationType(StationType.STORE);
         station.setStorage(storage);
         return station;
+    }
+
+    public RestockBill nextRandomRestockBill(Integer detailsSize){
+        BillFactory factory = new BillFactory();
+        RestockBill restockBill = (RestockBill) factory.createBill(BillTypeEnum.RESTOCK);
+        restockBill.setBillCode(""+random.nextInt(9000)+10000);
+        restockBill.setProgress(new BigDecimal(random.nextInt(100)+1));
+        restockBill.setTotalPrice(new BigDecimal(random.nextInt(600)+100));
+        restockBill.setAmount(random.nextInt(100));
+        restockBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
+        return  restockBill;
     }
 
 }
