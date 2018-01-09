@@ -72,42 +72,42 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @return
      */
     private AdjustBillDTO toMapDTO(AdjustBill adjustBill) {
-                AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
-                // 单据属性
-                adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
-                // 出库状态
-                adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
-                // 提交状态
-                adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
-                // 审核状态
-                adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
-                // 来源单号
-                adjustBillDTO.setRootCode(adjustBill.getRootCode());
-                // 单据编码
-                adjustBillDTO.setBillCode(adjustBill.getBillCode());
-                // 录单时间
-                adjustBillDTO.setCreateTime(adjustBill.getCreateTime());
-                // 出库时间
-                adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
-                // 录单人编码
-                adjustBillDTO.setOperatorCode(adjustBill.getOperatorCode());
-                // 审核人编码
-                adjustBillDTO.setAuditPersonCode(adjustBill.getAuditPersonCode());
-                // 出库站点
-                Station outLocation = (Station) adjustBill.getOutLocation();
-                if (outLocation != null) {
-                    adjustBillDTO.setOutStationCode(outLocation.getStationCode());
-                }
-                // 入库站点
-                Station inLocation = (Station) adjustBill.getInLocation();
-                if (inLocation != null) {
-                    adjustBillDTO.setInStationCode(inLocation.getStationCode());
-                }
-                // 配送数量
-                adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
-                // 配送品种数
-                adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
-            return adjustBillDTO;
+        AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
+        // 单据属性
+        adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+        // 出库状态
+        adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
+        // 提交状态
+        adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
+        // 审核状态
+        adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
+        // 来源单号
+        adjustBillDTO.setRootCode(adjustBill.getRootCode());
+        // 单据编码
+        adjustBillDTO.setBillCode(adjustBill.getBillCode());
+        // 录单时间
+        adjustBillDTO.setCreateTime(adjustBill.getCreateTime());
+        // 出库时间
+        adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
+        // 录单人编码
+        adjustBillDTO.setOperatorCode(adjustBill.getOperatorCode());
+        // 审核人编码
+        adjustBillDTO.setAuditPersonCode(adjustBill.getAuditPersonCode());
+        // 出库站点
+        Station outLocation = (Station) adjustBill.getOutLocation();
+        if (outLocation != null) {
+            adjustBillDTO.setOutStationCode(outLocation.getStationCode());
+        }
+        // 入库站点
+        Station inLocation = (Station) adjustBill.getInLocation();
+        if (inLocation != null) {
+            adjustBillDTO.setInStationCode(inLocation.getStationCode());
+        }
+        // 配送数量
+        adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
+        // 配送品种数
+        adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+        return adjustBillDTO;
 
     }
 
@@ -197,6 +197,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             AdjustBillDetail adjustBillDetail = new AdjustBillDetail();
             //原料或货物编码
             adjustBillDetail.setGoods(adjustBillDetailDTO.getRawMaterial());
+            //设置所属原料编码便于分类
+            adjustBillDetail.setBelongMaterialCode(adjustBillDetailDTO.getBelongMaterialCode());
             //应拣数量
             adjustBillDetail.setShippedAmount(adjustBillDetailDTO.getShippedAmount());
             //实拣数量
