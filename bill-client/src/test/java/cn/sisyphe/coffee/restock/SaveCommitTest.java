@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CoreApplication.class , ClientApplication.class})
+@SpringBootTest(classes = {CoreApplication.class})
 public class SaveCommitTest extends InstanceFactory{
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
@@ -63,7 +63,7 @@ public class SaveCommitTest extends InstanceFactory{
     public static final  String PATH ="F:/own/test.txt";
     //暂时先凑合用吧 应该从数据库中读取或者从文件读取
     public static final String[]  BILLCODES_SAVED={"90530302","43490302","63390302","13910302"};
-    public static final String[]  BILLCODES_SUBMITTED={"28500302","86710302","79960302","58300302"};
+    public static final String[]  BILLCODES_SUBMITTED={"34940302","55540302","98850302","4120302"};
     private BufferedWriter writer ;
     @Before
     public  void setUp(){
@@ -185,6 +185,7 @@ public class SaveCommitTest extends InstanceFactory{
             }
         }
     }
+    //测试审核界面审核通过与不通过
     @Test
     public void auditTest(){
         for (int i = 0; i <BILLCODES_SUBMITTED.length ; i++) {
@@ -215,10 +216,11 @@ public class SaveCommitTest extends InstanceFactory{
         calendar.add(Calendar.HOUR,random.nextInt(20)+15);
         queryRestockBill.setCreateEndTime(calendar.getTime());
 
+     //   queryRestockBill.setBillProperty();
      //   queryRestockBill.setCreateStartTime();
      //   queryRestockBill.setCreateEndTime();
         queryRestockBill.setPage(1);
-        queryRestockBill.setPageSize(2);
+        queryRestockBill.setPageSize(5);
         QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
         logger.info(queryRestockBillDTO.toString());
     }
