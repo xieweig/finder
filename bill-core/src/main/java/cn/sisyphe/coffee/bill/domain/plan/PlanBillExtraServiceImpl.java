@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
@@ -175,7 +177,7 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             //单据的种类
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())) {
-                expressions.add(cb.equal(root.<String>get("specificBillType"),BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType())));
+                expressions.add(cb.equal(root.<String>get("specificBillType"), BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType())));
             }
             //计划类型
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
@@ -198,23 +200,17 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
                         "%" + conditionQueryPlanBill.getCreatorName() + "%"));
             }
 
-            /**
+            /*
              * 录单开始时间
              */
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateStartTime()));
             }
-            /**
+            /*
              * 录单结束时间
              */
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
-            }
-            //是否为总部计划单
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getHqBill()) && "true".equals(conditionQueryPlanBill.getHqBill())) {
-                expressions.add(cb.isTrue(root.<Boolean>get("hqBill")));
-            } else if (!StringUtils.isEmpty(conditionQueryPlanBill.getHqBill()) && "false".equals(conditionQueryPlanBill.getHqBill())) {
-                expressions.add(cb.isFalse(root.<Boolean>get("hqBill")));
             }
             //单据名称模糊查询
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillName())) {
@@ -228,6 +224,15 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoCode())) {
                 expressions.add(cb.like(planBillDetailDbGoodsJoin.<String>get("cargoCode"), "%" + conditionQueryPlanBill.getCargoCode() + "%"));
             }
+
+            if (conditionQueryPlanBill.getSubmitStates() != null && conditionQueryPlanBill.getSubmitStates().size() > 0) {
+                expressions.add(root.get("submitState").as(BillSubmitStateEnum.class).in(conditionQueryPlanBill.getSubmitStates()));
+            }
+
+            if (conditionQueryPlanBill.getAuditStates() != null && conditionQueryPlanBill.getAuditStates().size() > 0) {
+                expressions.add(root.get("auditState").as(BillAuditStateEnum.class).in(conditionQueryPlanBill.getAuditStates()));
+            }
+            expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), true));
             return predicate;
         }, pageable);
     }
