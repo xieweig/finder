@@ -42,11 +42,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
     private BasicEnum basicEnum;
 
     /**
-     * 操作人
-     */
-    private String operatorCode;
-
-    /**
      * 退货数量
      */
     private int amount;
@@ -88,16 +83,6 @@ public class RestockBill extends Bill<RestockBillDetail> {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
-    }
-
-    @Override
-    public String getOperatorCode() {
-        return operatorCode;
-    }
-
-    @Override
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
     }
 
     public BigDecimal getTotalPrice() {

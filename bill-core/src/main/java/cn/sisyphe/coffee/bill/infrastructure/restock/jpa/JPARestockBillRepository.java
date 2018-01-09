@@ -14,4 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JPARestockBillRepository extends JpaRepository<RestockBill, Long>, JpaSpecificationExecutor<RestockBill> {
     RestockBill findOneByBillCode(String billCode);
+
+    RestockBill findOneBySourceCode(String sourceCode);
 }

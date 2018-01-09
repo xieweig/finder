@@ -62,6 +62,7 @@ public class RestockBillController {
         conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
+            //测试使用
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 childPlanBillDTO.setOperatorName("操作人：懒羊羊");
             }
@@ -72,6 +73,19 @@ public class RestockBillController {
         }
         return responseResult;
     }
+
+    @ApiOperation(value = "子计划直接查看已保存的拣货单")
+    @RequestMapping(path = "/findRestockBillBySourceCode", method = RequestMethod.GET)
+    public ResponseResult findRestockBillBySourceCode(@RequestParam("sourceCode") String sourceCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("restockBill", restockBillManager.findRestockBillBySourceCode(sourceCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
 
     @ApiOperation(value = "子计划单个查询")
     @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
@@ -107,7 +121,7 @@ public class RestockBillController {
      * @param addRestockBillDTO
      * @return
      */
-    @ApiOperation(value = "保存退库出库单")
+    @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBill", method = RequestMethod.POST)
     public ResponseResult submitRestockBill(@RequestBody AddRestockBillDTO addRestockBillDTO) {
         ResponseResult responseResult = new ResponseResult();
@@ -131,7 +145,7 @@ public class RestockBillController {
         //测试使用
         for (RestockBillDTO restockBillDTO:
              list) {
-            restockBillDTO.setAuditPersonCode("审核人：海绵宝宝");
+            restockBillDTO.setAuditPersonName("审核人：海绵宝宝");
             restockBillDTO.setOperatorName("操作人：派大星");
         }
         responseResult.put("content", billPage);
