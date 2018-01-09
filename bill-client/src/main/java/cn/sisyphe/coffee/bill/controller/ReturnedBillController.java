@@ -48,7 +48,7 @@ public class ReturnedBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
         //设定查询退货分片
-        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED);
+        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED.name());
         try {
             responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
 
@@ -138,6 +138,7 @@ public class ReturnedBillController {
     @ApiOperation(value = "修改退货单单据信息--保存")
     @RequestMapping(path = "/updateReturnedBillToSave", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSaved(@RequestBody AddReturnedBillDTO billDTO) {
+        //从head中查看
         ResponseResult responseResult = new ResponseResult();
         try {
             returnedBillManager.updateBillToSave(billDTO);

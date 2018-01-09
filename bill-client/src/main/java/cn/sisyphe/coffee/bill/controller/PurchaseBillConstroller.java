@@ -105,8 +105,6 @@ public class PurchaseBillConstroller {
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
-            // TODO: 2018/1/6 操作人编码和当前站点从HEAD中获取
-            billDTO.setOperatorCode("test001");
             purchaseBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -127,7 +125,6 @@ public class PurchaseBillConstroller {
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
-            billDTO.setOperatorCode("test001");
             purchaseBillManager.updateBillToSubmit(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -146,7 +143,7 @@ public class PurchaseBillConstroller {
     public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String purchaseBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), true);
+        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), false);
         return responseResult;
     }
 
@@ -161,7 +158,7 @@ public class PurchaseBillConstroller {
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String purchaseBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), false);
+        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), true);
         return responseResult;
     }
 

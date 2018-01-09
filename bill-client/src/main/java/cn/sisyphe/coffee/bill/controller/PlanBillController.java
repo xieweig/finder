@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -108,9 +109,14 @@ public class PlanBillController {
      */
     @ApiOperation(value = "总部计划多条件查询")
     @RequestMapping(path = "/hq/findPlanBillByConditions", method = RequestMethod.POST)
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"},  token = "userCode")
     public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-        responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
+        try {
+            responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
+        }catch (DataException e){
+            responseResult.putException(e);
+        }
         return responseResult;
     }
 

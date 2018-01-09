@@ -10,13 +10,12 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -57,6 +56,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+
     /**
      * 根据多条件查询调拨单据信息
      *
@@ -68,7 +68,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
         Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
-        return adjustBillPage.map(source -> toMapDTO(source));
+        return adjustBillPage.map(source -> toMapDTO(source, null));
     }
 
     /**
@@ -77,7 +77,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param adjustBill
      * @return
      */
-    private AdjustBillDTO toMapDTO(AdjustBill adjustBill) {
+    private AdjustBillDTO toMapDTO(AdjustBill adjustBill, Set<PlanBillDetail> billDetails) {
         AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
         // 单据属性
         adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
@@ -98,9 +98,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 出库时间
         adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
         // 录单人编码
-        adjustBillDTO.setOperatorCode(adjustBill.getOperatorCode());
+        adjustBillDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
         // 审核人编码
-        adjustBillDTO.setAuditPersonCode(adjustBill.getAuditPersonCode());
+        adjustBillDTO.setAuditorName(sharedManager.findOneByUserCode(adjustBill.getAuditPersonCode()));
         adjustBillDTO.setBasicEnum(adjustBill.getBasicEnum());
         // 出库站点
         Station outLocation = (Station) adjustBill.getOutLocation();
@@ -127,6 +127,21 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             detailDTOS.add(adjustBillDetailDTO);
         }
         adjustBillDTO.setDetails(detailDTOS);
+
+        List<AdjustBillMaterialDetailDTO> detailDTOs = new ArrayList<>();
+        if (billDetails != null) {
+            for (PlanBillDetail planBillDetail : billDetails) {
+
+                AdjustBillMaterialDetailDTO dto = new AdjustBillMaterialDetailDTO();
+                // 应拣数量
+                dto.setShippedAmount(planBillDetail.getAmount());
+                // 原料信息
+                RawMaterial rawMaterial = (RawMaterial) planBillDetail.getGoods();
+                dto.setRawMaterial(rawMaterial);
+            }
+            adjustBillDTO.setMaterialDetails(detailDTOs);
+
+        }
 
         return adjustBillDTO;
 
@@ -255,6 +270,14 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      */
     public AdjustBillDTO findByBillCode(String billCode) {
         AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
-        return toMapDTO(adjustBill);
+        if (BasicEnum.BY_MATERIAL.equals(adjustBill.getBasicEnum())) {
+            //
+            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getSourceCode());
+            Set<PlanBillDetail> billDetails = planBill.getBillDetails();
+            return toMapDTO(adjustBill, billDetails);
+        } else {
+            return toMapDTO(adjustBill, null);
+        }
+
     }
 }

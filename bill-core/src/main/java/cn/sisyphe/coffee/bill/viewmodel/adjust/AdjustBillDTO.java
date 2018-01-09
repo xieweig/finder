@@ -61,12 +61,12 @@ public class AdjustBillDTO {
     /**
      * 录单人编码
      */
-    private String operatorCode;
+    private String operatorName;
 
     /**
      * 审核人
      */
-    private String auditPersonCode;
+    private String auditorName;
 
     /**
      * 出库站点
@@ -92,7 +92,15 @@ public class AdjustBillDTO {
      */
     private Integer varietyNumber;
 
+    /**
+     * 调剂货物计划详情
+      */
     private List<AdjustBillDetailDTO> details;
+
+    /**
+     * 调剂原料计划详情
+     */
+    private List<AdjustBillMaterialDetailDTO> materialDetails;
 
     public String getBillTypeStr() {
         return billTypeStr;
@@ -158,20 +166,20 @@ public class AdjustBillDTO {
         this.outWareHouseTime = outWareHouseTime;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
-    public String getAuditPersonCode() {
-        return auditPersonCode;
+    public String getAuditorName() {
+        return auditorName;
     }
 
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
     }
 
     public String getOutStationCode() {
@@ -230,10 +238,18 @@ public class AdjustBillDTO {
         this.basicEnum = basicEnum;
     }
 
+    public List<AdjustBillMaterialDetailDTO> getMaterialDetails() {
+        return materialDetails;
+    }
+
+    public void setMaterialDetails(List<AdjustBillMaterialDetailDTO> materialDetails) {
+        this.materialDetails = materialDetails;
+    }
+
     @Override
     public String toString() {
         return "AdjustBillDTO{" +
-                ", billTypeStr='" + billTypeStr + '\'' +
+                "billTypeStr='" + billTypeStr + '\'' +
                 ", outStatusCode=" + outStatusCode +
                 ", submitState='" + submitState + '\'' +
                 ", auditState='" + auditState + '\'' +
@@ -241,12 +257,16 @@ public class AdjustBillDTO {
                 ", billCode='" + billCode + '\'' +
                 ", createTime=" + createTime +
                 ", outWareHouseTime=" + outWareHouseTime +
-                ", operatorCode='" + operatorCode + '\'' +
-                ", auditPersonCode='" + auditPersonCode + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", auditorName='" + auditorName + '\'' +
                 ", outStationCode='" + outStationCode + '\'' +
                 ", inStationCode='" + inStationCode + '\'' +
+                ", basicEnum=" + basicEnum +
                 ", adjustNumber=" + adjustNumber +
+                ", billState=" + billState +
                 ", varietyNumber=" + varietyNumber +
+                ", details=" + details +
+                ", materialDetails=" + materialDetails +
                 '}';
     }
 }

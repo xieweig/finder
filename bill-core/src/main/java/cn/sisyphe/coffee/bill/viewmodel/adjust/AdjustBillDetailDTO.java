@@ -31,7 +31,6 @@ public class AdjustBillDetailDTO {
      */
     private String belongMaterialCode;
 
-
     /**
      * 详情备注
      */

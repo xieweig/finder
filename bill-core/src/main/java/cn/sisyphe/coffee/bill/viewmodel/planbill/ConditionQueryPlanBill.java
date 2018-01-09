@@ -36,12 +36,12 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     /**
      * 入库站点编号集合
      */
-    private Set<String> inStationCodeArray;
+    private String inStationCodeArray;
 
     /**
      * 出库站点编号集合
      */
-    private Set<String> outStationCodeArray;
+    private String outStationCodeArray;
 
 
     /**
@@ -51,11 +51,18 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
 
     private List<String> creatorCodeList;
 
-    private BillStateEnum billState;
-
-    private BillPurposeEnum billPurpose;
-
-    private BillTypeEnum specificBillType;
+    /**
+     * 单据状态
+     */
+    private String billState;
+    /**
+     * 单据作用
+     */
+    private String billPurpose;
+    /**
+     * 单据种类
+     */
+    private String specificBillType;
 
     /**
      * 单据名称
@@ -85,27 +92,27 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.creatorCodeList = creatorCodeList;
     }
 
-    public BillStateEnum getBillState() {
+    public String getBillState() {
         return billState;
     }
 
-    public void setBillState(BillStateEnum billState) {
+    public void setBillState(String billState) {
         this.billState = billState;
     }
 
-    public BillPurposeEnum getBillPurpose() {
+    public String getBillPurpose() {
         return billPurpose;
     }
 
-    public void setBillPurpose(BillPurposeEnum billPurpose) {
+    public void setBillPurpose(String billPurpose) {
         this.billPurpose = billPurpose;
     }
 
-    public BillTypeEnum getSpecificBillType() {
+    public String getSpecificBillType() {
         return specificBillType;
     }
 
-    public void setSpecificBillType(BillTypeEnum specificBillType) {
+    public void setSpecificBillType(String specificBillType) {
         this.specificBillType = specificBillType;
     }
 
@@ -133,19 +140,19 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.createEndTime = createEndTime;
     }
 
-    public Set<String> getInStationCodeArray() {
+    public String getInStationCodeArray() {
         return inStationCodeArray;
     }
 
-    public void setInStationCodeArray(Set<String> inStationCodeArray) {
+    public void setInStationCodeArray(String inStationCodeArray) {
         this.inStationCodeArray = inStationCodeArray;
     }
 
-    public Set<String> getOutStationCodeArray() {
+    public String getOutStationCodeArray() {
         return outStationCodeArray;
     }
 
-    public void setOutStationCodeArray(Set<String> outStationCodeArray) {
+    public void setOutStationCodeArray(String outStationCodeArray) {
         this.outStationCodeArray = outStationCodeArray;
     }
 
