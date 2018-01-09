@@ -385,10 +385,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());
         if (childPlanBill.getOutLocation() != null) {
-            childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code() == null ? "" : childPlanBill.getOutLocation().code());
+            childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
         }
         if (childPlanBill.getOutLocation() != null) {
-            childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code() == null ? "" : childPlanBill.getOutLocation().code());
+            childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         }
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         //通过springCloud设置operatorName
