@@ -26,7 +26,6 @@ public class ScanFillBillDTO implements Serializable {
     // 录单人
     private String operatorCode;
 
-
     /**
      * 出库站点code
      */
@@ -37,8 +36,10 @@ public class ScanFillBillDTO implements Serializable {
      */
     private String inStationCode;
 
+
     private String operatorName;
     //包号
+    //
     private List<String> packNumbers;
     /**
      * 出库时间
