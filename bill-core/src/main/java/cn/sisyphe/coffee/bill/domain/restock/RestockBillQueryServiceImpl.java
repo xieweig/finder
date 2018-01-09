@@ -51,9 +51,6 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
     public Page<RestockBill> findPageByCondition(ConditionQueryRestockBill conditionQueryRestockBill) {
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryRestockBill.getPage() - 1, conditionQueryRestockBill.getPageSize());
-        // SpringCloud调用查询录单人编码
-        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryRestockBill.getOperatorName());
-        conditionQueryRestockBill.setOperatorCodeList(userCodeList);
 
         Page<RestockBill> restockBillPage;
         restockBillPage = queryByParams(conditionQueryRestockBill, pageable);
