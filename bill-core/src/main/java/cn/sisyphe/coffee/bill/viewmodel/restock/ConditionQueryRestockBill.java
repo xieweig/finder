@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *@date: 2018/1/2
- *@description: 
- *@author：xieweiguang
+ * @date: 2018/1/2
+ * @description:
+ * @author：xieweiguang
  */
 
 public class ConditionQueryRestockBill extends BaseConditionQuery implements Serializable {
@@ -65,7 +65,7 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
     /**
      * 单据属性
      */
-    private PropertyEnum billProperty;
+    private SourcePlanTypeEnum billProperty;
 
     /**
      * 提交状态
@@ -120,11 +120,11 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
         this.outStationCodeArray = outStationCodeArray;
     }
 
-    public PropertyEnum getBillProperty() {
+    public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(PropertyEnum billProperty) {
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
     }
 

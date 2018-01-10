@@ -24,7 +24,7 @@ public class AdjustBillDTO {
     /**
      * 单据属性
      */
-    private SourcePlanTypeEnum billTypeStr;
+    private SourcePlanTypeEnum billProperty;
     /**
      * 出库状态
      */
@@ -89,12 +89,12 @@ public class AdjustBillDTO {
      */
     private Integer varietyNumber;
 
-    public SourcePlanTypeEnum getBillTypeStr() {
-        return billTypeStr;
+    public SourcePlanTypeEnum getBillProperty() {
+        return billProperty;
     }
 
-    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
-        this.billTypeStr = billTypeStr;
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
+        this.billProperty = billProperty;
     }
 
     public BillOutStateEnum getOutStatusCode() {
@@ -228,7 +228,6 @@ public class AdjustBillDTO {
     @Override
     public String toString() {
         return "AdjustBillDTO{" +
-                "billTypeStr='" + billTypeStr + '\'' +
                 ", outStatusCode=" + outStatusCode +
                 ", submitState='" + submitState + '\'' +
                 ", auditState='" + auditState + '\'' +

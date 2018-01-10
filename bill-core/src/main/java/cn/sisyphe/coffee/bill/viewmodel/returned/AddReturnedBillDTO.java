@@ -2,8 +2,8 @@ package cn.sisyphe.coffee.bill.viewmodel.returned;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class AddReturnedBillDTO {
     /**
      * 单据属性
      */
-    private PropertyEnum billProperty;
+    private SourcePlanTypeEnum billProperty;
     /**
      * 按货物还是按种类
      */
@@ -89,19 +89,19 @@ public class AddReturnedBillDTO {
         this.progress = progress;
     }
 
-    public cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum getBillProperty() {
+    public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum billProperty) {
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
     }
 
-    public cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum getBasicEnum() {
+    public BasicEnum getBasicEnum() {
         return basicEnum;
     }
 
-    public void setBasicEnum(cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum basicEnum) {
+    public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
 

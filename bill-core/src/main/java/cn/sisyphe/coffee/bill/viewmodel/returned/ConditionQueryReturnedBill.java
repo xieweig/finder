@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -17,7 +17,7 @@ import java.util.Set;
  * @Date 2018/01/07
  * @description 退货计划单
  */
-public class ConditionQueryReturnedBill extends BaseConditionQuery implements Serializable{
+public class ConditionQueryReturnedBill extends BaseConditionQuery implements Serializable {
     /**
      * 录单人名称
      */
@@ -64,7 +64,7 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
     /**
      * 单据属性
      */
-    private PropertyEnum billProperty;
+    private SourcePlanTypeEnum billProperty;
 
     /**
      * 提交状态
@@ -119,11 +119,11 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
         this.outStationCodeArray = outStationCodeArray;
     }
 
-    public PropertyEnum getBillProperty() {
+    public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(PropertyEnum billProperty) {
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
     }
 

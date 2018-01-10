@@ -1,9 +1,14 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
-import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -63,7 +68,7 @@ public class RestockBillDTO {
     /**
      * 单据属性
      */
-    private PropertyEnum billProperty;
+    private SourcePlanTypeEnum billProperty;
     /**
      * 总价
      */
@@ -243,11 +248,11 @@ public class RestockBillDTO {
         this.billDetails = billDetails;
     }
 
-    public PropertyEnum getBillProperty() {
+    public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(PropertyEnum billProperty) {
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
     }
 

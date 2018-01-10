@@ -26,7 +26,7 @@ public class RestockBillEventProcessor  {
     @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'SAVED'")
     public void restockBillSave(BehaviorEvent event) {
         //修改子计划重捡状态
-        planBillManager.Operation(event.getBill().getBillCode(), OperationStateEnum.OPERATION);
+        planBillManager.Operation(event.getBill().getSourceCode(), OperationStateEnum.OPERATION);
         System.err.println("Event Callback SAVED: === " + event.getBill());
     }
     /**
@@ -37,7 +37,7 @@ public class RestockBillEventProcessor  {
     @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'SUBMITTED'")
     public void restockBillCommit(BehaviorEvent event) {
         //修改子计划重捡状态
-        planBillManager.Operation(event.getBill().getBillCode(), OperationStateEnum.OPERATION);
+        planBillManager.Operation(event.getBill().getSourceCode(), OperationStateEnum.OPERATION);
         System.err.println("Event Callback SUBMITTED: === " + event.getBill());
 
     }
