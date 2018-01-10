@@ -177,9 +177,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         //设置所属站点
         adjustBill.setBelongStationCode(addAdjustBillDTO.getOutStationCode());
         //设置调剂数量
-        adjustBill.setAdjustNumber(sum(addAdjustBillDTO.getDetails(), on(AddAdjustBillDetailDTO.class).getShippedAmount()));
+        adjustBill.setTotalAmount(sum(addAdjustBillDTO.getDetails(), on(AddAdjustBillDetailDTO.class).getShippedAmount()));
         //设置调剂种类
-        adjustBill.setVarietyNumber(addAdjustBillDTO.getDetails().size());
+        adjustBill.setTotalVarietyAmount(addAdjustBillDTO.getDetails().size());
 
     }
 
@@ -294,9 +294,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 审核状态
         queryOneAdjustDTO.setAuditState(adjustBill.getAuditState());
         // 调剂数量
-        queryOneAdjustDTO.setAdjustNumber(adjustBill.getAdjustNumber());
+        queryOneAdjustDTO.setAdjustNumber(adjustBill.getTotalAmount());
         // 调剂品种数
-        queryOneAdjustDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+        queryOneAdjustDTO.setVarietyNumber(adjustBill.getTotalVarietyAmount());
         // 计划备注
         queryOneAdjustDTO.setPlanMemo(adjustBill.getPlanMemo());
         // 出库备注
@@ -379,9 +379,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             adjustBillDTO.setInStationCode(inLocation.getStationCode());
         }
         // 配送数量
-        adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
+        adjustBillDTO.setAdjustNumber(adjustBill.getTotalAmount());
         // 配送品种数
-        adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+        adjustBillDTO.setVarietyNumber(adjustBill.getTotalVarietyAmount());
         return adjustBillDTO;
 
     }

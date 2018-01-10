@@ -115,7 +115,7 @@ public class InstanceFactory {
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
         restockBill.setProgress(new BigDecimal(random.nextInt(100) + 1));
         restockBill.setTotalPrice(new BigDecimal(random.nextInt(600) + 100));
-        restockBill.setAdjustNumber(random.nextInt(100));
+        restockBill.setTotalAmount(random.nextInt(100));
         restockBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
         restockBill.setSubmitState(BillSubmitStateEnum.values()[random.nextInt(BillSubmitStateEnum.values().length)]);
 
