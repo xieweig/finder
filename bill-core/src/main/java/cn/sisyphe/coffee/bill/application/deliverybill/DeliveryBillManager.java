@@ -309,9 +309,9 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      */
     private void checkSaveParam(DeliveryPickingEditDTO editDTO) throws DataException {
 
-        if (StringUtils.isEmpty(editDTO.getBillCode())) {
-            throw new DataException("30001", "单据编码不能为空");
-        }
+//        if (StringUtils.isEmpty(editDTO.getBillCode())) {
+//            throw new DataException("30001", "单据编码不能为空");
+//        }
         if (StringUtils.isEmpty(editDTO.getOperatorCode())) {
             throw new DataException("30002", "操作人编码不能为空");
         }

@@ -59,29 +59,31 @@ public class WayBillManager {
         // TODO: 2018/1/9  通过不同的单据查询数据
 
 //        现在在"运单跟踪"的出库单测试时使用以下临时规则：
-//        配送出库单 psckd+6为流水，比如psckd000001
-//        调剂出库单 tjckd+6位流水，比如tjckd000001
-//        退库出库单 tkckd+6位流水，比如tkckd000001
-//        退货出库单 thckd+6位流水，比如thckd000001
+//        单据类型+站点+时间+进程id+6位流水编码
+//        配送出库单 ：PSCK+CKG001+20180110+P10+6位流水 -> PSCKCKG00120180110P10000001
+//        调剂出库单 ：TJCK+CKG001+20180110+P10+6位流水  -> TJCKCKG00120180110P10000001
+//        退库出库单 ：TKCK+CKG001+20180110+P10+6位流水 -> TKCKCKG00120180110P10000001
+//        退货出库单 ：THCK+CKG001+20180110+P10+6位流水 -> THCKCKG00120180110P10000001
+
         if (StringUtils.isEmpty(billCode)) {
             return null;
         }
         //配送出库
-        if (billCode.toUpperCase().startsWith("PSCKD")) {
-            //return deliveryBillManager.scanQueryBill(billCode);
+        if (billCode.toUpperCase().startsWith("PSCK")) {
+
             return deliveryBillManager.scanQueryBill(billCode);
         }
         //调剂出库单
-        if (billCode.toUpperCase().startsWith("TJCKD")) {
+        if (billCode.toUpperCase().startsWith("TJCK")) {
             //
         }
         //退库出库单
-        if (billCode.toUpperCase().startsWith("TKCKD")) {
+        if (billCode.toUpperCase().startsWith("TKCK")) {
             //退库出库单
             //restockBillManager.findPackagInfoByBillCode(billCode);
         }
         //退货出库单
-        if (billCode.toUpperCase().startsWith("TKCKD")) {
+        if (billCode.toUpperCase().startsWith("THCK")) {
             //
         }
         return null;
