@@ -120,7 +120,7 @@ public class DeliveryPickingEditDTO implements Serializable {
             //测试使用
             Random random = new Random();
             //配送单号
-            deliveryBill.setBillCode("PS" + random.nextInt(10000));
+            deliveryBill.setBillCode("PSCKD" + random.nextInt(10000));
         }
         //归属站点
         deliveryBill.setBelongStationCode(dto.getOutLocation().code());

@@ -94,7 +94,8 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(root.<String>get("inStationCode").in(conditionQueryWayBill.getInStationCode()));
             }
             //出库站点
-            if (conditionQueryWayBill.getOutStationCode() != null && conditionQueryWayBill.getOutStationCode().size() > 0) {
+            if (conditionQueryWayBill.getOutStationCode() != null
+                    && conditionQueryWayBill.getOutStationCode().size() > 0) {
                 //outStationCode
                 expressions.add(root.<String>get("outStationCode").in(conditionQueryWayBill.getOutStationCode()));
             }
@@ -130,33 +131,23 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class),
                         conditionQueryWayBill.getCreateEndTime()));
             }
-            // 发货时间
 
+            /**
+             * 发货开始时间
+             */
             if (!StringUtils.isEmpty(conditionQueryWayBill.getDeliveryStartTime())) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("deliveryTime").as(Date.class),
                         conditionQueryWayBill.getCreateStartTime()));
             }
 
+            /**
+             *  发货结束时间
+             */
             if (!StringUtils.isEmpty(conditionQueryWayBill.getDeliveryEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("deliveryTime").as(Date.class),
                         conditionQueryWayBill.getCreateEndTime()));
             }
 
-//            // 录单时间
-//            if (conditionQueryWayBill.getCreateStartTime() != null &&
-//                    conditionQueryWayBill.getCreateEndTime() != null) {
-//                //当 开始时间和结束时间 都不为空时 拼接sql
-//                expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getCreateStartTime(),
-//                        conditionQueryWayBill.getCreateEndTime()));
-//            }
-
-            // 发货时间
-//            if (conditionQueryWayBill.getDeliveryStartTime() != null &&
-//                    conditionQueryWayBill.getDeliveryEndTime() != null) {
-//                //当 开始时间和结束时间 都不为空时 拼接sql
-//                expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
-//                        conditionQueryWayBill.getDeliveryEndTime()));
-//            }
             //运货件数
             if (conditionQueryWayBill.getAmountOfPackages() != null) {
                 expressions.add(cb.equal(root.<String>get("amountOfPackages"),
