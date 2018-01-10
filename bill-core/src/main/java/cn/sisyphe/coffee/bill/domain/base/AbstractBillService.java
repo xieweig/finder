@@ -9,6 +9,7 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.util.BillCodeManager;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by heyong on 2017/12/19 12:07
@@ -50,7 +51,9 @@ public abstract class AbstractBillService {
         }
 
         this.bill = bill;
-        this.bill.setBillCode(BillCodeManager.getBillCodeFun(bill.getBillCodePrefix(), bill.getBelongStationCode()));
+        if(StringUtils.isEmpty(this.bill.getBillCode())){
+            this.bill.setBillCode(BillCodeManager.getBillCodeFun(bill.getBillCodePrefix(), bill.getBelongStationCode()));
+        }
         this.billPurpose = BillPurposeFactory.createPurpose(bill.getBillPurpose());
         this.billPurpose.setBillService(this);
     }
