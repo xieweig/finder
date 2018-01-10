@@ -576,7 +576,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param billCode
      * @return
      */
-    public ScanFillBillDTO findPackagInfoByBillCode(String billCode) {
+    public ScanFillBillDTO findPackageInfoByBillCode(String billCode) {
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
         }

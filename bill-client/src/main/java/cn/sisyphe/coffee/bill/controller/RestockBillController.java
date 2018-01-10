@@ -240,12 +240,12 @@ public class RestockBillController {
      * @return responseResult
      */
     @ApiOperation(value = "通过单据号billCode汇总查询出打包的信息")
-    @RequestMapping(path = "/findPackagInfoByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPackagInfoByBillCode(@RequestParam String billCode) {
+    @RequestMapping(path = "/findPackageInfoByBillCode", method = RequestMethod.GET)
+    public ResponseResult findPackageInfoByBillCode(@RequestParam String billCode) {
 
         ResponseResult responseResult = new ResponseResult();
         try {
-            ScanFillBillDTO scanFillBillDTO = restockBillManager.findPackagInfoByBillCode(billCode);
+            ScanFillBillDTO scanFillBillDTO = restockBillManager.findPackageInfoByBillCode(billCode);
             responseResult.put("content", scanFillBillDTO);
         } catch (DataException data) {
             responseResult.putException(data);
