@@ -170,9 +170,9 @@ public class DeliveryPickingEditDTO implements Serializable {
         //单据用途
         deliveryBill.setBillPurpose(dto.getBillPurpose());
         //总数量
-        deliveryBill.setAdjustNumber(this.calcTotalAmount(dto));
+        deliveryBill.setTotalAmount(this.calcTotalAmount(dto));
         //总品种
-        deliveryBill.setVarietyNumber(this.calcTotalCount(dto));
+        deliveryBill.setTotalVarietyAmount(this.calcTotalCount(dto));
         //添加明细
         deliveryBill.setBillDetails(this.convertBillItemsToDTO(dto));
 

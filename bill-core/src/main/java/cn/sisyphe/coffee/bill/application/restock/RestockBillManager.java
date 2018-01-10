@@ -265,11 +265,11 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
                 detailDTOSet) {
             amount += detailDTO.getActualAmount();
         }
-        restockBill.setAdjustNumber(amount);
+        restockBill.setTotalAmount(amount);
 
         //退货品种数
         int variety = detailDTOSet.size();
-        restockBill.setVarietyNumber(variety);
+        restockBill.setTotalVarietyAmount(variety);
         //进度
         restockBill.setProgress(addRestockBillDTO.getProgress());
         //配送总价
@@ -405,11 +405,11 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
                 detailDTOSet) {
             amount += detailDTO.getActualAmount();
         }
-        restockBill.setAdjustNumber(amount);
+        restockBill.setTotalAmount(amount);
 
         //退货品种数
         int variety = detailDTOSet.size();
-        restockBill.setVarietyNumber(variety);
+        restockBill.setTotalVarietyAmount(variety);
         //进度
         restockBill.setProgress(editRestockBillDTO.getProgress());
         //配送总价
@@ -431,7 +431,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             restockBillDTO.setBillCode(restockBill.getBillCode());
             restockBillDTO.setAuditState(restockBill.getAuditState());
             restockBillDTO.setSubmitState(restockBill.getSubmitState());
-            restockBillDTO.setAmount(restockBill.getAdjustNumber());
+            restockBillDTO.setAmount(restockBill.getTotalAmount());
             restockBillDTO.setAuditMemo(restockBill.getAuditMemo());
             restockBillDTO.setOperatorName(sharedManager.findOneByUserCode(restockBill.getOperatorCode()));
             restockBillDTO.setAuditPersonName(sharedManager.findOneByUserCode(restockBill.getAuditPersonCode()));
@@ -451,7 +451,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             restockBillDTO.setRootCode(restockBill.getRootCode());
             restockBillDTO.setSourceCode(restockBill.getSourceCode());
             restockBillDTO.setTotalPrice(restockBill.getTotalPrice());
-            restockBillDTO.setVariety(restockBill.getVarietyNumber());
+            restockBillDTO.setVariety(restockBill.getTotalVarietyAmount());
             restockBillDTO.setCreateTime(restockBill.getCreateTime());
             restockBillDTOList.add(restockBillDTO);
         }
@@ -589,8 +589,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     private ScanFillBillDTO restockToMapScanFillBillDTO(RestockBill restockBill) {
         ScanFillBillDTO scanFillBillDTO = new ScanFillBillDTO();
         List<String> packNumberList = new ArrayList<>();
-        scanFillBillDTO.setTotalCount(restockBill.getVarietyNumber());
-        scanFillBillDTO.setTotalAmount(restockBill.getAdjustNumber());
+        scanFillBillDTO.setTotalCount(restockBill.getTotalVarietyAmount());
+        scanFillBillDTO.setTotalAmount(restockBill.getTotalAmount());
         scanFillBillDTO.setOperatorCode(restockBill.getOperatorCode());
         scanFillBillDTO.setOutStockTime(restockBill.getOutWareHouseTime());
         Set<RestockBillDetail> restockBillDetailSet = restockBill.getBillDetails();
