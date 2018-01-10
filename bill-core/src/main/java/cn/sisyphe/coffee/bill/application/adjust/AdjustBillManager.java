@@ -134,7 +134,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         }
         // 如果是根据原料拣货，则需要去查询一下总部计划单里面的数据
         if (BasicEnum.BY_MATERIAL.equals(adjustBill.getBasicEnum())) {
-            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getSourceCode());
+            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getRootCode());
             Set<PlanBillDetail> billDetails = planBill.getBillDetails();
             return toMapOneDTO(adjustBill, billDetails);
         } else {
@@ -303,6 +303,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         queryOneAdjustDTO.setOutStorageMemo(adjustBill.getOutStorageMemo());
         // 审核意见
         queryOneAdjustDTO.setAuditMemo(adjustBill.getAuditMemo());
+        // 设置原料拣货或者货物拣货
+        queryOneAdjustDTO.setBasicEnum(adjustBill.getBasicEnum());
         // 调剂货物计划详情
         List<AdjustBillDetailDTO> detailDTOS = new ArrayList<>();
         Set<AdjustBillDetail> details = adjustBill.getBillDetails();
