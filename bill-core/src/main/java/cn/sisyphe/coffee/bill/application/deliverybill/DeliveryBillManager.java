@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.application.deliverybill;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
@@ -18,9 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.lang.management.ManagementFactory;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/1/4.
@@ -119,7 +120,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         //
         return scanFillBillDTO;
     }
-    
+
 
     /**
      * 根据单号查询配送单
@@ -227,6 +228,8 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
          * 这时 "来源单号 " 和 "出库单号" 一样，就是出库单号
          *
          */
+        // 生成测试单号
+        editDTO.setBillCode(this.keyProducer("PSCK", editDTO));
         // 参数检查
         this.checkSaveParam(editDTO);
         // DTO转换为单据
@@ -309,9 +312,9 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      */
     private void checkSaveParam(DeliveryPickingEditDTO editDTO) throws DataException {
 
-//        if (StringUtils.isEmpty(editDTO.getBillCode())) {
-//            throw new DataException("30001", "单据编码不能为空");
-//        }
+        if (StringUtils.isEmpty(editDTO.getBillCode())) {
+            throw new DataException("30001", "单据编码不能为空");
+        }
         if (StringUtils.isEmpty(editDTO.getOperatorCode())) {
             throw new DataException("30002", "操作人编码不能为空");
         }
@@ -359,4 +362,36 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     }
 
 
+    /**
+     * 临时单号生成器
+     *
+     * @param prefix
+     * @param dto
+     * @return
+     */
+    public String keyProducer(String prefix, DeliveryPickingEditDTO dto) {
+        String key = "";
+        //  单据类型+站点+时间+进程id+6位流水编码
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        String dateString = formatter.format(currentTime);
+
+        String name = ManagementFactory.getRuntimeMXBean().getName();
+        //System.out.println(name);
+        // get pid
+        String pid = name.split("@")[0];
+
+        //测试临时使用
+        Random random = new Random();
+        //配送单号
+        AbstractLocation location = dto.getOutLocation();
+        //目的站的code
+        String toStationCode = "";
+        if (location != null) {
+            toStationCode = location.code();
+        }
+        // TODO: 2018/1/10  流水
+        key = prefix + toStationCode + pid + dateString + random.nextInt(100000);
+        return key;
+    }
 }

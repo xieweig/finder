@@ -16,9 +16,10 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
-import java.lang.management.ManagementFactory;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2018/1/4.
@@ -102,39 +103,39 @@ public class DeliveryPickingEditDTO implements Serializable {
         return this;
     }
 
-
-    /**
-     * 临时单号生成器
-     *
-     * @param prefix
-     * @param dto
-     * @return
-     */
-    public String keyProducer(String prefix, DeliveryPickingEditDTO dto) {
-        String key = "";
-        //  单据类型+站点+时间+进程id+6位流水编码
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        String dateString = formatter.format(currentTime);
-
-        String name = ManagementFactory.getRuntimeMXBean().getName();
-        //System.out.println(name);
-        // get pid
-        String pid = name.split("@")[0];
-
-        //测试临时使用
-        Random random = new Random();
-        //配送单号
-        AbstractLocation location = dto.getOutLocation();
-        //目的站的code
-        String toStationCode = "";
-        if (location != null) {
-            toStationCode = location.code();
-        }
-        // TODO: 2018/1/10  流水 
-        key = prefix + toStationCode + pid + dateString + random.nextInt(100000);
-        return key;
-    }
+//
+//    /**
+//     * 临时单号生成器
+//     *
+//     * @param prefix
+//     * @param dto
+//     * @return
+//     */
+//    public String keyProducer(String prefix, DeliveryPickingEditDTO dto) {
+//        String key = "";
+//        //  单据类型+站点+时间+进程id+6位流水编码
+//        Date currentTime = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+//        String dateString = formatter.format(currentTime);
+//
+//        String name = ManagementFactory.getRuntimeMXBean().getName();
+//        //System.out.println(name);
+//        // get pid
+//        String pid = name.split("@")[0];
+//
+//        //测试临时使用
+//        Random random = new Random();
+//        //配送单号
+//        AbstractLocation location = dto.getOutLocation();
+//        //目的站的code
+//        String toStationCode = "";
+//        if (location != null) {
+//            toStationCode = location.code();
+//        }
+//        // TODO: 2018/1/10  流水
+//        key = prefix + toStationCode + pid + dateString + random.nextInt(100000);
+//        return key;
+//    }
 
     /**
      * DTO  to bill
@@ -152,10 +153,10 @@ public class DeliveryPickingEditDTO implements Serializable {
         if (!StringUtils.isEmpty(dto.getBillCode())) {
             // bill code
             deliveryBill.setBillCode(dto.getBillCode());//
-        } else {
-            //code
-            deliveryBill.setBillCode(this.keyProducer("PSCK", dto));
-        }
+        }// else {
+        //code
+//            deliveryBill.setBillCode(this.keyProducer("PSCK", dto));
+        // }
         //归属站点
         deliveryBill.setBelongStationCode(dto.getOutLocation().code());
         //入库站点
