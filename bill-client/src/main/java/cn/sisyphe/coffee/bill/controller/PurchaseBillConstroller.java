@@ -140,7 +140,7 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String purchaseBillCode) {
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
         purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), false);
@@ -155,7 +155,7 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String purchaseBillCode) {
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
         purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), true);

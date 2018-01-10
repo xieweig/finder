@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.adjust.AdjustBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -157,6 +158,13 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             if (conditionQueryAdjustBill.getTotalPriceEnd().compareTo(BigDecimal.ZERO) > 0) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceEnd()));
             }
+            /**
+             * 单据作用
+             */
+            if (conditionQueryAdjustBill.getPurposeEnum() != null) {
+                expressions.add(cb.equal(root.get("billPurpose").as(BillPurposeEnum.class), conditionQueryAdjustBill.getPurposeEnum()));
+            }
+
             return predicate;
         }, pageable);
     }

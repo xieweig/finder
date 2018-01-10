@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -10,8 +11,8 @@ import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/9.
- * remark：
- * version:
+ * remark：查询单个单据明细信息
+ * version: 1.0
  *
  * @author XiongJing
  */
@@ -54,7 +55,7 @@ public class QueryOneAdjustDTO {
     /**
      * 单据属性
      */
-    private String billTypeStr;
+    private SourcePlanTypeEnum billTypeStr;
     /**
      * 出库状态
      */
@@ -160,11 +161,11 @@ public class QueryOneAdjustDTO {
         this.inStationCode = inStationCode;
     }
 
-    public String getBillTypeStr() {
+    public SourcePlanTypeEnum getBillTypeStr() {
         return billTypeStr;
     }
 
-    public void setBillTypeStr(String billTypeStr) {
+    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
         this.billTypeStr = billTypeStr;
     }
 
@@ -272,4 +273,5 @@ public class QueryOneAdjustDTO {
                 ", materialDetails=" + materialDetails +
                 '}';
     }
+
 }

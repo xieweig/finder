@@ -52,7 +52,7 @@ public class AddAdjustBillDTO {
     /**
      * 单据属性
      */
-    private String billTypeStr;
+    private SourcePlanTypeEnum billTypeStr;
     /**
      * 出库状态编码
      */
@@ -154,11 +154,11 @@ public class AddAdjustBillDTO {
         this.inStationCode = inStationCode;
     }
 
-    public String getBillTypeStr() {
+    public SourcePlanTypeEnum getBillTypeStr() {
         return billTypeStr;
     }
 
-    public void setBillTypeStr(String billTypeStr) {
+    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
         this.billTypeStr = billTypeStr;
     }
 

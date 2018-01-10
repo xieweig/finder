@@ -10,13 +10,17 @@ import java.util.Date;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：多条件查询中的单条调拨单据信息
+ * remark：多条件查询中的单条调剂单据信息
  * version: 1.0
  *
  * @author XiongJing
  */
 public class AdjustBillDTO {
 
+    /**
+     * 调剂单号
+     */
+    private String billCode;
     /**
      * 单据属性
      */
@@ -38,10 +42,6 @@ public class AdjustBillDTO {
      */
     private String rootCode;
     /**
-     * 出库单号
-     */
-    private String billCode;
-    /**
      * 录单时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -52,7 +52,7 @@ public class AdjustBillDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
     /**
-     * 录单人编码
+     * 录单人名称
      */
     private String operatorName;
     /**
