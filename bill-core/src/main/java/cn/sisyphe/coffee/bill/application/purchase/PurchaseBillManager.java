@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.*;
 
+
 /**
  * Created by XiongJing on 2017/12/27.
  * remark：进货单协调层
@@ -201,9 +202,6 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         purchaseBill.setBillPurpose(BillPurposeEnum.InStorage);
         // 设置单据类型
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
-        // 单据编码生成器
-        // TODO: 2017/12/29 单号生成器还没有实现
-        purchaseBill.setBillCode(String.valueOf(System.currentTimeMillis()));
         // 货运单号
         purchaseBill.setFreightCode(addPurchaseBillDTO.getFreightCode());
         // 发货件数

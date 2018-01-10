@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PlanBill extends Bill<PlanBillDetail> {
-
+    public static final String PLAN_STORAGE_PREFIX = "ZBJH";
     @Column
     @Enumerated(value = EnumType.STRING)
     private OperationStateEnum operationState;
@@ -52,6 +52,7 @@ public class PlanBill extends Bill<PlanBillDetail> {
     }
 
     public PlanBill() {
+        setBillCodePrefix(PLAN_STORAGE_PREFIX);
         setBillType(BillTypeEnum.PLAN);
     }
 
