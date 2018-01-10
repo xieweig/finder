@@ -84,7 +84,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
            planBill.setReceiveBillCode(addRestockBillDTO.getSourceCode());
            planBillRepository.save(planBill);
         }*/
-
+        System.err.println(restockBill.getBillCode()+"=========");
         // 保存单据
         save(restockBill);
     }
@@ -215,7 +215,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     }
     private  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
     private   Random random = new Random();
-
+//billode 生成器
     private String nextBillCode(){
 
         StringBuffer stringBuffer = new StringBuffer();
@@ -224,14 +224,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         stringBuffer.append(simpleDateFormat.format(new Date()));
         stringBuffer.append("P10");
         stringBuffer.append(""+(random.nextInt(800000)+100000));
+        System.err.println(" ====bill code ======"+stringBuffer.toString());
         return stringBuffer.toString();
     }
-    /**
-     *
-     *
-     * @param
-     * @return
-     */
+
 
 
 
@@ -253,8 +249,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
-        Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000) + "0302");
+//        Random random = new Random();
+//        restockBill.setBillCode(random.nextInt(10000) + "0302");
+        restockBill.setBillCode(this.nextBillCode());
         // 来源单号
         if (!StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(addRestockBillDTO.getSourceCode());
@@ -395,7 +392,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //测试使用
 //        Random random = new Random();
 //        restockBill.setBillCode(random.nextInt(10000) + "0302");
-        restockBill.setRootCode(this.nextBillCode());
+//        restockBill.setRootCode(this.nextBillCode());
         // 来源单号
         if (!StringUtils.isEmpty(editRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(editRestockBillDTO.getSourceCode());
