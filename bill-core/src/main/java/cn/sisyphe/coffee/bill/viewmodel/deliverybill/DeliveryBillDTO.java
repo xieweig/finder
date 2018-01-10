@@ -132,9 +132,9 @@ public class DeliveryBillDTO implements Serializable {
         //单据用途
         this.billPurpose = deliveryBill.getBillPurpose();
         //总数量
-        this.totalAmount = deliveryBill.getAdjustNumber();
+        this.totalAmount = deliveryBill.getTotalAmount();
         //总品种
-        this.totalCount = deliveryBill.getVarietyNumber();//
+        this.totalCount = deliveryBill.getTotalVarietyAmount();//
         // 备注
         this.memo = deliveryBill.getPlanMemo();
         // 出库时间
@@ -147,10 +147,6 @@ public class DeliveryBillDTO implements Serializable {
         this.operatorCode = deliveryBill.getOperatorCode();//
         //审核人code
         this.auditPersonCode = deliveryBill.getAuditPersonCode();
-        // 总品种
-        this.totalCount = deliveryBill.getAdjustNumber();
-        //总数量
-        this.totalAmount = deliveryBill.getVarietyNumber();
         //
         this.billDetails = convertBillItemsToDTO(deliveryBill);
         return this;

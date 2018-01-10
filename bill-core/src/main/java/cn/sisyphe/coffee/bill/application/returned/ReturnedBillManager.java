@@ -129,11 +129,11 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
                 detailDTOSet) {
             amount += detailDTO.getActualAmount();
         }
-        returnedBill.setAdjustNumber(amount);
+        returnedBill.setTotalAmount(amount);
 
         //退货品种数
         int variety = detailDTOSet.size();
-        returnedBill.setVarietyNumber(variety);
+        returnedBill.setTotalVarietyAmount(variety);
         //配送总价
         returnedBill.setTotalPrice(addReturnedBillDTO.getTotalPrice());
         //按货物还是按原料
@@ -362,10 +362,10 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
                 detailDTOSet) {
             amount += detailDTO.getActualAmount();
         }
-        returnedBill.setAdjustNumber(amount);
+        returnedBill.setTotalAmount(amount);
         //退货品种数
         int variety = detailDTOSet.size();
-        returnedBill.setVarietyNumber(variety);
+        returnedBill.setTotalVarietyAmount(variety);
         //配送总价
         returnedBill.setTotalPrice(editReturnedBillDTO.getTotalPrice());
         //按货物还是按原料
@@ -446,7 +446,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             returnedBillDTO.setBillCode(returnedBill.getBillCode());
             returnedBillDTO.setAuditState(returnedBill.getAuditState());
             returnedBillDTO.setSubmitState(returnedBill.getSubmitState());
-            returnedBillDTO.setAmount(returnedBill.getAdjustNumber());
+            returnedBillDTO.setAmount(returnedBill.getTotalAmount());
 
             returnedBillDTO.setAuditMemo(returnedBill.getAuditMemo());
 
@@ -471,7 +471,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             returnedBillDTO.setRootCode(returnedBill.getRootCode());
             returnedBillDTO.setSourceCode(returnedBill.getSourceCode());
             returnedBillDTO.setTotalPrice(returnedBill.getTotalPrice());
-            returnedBillDTO.setVariety(returnedBill.getVarietyNumber());
+            returnedBillDTO.setVariety(returnedBill.getTotalVarietyAmount());
             returnedBillDTO.setCreateTime(returnedBill.getCreateTime());
             returnedBillDTOList.add(returnedBillDTO);
         }

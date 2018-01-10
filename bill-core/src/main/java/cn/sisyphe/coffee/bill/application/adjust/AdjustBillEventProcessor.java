@@ -100,8 +100,8 @@ public class AdjustBillEventProcessor {
         inAdjustBill.setPlanMemo(adjustBill.getPlanMemo());
         inAdjustBill.setOutStorageMemo(adjustBill.getOutStorageMemo());
         inAdjustBill.setBasicEnum(adjustBill.getBasicEnum());
-        inAdjustBill.setAdjustNumber(adjustBill.getAdjustNumber());
-        inAdjustBill.setVarietyNumber(adjustBill.getVarietyNumber());
+        inAdjustBill.setTotalAmount(adjustBill.getTotalAmount());
+        inAdjustBill.setTotalVarietyAmount(adjustBill.getTotalVarietyAmount());
         inAdjustBill.setBillProperty(adjustBill.getBillProperty());
         Set<AdjustBillDetail> details = new HashSet<>();
         for (AdjustBillDetail adjustBillDetail : adjustBill.getBillDetails()) {

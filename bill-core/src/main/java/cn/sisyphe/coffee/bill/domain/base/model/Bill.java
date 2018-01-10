@@ -187,14 +187,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
 
     /**
-     * 调剂数量
+     * 数量
      */
-    private Integer adjustNumber;
+    private Integer totalAmount;
 
     /**
-     * 调剂品种数
+     * 品种数
      */
-    private Integer varietyNumber;
+    private Integer totalVarietyAmount;
 
     /**
      * 计划备注
@@ -406,20 +406,20 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.outStateEnum = outStateEnum;
     }
 
-    public Integer getAdjustNumber() {
-        return adjustNumber;
+    public Integer getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setAdjustNumber(Integer adjustNumber) {
-        this.adjustNumber = adjustNumber;
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
-    public Integer getVarietyNumber() {
-        return varietyNumber;
+    public Integer getTotalVarietyAmount() {
+        return totalVarietyAmount;
     }
 
-    public void setVarietyNumber(Integer varietyNumber) {
-        this.varietyNumber = varietyNumber;
+    public void setTotalVarietyAmount(Integer totalVarietyAmount) {
+        this.totalVarietyAmount = totalVarietyAmount;
     }
 
     public String getPlanMemo() {
