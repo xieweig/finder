@@ -1,8 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.returned;
 
 
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.infrastructure.returned.ReturnedBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.returned.ReturnedBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
@@ -28,7 +26,7 @@ import java.util.List;
  * @author Mayupeng
  */
 @Service
-public class ReturnedBillQueryServiceImpl implements  ReturnedBillQueryService{
+public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
     @Autowired
     private ReturnedBillRepository returnedBillRepository;
 
@@ -53,6 +51,7 @@ public class ReturnedBillQueryServiceImpl implements  ReturnedBillQueryService{
             throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
         }
     }
+
     @Override
     public Page<ReturnedBill> findPageByCondition(ConditionQueryReturnedBill conditionQueryReturnedBill) {
         // 组装页面
@@ -70,6 +69,12 @@ public class ReturnedBillQueryServiceImpl implements  ReturnedBillQueryService{
             returnedBillPage = queryByParams(conditionQueryReturnedBill, pageable);
         }
         return returnedBillPage;
+
+    }
+
+    @Override
+    public ReturnedBill findBySourceCode(String sourceCode) {
+        return returnedBillRepository.findOneBySourceCode(sourceCode);
     }
 
     private Page<ReturnedBill> queryByParams(ConditionQueryReturnedBill conditionQueryReturnedBill, Pageable pageable) {
@@ -90,7 +95,7 @@ public class ReturnedBillQueryServiceImpl implements  ReturnedBillQueryService{
              * 出库单编码
              */
             if (!StringUtils.isEmpty(conditionQueryReturnedBill.getBillCode())) {
-                expressions.add(cb.like(root.get("billCode").as(String.class), "%"+conditionQueryReturnedBill.getBillCode()+"%"));
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryReturnedBill.getBillCode() + "%"));
             }
             /**
              * 入库站点集合
@@ -147,8 +152,8 @@ public class ReturnedBillQueryServiceImpl implements  ReturnedBillQueryService{
             /**
              * 拼接出入库状态
              */
-            if (conditionQueryReturnedBill.getInOrOutStateCode() != null && conditionQueryReturnedBill.getInOrOutStateCode().size() > 0) {
-                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryReturnedBill.getInOrOutStateCode()));
+            if (conditionQueryReturnedBill.getOutStateCode() != null && conditionQueryReturnedBill.getOutStateCode().size() > 0) {
+                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryReturnedBill.getOutStateCode()));
             }
             /**
              * 配送总价

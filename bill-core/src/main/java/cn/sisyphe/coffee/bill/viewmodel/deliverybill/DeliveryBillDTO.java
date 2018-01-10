@@ -167,8 +167,6 @@ public class DeliveryBillDTO implements Serializable {
             DeliveryBillDetailDTO deliveryBillDetailDTO = new DeliveryBillDetailDTO();
 
             //
-
-
             deliveryBillDetailDTO.setProgress(item.getProgress());// 进度
             billDetails.add(deliveryBillDetailDTO);
         }

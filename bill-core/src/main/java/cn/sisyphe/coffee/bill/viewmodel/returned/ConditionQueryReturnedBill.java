@@ -77,9 +77,9 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
     private List<String> auditStateCode;
 
     /**
-     * 出入库状态
+     * 出库状态
      */
-    private List<String> inOrOutStateCode;
+    private List<String> outStateCode;
     /**
      * 录单人编码集合
      */
@@ -223,13 +223,6 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
         this.auditStateCode = auditStateCode;
     }
 
-    public List<String> getInOrOutStateCode() {
-        return inOrOutStateCode;
-    }
-
-    public void setInOrOutStateCode(List<String> inOrOutStateCode) {
-        this.inOrOutStateCode = inOrOutStateCode;
-    }
 
     public List<String> getOperatorCodeList() {
         return operatorCodeList;
@@ -237,5 +230,13 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
 
     public void setOperatorCodeList(List<String> operatorCodeList) {
         this.operatorCodeList = operatorCodeList;
+    }
+
+    public List<String> getOutStateCode() {
+        return outStateCode;
+    }
+
+    public void setOutStateCode(List<String> outStateCode) {
+        this.outStateCode = outStateCode;
     }
 }

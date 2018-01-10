@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ import java.util.Set;
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/8
- * @Description:
+ * @Description:仅仅服务于restock测试用，数据做的字段不全
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
@@ -53,11 +54,13 @@ public class JustForPlan {
         planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
         return planBillDetail;
     }
-
+//为restock生成plan测试用
     private PlanBill createPlanBill() {
         PlanBill planBill = new PlanBill();
         planBill.setHqBill(false);
-        planBill.setSpecificBillType(BillTypeEnum.PLAN);
+        /*
+        * bill plan 生成对应的restock*/
+        planBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         planBill.setAuditMemo("remarks: " + random.nextInt(1000));
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
 
@@ -69,6 +72,7 @@ public class JustForPlan {
         planBill.setAuditPersonCode(random.nextInt(100) + "0302");
         planBill.setBillCode("010" + random.nextInt(1000));
         planBill.setBillType(BillTypeEnum.PLAN);
+        planBill.setOperationState(OperationStateEnum.values()[random.nextInt(OperationStateEnum.values().length)]);
         Set<PlanBillDetail> details = new HashSet<>();
         for (int i = 0; i < 3; i++) {
 

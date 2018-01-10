@@ -2,6 +2,8 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,10 @@ public class AddAdjustBillDTO {
      * 单据编码
      */
     private String billCode;
+    /**
+     * 源单据编码
+     */
+    private String rootCode;
     /**
      * 出库时间
      */
@@ -39,61 +45,58 @@ public class AddAdjustBillDTO {
      * 出库库位
      */
     private Storage outStorage;
-
     /**
      * 入库站点编码
      */
     private String inStationCode;
-
     /**
      * 单据属性
      */
-    private String billTypeStr;
-
+    private SourcePlanTypeEnum billTypeStr;
     /**
      * 出库状态编码
      */
     private BillOutStateEnum outStatusCode;
-
     /**
      * 提交状态
      */
     private String submitState;
-
     /**
      * 审核状态
      */
     private String auditState;
-
     /**
      * 调剂数量
      */
     private Integer adjustNumber;
-
     /**
      * 调剂品种数
      */
     private Integer varietyNumber;
-
     /**
      * 计划备注
      */
     private String planMemo;
-
     /**
      * 出库备注
      */
     private String outStorageMemo;
-
     /**
      * 审核意见
      */
     private String auditMemo;
-
+    /**
+     * 按照货物还是原料拣货
+     */
+    private BasicEnum basicEnum;
+    /**
+     * 单据来源类型
+     */
+    private SourcePlanTypeEnum sourcePlanType;
     /**
      * 货物/原料明细信息
      */
-    private List<AdjustBillDetailDTO> details;
+    private List<AddAdjustBillDetailDTO> details;
 
     public String getBillCode() {
         return billCode;
@@ -151,11 +154,11 @@ public class AddAdjustBillDTO {
         this.inStationCode = inStationCode;
     }
 
-    public String getBillTypeStr() {
+    public SourcePlanTypeEnum getBillTypeStr() {
         return billTypeStr;
     }
 
-    public void setBillTypeStr(String billTypeStr) {
+    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
         this.billTypeStr = billTypeStr;
     }
 
@@ -223,18 +226,42 @@ public class AddAdjustBillDTO {
         this.auditMemo = auditMemo;
     }
 
-    public List<AdjustBillDetailDTO> getDetails() {
+    public List<AddAdjustBillDetailDTO> getDetails() {
         return details;
     }
 
-    public void setDetails(List<AdjustBillDetailDTO> details) {
+    public void setDetails(List<AddAdjustBillDetailDTO> details) {
         this.details = details;
+    }
+
+    public String getRootCode() {
+        return rootCode;
+    }
+
+    public void setRootCode(String rootCode) {
+        this.rootCode = rootCode;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+    public SourcePlanTypeEnum getSourcePlanType() {
+        return sourcePlanType;
+    }
+
+    public void setSourcePlanType(SourcePlanTypeEnum sourcePlanType) {
+        this.sourcePlanType = sourcePlanType;
     }
 
     @Override
     public String toString() {
         return "AddAdjustBillDTO{" +
                 "billCode='" + billCode + '\'' +
+                ", rootCode='" + rootCode + '\'' +
                 ", outWareHouseTime=" + outWareHouseTime +
                 ", operatorCode='" + operatorCode + '\'' +
                 ", auditPersonCode='" + auditPersonCode + '\'' +
@@ -250,6 +277,8 @@ public class AddAdjustBillDTO {
                 ", planMemo='" + planMemo + '\'' +
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
+                ", basicEnum=" + basicEnum +
+                ", sourcePlanType=" + sourcePlanType +
                 ", details=" + details +
                 '}';
     }

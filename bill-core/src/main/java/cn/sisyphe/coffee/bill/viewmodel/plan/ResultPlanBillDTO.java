@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
@@ -43,6 +44,8 @@ public class ResultPlanBillDTO {
     private BillSubmitStateEnum billSubmitState;
 
     private BillAuditStateEnum auditState;
+
+    private BillStateEnum billState;
 
     private String auditorName;
 
@@ -161,5 +164,13 @@ public class ResultPlanBillDTO {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
     }
 }

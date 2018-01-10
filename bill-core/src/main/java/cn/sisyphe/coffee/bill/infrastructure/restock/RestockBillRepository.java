@@ -20,6 +20,12 @@ public interface RestockBillRepository extends BillRepository<RestockBill>{
      * @return
      */
     Page<RestockBill> findAll(Specification<RestockBill> ta, Pageable pageable);
-
+    /**
+     * 根据单据单号查询
+     */
     RestockBill findOneByBillCode(String billCode);
+    /**
+     * 根据单据来源单号查询
+     */
+    RestockBill findOneBySourceCode(String sourceCode);
 }

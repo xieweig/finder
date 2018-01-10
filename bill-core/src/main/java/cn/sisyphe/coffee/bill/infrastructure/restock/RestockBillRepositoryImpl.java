@@ -7,12 +7,14 @@ import cn.sisyphe.coffee.bill.infrastructure.restock.jpa.JPARestockBillRepositor
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  *@date: 2018/1/2
@@ -43,6 +45,15 @@ public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBil
         return jpaRestockBillRepository.findOneByBillCode(billCode);
     }
 
+    @Override
+    public RestockBill findOneBySourceCode(String sourceCode) {
+        return jpaRestockBillRepository.findOneBySourceCode(sourceCode);
+    }
+
+//    public Page<RestockBill> convert(String sourceCode, Pageable pageable){
+//        List<RestockBill> list= jpaRestockBillRepository.findAllByNothing(sourceCode);
+//        return  new PageImpl<RestockBill>(list, pageable, list.size());
+//    }
 
 
 }

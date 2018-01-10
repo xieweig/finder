@@ -1,15 +1,22 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +27,15 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author XiongJing
  */
+@RestController
+@RequestMapping("/api/bill/adjustBill")
+@Api(description = "调剂计划相关接口")
+@CrossOrigin(origins = "*")
 public class AdjustBillController {
+
+
+    @Autowired
+    private AdjustBillManager adjustBillManager;
 
     /**
      * 多条件查询调剂单据
@@ -31,23 +46,27 @@ public class AdjustBillController {
     @ApiOperation(value = "多条件查询调剂单据")
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
     public ResponseResult findByPurchaseBillCode(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
-
         ResponseResult responseResult = new ResponseResult();
-
+        Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditions(conditionQueryAdjustBill);
+        responseResult.put("content", dtoPage);
         return responseResult;
     }
 
     /**
      * 根据调剂单号查询详细信息
      *
-     * @param adjustBillCode 调剂单号
+     * @param billCode 调剂单号
      * @return
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
-    @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.POST)
-    public ResponseResult findByAdjustBillCode(@RequestParam String adjustBillCode) {
+    @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.GET)
+    public ResponseResult findByAdjustBillCode(@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
-
+        try {
+            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 
@@ -60,10 +79,15 @@ public class AdjustBillController {
     @ApiOperation(value = "保存调剂单据信息  ")
     @RequestMapping(path = "/saveAdjustBill", method = RequestMethod.POST)
     public ResponseResult saveAdjustBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-        addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        ResponseResult responseResult = new ResponseResult();
 
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            responseResult.put("billCode", adjustBillManager.create(addAdjustBillDTO));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
         return responseResult;
     }
 
@@ -76,40 +100,11 @@ public class AdjustBillController {
     @ApiOperation(value = "提交调剂单据信息")
     @RequestMapping(path = "/submitAdjustBill", method = RequestMethod.POST)
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-        addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        ResponseResult responseResult = new ResponseResult();
-        return responseResult;
-    }
-
-    /**
-     * 修改退库出库单单据信息
-     *
-     * @param addAdjustBillDTO
-     * @return
-     */
-    @ApiOperation(value = "修改退库出库单单据信息--保存")
-    @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
-    public ResponseResult updateRestockBillToSaved(@RequestBody AddAdjustBillDTO addAdjustBillDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }
-
-    /**
-     * 修改入库单据信息
-     *
-     * @param addAdjustBillDTO
-     * @return
-     */
-    @ApiOperation(value = "修改退库出库单单据信息--提交审核")
-    @RequestMapping(path = "/updateRestockBillToSubmit", method = RequestMethod.POST)
-    public ResponseResult updateRestockBillToSubmit(@RequestBody AddAdjustBillDTO addAdjustBillDTO) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            responseResult.put("billCode", adjustBillManager.submit(addAdjustBillDTO));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -124,9 +119,10 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String adjustBillCode) {
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
+        adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),false);
         return responseResult;
     }
 
@@ -138,9 +134,10 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String adjustBillCode) {
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
+        adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),true);
         return responseResult;
     }
 }

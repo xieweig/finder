@@ -22,6 +22,7 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
@@ -262,19 +263,16 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      * @throws DataException
      */
     public Page<ResultPlanBillDTO> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
-
         //1 根据具体的运单号查询,只有唯一的显示，显示一条
         //2 根据配送出库查询可能会有多条
         //3 所有都是模糊匹配
         //所有的产品表中的数据
 
         //查询总部计划
-        conditionQueryPlanBill.setHqBill("true");
         Page<PlanBill> planBillPage = planBillExtraService.findPageByCondition(conditionQueryPlanBill);
         return planBillPage.map(this::planBillToResultPlanBillDTO);
 
     }
-
 
     /**
      * 根据编号查询
@@ -305,6 +303,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setCreateTime(planBill.getCreateTime());
         resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
         resultPlanBillDTO.setAuditState(planBill.getAuditState());
+        resultPlanBillDTO.setBillState(planBill.getBillState());
         resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
         resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
         resultPlanBillDTO.setMemo(planBill.getMemo());
@@ -382,13 +381,16 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
     private ChildPlanBillDTO mapChildPlanBillToDTO(PlanBill childPlanBill) {
         ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
+        //拣货状态
+        childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
+
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
-        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());
-//        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-//        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
+        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         //通过springCloud设置operatorName
         String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());
@@ -396,6 +398,8 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
         childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
         childPlanBillDTO.setBillState(childPlanBill.getBillState());
+        childPlanBillDTO.setSubmitState(childPlanBill.getSubmitState());
+        childPlanBillDTO.setAuditState(childPlanBill.getAuditState());
         childPlanBillDTO.setProgress(childPlanBill.getProgress());
         childPlanBillDTO.setRootCode(childPlanBill.getRootCode());
 
@@ -422,5 +426,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
         planBill.setProgress(progress);
         planBillExtraService.save(planBill);
+    }
+
+    public void Operation(String billCode, OperationStateEnum operationState) {
+        PlanBill planBill = planBillExtraService.findByBillCode(billCode);
+        planBillExtraService.updateOperationStateByBill(planBill,operationState);
     }
 }

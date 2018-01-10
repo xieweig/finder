@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.restock.enums;
 
 /**
- * @author ncmao
  * @Date 2017/12/25 16:26
  * @description
  */

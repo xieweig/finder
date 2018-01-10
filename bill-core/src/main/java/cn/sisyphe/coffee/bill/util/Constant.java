@@ -8,6 +8,10 @@ package cn.sisyphe.coffee.bill.util;
  * @author XiongJing
  */
 public final class Constant {
+    /**
+     * 员工管理范围
+     */
+    public static final String OAUTH_USER_MANAGEMENT_SCOPE = "OAUTH_USER_MANAGEMENT_SCOPE";
 
     /**
      * RabbitMQ-EXCHANGE

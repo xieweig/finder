@@ -40,7 +40,7 @@ import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
-public class OracleRunner {
+public class OracleRunner extends InstanceIterator {
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,75 +48,15 @@ public class OracleRunner {
     @Resource
     private ReturnedBillManager returnedBillManager;
     private ReturnedBillRepository returnedBillRepository;
-    private String[] names = {"牛奶", "咖啡", "乳酪", "啤酒", "面包", "排骨", "米饭", "馒头", "鸭肉", "鸡肉"};
-
-    private AddReturnedBillDTO createReturnedBill() {
-        AddReturnedBillDTO dto = new AddReturnedBillDTO();
-
-        dto.setBillCode("02" + random.nextInt(10000));
-        dto.setOperatorCode("99" + random.nextInt(100));
-        dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
-        dto.setPlanMemo("plan memo:" + names[random.nextInt(names.length)]);
-        dto.setOutMemo("out memo" + names[random.nextInt(names.length)]);
-        dto.setTotalPrice(new BigDecimal(random.nextInt(1500) + 600));
-        dto.setBillProperty(PropertyEnum.values()[random.nextInt(PropertyEnum.values().length)]);
+    private String[] names = {"milk", "coffee", "cheese", "beer", "juice", "meat", "duck", "chicken", "goal", "apple"};
 
 
-        Station station = new Station("1302" + random.nextInt(10) + "02" + random.nextInt(10));
-        Storage inStorage = new Storage("01" + random.nextInt(80));
-        inStorage.setStorageCode("6611" + random.nextInt(100));
-        inStorage.setStorageName("正常库");
-        station.setStationName("重庆" + random.nextInt(100) + "站");
-        station.setStationCode("88" + random.nextInt(122));
-        station.setStationType(StationType.STORE);
-        station.setStorage(inStorage);
-
-        dto.setInStation(station);
-
-        Station outStation = new Station("1515" + random.nextInt(100));
-        Storage outStorage = new Storage("00" + random.nextInt(80));
-        outStorage.setStorageName("xx库");
-        outStorage.setStorageCode("66" + random.nextInt(100));
-        station.setStationType(StationType.STORE);
-        station.setStationCode("8822" + random.nextInt());
-        outStation.setStorage(outStorage);
-
-        dto.setOutStation(outStation);
-
-        Set<ReturnedBillDetailDTO> list = new HashSet<>();
-        for (int i = 0; i < 3; i++) {
-
-            list.add(this.createReturnedDetail());
-        }
-        logger.info("details 的详细数量 ：" + list.size());
-
-
-        dto.setBillDetails(list);
-
-        return dto;
-
-
-    }
-
-    private ReturnedBillDetailDTO createReturnedDetail() {
-        ReturnedBillDetailDTO billDetailDTO = new ReturnedBillDetailDTO();
-
-
-        billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
-        RawMaterial rawMaterial = new RawMaterial("030201" + random.nextInt(2000));
-        Cargo cargo = new Cargo("00205" + random.nextInt(1000));
-        cargo.setCargoName("非持久化？" + random.nextInt(100));
-        rawMaterial.setCargo(cargo);
-
-        billDetailDTO.setRawMaterial(rawMaterial);
-        return billDetailDTO;
-    }
     //测试return bill 保存 提交
     @Test
     public void leafSave() {
         for (int i = 0; i < 3; i++) {
 
-            AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
+            AddReturnedBillDTO addReturnedBillDTO = this.nextRandomAddReturnedBillDTO();
             this.returnedBillManager.saveBill(addReturnedBillDTO);
 
         }
@@ -125,7 +65,7 @@ public class OracleRunner {
     public void leafSubmit() {
         for (int i = 0; i < 3; i++) {
 
-            AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
+            AddReturnedBillDTO addReturnedBillDTO = this.nextRandomAddReturnedBillDTO();
             this.returnedBillManager.submitBill(addReturnedBillDTO);
 
         }
@@ -133,14 +73,14 @@ public class OracleRunner {
     //测试 return bill 修改后保存提交
     @Test
     public void alertAndSave() {
-        AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
+        AddReturnedBillDTO addReturnedBillDTO = this.nextRandomAddReturnedBillDTO();
         addReturnedBillDTO.setBillCode("27850302");
         this.returnedBillManager.updateBillToSave(addReturnedBillDTO);
 
     }
     @Test
     public void alertAndSubmit() {
-        AddReturnedBillDTO addReturnedBillDTO = this.createReturnedBill();
+        AddReturnedBillDTO addReturnedBillDTO = this.nextRandomAddReturnedBillDTO();
         addReturnedBillDTO.setBillCode("82090302");
         this.returnedBillManager.updateBillToSubmit(addReturnedBillDTO);
 

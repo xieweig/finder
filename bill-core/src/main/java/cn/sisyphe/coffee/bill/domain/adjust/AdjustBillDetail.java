@@ -34,6 +34,12 @@ public class AdjustBillDetail extends BillDetail {
      */
     private String memo;
 
+
+    /**
+     * 所属原料编码
+      */
+    private String belongMaterialCode;
+
     public Integer getShippedAmount() {
         return shippedAmount;
     }
@@ -65,5 +71,13 @@ public class AdjustBillDetail extends BillDetail {
                 ", actualAmount=" + actualAmount +
                 ", memo='" + memo + '\'' +
                 "} " + super.toString();
+    }
+
+    public String getBelongMaterialCode() {
+        return belongMaterialCode;
+    }
+
+    public void setBelongMaterialCode(String belongMaterialCode) {
+        this.belongMaterialCode = belongMaterialCode;
     }
 }

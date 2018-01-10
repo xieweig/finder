@@ -1,13 +1,11 @@
 package cn.sisyphe.coffee.bill.viewmodel.waybill;
 
-import cn.sisyphe.coffee.bill.domain.transmit.enums.ReceivedStatusEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -81,23 +79,38 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
     /**
      * 入库站点
      */
-    private String inStationCode;
+    private List<String> inStationCode;
 
     /**
      * 出库站点
      */
-    private String outStationCode;
-
-    /**
-     * 单据状态
-     */
+    private List<String> outStationCode;
 
     /**
      * 收货状态
      */
-    @Enumerated(value = EnumType.STRING)
-    private ReceivedStatusEnum receivedStatus;
 
+    private String receivedStatus;
+
+    public List<String> getInStationCode() {
+        return inStationCode;
+    }
+
+    public void setInStationCode(List<String> inStationCode) {
+        this.inStationCode = inStationCode;
+    }
+
+    public List<String> getOutStationCode() {
+        return outStationCode;
+    }
+
+    public void setOutStationCode(List<String> outStationCode) {
+        this.outStationCode = outStationCode;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
 
     /**
      * 录单人
@@ -116,11 +129,12 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
         return outStorageBillCode;
     }
 
-    public ReceivedStatusEnum getReceivedStatus() {
+
+    public String getReceivedStatus() {
         return receivedStatus;
     }
 
-    public void setReceivedStatus(ReceivedStatusEnum receivedStatus) {
+    public void setReceivedStatus(String receivedStatus) {
         this.receivedStatus = receivedStatus;
     }
 
@@ -196,34 +210,6 @@ public class ConditionQueryWayBill extends BaseConditionQuery implements Seriali
         this.createTime = createTime;
     }
 
-    public String getInStationCode() {
-        return inStationCode;
-    }
-
-    public void setInStationCode(String inStationCode) {
-        this.inStationCode = inStationCode;
-    }
-
-    public String getOutStationCode() {
-        return outStationCode;
-    }
-
-    public void setOutStationCode(String outStationCode) {
-        this.outStationCode = outStationCode;
-    }
-
-//    public String getWayBillStatus() {
-//        return wayBillStatus;
-//    }
-//
-//    public void setWayBillStatus(String wayBillStatus) {
-//        this.wayBillStatus = wayBillStatus;
-//    }
-
-    public String getOperatorName() {
-
-        return operatorName;
-    }
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;

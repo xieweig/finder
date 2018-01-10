@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.base;
 
+import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
@@ -46,6 +47,10 @@ public class BillServiceFactory {
             case TRANSMIT:
                 //运货单
                 billService = new RestockBillService(bill);
+                break;
+            case ADJUST:
+                //运货单
+                billService = new AdjustBillService(bill);
                 break;
             default:
                 break;

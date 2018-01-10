@@ -108,7 +108,7 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
              * 入库开始时间
              */
             if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getInStartTime())) {
-                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPurchaseBill.getInStartTime()));
+                expressions.add(cb.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryPurchaseBill.getInStartTime()));
             }
             /**
              * 入库结束时间
@@ -141,6 +141,18 @@ public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
              */
             if (conditionQueryPurchaseBill.getInOrOutStateCode() != null && conditionQueryPurchaseBill.getInOrOutStateCode().size() > 0) {
                 expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryPurchaseBill.getInOrOutStateCode()));
+            }
+            /**
+             * 拼接入库站点
+             */
+            if (conditionQueryPurchaseBill.getInStationCodeList() != null && conditionQueryPurchaseBill.getInStationCodeList().size() > 0) {
+                expressions.add(root.get("inStationCode").as(String.class).in(conditionQueryPurchaseBill.getInStationCodeList()));
+            }
+            /**
+             * 拼接入库库位
+             */
+            if (conditionQueryPurchaseBill.getInStorageCodeList() != null && conditionQueryPurchaseBill.getInStorageCodeList().size() > 0) {
+                expressions.add(root.get("inStorageCode").as(String.class).in(conditionQueryPurchaseBill.getInStorageCodeList()));
             }
 
             return predicate;

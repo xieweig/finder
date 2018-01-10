@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.plan;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -26,6 +27,10 @@ import java.math.BigDecimal;
 public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
+    @Enumerated(value = EnumType.STRING)
+    private OperationStateEnum operationState;
+
+    @Column
     private String billName;
 
     /**
@@ -41,10 +46,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
-
-    //接受的单据编号
-    @Column
-    private String receiveBillCode;
 
     //是否是总部计划
     @Column
@@ -62,16 +63,16 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private BigDecimal progress;
 
+    public OperationStateEnum getOperationState() {
+        return operationState;
+    }
+
+    public void setOperationState(OperationStateEnum operationState) {
+        this.operationState = operationState;
+    }
+
     public PlanBill() {
         setBillType(BillTypeEnum.PLAN);
-    }
-
-    public String getReceiveBillCode() {
-        return receiveBillCode;
-    }
-
-    public void setReceiveBillCode(String receiveBillCode) {
-        this.receiveBillCode = receiveBillCode;
     }
 
     public String getBillName() {

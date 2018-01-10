@@ -3,10 +3,12 @@ package cn.sisyphe.coffee.bill.domain.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +16,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -26,10 +30,13 @@ import java.util.Date;
 @Table(name = "adjust_bill")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class AdjustBill  extends Bill<AdjustBillDetail> {
+public class AdjustBill extends Bill<AdjustBillDetail> {
+
+
     public AdjustBill() {
         setBillType(BillTypeEnum.ADJUST);
     }
+
     /**
      * 出库时间
      */
@@ -39,12 +46,14 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
     /**
      * 单据属性
      */
-    private String billTypeStr;
+    @Enumerated(EnumType.STRING)
+    private SourcePlanTypeEnum billTypeStr;
 
     /**
      * 出库状态编码
      */
-    private BillOutStateEnum outStateEnum;
+    @Enumerated(EnumType.STRING)
+    private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
 
     /**
      * 调剂数量
@@ -81,6 +90,10 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
      * 完成度
      */
     private BigDecimal progress;
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
 
     public Date getOutWareHouseTime() {
         return outWareHouseTime;
@@ -90,11 +103,11 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
         this.outWareHouseTime = outWareHouseTime;
     }
 
-    public String getBillTypeStr() {
+    public SourcePlanTypeEnum getBillTypeStr() {
         return billTypeStr;
     }
 
-    public void setBillTypeStr(String billTypeStr) {
+    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
         this.billTypeStr = billTypeStr;
     }
 
@@ -162,6 +175,22 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
         this.progress = progress;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    /**
+     * 是否是自主调剂
+     */
+
+    public boolean isSelfAdjust() {
+        return StringUtils.isEmpty(getRootCode());
+    }
+
     @Override
     public String toString() {
         return "AdjustBill{" +
@@ -175,6 +204,7 @@ public class AdjustBill  extends Bill<AdjustBillDetail> {
                 ", auditMemo='" + auditMemo + '\'' +
                 ", basicEnum=" + basicEnum +
                 ", progress=" + progress +
+                ", totalPrice=" + totalPrice +
                 "} " + super.toString();
     }
 }

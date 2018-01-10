@@ -77,6 +77,7 @@ public class DeliveryBill extends Bill<DeliveryBillDetail> {
     private String auditOpinion;
 
 
+
     public Integer getTotalAmount() {
         return totalAmount;
     }

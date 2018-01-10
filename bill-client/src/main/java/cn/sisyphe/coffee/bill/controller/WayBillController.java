@@ -26,6 +26,7 @@ public class WayBillController {
     @Autowired
     private WayBillManager wayBillManager;
 
+
     /**
      * 创建运单
      */
@@ -120,5 +121,27 @@ public class WayBillController {
 
         return responseResult;
     }
+
+    /**
+     * 扫描查询配送等其他单据填充运单
+     *
+     * @param billCode
+     * @return
+     */
+    @ApiOperation(value = "扫描查询配送等其他单据填充运单")
+    @RequestMapping(path = "/scanQueryBill", method = RequestMethod.GET)
+    public ResponseResult scanQueryBill(@RequestParam String billCode) {
+
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("scanFillBillDTO", wayBillManager.scanQueryBill(billCode));
+            //
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+
+        return responseResult;
+    }
+
 
 }

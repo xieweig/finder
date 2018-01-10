@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * @author bifenglin
  */
-public class QueryPlanDetailBillDTO implements Serializable{
+public class QueryPlanDetailBillDTO<T> implements Serializable{
 
     /**
      * 完成率

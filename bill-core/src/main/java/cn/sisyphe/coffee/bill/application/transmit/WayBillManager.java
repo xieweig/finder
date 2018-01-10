@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.application.transmit;
 
 
+import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
+import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.transmit.WayBill;
@@ -27,12 +29,65 @@ public class WayBillManager {
     //公共信息
     @Autowired
     private SharedManager sharedManager;
+
+    /**
+     * 退库管理
+     */
+    @Autowired
+    private RestockBillManager restockBillManager;
+
+    /**
+     * 运单管理
+     */
+    @Autowired
+    private DeliveryBillManager deliveryBillManager;
     //事件
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
     //运单服务类
     @Autowired
     private WayBillService iWayBillService;
+
+    /**
+     * 通过单据code 汇总包号，总数量，品种
+     *
+     * @param billCode
+     * @return
+     */
+    public ScanFillBillDTO scanQueryBill(String billCode) {
+
+        // TODO: 2018/1/9  通过不同的单据查询数据
+
+//        现在在"运单跟踪"的出库单测试时使用以下临时规则：
+//        单据类型+站点+时间+进程id+6位流水编码
+//        配送出库单 ：PSCK+CKG001+20180110+P10+6位流水 -> PSCKCKG00120180110P10000001
+//        调剂出库单 ：TJCK+CKG001+20180110+P10+6位流水  -> TJCKCKG00120180110P10000001
+//        退库出库单 ：TKCK+CKG001+20180110+P10+6位流水 -> TKCKCKG00120180110P10000001
+//        退货出库单 ：THCK+CKG001+20180110+P10+6位流水 -> THCKCKG00120180110P10000001
+
+        if (StringUtils.isEmpty(billCode)) {
+            return null;
+        }
+        //配送出库
+        if (billCode.toUpperCase().startsWith("PSCK")) {
+
+            return deliveryBillManager.scanQueryBill(billCode);
+        }
+        //调剂出库单
+        if (billCode.toUpperCase().startsWith("TJCK")) {
+            //
+        }
+        //退库出库单
+        if (billCode.toUpperCase().startsWith("TKCK")) {
+            //退库出库单
+            //restockBillManager.findPackagInfoByBillCode(billCode);
+        }
+        //退货出库单
+        if (billCode.toUpperCase().startsWith("THCK")) {
+            //
+        }
+        return null;
+    }
 
 
     /**
@@ -68,7 +123,6 @@ public class WayBillManager {
      */
 
     public void updateWayBillWithDTO(EditWayBillDTO editWayBillDTO) throws DataException {
-
         //参数检查
         this.checkParams(editWayBillDTO);
         //修改转DTO
@@ -200,7 +254,7 @@ public class WayBillManager {
         for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSet()) {
             EditWayBillDetailDTO wayBillDetailDTO = new EditWayBillDetailDTO();
             //
-            wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
+            //wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
             //出库时间
             wayBillDetailDTO.setOutStorageTime(wayBillDetail.getOutStorageTime());
             // 配送单号
@@ -255,8 +309,17 @@ public class WayBillManager {
         wayBill.setOperatorName(editWayBillDTO.getOperatorName());//录单人姓名
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
+        wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
+        wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
+        //出入库站点名称
+
+        // TODO: 2018/1/8  juge
+        wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
+        wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
+        //
         //添加明细
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO, wayBill));
+        //
         return wayBill;
     }
 
@@ -269,9 +332,10 @@ public class WayBillManager {
      */
     private Station findStationByCode(String stationCode) {
         if (!StringUtils.isEmpty(stationCode)) {
+
             return sharedManager.findStationByStationCode(stationCode);
         }
-        return null;
+        return new Station(stationCode);
     }
 
     /**
@@ -299,6 +363,8 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//入库站点code
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());//出库站点code
         //出入库站点名称
+        // TODO: 2018/1/8 判断空指针   
+
         wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
         wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
         //
@@ -329,8 +395,8 @@ public class WayBillManager {
                 throw new DataException("40006", "出库时间不能为空");
             }
             WayBillDetail wayBillDetail = new WayBillDetail();
-            wayBillDetail.setWayBill(wayBill);
 
+            // TODO: 2018/1/8
             wayBillDetail.setSourceCode(item.getOutStorageBillCode());//出库单号
             wayBillDetail.setTotalCount(item.getTotalCount());//总品种
             wayBillDetail.setTotalAmount(item.getTotalAmount());// 总数量

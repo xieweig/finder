@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill;
 
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
+import cn.sisyphe.framework.auth.logic.annotation.EnableScopeAuth;
 import cn.sisyphe.framework.message.core.annotation.EnableS2Messaging;
 import cn.sisyphe.framework.web.exception.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableFeignClients
 @EnableS2Messaging
 @Import(GlobalExceptionHandler.class)
+@EnableScopeAuth
 public class ClientApplication implements CommandLineRunner {
 
 

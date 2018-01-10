@@ -19,11 +19,10 @@ public class WayBillDetail extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long billDetailId;
 
-    //@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "bill_code")//外键名称
-    private WayBill wayBill;
-
+//    //@ManyToOne(fetch=FetchType.LAZY,optional=true)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+//    @JoinColumn(referencedColumnName = "bill_code")//外键名称
+//    private WayBill wayBill;
 
     /**
      * 出库单号(来源单号)
@@ -153,14 +152,6 @@ public class WayBillDetail extends BaseEntity {
         this.outStationName = outStationName;
     }
 
-    public WayBill getWayBill() {
-        return wayBill;
-    }
-
-    public void setWayBill(WayBill wayBill) {
-        this.wayBill = wayBill;
-    }
-
 
     public String getPackageCode() {
         return packageCode;
@@ -226,7 +217,7 @@ public class WayBillDetail extends BaseEntity {
     public String toString() {
         return "WayBillDetail{" +
                 "billDetailId=" + billDetailId +
-                ", wayBill=" + wayBill +
+//                ", wayBill=" + wayBill +
                 ", sourceCode='" + sourceCode + '\'' +
                 ", packageCode='" + packageCode + '\'' +
                 ", operatorName='" + operatorName + '\'' +

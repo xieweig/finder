@@ -14,7 +14,6 @@ import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillQueryService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.*;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -134,6 +133,20 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         } else {
             return mapOneToDTO(purchaseBill);
         }
+    }
+
+    /**
+     * 查询单个进货单据
+     *
+     * @param purchaseBillCode
+     */
+    public QueryOnePurchaseBillDTO queryOneByCode(String purchaseBillCode) {
+        if (StringUtils.isEmpty(purchaseBillCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+
+        return mapOneToDTO(purchaseBill);
     }
 
 
@@ -417,117 +430,94 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
      * @param conditionQueryPurchaseBill 查询条件
      * @return
      */
-    public QueryPurchaseBillDTO findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
+    public Page<PurchaseBillDTO> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
         conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
         Page<PurchaseBill> purchaseBillPage = purchaseBillQueryService.findByConditions(conditionQueryPurchaseBill);
-
-        QueryPurchaseBillDTO queryPurchaseBillDTO = new QueryPurchaseBillDTO();
-        // 转换
-        List<PurchaseBillDTO> billDTOList = toMapDTO(purchaseBillPage.getContent());
-        // 总数
-        queryPurchaseBillDTO.setTotalNumber(purchaseBillPage.getTotalElements());
-        // 进货单据数据
-        queryPurchaseBillDTO.setContent(billDTOList);
-
-        return queryPurchaseBillDTO;
+        return purchaseBillPage.map(source -> toMapDTO(source));
     }
 
     /**
      * 前端多条件查询转换DTO
      *
-     * @param purchaseBillList
+     * @param purchaseBill
      * @return
      */
-    private List<PurchaseBillDTO> toMapDTO(List<PurchaseBill> purchaseBillList) {
+    private PurchaseBillDTO toMapDTO(PurchaseBill purchaseBill) {
 
-        List<PurchaseBillDTO> purchaseBillDTOList = new ArrayList<>();
-        if (purchaseBillList != null && purchaseBillList.size() > 0) {
-            for (PurchaseBill purchaseBill : purchaseBillList) {
-                PurchaseBillDTO purchaseBillDTO = new PurchaseBillDTO();
-                // 进货单号-主表
-                purchaseBillDTO.setBillCode(purchaseBill.getBillCode());
-                // 入库时间-主表
-                purchaseBillDTO.setInWareHouseTime(purchaseBill.getInWareHouseTime());
-                // 录单时间-主表
-                purchaseBillDTO.setCreateTime(purchaseBill.getCreateTime());
-                // 录单人-主表
-                purchaseBillDTO.setOperatorCode(purchaseBill.getOperatorCode());
-                // 审核人-主表
-                purchaseBillDTO.setAuditPersonCode(purchaseBill.getAuditPersonCode());
-                // 入库站点-主表
-                Station station = (Station) purchaseBill.getInLocation();
-                if (station != null) {
-                    purchaseBillDTO.setInStationCode(station.getStationCode());
-                    // 入库库房-主表
-                    Storage storage = station.getStorage();
-                    if (storage != null) {
-                        purchaseBillDTO.setInStorageCode(storage.getStorageCode());
-                    }
-                }
-                // 供应商编码--主表
-                Supplier supplier = (Supplier) purchaseBill.getOutLocation();
-                if (supplier != null) {
-                    purchaseBillDTO.setSupplierCode(supplier.getSupplierCode());
-                }
-                // 单据提交状态--主表
-                if (purchaseBill.getSubmitState() != null) {
-                    purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState().name());
-                } else {
-                    purchaseBillDTO.setSubmitState("-");
-                }
-                // 单据审核状态--主表
-                if (purchaseBill.getAuditState() != null) {
-                    purchaseBillDTO.setAuditState(purchaseBill.getAuditState().name());
-                } else {
-                    purchaseBillDTO.setAuditState("-");
-                }
-                // 备注--主表
-                purchaseBillDTO.setMemo(purchaseBill.getMemo());
-                // 循环遍历明细信息，累加得到数据
-                Set<PurchaseBillDetail> purchaseBillDetailSet = purchaseBill.getBillDetails();
-                // 实收数量总计
-                Integer amount = 0;
-                // 数量差值总计
-                Integer differenceNumber = 0;
-                // 进货总价
-                BigDecimal inTotalPrice = BigDecimal.ZERO;
-                // 差价总和
-                BigDecimal differencePrice = BigDecimal.ZERO;
-                for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetailSet) {
-                    if (purchaseBillDetail.getAmount() > 0) {
-                        // 累加实收数量
-                        amount += purchaseBillDetail.getAmount();
-                    }
-                    if (purchaseBillDetail.getDifferenceNumber() > 0) {
-                        // 累加数量差值
-                        differenceNumber += purchaseBillDetail.getDifferenceNumber();
-                    }
-                    if (purchaseBillDetail.getUnitPrice() != null && purchaseBillDetail.getAmount() > 0) {
-                        // 累加进货总价
-                        inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getAmount())));
-                    }
-                    if (purchaseBillDetail.getDifferencePrice() != null) {
-                        // 累加差价总和
-                        differencePrice = differencePrice.add(purchaseBillDetail.getDifferencePrice());
-                    }
-                }
-                // 实收数量--明细表
-                purchaseBillDTO.setAmount(amount);
-                // 数量差值--明细表
-                purchaseBillDTO.setDifferenceNumber(differenceNumber);
-                // 总价差值--明细表
-                purchaseBillDTO.setDifferencePrice(differencePrice);
-                // 进货实洋
-                purchaseBillDTO.setInTotalPrice(inTotalPrice);
-
-                purchaseBillDTOList.add(purchaseBillDTO);
+        PurchaseBillDTO purchaseBillDTO = new PurchaseBillDTO();
+        // 进货单号-主表
+        purchaseBillDTO.setBillCode(purchaseBill.getBillCode());
+        // 入库时间-主表
+        purchaseBillDTO.setInWareHouseTime(purchaseBill.getInWareHouseTime());
+        // 录单时间-主表
+        purchaseBillDTO.setCreateTime(purchaseBill.getCreateTime());
+        // 录单人-主表
+        purchaseBillDTO.setOperatorCode(purchaseBill.getOperatorCode());
+        // 审核人-主表
+        purchaseBillDTO.setAuditPersonCode(purchaseBill.getAuditPersonCode());
+        // 入库站点-主表
+        Station station = (Station) purchaseBill.getInLocation();
+        if (station != null) {
+            purchaseBillDTO.setInStationCode(station.getStationCode());
+            // 入库库房-主表
+            Storage storage = station.getStorage();
+            if (storage != null) {
+                purchaseBillDTO.setInStorageCode(storage.getStorageCode());
             }
-            return purchaseBillDTOList;
-        } else {
-            return purchaseBillDTOList;
         }
+        // 供应商编码--主表
+        Supplier supplier = (Supplier) purchaseBill.getOutLocation();
+        if (supplier != null) {
+            purchaseBillDTO.setSupplierCode(supplier.getSupplierCode());
+        }
+        // 单据提交状态--主表
+        purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState());
+
+        // 单据审核状态--主表
+        purchaseBillDTO.setAuditState(purchaseBill.getAuditState());
+
+        // 备注--主表
+        purchaseBillDTO.setMemo(purchaseBill.getMemo());
+        // 循环遍历明细信息，累加得到数据
+        Set<PurchaseBillDetail> purchaseBillDetailSet = purchaseBill.getBillDetails();
+        // 实收数量总计
+        Integer amount = 0;
+        // 数量差值总计
+        Integer differenceNumber = 0;
+        // 进货总价
+        BigDecimal inTotalPrice = BigDecimal.ZERO;
+        // 差价总和
+        BigDecimal differencePrice = BigDecimal.ZERO;
+        for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetailSet) {
+            if (purchaseBillDetail.getAmount() > 0) {
+                // 累加实收数量
+                amount += purchaseBillDetail.getAmount();
+            }
+            if (purchaseBillDetail.getDifferenceNumber() > 0) {
+                // 累加数量差值
+                differenceNumber += purchaseBillDetail.getDifferenceNumber();
+            }
+            if (purchaseBillDetail.getUnitPrice() != null && purchaseBillDetail.getAmount() > 0) {
+                // 累加进货总价
+                inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getAmount())));
+            }
+            if (purchaseBillDetail.getDifferencePrice() != null) {
+                // 累加差价总和
+                differencePrice = differencePrice.add(purchaseBillDetail.getDifferencePrice());
+            }
+        }
+        // 实收数量--明细表
+        purchaseBillDTO.setAmount(amount);
+        // 数量差值--明细表
+        purchaseBillDTO.setDifferenceNumber(differenceNumber);
+        // 总价差值--明细表
+        purchaseBillDTO.setDifferencePrice(differencePrice);
+        // 进货实洋
+        purchaseBillDTO.setInTotalPrice(inTotalPrice);
+
+        return purchaseBillDTO;
 
     }
 

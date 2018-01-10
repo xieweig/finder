@@ -8,16 +8,16 @@ package cn.sisyphe.coffee.bill.domain.base.model.goods;
  */
 public class RawMaterial extends AbstractGoods {
 
-          /**
-         * 原料代码
-         */
-        private String rawMaterialCode;
-        /**
-         * 原料名称
-         */
-        private String rawMaterialName;
+    /**
+     * 原料代码
+     */
+    private String rawMaterialCode;
+    /**
+     * 原料名称
+     */
+    private String rawMaterialName;
 
-        private Cargo cargo;
+    private Cargo cargo;
 
     public Cargo getCargo() {
         return cargo;

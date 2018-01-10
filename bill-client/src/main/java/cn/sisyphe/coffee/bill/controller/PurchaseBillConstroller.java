@@ -5,13 +5,14 @@ import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.infrastructure.share.storage.TempStorage;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryPurchaseBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,8 +72,8 @@ public class PurchaseBillConstroller {
     public ResponseResult findByConditions(@RequestBody ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        QueryPurchaseBillDTO billPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
-        responseResult.put("content", billPage);
+        Page<PurchaseBillDTO> purchaseBillPage = purchaseBillManager.findByConditions(conditionQueryPurchaseBill);
+        responseResult.put("content", purchaseBillPage);
         return responseResult;
     }
 
@@ -85,6 +86,21 @@ public class PurchaseBillConstroller {
     @ApiOperation(value = "根据进货单编码查询进货单详细信息")
     @RequestMapping(path = "/findByPurchaseBillCode", method = RequestMethod.GET)
     public ResponseResult findByPurchaseBillCode(@RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        QueryOnePurchaseBillDTO billDTO = purchaseBillManager.queryOneByCode(purchaseBillCode);
+        responseResult.put("purchaseBill", billDTO);
+        return responseResult;
+    }
+
+    /**
+     * 根据进货单编码查询进货单详细信息
+     *
+     * @param purchaseBillCode 进货单编码
+     * @return
+     */
+    @ApiOperation(value = "根据进货单编码查询进货单详细信息")
+    @RequestMapping(path = "/openPurchaseBill", method = RequestMethod.GET)
+    public ResponseResult openPurchaseBill(@RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
         ResponseResult responseResult = new ResponseResult();
         QueryOnePurchaseBillDTO billDTO = purchaseBillManager.openBill(purchaseBillCode);
         responseResult.put("purchaseBill", billDTO);
@@ -104,8 +120,6 @@ public class PurchaseBillConstroller {
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
-            // TODO: 2018/1/6 操作人编码和当前站点从HEAD中获取
-            billDTO.setOperatorCode("test001");
             purchaseBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -126,7 +140,6 @@ public class PurchaseBillConstroller {
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
-            billDTO.setOperatorCode("test001");
             purchaseBillManager.updateBillToSubmit(billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -142,10 +155,10 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String purchaseBillCode) {
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), true);
+        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), false);
         return responseResult;
     }
 
@@ -157,10 +170,10 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String purchaseBillCode) {
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), false);
+        purchaseBillManager.auditBill(purchaseBillCode, loginInfo.getOperatorCode(), true);
         return responseResult;
     }
 
@@ -181,6 +194,7 @@ public class PurchaseBillConstroller {
         noramlStorageOne.setTempStorageId(1L);
         noramlStorageOne.setTempStorageCode("Noraml001");
         noramlStorageOne.setTempStorageName("正常库01");
+        noramlStorageOne.setStorageType("NORAML");
         noramlStorageOne.setCreateTime(new Date());
         noramlStorageOne.setUpdateTime(new Date());
         noramlStorageOne.setVersion(0L);
@@ -193,6 +207,7 @@ public class PurchaseBillConstroller {
         noramlStorageTwo.setTempStorageId(2L);
         noramlStorageTwo.setTempStorageCode("Noraml002");
         noramlStorageTwo.setTempStorageName("正常库02");
+        noramlStorageTwo.setStorageType("NORAML");
         noramlStorageTwo.setCreateTime(new Date());
         noramlStorageTwo.setUpdateTime(new Date());
         noramlStorageTwo.setVersion(0L);
@@ -205,6 +220,7 @@ public class PurchaseBillConstroller {
         storage.setTempStorageId(3L);
         storage.setTempStorageCode("Storage001");
         storage.setTempStorageName("仓储库01");
+        storage.setStorageType("STORAGE");
         storage.setCreateTime(new Date());
         storage.setUpdateTime(new Date());
         storage.setVersion(0L);
@@ -217,6 +233,7 @@ public class PurchaseBillConstroller {
         inStorage.setTempStorageId(4L);
         inStorage.setTempStorageCode("In001");
         inStorage.setTempStorageName("进货库01");
+        inStorage.setStorageType("IN_STORAGE");
         inStorage.setCreateTime(new Date());
         inStorage.setUpdateTime(new Date());
         inStorage.setVersion(0L);
@@ -229,6 +246,7 @@ public class PurchaseBillConstroller {
         outStorage.setTempStorageId(5L);
         outStorage.setTempStorageCode("Out001");
         outStorage.setTempStorageName("退货库01");
+        inStorage.setStorageType("OUT_STORAGE");
         outStorage.setCreateTime(new Date());
         outStorage.setUpdateTime(new Date());
         outStorage.setVersion(0L);
@@ -241,6 +259,7 @@ public class PurchaseBillConstroller {
         onStorage.setTempStorageId(6L);
         onStorage.setTempStorageCode("On001");
         onStorage.setTempStorageName("在途库01");
+        inStorage.setStorageType("ON_STORAGE");
         onStorage.setCreateTime(new Date());
         onStorage.setUpdateTime(new Date());
         onStorage.setVersion(0L);
@@ -253,6 +272,7 @@ public class PurchaseBillConstroller {
         reservedStorage.setTempStorageId(7L);
         reservedStorage.setTempStorageCode("Reserved001");
         reservedStorage.setTempStorageName("预留库01");
+        inStorage.setStorageType("RESERVE_STORAGE");
         reservedStorage.setCreateTime(new Date());
         reservedStorage.setUpdateTime(new Date());
         reservedStorage.setVersion(0L);

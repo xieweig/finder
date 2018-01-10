@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.infrastructure.returned.jpa;
 
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -21,4 +20,6 @@ public interface JPAReturnedBillRepository extends JpaRepository<ReturnedBill, L
      * @return
      */
     ReturnedBill findOneByBillCode(String billCode);
+    
+    ReturnedBill findOneBySourceCode(String sourceCode);
 }

@@ -1,13 +1,16 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：多条件查询中的单条调拨单据信息
+ * remark：多条件查询中的单条调剂单据信息
  * version: 1.0
  *
  * @author XiongJing
@@ -15,10 +18,13 @@ import java.util.Date;
 public class AdjustBillDTO {
 
     /**
+     * 调剂单号
+     */
+    private String billCode;
+    /**
      * 单据属性
      */
-    private String billTypeStr;
-
+    private SourcePlanTypeEnum billTypeStr;
     /**
      * 出库状态
      */
@@ -27,69 +33,67 @@ public class AdjustBillDTO {
      * 提交状态
      */
     private String submitState;
-
     /**
      * 审核状态
      */
     private String auditState;
-
     /**
-     * 来源单号
+     * 发起单号
      */
     private String rootCode;
 
     /**
-     * 出库单号
+     * 来源单号
      */
-    private String outStrogeCode;
-
+    private String sourceCode;
     /**
      * 录单时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-
     /**
      * 出库时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
-
     /**
-     * 录单人编码
+     * 录单人名称
      */
-    private String operatorCode;
-
+    private String operatorName;
     /**
      * 审核人
      */
-    private String auditPersonCode;
-
+    private String auditorName;
     /**
      * 出库站点
      */
     private String outStationCode;
-
     /**
      * 入库站点
      */
     private String inStationCode;
-
+    /**
+     * 按照原料还是按照货物拣货
+     */
+    private BasicEnum basicEnum;
     /**
      * 配送数量
      */
     private Integer adjustNumber;
-
+    /**
+     * 单据主状态
+     */
+    private BillStateEnum billState;
     /**
      * 配送品种数
      */
     private Integer varietyNumber;
 
-    public String getBillTypeStr() {
+    public SourcePlanTypeEnum getBillTypeStr() {
         return billTypeStr;
     }
 
-    public void setBillTypeStr(String billTypeStr) {
+    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
         this.billTypeStr = billTypeStr;
     }
 
@@ -125,12 +129,12 @@ public class AdjustBillDTO {
         this.rootCode = rootCode;
     }
 
-    public String getOutStrogeCode() {
-        return outStrogeCode;
+    public String getBillCode() {
+        return billCode;
     }
 
-    public void setOutStrogeCode(String outStrogeCode) {
-        this.outStrogeCode = outStrogeCode;
+    public void setBillCode(String billCode) {
+        this.billCode = billCode;
     }
 
     public Date getCreateTime() {
@@ -149,20 +153,12 @@ public class AdjustBillDTO {
         this.outWareHouseTime = outWareHouseTime;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
-    }
-
-    public String getAuditPersonCode() {
-        return auditPersonCode;
-    }
-
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
     public String getOutStationCode() {
@@ -181,12 +177,28 @@ public class AdjustBillDTO {
         this.inStationCode = inStationCode;
     }
 
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+
     public Integer getAdjustNumber() {
         return adjustNumber;
     }
 
     public void setAdjustNumber(Integer adjustNumber) {
         this.adjustNumber = adjustNumber;
+    }
+
+    public BillStateEnum getBillState() {
+        return billState;
+    }
+
+    public void setBillState(BillStateEnum billState) {
+        this.billState = billState;
     }
 
     public Integer getVarietyNumber() {
@@ -197,6 +209,22 @@ public class AdjustBillDTO {
         this.varietyNumber = varietyNumber;
     }
 
+    public String getAuditorName() {
+        return auditorName;
+    }
+
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
+    }
+
     @Override
     public String toString() {
         return "AdjustBillDTO{" +
@@ -205,14 +233,16 @@ public class AdjustBillDTO {
                 ", submitState='" + submitState + '\'' +
                 ", auditState='" + auditState + '\'' +
                 ", rootCode='" + rootCode + '\'' +
-                ", outStrogeCode='" + outStrogeCode + '\'' +
+                ", billCode='" + billCode + '\'' +
                 ", createTime=" + createTime +
                 ", outWareHouseTime=" + outWareHouseTime +
-                ", operatorCode='" + operatorCode + '\'' +
-                ", auditPersonCode='" + auditPersonCode + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", auditorName='" + auditorName + '\'' +
                 ", outStationCode='" + outStationCode + '\'' +
                 ", inStationCode='" + inStationCode + '\'' +
+                ", basicEnum=" + basicEnum +
                 ", adjustNumber=" + adjustNumber +
+                ", billState=" + billState +
                 ", varietyNumber=" + varietyNumber +
                 '}';
     }

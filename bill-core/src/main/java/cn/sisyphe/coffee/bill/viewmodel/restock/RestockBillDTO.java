@@ -13,7 +13,10 @@ import java.util.Set;
  * bifenglin
  */
 public class RestockBillDTO {
-
+    /**
+     * 创建时间
+     */
+    private Date createTime;
     /**
      * 单据号
      */
@@ -51,11 +54,11 @@ public class RestockBillDTO {
     /**
      * 操作人代码
      */
-    private String operatorCode;
+    private String operatorName;
     /**
      * 审核人编码
      */
-    private String auditPersonCode;
+    private String auditPersonName;
 
     /**
      * 单据属性
@@ -128,6 +131,14 @@ public class RestockBillDTO {
 
     private Set<RestockBillDetailDTO> billDetails;
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     public String getBillCode() {
         return billCode;
     }
@@ -184,12 +195,12 @@ public class RestockBillDTO {
         this.rootCode = rootCode;
     }
 
-    public String getAuditPersonCode() {
-        return auditPersonCode;
+    public String getAuditPersonName() {
+        return auditPersonName;
     }
 
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
+    public void setAuditPersonName(String auditPersonName) {
+        this.auditPersonName = auditPersonName;
     }
 
     public BillStateEnum getBillState() {
@@ -256,14 +267,13 @@ public class RestockBillDTO {
         this.basicEnum = basicEnum;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
-
 
     public int getAmount() {
         return amount;

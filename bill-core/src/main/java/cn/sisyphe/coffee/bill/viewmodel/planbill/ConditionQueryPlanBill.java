@@ -1,8 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -36,12 +34,12 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     /**
      * 入库站点编号集合
      */
-    private Set<String> inStationCodeArray;
+    private String inStationCodeArray;
 
     /**
      * 出库站点编号集合
      */
-    private Set<String> outStationCodeArray;
+    private String outStationCodeArray;
 
 
     /**
@@ -51,10 +49,20 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
 
     private List<String> creatorCodeList;
 
-    private BillStateEnum billState;
+    /**
+     * 单据状态
+     */
+    private List<BillSubmitStateEnum> submitStates;
 
+
+    private List<BillAuditStateEnum> auditStates;
+    /**
+     * 单据作用
+     */
     private BillPurposeEnum billPurpose;
-
+    /**
+     * 单据种类
+     */
     private BillTypeEnum specificBillType;
 
     /**
@@ -85,12 +93,20 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.creatorCodeList = creatorCodeList;
     }
 
-    public BillStateEnum getBillState() {
-        return billState;
+    public List<BillSubmitStateEnum> getSubmitStates() {
+        return submitStates;
     }
 
-    public void setBillState(BillStateEnum billState) {
-        this.billState = billState;
+    public void setSubmitStates(List<BillSubmitStateEnum> submitStates) {
+        this.submitStates = submitStates;
+    }
+
+    public List<BillAuditStateEnum> getAuditStates() {
+        return auditStates;
+    }
+
+    public void setAuditStates(List<BillAuditStateEnum> auditStates) {
+        this.auditStates = auditStates;
     }
 
     public BillPurposeEnum getBillPurpose() {
@@ -133,19 +149,19 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.createEndTime = createEndTime;
     }
 
-    public Set<String> getInStationCodeArray() {
+    public String getInStationCodeArray() {
         return inStationCodeArray;
     }
 
-    public void setInStationCodeArray(Set<String> inStationCodeArray) {
+    public void setInStationCodeArray(String inStationCodeArray) {
         this.inStationCodeArray = inStationCodeArray;
     }
 
-    public Set<String> getOutStationCodeArray() {
+    public String getOutStationCodeArray() {
         return outStationCodeArray;
     }
 
-    public void setOutStationCodeArray(Set<String> outStationCodeArray) {
+    public void setOutStationCodeArray(String outStationCodeArray) {
         this.outStationCodeArray = outStationCodeArray;
     }
 

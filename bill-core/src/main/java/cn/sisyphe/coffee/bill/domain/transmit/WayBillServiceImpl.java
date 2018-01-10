@@ -73,9 +73,6 @@ public class WayBillServiceImpl implements WayBillService {
         return wayBillRepository.findAll((root, query, cb) -> {
             // 分组后去重复
             query.distinct(true);
-
-            System.out.println("getReceivedStatus :" + conditionQueryWayBill.getReceivedStatus());
-
             Predicate predicate = cb.conjunction();
             //左连接
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
@@ -92,14 +89,15 @@ public class WayBillServiceImpl implements WayBillService {
                         "%" + conditionQueryWayBill.getOutStorageBillCode() + "%"));
             }
             // 入库站点
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getInStationCode())) {
-                expressions.add(cb.equal(root.<String>get("inStationCode"),
-                        "" + conditionQueryWayBill.getInStationCode() + ""));
+            if (conditionQueryWayBill.getInStationCode() != null
+                    && conditionQueryWayBill.getInStationCode().size() > 0) {
+                expressions.add(root.<String>get("inStationCode").in(conditionQueryWayBill.getInStationCode()));
             }
             //出库站点
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStationCode())) {
-                expressions.add(cb.equal(root.<String>get("outStationCode"),
-                        "" + conditionQueryWayBill.getOutStationCode() + ""));
+            if (conditionQueryWayBill.getOutStationCode() != null
+                    && conditionQueryWayBill.getOutStationCode().size() > 0) {
+                //outStationCode
+                expressions.add(root.<String>get("outStationCode").in(conditionQueryWayBill.getOutStationCode()));
             }
             //物流公司名称
             if (!StringUtils.isEmpty(conditionQueryWayBill.getLogisticsCompanyName())) {
@@ -112,24 +110,44 @@ public class WayBillServiceImpl implements WayBillService {
                         "%" + conditionQueryWayBill.getOperatorName() + "%"));
             }
             //收货状态receivedStatus
-            if (conditionQueryWayBill.getReceivedStatus() != null) {
-                expressions.add(cb.equal(root.get("receivedStatus").as(ReceivedStatusEnum.class),
+            if (conditionQueryWayBill.getReceivedStatus() != null
+                    && !StringUtils.isEmpty(conditionQueryWayBill.getReceivedStatus())) {
+
+                expressions.add(cb.equal(root.get("receivedStatus").as(String.class),
                         conditionQueryWayBill.getReceivedStatus()));
             }
-            // 录单时间
-            if (conditionQueryWayBill.getCreateStartTime() != null &&
-                    conditionQueryWayBill.getCreateEndTime() != null) {
-                //当 开始时间和结束时间 都不为空时 拼接sql
-                expressions.add(cb.between(root.<Date>get("createTime"), conditionQueryWayBill.getCreateStartTime(),
+
+            /**
+             * 录单开始时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getCreateStartTime())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class),
+                        conditionQueryWayBill.getCreateStartTime()));
+            }
+            /**
+             * 录单结束时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getCreateEndTime())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class),
                         conditionQueryWayBill.getCreateEndTime()));
             }
-            // 发货时间
-            if (conditionQueryWayBill.getDeliveryStartTime() != null &&
-                    conditionQueryWayBill.getDeliveryEndTime() != null) {
-                //当 开始时间和结束时间 都不为空时 拼接sql
-                expressions.add(cb.between(root.<Date>get("deliveryTime"), conditionQueryWayBill.getDeliveryStartTime(),
-                        conditionQueryWayBill.getDeliveryEndTime()));
+
+            /**
+             * 发货开始时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getDeliveryStartTime())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("deliveryTime").as(Date.class),
+                        conditionQueryWayBill.getCreateStartTime()));
             }
+
+            /**
+             *  发货结束时间
+             */
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getDeliveryEndTime())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("deliveryTime").as(Date.class),
+                        conditionQueryWayBill.getCreateEndTime()));
+            }
+
             //运货件数
             if (conditionQueryWayBill.getAmountOfPackages() != null) {
                 expressions.add(cb.equal(root.<String>get("amountOfPackages"),
@@ -193,17 +211,25 @@ public class WayBillServiceImpl implements WayBillService {
 
         //1先查询一条数据库里的内容
         WayBill wayBillDB = wayBillRepository.findOneByCode(wayBill.getBillCode());
-        //2设置值
+        //清除
+        wayBillDB.getWayBillDetailSet().clear();
+
+        // 入库站点code
+        if (StringUtils.isEmpty(wayBill.getInStationCode())) {
+            wayBillDB.setInStationCode(wayBill.getInStationCode());
+        }
+        //出库站点code
+        if (StringUtils.isEmpty(wayBill.getOutStationCode())) {
+            wayBillDB.setOutStationCode(wayBill.getOutStationCode());
+        }
         //公司名称
         if (!StringUtils.isEmpty(wayBill.getLogisticsCompanyName())) {
             wayBillDB.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());
-
         }
         //目的地
         if (!StringUtils.isEmpty(wayBill.getDestination())) {
             wayBillDB.setDestination(wayBill.getDestination());
         }
-
         //备注
         if (!StringUtils.isEmpty(wayBill.getMemo())) {
             wayBillDB.setMemo(wayBill.getMemo());
@@ -211,7 +237,6 @@ public class WayBillServiceImpl implements WayBillService {
         //到货时间
         if (!StringUtils.isEmpty(wayBill.getPlanArrivalTime())) {
             wayBillDB.setPlanArrivalTime(wayBill.getPlanArrivalTime());
-
         }
         //发货时间
         if (!StringUtils.isEmpty(wayBill.getDeliveryTime())) {
@@ -230,7 +255,9 @@ public class WayBillServiceImpl implements WayBillService {
         if (wayBillDB.getReceivedStatus().equals(ReceivedStatusEnum.IS_RECEIVED)) {
             throw new DataException("50003", "已经确定了收货不能修改");
         }
-        //3保存
+        // 设置明细的方法
+        wayBillDB.getWayBillDetailSet().addAll(wayBill.getWayBillDetailSet());//
+        //
         wayBillDB = wayBillRepository.save(wayBillDB);
         return wayBillDB;
     }

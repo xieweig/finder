@@ -26,6 +26,10 @@ public class ReturnedBill extends Bill<ReturnedBillDetail> {
     public ReturnedBill() {
         setBillType(BillTypeEnum.RETURNED);
     }
+    /**
+     * 完成度
+     */
+    private BigDecimal progress;
 
     /**
      * 单据属性
@@ -46,11 +50,6 @@ public class ReturnedBill extends Bill<ReturnedBillDetail> {
      * 操作人
      */
     private String operatorCode;
-
-    /**
-     * 来源单号
-     */
-    private String fromBillCode;
 
     /**
      * 退货数量
@@ -109,14 +108,6 @@ public class ReturnedBill extends Bill<ReturnedBillDetail> {
         this.billProperty = billProperty;
     }
 
-    public String getFromBillCode() {
-        return fromBillCode;
-    }
-
-    public void setFromBillCode(String fromBillCode) {
-        this.fromBillCode = fromBillCode;
-    }
-
     public cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum getBasicEnum() {
         return basicEnum;
     }
@@ -171,5 +162,13 @@ public class ReturnedBill extends Bill<ReturnedBillDetail> {
 
     public void setVariety(int variety) {
         this.variety = variety;
+    }
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
     }
 }
