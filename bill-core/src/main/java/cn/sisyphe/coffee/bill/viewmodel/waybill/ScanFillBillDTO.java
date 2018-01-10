@@ -36,10 +36,20 @@ public class ScanFillBillDTO implements Serializable {
      */
     private String inStationCode;
 
+    /**
+     * 入库站点名称
+     */
+    private String inStationName;
+
+
+    /**
+     * 出库站点名称
+     */
+    private String outStationName;
 
     private String operatorName;
     //包号
-    //
+    //包号可以不自动提取
     private List<String> packNumbers;
     /**
      * 出库时间
@@ -109,6 +119,23 @@ public class ScanFillBillDTO implements Serializable {
         return billType;
     }
 
+    public String getInStationName() {
+
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
+    public String getOutStationName() {
+        return outStationName;
+    }
+
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
+    }
+
     public void setBillType(String billType) {
         this.billType = billType;
     }
@@ -139,6 +166,8 @@ public class ScanFillBillDTO implements Serializable {
                 ", operatorCode='" + operatorCode + '\'' +
                 ", outStationCode='" + outStationCode + '\'' +
                 ", inStationCode='" + inStationCode + '\'' +
+                ", inStationName='" + inStationName + '\'' +
+                ", outStationName='" + outStationName + '\'' +
                 ", operatorName='" + operatorName + '\'' +
                 ", packNumbers=" + packNumbers +
                 ", outStockTime=" + outStockTime +

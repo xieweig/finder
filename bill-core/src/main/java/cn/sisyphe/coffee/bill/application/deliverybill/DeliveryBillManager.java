@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.application.deliverybill;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
@@ -26,6 +28,11 @@ import java.util.Set;
 @Service
 public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
 
+
+    //公共信息
+    @Autowired
+    private SharedManager sharedManager;
+
     @Autowired
     private DeliveryBillQueryService deliveryBillQueryService;
 
@@ -34,6 +41,21 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
+
+
+    /**
+     * @param stationCode
+     * @return
+     */
+    private Station findStation(String stationCode) {
+        Station station = null;
+        station = sharedManager.findStationByStationCode(stationCode);
+        if (station == null) {
+            return new Station(stationCode);
+        }
+        return station;
+    }
+
 
     /**
      * 出库单打包汇总
@@ -77,15 +99,22 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         scanFillBillDTO.setTotalCount(totalCount);
         //总数量
         scanFillBillDTO.setTotalAmount(totalAmount);
+        //findStation
         //出库时间
         scanFillBillDTO.setOutStockTime(deliveryBill.getOutStockTime());
         //入库站点
         if (deliveryBill.getInLocation() != null) {
-            scanFillBillDTO.setInStationCode(deliveryBill.getInLocation().code());
+            //
+            Station station = this.findStation(deliveryBill.getInLocation().code());
+            scanFillBillDTO.setInStationCode(station.getStationCode());
+            scanFillBillDTO.setInStationName(station.getStationName());
         }
         //出库站点
         if (deliveryBill.getOutLocation() != null) {
-            scanFillBillDTO.setOutStationCode(deliveryBill.getOutLocation().code());
+            Station stationOut = this.findStation(deliveryBill.getInLocation().code());
+            scanFillBillDTO.setOutStationCode(stationOut.getStationCode());
+            scanFillBillDTO.setOutStationName(stationOut.getStationName());
+
         }
         //
         return scanFillBillDTO;
