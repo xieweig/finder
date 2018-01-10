@@ -3,7 +3,6 @@ package cn.sisyphe.coffee.bill.domain.restock;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,9 +25,6 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
     @Autowired
     private RestockBillRepository restockBillRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     /**
      * 根据单据编码查询单据信息
      *
@@ -37,16 +33,10 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
      */
     @Override
     public RestockBill findByBillCode(String billCode) {
-        if (StringUtils.isEmpty(billCode)) {
-            throw new DataException("20011", "进货单编码为空");
-        }
         RestockBill restockBill = restockBillRepository.findOneByBillCode(billCode);
-        if (restockBill != null) {
-            return restockBill;
-        } else {
-            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
-        }
+        return restockBill;
     }
+
     @Override
     public Page<RestockBill> findPageByCondition(ConditionQueryRestockBill conditionQueryRestockBill) {
         // 组装页面
@@ -86,7 +76,7 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
              * 出库单编码
              */
             if (!StringUtils.isEmpty(conditionQueryRestockBill.getBillCode())) {
-                expressions.add(cb.like(root.get("billCode").as(String.class), "%"+conditionQueryRestockBill.getBillCode()+"%"));
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryRestockBill.getBillCode() + "%"));
             }
             /**
              * 入库站点集合
