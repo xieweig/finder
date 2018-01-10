@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
@@ -35,7 +34,7 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
     private UserRepository userRepository;
 
     @Override
-    public void updateOperationStateByBill(PlanBill planBill, OperationStateEnum operationState){
+    public void updateOperationStateByBill(PlanBill planBill, OperationStateEnum operationState) {
         planBill.setOperationState(operationState);
         planBillRepository.save(planBill);
     }
@@ -60,28 +59,12 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
     @Override
     public PlanBill findByBillCode(String planBillCode) {
-        if (StringUtils.isEmpty(planBillCode)) {
-            throw new DataException("20011", "进货单编码为空");
-        }
-        PlanBill planBill = planBillRepository.findOneByBillCode(planBillCode);
-        if (planBill != null) {
-            return planBill;
-        } else {
-            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
-        }
+        return planBillRepository.findOneByBillCode(planBillCode);
     }
 
     @Override
     public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
-        if (StringUtils.isEmpty(billCode)) {
-            throw new DataException("20011", "进货单编码为空");
-        }
-        PlanBill planBill = planBillRepository.findByBillCodeAndType(billCode, billType);
-        if (planBill != null) {
-            return planBill;
-        } else {
-            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
-        }
+        return planBillRepository.findByBillCodeAndType(billCode, billType);
     }
 
     @Override
