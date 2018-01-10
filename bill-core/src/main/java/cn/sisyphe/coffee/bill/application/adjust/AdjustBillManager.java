@@ -16,7 +16,13 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.*;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -43,6 +49,7 @@ import static ch.lambdaj.Lambda.sum;
 @Service
 public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
 
+    public static final String ADJUST_OUT_STORAGE_PREFIX = "tjckd";
     @Autowired
     private PlanBillExtraService planBillExtraService;
 
@@ -356,7 +363,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
 
     // TODO: 2018/1/9 临时单据编码
     private String generateBillCode() {
-        return String.valueOf(System.currentTimeMillis());
+        return ADJUST_OUT_STORAGE_PREFIX + String.valueOf(System.currentTimeMillis());
     }
 
     // 是否是从总部计划单中来的
