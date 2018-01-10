@@ -2,12 +2,38 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.Transient;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
  * 单据基础类
@@ -141,6 +167,72 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         outLocation = dbStation.getOutLocation();
     }
 
+    /**
+     * 出库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outWareHouseTime;
+
+    /**
+     * 入库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date inWareHouseTime;
+
+
+    /**
+     * 出库状态编码
+     */
+    @Enumerated(EnumType.STRING)
+    private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
+
+    /**
+     * 调剂数量
+     */
+    private Integer adjustNumber;
+
+    /**
+     * 调剂品种数
+     */
+    private Integer varietyNumber;
+
+    /**
+     * 计划备注
+     */
+    private String planMemo;
+
+    /**
+     * 出库备注
+     */
+    private String outStorageMemo;
+
+    /**
+     * 审核意见
+     */
+    private String auditMemo;
+
+    /**
+     * 按货物还是按原料
+     */
+    @Enumerated(EnumType.STRING)
+    private BasicEnum basicEnum;
+
+    /**
+     * 完成度
+     */
+    private BigDecimal progress;
+
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
+
+
+    /**
+     * 单据来源类型
+     */
+    private SourcePlanTypeEnum billProperty;
+
 
     public AbstractLocation getOutLocation() {
         return outLocation;
@@ -272,6 +364,110 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setInOrOutState(BillInOrOutStateEnum inOrOutState) {
         this.inOrOutState = inOrOutState;
+    }
+
+    public DbStation getDbStation() {
+        return dbStation;
+    }
+
+    public void setDbStation(DbStation dbStation) {
+        this.dbStation = dbStation;
+    }
+
+    public Date getOutWareHouseTime() {
+        return outWareHouseTime;
+    }
+
+    public void setOutWareHouseTime(Date outWareHouseTime) {
+        this.outWareHouseTime = outWareHouseTime;
+    }
+
+    public Date getInWareHouseTime() {
+        return inWareHouseTime;
+    }
+
+    public void setInWareHouseTime(Date inWareHouseTime) {
+        this.inWareHouseTime = inWareHouseTime;
+    }
+
+    public SourcePlanTypeEnum getBillProperty() {
+        return billProperty;
+    }
+
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
+        this.billProperty = billProperty;
+    }
+
+    public BillOutStateEnum getOutStateEnum() {
+        return outStateEnum;
+    }
+
+    public void setOutStateEnum(BillOutStateEnum outStateEnum) {
+        this.outStateEnum = outStateEnum;
+    }
+
+    public Integer getAdjustNumber() {
+        return adjustNumber;
+    }
+
+    public void setAdjustNumber(Integer adjustNumber) {
+        this.adjustNumber = adjustNumber;
+    }
+
+    public Integer getVarietyNumber() {
+        return varietyNumber;
+    }
+
+    public void setVarietyNumber(Integer varietyNumber) {
+        this.varietyNumber = varietyNumber;
+    }
+
+    public String getPlanMemo() {
+        return planMemo;
+    }
+
+    public void setPlanMemo(String planMemo) {
+        this.planMemo = planMemo;
+    }
+
+    public String getOutStorageMemo() {
+        return outStorageMemo;
+    }
+
+    public void setOutStorageMemo(String outStorageMemo) {
+        this.outStorageMemo = outStorageMemo;
+    }
+
+    public String getAuditMemo() {
+        return auditMemo;
+    }
+
+    public void setAuditMemo(String auditMemo) {
+        this.auditMemo = auditMemo;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
+    }
+
+    public BigDecimal getProgress() {
+        return progress;
+    }
+
+    public void setProgress(BigDecimal progress) {
+        this.progress = progress;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override

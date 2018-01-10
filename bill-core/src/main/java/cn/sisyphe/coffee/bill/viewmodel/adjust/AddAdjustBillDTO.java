@@ -50,10 +50,6 @@ public class AddAdjustBillDTO {
      */
     private String inStationCode;
     /**
-     * 单据属性
-     */
-    private SourcePlanTypeEnum billTypeStr;
-    /**
      * 出库状态编码
      */
     private BillOutStateEnum outStatusCode;
@@ -92,7 +88,7 @@ public class AddAdjustBillDTO {
     /**
      * 单据来源类型
      */
-    private SourcePlanTypeEnum sourcePlanType;
+    private SourcePlanTypeEnum billProperty;
     /**
      * 货物/原料明细信息
      */
@@ -154,13 +150,6 @@ public class AddAdjustBillDTO {
         this.inStationCode = inStationCode;
     }
 
-    public SourcePlanTypeEnum getBillTypeStr() {
-        return billTypeStr;
-    }
-
-    public void setBillTypeStr(SourcePlanTypeEnum billTypeStr) {
-        this.billTypeStr = billTypeStr;
-    }
 
     public BillOutStateEnum getOutStatusCode() {
         return outStatusCode;
@@ -249,12 +238,13 @@ public class AddAdjustBillDTO {
     public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
-    public SourcePlanTypeEnum getSourcePlanType() {
-        return sourcePlanType;
+
+    public SourcePlanTypeEnum getBillProperty() {
+        return billProperty;
     }
 
-    public void setSourcePlanType(SourcePlanTypeEnum sourcePlanType) {
-        this.sourcePlanType = sourcePlanType;
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
+        this.billProperty = billProperty;
     }
 
     @Override
@@ -268,7 +258,6 @@ public class AddAdjustBillDTO {
                 ", outStationCode='" + outStationCode + '\'' +
                 ", outStorage=" + outStorage +
                 ", inStationCode='" + inStationCode + '\'' +
-                ", billTypeStr='" + billTypeStr + '\'' +
                 ", outStatusCode=" + outStatusCode +
                 ", submitState='" + submitState + '\'' +
                 ", auditState='" + auditState + '\'' +
@@ -278,7 +267,6 @@ public class AddAdjustBillDTO {
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
                 ", basicEnum=" + basicEnum +
-                ", sourcePlanType=" + sourcePlanType +
                 ", details=" + details +
                 '}';
     }

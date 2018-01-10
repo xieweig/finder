@@ -134,7 +134,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         }
         // 如果是根据原料拣货，则需要去查询一下总部计划单里面的数据
         if (BasicEnum.BY_MATERIAL.equals(adjustBill.getBasicEnum())) {
-            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getSourceCode());
+            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getRootCode());
             Set<PlanBillDetail> billDetails = planBill.getBillDetails();
             return toMapOneDTO(adjustBill, billDetails);
         } else {
@@ -145,7 +145,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     /**
      * map数据
      *
-     * @param adjustBill 调拨单信息
+     * @param adjustBill       调拨单信息
      * @param addAdjustBillDTO
      */
     private void mapBill(AdjustBill adjustBill, AddAdjustBillDTO addAdjustBillDTO) {
@@ -160,7 +160,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBill.setInLocation(new Station(addAdjustBillDTO.getInStationCode()));
         //设置源单号
         if (isFromPlanBill(addAdjustBillDTO)) {
-            adjustBill.setBillTypeStr(addAdjustBillDTO.getSourcePlanType());
+            adjustBill.setBillProperty(addAdjustBillDTO.getBillProperty());
             adjustBill.setRootCode(addAdjustBillDTO.getRootCode());
             adjustBill.setSourceCode(addAdjustBillDTO.getRootCode());
         }
@@ -286,7 +286,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             queryOneAdjustDTO.setInStationCode(inLocation.getStationCode());
         }
         // 单据属性
-        queryOneAdjustDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+        queryOneAdjustDTO.setBillTypeStr(adjustBill.getBillProperty());
         // 出库状态
         queryOneAdjustDTO.setOutStateEnum(adjustBill.getOutStateEnum());
         // 提交状态
@@ -303,6 +303,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         queryOneAdjustDTO.setOutStorageMemo(adjustBill.getOutStorageMemo());
         // 审核意见
         queryOneAdjustDTO.setAuditMemo(adjustBill.getAuditMemo());
+        // 设置原料拣货或者货物拣货
+        queryOneAdjustDTO.setBasicEnum(adjustBill.getBasicEnum());
         // 调剂货物计划详情
         List<AdjustBillDetailDTO> detailDTOS = new ArrayList<>();
         Set<AdjustBillDetail> details = adjustBill.getBillDetails();
@@ -342,7 +344,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     private AdjustBillDTO toMapConditionsDTO(AdjustBill adjustBill) {
         AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
         // 单据属性
-        adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+        adjustBillDTO.setBillProperty(adjustBill.getBillProperty());
         // 出库状态
         adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
         // 提交状态

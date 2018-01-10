@@ -2,16 +2,15 @@ package cn.sisyphe.coffee.bill.domain.purchase;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * 进货单
+ *
  * @author heyong
  */
 @Entity
@@ -42,12 +41,6 @@ public final class PurchaseBill extends Bill<PurchaseBillDetail> {
      * 备注
      */
     private String memo;
-
-    /**
-     * 入库时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date inWareHouseTime;
 
     public String getFreightCode() {
         return freightCode;
@@ -81,12 +74,5 @@ public final class PurchaseBill extends Bill<PurchaseBillDetail> {
         this.memo = memo;
     }
 
-    public Date getInWareHouseTime() {
-        return inWareHouseTime;
-    }
-
-    public void setInWareHouseTime(Date inWareHouseTime) {
-        this.inWareHouseTime = inWareHouseTime;
-    }
 
 }
