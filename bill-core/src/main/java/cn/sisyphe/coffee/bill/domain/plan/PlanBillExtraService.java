@@ -1,10 +1,19 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import org.springframework.data.domain.Page;
 
 public interface PlanBillExtraService {
+
+    /**
+     * 修改拣货状态
+     *
+     * @param planBill 查询条件 operationState拣货状态
+     * @return
+     */
+    void updateOperationStateByBill(PlanBill planBill, OperationStateEnum operationState);
     /**
      * 多条件查询计划单数据
      *

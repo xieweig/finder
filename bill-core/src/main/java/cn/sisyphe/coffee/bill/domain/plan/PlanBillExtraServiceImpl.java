@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -32,6 +33,12 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Override
+    public void updateOperationStateByBill(PlanBill planBill, OperationStateEnum operationState){
+        planBill.setOperationState(operationState);
+        planBillRepository.save(planBill);
+    }
 
     @Override
     public Page<PlanBill> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {

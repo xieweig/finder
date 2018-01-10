@@ -22,6 +22,7 @@ import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
@@ -406,6 +407,9 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
      */
     private ChildPlanBillDTO mapChildPlanBillToDTO(PlanBill childPlanBill) {
         ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
+        //拣货状态
+        childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
+
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
         childPlanBillDTO.setMemo(childPlanBill.getMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
@@ -448,5 +452,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
         planBill.setProgress(progress);
         planBillExtraService.save(planBill);
+    }
+
+    public void Operation(String billCode, OperationStateEnum operationState) {
+        PlanBill planBill = planBillExtraService.findByBillCode(billCode);
+        planBillExtraService.updateOperationStateByBill(planBill,operationState);
     }
 }

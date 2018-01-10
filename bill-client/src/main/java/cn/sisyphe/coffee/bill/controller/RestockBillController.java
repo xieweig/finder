@@ -68,9 +68,7 @@ public class RestockBillController {
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 //测试使用
                 childPlanBillDTO.setOperatorName("操作人：懒羊羊");
-
 //                restockCodeList.add(childPlanBillDTO.getBillCode());
-
             }
 
             responseResult.put("content", planBillDTOS);

@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 public class PlanBill extends Bill<PlanBillDetail> {
 
     @Column
+    @Enumerated(value = EnumType.STRING)
     private OperationStateEnum operationState;
 
     @Column

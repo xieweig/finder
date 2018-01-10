@@ -43,10 +43,6 @@ import java.util.*;
 public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
     @Autowired
-    private RestockBillRepository restockBillRepository;
-    @Autowired
-    private PlanBillRepository planBillRepository;
-    @Autowired
     private SharedManager sharedManager;
 
 
