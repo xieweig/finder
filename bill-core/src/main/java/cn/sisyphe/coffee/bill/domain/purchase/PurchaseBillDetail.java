@@ -63,6 +63,7 @@ public class PurchaseBillDetail extends BillDetail {
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
+
     public int getShippedNumber() {
         return shippedNumber;
     }

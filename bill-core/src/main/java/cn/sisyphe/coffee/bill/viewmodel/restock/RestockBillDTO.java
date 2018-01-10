@@ -82,7 +82,7 @@ public class RestockBillDTO {
     /**
      * 退货数量
      */
-    private int amount;
+    private Integer amount;
 
     /**
      * 退货品种数
@@ -280,11 +280,11 @@ public class RestockBillDTO {
         this.operatorName = operatorName;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 

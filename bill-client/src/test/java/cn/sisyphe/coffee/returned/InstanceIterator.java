@@ -34,7 +34,8 @@ public class InstanceIterator {
     private BufferedInputStream bufferedInputStream;
     public static final String[] PLANCODES = {"010293", "010160", "010476"};
     public static final String[] ROOTCODES = {"010293", "010160", "010476"};
-
+    public static final String[] CARGOCODE = {"AD","SSA","SDS","WEA"};
+    public static final String[] RAWMATERIALCODE = {"2","7","8","9"};
     //默认一个bill三个detail
     public AddReturnedBillDTO nextRandomAddReturnedBillDTO() {
         return this.nextRandomRestockBillDTO(3);
@@ -79,10 +80,11 @@ public class InstanceIterator {
         ReturnedBillDetailDTO billDetailDTO = new ReturnedBillDetailDTO();
         billDetailDTO.setActualAmount(random.nextInt(100));
         billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
-        RawMaterial rawMaterial = new RawMaterial("030201" + random.nextInt(2000));
-        Cargo cargo = new Cargo("00205" + random.nextInt(1000));
+        RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
+        Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
         cargo.setCargoName("cargoName:" + random.nextInt(100));
         rawMaterial.setCargo(cargo);
+
 
 
         billDetailDTO.setRawMaterial(rawMaterial);
