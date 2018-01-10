@@ -5,16 +5,12 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBilExtraService;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillQueryService;
 import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.AuditDeliveryBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.QueryDeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.*;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/1/4.
@@ -43,7 +35,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     private SharedManager sharedManager;
 
     @Autowired
-    private DeliveryBillQueryService deliveryBillQueryService;
+    private DeliveryBilExtraService deliveryBilExtraService;
 
 
     @Autowired
@@ -75,7 +67,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     public ScanFillBillDTO scanQueryBill(String billCode) {
 
         ScanFillBillDTO scanFillBillDTO = new ScanFillBillDTO();
-        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(billCode);
+        DeliveryBill deliveryBill = deliveryBilExtraService.findOneByBillCode(billCode);
 
         if (deliveryBill == null) {
             return null;
@@ -143,7 +135,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         }
         DeliveryBillDTO deliveryBillDTO = new DeliveryBillDTO();
 
-        deliveryBillDTO = deliveryBillDTO.convertBillToDTO(deliveryBillQueryService.findOneByBillCode(billCode));
+        deliveryBillDTO = deliveryBillDTO.convertBillToDTO(deliveryBilExtraService.findOneByBillCode(billCode));
         return deliveryBillDTO;
     }
 
@@ -158,8 +150,8 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
 
         QueryDeliveryBillDTO queryDeliveryBillDTO = new QueryDeliveryBillDTO();
 
-        //TODO: 2018/1/5 分页查询
-        Page<DeliveryBill> deliveryBillPages = deliveryBillQueryService.findPageByCondition(conditionQueryDeliveryBill);
+        //TODO: 2018/1/5 deliveryBilExtraService
+        Page<DeliveryBill> deliveryBillPages = deliveryBilExtraService.findPageByCondition(conditionQueryDeliveryBill);
         // 转换
         List<DeliveryBillDTO> billDTOList = this.convertToQueryPageDTO(deliveryBillPages.getContent());
         // 总数
@@ -264,7 +256,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         // 拣货提交生成出库单
 
         //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
-        deliveryBill = deliveryBillQueryService.findOneByBillCode(editDTO.getBillCode());
+        deliveryBill = deliveryBilExtraService.findOneByBillCode(editDTO.getBillCode());
 
         //
         submit(deliveryBill);
@@ -283,7 +275,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
 
         deliveryBillDTO.setAuditPass(true);
         //找到单据
-        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(deliveryBillDTO.getBillCode());
+        DeliveryBill deliveryBill = deliveryBilExtraService.findOneByBillCode(deliveryBillDTO.getBillCode());
         //意见
         deliveryBill.setAuditMemo(deliveryBillDTO.getAuditOpinion());
         // 设置审核人code
@@ -303,7 +295,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         this.checkAuditParam(deliveryBillDTO);
         deliveryBillDTO.setAuditPass(false);
         //找到单据
-        DeliveryBill deliveryBill = deliveryBillQueryService.findOneByBillCode(deliveryBillDTO.getBillCode());
+        DeliveryBill deliveryBill = deliveryBilExtraService.findOneByBillCode(deliveryBillDTO.getBillCode());
         //意见
         deliveryBill.setAuditMemo(deliveryBillDTO.getAuditOpinion());
         // 设置审核人code
