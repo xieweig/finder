@@ -259,7 +259,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         restockBill.setOutLocation(addRestockBillDTO.getOutStation());
 
         Set<RestockBillDetailDTO> detailDTOSet = addRestockBillDTO.getBillDetails();
-        //退货数量
+        //退库数量
         int amount = 0;
         for (RestockBillDetailDTO detailDTO :
                 detailDTOSet) {
@@ -267,7 +267,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         }
         restockBill.setTotalAmount(amount);
 
-        //退货品种数
+        //退库品种数
         int variety = detailDTOSet.size();
         restockBill.setTotalVarietyAmount(variety);
         //进度
@@ -537,7 +537,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     private void verification(AddRestockBillDTO addRestockBillDTO) {
         //来源单号
-        if (addRestockBillDTO.getBillProperty() != SourcePlanTypeEnum.NOPLAN) {
+        if (!addRestockBillDTO.getBillProperty().equals(SourcePlanTypeEnum.NOPLAN)) {
             if (StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
                 throw new DataException("500", "来源单号为空");
             }
