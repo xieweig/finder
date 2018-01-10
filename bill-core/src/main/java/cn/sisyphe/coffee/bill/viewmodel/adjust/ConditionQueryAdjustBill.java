@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -112,6 +113,11 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
      * 配送总价结束
      */
     private BigDecimal totalPriceEnd;
+
+    /**
+     * 单据作用
+     */
+    private BillPurposeEnum purposeEnum;
 
     public String getOperatorName() {
         return operatorName;
@@ -249,6 +255,14 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.billTypeCodeList = billTypeCodeList;
     }
 
+    public BillPurposeEnum getPurposeEnum() {
+        return purposeEnum;
+    }
+
+    public void setPurposeEnum(BillPurposeEnum purposeEnum) {
+        this.purposeEnum = purposeEnum;
+    }
+
     @Override
     public String toString() {
         return "ConditionQueryAdjustBill{" +
@@ -269,6 +283,7 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
                 ", varietyEnd=" + varietyEnd +
                 ", totalPriceStart=" + totalPriceStart +
                 ", totalPriceEnd=" + totalPriceEnd +
+                ", purposeEnum=" + purposeEnum +
                 "} " + super.toString();
     }
 }

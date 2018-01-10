@@ -59,7 +59,7 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
-    @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.POST)
+    @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.GET)
     public ResponseResult findByAdjustBillCode(@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -119,7 +119,7 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String adjustBillCode) {
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
         adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),false);
@@ -134,7 +134,7 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String adjustBillCode) {
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
         adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),true);

@@ -46,11 +46,13 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
     /**
      * 单据属性
      */
+    @Enumerated(EnumType.STRING)
     private SourcePlanTypeEnum billTypeStr;
 
     /**
      * 出库状态编码
      */
+    @Enumerated(EnumType.STRING)
     private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
 
     /**

@@ -31,7 +31,6 @@ public class AddAdjustBillDetailDTO {
      */
     private String belongMaterialCode;
 
-
     /**
      * 详情备注
      */
@@ -69,20 +68,22 @@ public class AddAdjustBillDetailDTO {
         this.memo = memo;
     }
 
-    @Override
-    public String toString() {
-        return "AddAdjustBillDetailDTO{" +
-                "shippedAmount=" + shippedAmount +
-                ", actualAmount=" + actualAmount +
-                ", rawMaterial=" + rawMaterial +
-                '}';
-    }
-
     public String getBelongMaterialCode() {
         return belongMaterialCode;
     }
 
     public void setBelongMaterialCode(String belongMaterialCode) {
         this.belongMaterialCode = belongMaterialCode;
+    }
+
+    @Override
+    public String toString() {
+        return "AddAdjustBillDetailDTO{" +
+                "shippedAmount=" + shippedAmount +
+                ", actualAmount=" + actualAmount +
+                ", rawMaterial=" + rawMaterial +
+                ", belongMaterialCode='" + belongMaterialCode + '\'' +
+                ", memo='" + memo + '\'' +
+                '}';
     }
 }

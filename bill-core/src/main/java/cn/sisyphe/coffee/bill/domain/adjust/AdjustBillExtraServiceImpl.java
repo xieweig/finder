@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.adjust.AdjustBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -136,27 +137,34 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             /**
              * 配送品种开始数量
              */
-            if (conditionQueryAdjustBill.getVarietyStart() > 0) {
+            if (conditionQueryAdjustBill.getVarietyStart() != null && conditionQueryAdjustBill.getVarietyStart() > 0) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("adjustNumber").as(Integer.class), conditionQueryAdjustBill.getVarietyStart()));
             }
             /**
              * 配送品种结束数量
              */
-            if (conditionQueryAdjustBill.getVarietyEnd() > 0) {
+            if (conditionQueryAdjustBill.getVarietyEnd() != null && conditionQueryAdjustBill.getVarietyEnd() > 0) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("adjustNumber").as(Integer.class), conditionQueryAdjustBill.getVarietyEnd()));
             }
             /**
              * 配送总价开始
              */
-            if (conditionQueryAdjustBill.getTotalPriceStart().compareTo(BigDecimal.ZERO) > 0) {
+            if (conditionQueryAdjustBill.getTotalPriceStart() != null && conditionQueryAdjustBill.getTotalPriceStart().compareTo(BigDecimal.ZERO) > 0) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceStart()));
             }
             /**
              * 配送总价结束
              */
-            if (conditionQueryAdjustBill.getTotalPriceEnd().compareTo(BigDecimal.ZERO) > 0) {
+            if (conditionQueryAdjustBill.getTotalPriceEnd() != null && conditionQueryAdjustBill.getTotalPriceEnd().compareTo(BigDecimal.ZERO) > 0) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceEnd()));
             }
+            /**
+             * 单据作用
+             */
+            if (conditionQueryAdjustBill.getPurposeEnum() != null) {
+                expressions.add(cb.equal(root.get("billPurpose").as(BillPurposeEnum.class), conditionQueryAdjustBill.getPurposeEnum()));
+            }
+
             return predicate;
         }, pageable);
     }

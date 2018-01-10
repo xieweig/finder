@@ -7,6 +7,7 @@ import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
@@ -52,10 +53,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     public static final String ADJUST_OUT_STORAGE_PREFIX = "tjckd";
     @Autowired
     private PlanBillExtraService planBillExtraService;
-
     @Autowired
     private AdjustBillExtraService adjustBillExtraService;
-
     @Autowired
     private SharedManager sharedManager;
 
@@ -64,178 +63,11 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         super(billRepository, applicationEventPublisher);
     }
 
-
-    /**
-     * 根据多条件查询调拨单据信息
-     *
-     * @param conditionQueryAdjustBill 查询条件
-     * @return
-     */
-    public Page<AdjustBillDTO> findByConditions(ConditionQueryAdjustBill conditionQueryAdjustBill) {
-        // SpringCloud调用查询用户编码
-        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
-        conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
-        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
-        return adjustBillPage.map(source -> toMapConditionsDTO(source));
-    }
-
-    /**
-     * 调剂出库单单个查询
-     *
-     * @param billCode 单据编号
-     * @return AdjustBillDTO
-     */
-    public QueryOneAdjustDTO findByBillCode(String billCode) {
-        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
-        // 如果是根据原料拣货，则需要去查询一下总部计划单里面的数据
-        if (BasicEnum.BY_MATERIAL.equals(adjustBill.getBasicEnum())) {
-            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getSourceCode());
-            Set<PlanBillDetail> billDetails = planBill.getBillDetails();
-            return toMapOneDTO(adjustBill, billDetails);
-        } else {
-            return toMapOneDTO(adjustBill, null);
-        }
-
-    }
-
-    /**
-     * 查询单个mapDTO
-     *
-     * @param adjustBill
-     * @param billDetails
-     * @return
-     */
-    private QueryOneAdjustDTO toMapOneDTO(AdjustBill adjustBill, Set<PlanBillDetail> billDetails) {
-        QueryOneAdjustDTO queryOneAdjustDTO = new QueryOneAdjustDTO();
-        // 单据编号
-        queryOneAdjustDTO.setBillCode(adjustBill.getBillCode());
-        // 录单时间
-        queryOneAdjustDTO.setCreateTime(adjustBill.getCreateTime());
-        // 出库时间
-        queryOneAdjustDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
-        // 录单人
-        queryOneAdjustDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
-        // 审核人
-        queryOneAdjustDTO.setAuditorName(sharedManager.findOneByUserCode(adjustBill.getAuditPersonCode()));
-        // 出库站点
-        Station outLocation = (Station) adjustBill.getOutLocation();
-        if (outLocation != null) {
-            queryOneAdjustDTO.setOutStationCode(outLocation.getStationCode());
-            Storage storage = outLocation.getStorage();
-            if (storage != null) {
-                // 出库库位
-                queryOneAdjustDTO.setOutStorageCode(storage.getStorageCode());
-            }
-        }
-        // 入库站点
-        Station inLocation = (Station) adjustBill.getInLocation();
-        if (inLocation != null) {
-            queryOneAdjustDTO.setInStationCode(inLocation.getStationCode());
-        }
-        // 单据属性
-        queryOneAdjustDTO.setBillTypeStr(adjustBill.getBillTypeStr().name());
-        // 出库状态
-        queryOneAdjustDTO.setOutStateEnum(adjustBill.getOutStateEnum());
-        // 提交状态
-        queryOneAdjustDTO.setSubmitState(adjustBill.getSubmitState());
-        // 审核状态
-        queryOneAdjustDTO.setAuditState(adjustBill.getAuditState());
-        // 调剂数量
-        queryOneAdjustDTO.setAdjustNumber(adjustBill.getAdjustNumber());
-        // 调剂品种数
-        queryOneAdjustDTO.setVarietyNumber(adjustBill.getVarietyNumber());
-        // 计划备注
-        queryOneAdjustDTO.setPlanMemo(adjustBill.getPlanMemo());
-        // 出库备注
-        queryOneAdjustDTO.setOutStorageMemo(adjustBill.getOutStorageMemo());
-        // 审核意见
-        queryOneAdjustDTO.setAuditMemo(adjustBill.getAuditMemo());
-        // 调剂货物计划详情
-        List<AdjustBillDetailDTO> detailDTOS = new ArrayList<>();
-        Set<AdjustBillDetail> details = adjustBill.getBillDetails();
-        if (details != null) {
-            for (AdjustBillDetail adjustBillDetail : details) {
-                AdjustBillDetailDTO adjustBillDetailDTO = new AdjustBillDetailDTO();
-                adjustBillDetailDTO.setActualAmount(adjustBillDetail.getActualAmount());
-                adjustBillDetailDTO.setShippedAmount(adjustBillDetail.getShippedAmount());
-                adjustBillDetailDTO.setRawMaterial((RawMaterial) adjustBillDetail.getGoods());
-                adjustBillDetailDTO.setMemo(adjustBillDetail.getMemo());
-                detailDTOS.add(adjustBillDetailDTO);
-            }
-            queryOneAdjustDTO.setDetails(detailDTOS);
-        }
-        // 调剂原料计划详情
-        List<AdjustBillMaterialDetailDTO> detailDTOs = new ArrayList<>();
-        if (billDetails != null) {
-            for (PlanBillDetail planBillDetail : billDetails) {
-
-                AdjustBillMaterialDetailDTO dto = new AdjustBillMaterialDetailDTO();
-                // 应拣数量
-                dto.setShippedAmount(planBillDetail.getAmount());
-                // 原料信息
-                RawMaterial rawMaterial = (RawMaterial) planBillDetail.getGoods();
-                dto.setRawMaterial(rawMaterial);
-            }
-            queryOneAdjustDTO.setMaterialDetails(detailDTOs);
-        }
-        return queryOneAdjustDTO;
-    }
-
-    /**
-     * 前端多条件查询转换DTO
-     *
-     * @param adjustBill
-     * @return
-     */
-    private AdjustBillDTO toMapConditionsDTO(AdjustBill adjustBill) {
-        AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
-        // 单据属性
-        adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
-        // 出库状态
-        adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
-        // 提交状态
-        adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
-        // 审核状态
-        adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
-        //单据状态
-        adjustBillDTO.setBillState(adjustBill.getBillState());
-        // 来源单号
-        adjustBillDTO.setRootCode(adjustBill.getRootCode());
-        // 单据编码
-        adjustBillDTO.setBillCode(adjustBill.getBillCode());
-        // 录单时间
-        adjustBillDTO.setCreateTime(adjustBill.getCreateTime());
-        // 出库时间
-        adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
-        // 录单人
-        adjustBillDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
-        // 审核人
-        adjustBillDTO.setAuditorName(sharedManager.findOneByUserCode(adjustBill.getAuditPersonCode()));
-        adjustBillDTO.setBasicEnum(adjustBill.getBasicEnum());
-        // 出库站点
-        Station outLocation = (Station) adjustBill.getOutLocation();
-        if (outLocation != null) {
-            adjustBillDTO.setOutStationCode(outLocation.getStationCode());
-        }
-        // 入库站点
-        Station inLocation = (Station) adjustBill.getInLocation();
-        if (inLocation != null) {
-            adjustBillDTO.setInStationCode(inLocation.getStationCode());
-        }
-        // 配送数量
-        adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
-        // 配送品种数
-        adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
-        return adjustBillDTO;
-
-    }
-
-
     /**
      * 暂存调剂计划
      *
      * @param addAdjustBillDTO 前端dto
-     * @return billcode
+     * @return billCode 单据编码
      */
     public String create(AddAdjustBillDTO addAdjustBillDTO) {
         AdjustBill adjustBill = prepareAdjustBill(addAdjustBillDTO);
@@ -247,7 +79,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * 提交调剂计划
      *
      * @param addAdjustBillDTO 前端dto
-     * @return billcode
+     * @return billCode 单据编码
      */
     public String submit(AddAdjustBillDTO addAdjustBillDTO) {
         AdjustBill adjustBill = prepareAdjustBill(addAdjustBillDTO);
@@ -260,7 +92,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      *
      * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
-     * @return
      */
     public void audit(String billCode, String auditPersonCode, boolean isSuccess) {
         if (StringUtils.isEmpty(billCode)) {
@@ -275,9 +106,46 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     }
 
     /**
+     * 根据多条件查询调拨单据信息
+     *
+     * @param conditionQueryAdjustBill 查询条件
+     * @return 分页信息
+     */
+    public Page<AdjustBillDTO> findByConditions(ConditionQueryAdjustBill conditionQueryAdjustBill) {
+        // SpringCloud调用查询用户编码
+        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
+        conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
+        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
+        return adjustBillPage.map(source -> toMapConditionsDTO(source));
+    }
+
+    /**
+     * 调剂出库单单个查询
+     *
+     * @param billCode 单据编号
+     * @return QueryOneAdjustDTO
+     */
+    public QueryOneAdjustDTO findByBillCode(String billCode) {
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
+        // 如果单据是提交状态，则进行打开动作
+        if (adjustBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
+            // 打开单据
+            open(adjustBill);
+        }
+        // 如果是根据原料拣货，则需要去查询一下总部计划单里面的数据
+        if (BasicEnum.BY_MATERIAL.equals(adjustBill.getBasicEnum())) {
+            PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getSourceCode());
+            Set<PlanBillDetail> billDetails = planBill.getBillDetails();
+            return toMapOneDTO(adjustBill, billDetails);
+        } else {
+            return toMapOneDTO(adjustBill, null);
+        }
+    }
+
+    /**
      * map数据
      *
-     * @param adjustBill
+     * @param adjustBill 调拨单信息
      * @param addAdjustBillDTO
      */
     private void mapBill(AdjustBill adjustBill, AddAdjustBillDTO addAdjustBillDTO) {
@@ -331,6 +199,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             }
         } else {
             adjustBill = (AdjustBill) new BillFactory().createBill(BillTypeEnum.ADJUST);
+            // 设置单据编码
             adjustBill.setBillCode(generateBillCode());
         }
         return adjustBill;
@@ -361,14 +230,157 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         return billDetails;
     }
 
-    // TODO: 2018/1/9 临时单据编码
+    /**
+     * 临时单据编码
+     *
+     * @return
+     */
     private String generateBillCode() {
-        return ADJUST_OUT_STORAGE_PREFIX + String.valueOf(System.currentTimeMillis());
+        return String.valueOf(System.currentTimeMillis());
     }
 
-    // 是否是从总部计划单中来的
+    /**
+     * 是否是从总部计划单中来的
+     *
+     * @param addAdjustBillDTO
+     * @return
+     */
     private boolean isFromPlanBill(AddAdjustBillDTO addAdjustBillDTO) {
 
         return !StringUtils.isEmpty(addAdjustBillDTO.getRootCode());
+    }
+
+
+    /**
+     * 查询单个mapDTO
+     *
+     * @param adjustBill
+     * @param billDetails
+     * @return
+     */
+    private QueryOneAdjustDTO toMapOneDTO(AdjustBill adjustBill, Set<PlanBillDetail> billDetails) {
+        QueryOneAdjustDTO queryOneAdjustDTO = new QueryOneAdjustDTO();
+        // 单据编号
+        queryOneAdjustDTO.setBillCode(adjustBill.getBillCode());
+        // 录单时间
+        queryOneAdjustDTO.setCreateTime(adjustBill.getCreateTime());
+        // 出库时间
+        queryOneAdjustDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
+        // 录单人
+        queryOneAdjustDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
+        // 审核人
+        queryOneAdjustDTO.setAuditorName(sharedManager.findOneByUserCode(adjustBill.getAuditPersonCode()));
+        // 出库站点
+        Station outLocation = (Station) adjustBill.getOutLocation();
+        if (outLocation != null) {
+            queryOneAdjustDTO.setOutStationCode(outLocation.getStationCode());
+            Storage storage = outLocation.getStorage();
+            if (storage != null) {
+                // 出库库位
+                queryOneAdjustDTO.setOutStorageCode(storage.getStorageCode());
+            }
+        }
+        // 入库站点
+        Station inLocation = (Station) adjustBill.getInLocation();
+        if (inLocation != null) {
+            queryOneAdjustDTO.setInStationCode(inLocation.getStationCode());
+        }
+        // 单据属性
+        queryOneAdjustDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+        // 出库状态
+        queryOneAdjustDTO.setOutStateEnum(adjustBill.getOutStateEnum());
+        // 提交状态
+        queryOneAdjustDTO.setSubmitState(adjustBill.getSubmitState());
+        // 审核状态
+        queryOneAdjustDTO.setAuditState(adjustBill.getAuditState());
+        // 调剂数量
+        queryOneAdjustDTO.setAdjustNumber(adjustBill.getAdjustNumber());
+        // 调剂品种数
+        queryOneAdjustDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+        // 计划备注
+        queryOneAdjustDTO.setPlanMemo(adjustBill.getPlanMemo());
+        // 出库备注
+        queryOneAdjustDTO.setOutStorageMemo(adjustBill.getOutStorageMemo());
+        // 审核意见
+        queryOneAdjustDTO.setAuditMemo(adjustBill.getAuditMemo());
+        // 调剂货物计划详情
+        List<AdjustBillDetailDTO> detailDTOS = new ArrayList<>();
+        Set<AdjustBillDetail> details = adjustBill.getBillDetails();
+        if (details != null) {
+            for (AdjustBillDetail adjustBillDetail : details) {
+                AdjustBillDetailDTO adjustBillDetailDTO = new AdjustBillDetailDTO();
+                adjustBillDetailDTO.setActualAmount(adjustBillDetail.getActualAmount());
+                adjustBillDetailDTO.setShippedAmount(adjustBillDetail.getShippedAmount());
+                adjustBillDetailDTO.setRawMaterial((RawMaterial) adjustBillDetail.getGoods());
+                adjustBillDetailDTO.setMemo(adjustBillDetail.getMemo());
+                detailDTOS.add(adjustBillDetailDTO);
+            }
+            queryOneAdjustDTO.setDetails(detailDTOS);
+        }
+        // 调剂原料计划详情
+        List<AdjustBillMaterialDetailDTO> detailDTOs = new ArrayList<>();
+        if (billDetails != null) {
+            for (PlanBillDetail planBillDetail : billDetails) {
+                AdjustBillMaterialDetailDTO dto = new AdjustBillMaterialDetailDTO();
+                // 应拣数量
+                dto.setShippedAmount(planBillDetail.getAmount());
+                // 原料信息
+                RawMaterial rawMaterial = (RawMaterial) planBillDetail.getGoods();
+                dto.setRawMaterial(rawMaterial);
+            }
+            queryOneAdjustDTO.setMaterialDetails(detailDTOs);
+        }
+        return queryOneAdjustDTO;
+    }
+
+    /**
+     * 前端多条件查询转换DTO
+     *
+     * @param adjustBill
+     * @return
+     */
+    private AdjustBillDTO toMapConditionsDTO(AdjustBill adjustBill) {
+        AdjustBillDTO adjustBillDTO = new AdjustBillDTO();
+        // 单据属性
+        adjustBillDTO.setBillTypeStr(adjustBill.getBillTypeStr());
+        // 出库状态
+        adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
+        // 提交状态
+        adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
+        // 审核状态
+        adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
+        //单据状态
+        adjustBillDTO.setBillState(adjustBill.getBillState());
+        // 发起单号
+        adjustBillDTO.setRootCode(adjustBill.getRootCode());
+        //来源单号
+        adjustBillDTO.setSourceCode(adjustBill.getSourceCode());
+        // 单据编码
+        adjustBillDTO.setBillCode(adjustBill.getBillCode());
+        // 录单时间
+        adjustBillDTO.setCreateTime(adjustBill.getCreateTime());
+        // 出库时间
+        adjustBillDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
+        // 录单人
+        adjustBillDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
+        // 审核人
+        adjustBillDTO.setAuditorName(sharedManager.findOneByUserCode(adjustBill.getAuditPersonCode()));
+        adjustBillDTO.setBasicEnum(adjustBill.getBasicEnum());
+        // 出库站点
+        Station outLocation = (Station) adjustBill.getOutLocation();
+        if (outLocation != null) {
+            adjustBillDTO.setOutStationCode(outLocation.getStationCode());
+        }
+        // 入库站点
+        Station inLocation = (Station) adjustBill.getInLocation();
+        if (inLocation != null) {
+            adjustBillDTO.setInStationCode(inLocation.getStationCode());
+        }
+        // 配送数量
+        adjustBillDTO.setAdjustNumber(adjustBill.getAdjustNumber());
+        // 配送品种数
+        adjustBillDTO.setVarietyNumber(adjustBill.getVarietyNumber());
+        return adjustBillDTO;
+
     }
 }
