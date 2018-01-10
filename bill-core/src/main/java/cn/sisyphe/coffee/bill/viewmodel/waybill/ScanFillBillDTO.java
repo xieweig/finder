@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 扫描出库单号，提取包号，数量，品种，出库时间和站点
+ *
  * @author yichuan
  * @company 西西弗文化传播
  * @Date 2018/1/9 16:16
@@ -47,6 +49,10 @@ public class ScanFillBillDTO implements Serializable {
      */
     private String outStationName;
 
+
+    /**
+     * 录单人
+     */
     private String operatorName;
     //包号
     //包号可以不自动提取

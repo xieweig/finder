@@ -22,16 +22,10 @@ public class RestockBillDetailDTO {
      */
     private int actualAmount;
 
-
     /**
      * 原料
      */
     private RawMaterial rawMaterial;
-
-    /**
-     * 备注
-     */
-    private String memo;
 
     public int getShippedAmount() {
         return shippedAmount;
@@ -57,11 +51,4 @@ public class RestockBillDetailDTO {
         this.rawMaterial = rawMaterial;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 }

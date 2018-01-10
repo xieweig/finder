@@ -28,11 +28,6 @@ public class RestockBillDetail extends BillDetail {
      */
     private Integer actualAmount;
 
-    /**
-     * 备注
-     */
-    private String memo;
-
     public Integer getShippedAmount() {
         return shippedAmount;
     }
@@ -49,11 +44,4 @@ public class RestockBillDetail extends BillDetail {
         this.actualAmount = actualAmount;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 }

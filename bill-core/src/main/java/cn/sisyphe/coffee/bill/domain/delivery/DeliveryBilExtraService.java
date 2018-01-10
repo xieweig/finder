@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
  * @company 西西弗文化传播
  * @Date 2018/1/4 11:06
  **/
-public interface DeliveryBillQueryService {
+public interface DeliveryBilExtraService {
 
 
     /**
@@ -30,8 +30,7 @@ public interface DeliveryBillQueryService {
      * @param conditionQueryDeliveryBill
      * @return
      */
-    Page<DeliveryBill> findPageByCondition(ConditionQueryDeliveryBill conditionQueryDeliveryBill)  throws DataException;
-
+    Page<DeliveryBill> findPageByCondition(ConditionQueryDeliveryBill conditionQueryDeliveryBill) throws DataException;
 
 
 }
