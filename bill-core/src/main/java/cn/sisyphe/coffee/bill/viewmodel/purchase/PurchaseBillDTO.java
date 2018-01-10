@@ -1,5 +1,8 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -75,12 +78,12 @@ public class PurchaseBillDTO {
     /**
      * 单据审核状态--主表
      */
-    private String auditState;
+    private BillAuditStateEnum auditState;
 
     /**
      * 单据提交状态--主表
      */
-    private String submitState;
+    private BillSubmitStateEnum submitState;
 
     /**
      * 备注--主表
@@ -175,19 +178,19 @@ public class PurchaseBillDTO {
         this.differencePrice = differencePrice;
     }
 
-    public String getAuditState() {
+    public BillAuditStateEnum getAuditState() {
         return auditState;
     }
 
-    public void setAuditState(String auditState) {
+    public void setAuditState(BillAuditStateEnum auditState) {
         this.auditState = auditState;
     }
 
-    public String getSubmitState() {
+    public BillSubmitStateEnum getSubmitState() {
         return submitState;
     }
 
-    public void setSubmitState(String submitState) {
+    public void setSubmitState(BillSubmitStateEnum submitState) {
         this.submitState = submitState;
     }
 

@@ -135,6 +135,20 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         }
     }
 
+    /**
+     * 查询单个进货单据
+     *
+     * @param purchaseBillCode
+     */
+    public QueryOnePurchaseBillDTO queryOneByCode(String purchaseBillCode) {
+        if (StringUtils.isEmpty(purchaseBillCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+
+        return mapOneToDTO(purchaseBill);
+    }
+
 
     /**
      * 审核进货单
@@ -459,17 +473,11 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
             purchaseBillDTO.setSupplierCode(supplier.getSupplierCode());
         }
         // 单据提交状态--主表
-        if (purchaseBill.getSubmitState() != null) {
-            purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState().name());
-        } else {
-            purchaseBillDTO.setSubmitState("-");
-        }
+        purchaseBillDTO.setSubmitState(purchaseBill.getSubmitState());
+
         // 单据审核状态--主表
-        if (purchaseBill.getAuditState() != null) {
-            purchaseBillDTO.setAuditState(purchaseBill.getAuditState().name());
-        } else {
-            purchaseBillDTO.setAuditState("-");
-        }
+        purchaseBillDTO.setAuditState(purchaseBill.getAuditState());
+
         // 备注--主表
         purchaseBillDTO.setMemo(purchaseBill.getMemo());
         // 循环遍历明细信息，累加得到数据
