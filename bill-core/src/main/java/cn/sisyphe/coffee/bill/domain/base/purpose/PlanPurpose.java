@@ -53,7 +53,7 @@ public class PlanPurpose extends AbstractBillPurpose {
             planBillPayload.setCastableStrategy(getSpecStrategy(bill.getSpecificBillType()));
             planBillPayload.setBasicEnum(bill.getBasicEnum());
             planBillPayload.setOperatorCode(bill.getOperatorCode());
-            planBillPayload.setMemo(bill.getMemo());
+            planBillPayload.setMemo(bill.getPlanMemo());
             planBillPayload.setParentBillCode(bill.getBillCode());
             //TODO 子计划单号的规则还会更新，原型还没有确定
             planBillPayload.setBillCode(bill.getBillCode() + "_" + index);

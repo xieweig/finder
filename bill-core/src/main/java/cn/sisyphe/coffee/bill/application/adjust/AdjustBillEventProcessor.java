@@ -102,7 +102,7 @@ public class AdjustBillEventProcessor {
         inAdjustBill.setBasicEnum(adjustBill.getBasicEnum());
         inAdjustBill.setAdjustNumber(adjustBill.getAdjustNumber());
         inAdjustBill.setVarietyNumber(adjustBill.getVarietyNumber());
-        inAdjustBill.setBillTypeStr(adjustBill.getBillTypeStr());
+        inAdjustBill.setBillProperty(adjustBill.getBillProperty());
         Set<AdjustBillDetail> details = new HashSet<>();
         for (AdjustBillDetail adjustBillDetail : adjustBill.getBillDetails()) {
             AdjustBillDetail inAdjustBillDetail = new AdjustBillDetail();

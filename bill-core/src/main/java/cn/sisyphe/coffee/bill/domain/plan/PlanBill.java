@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 
 /**
  * @author ncmao
@@ -34,15 +32,8 @@ public class PlanBill extends Bill<PlanBillDetail> {
     private String billName;
 
     /**
-     * 按货物还是按原料拣货
-      */
-    @Column
-    @Enumerated(value = EnumType.STRING)
-    private BasicEnum basicEnum;
-
-    /**
      * 具体的单据类型
-      */
+     */
     @Column
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
@@ -51,17 +42,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private Boolean hqBill;
 
-    //计划备注
-    @Column
-    private String memo;
-
-    //审核意见
-    @Column
-    private String auditMemo;
-
-    //完成度
-    @Column
-    private BigDecimal progress;
 
     public OperationStateEnum getOperationState() {
         return operationState;
@@ -83,15 +63,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.billName = billName;
     }
 
-
-    public BasicEnum getBasicEnum() {
-        return basicEnum;
-    }
-
-    public void setBasicEnum(BasicEnum basicEnum) {
-        this.basicEnum = basicEnum;
-    }
-
     public BillTypeEnum getSpecificBillType() {
         return specificBillType;
     }
@@ -100,36 +71,12 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.specificBillType = specificBillType;
     }
 
-    public BigDecimal getProgress() {
-        return progress;
-    }
-
-    public void setProgress(BigDecimal progress) {
-        this.progress = progress;
-    }
-
     public Boolean getHqBill() {
         return hqBill;
     }
 
     public void setHqBill(Boolean hqBill) {
         this.hqBill = hqBill;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
-    public String getAuditMemo() {
-        return auditMemo;
-    }
-
-    public void setAuditMemo(String auditMemo) {
-        this.auditMemo = auditMemo;
     }
 
 }

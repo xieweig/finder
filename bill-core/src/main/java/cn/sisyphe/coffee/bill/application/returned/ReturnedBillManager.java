@@ -12,7 +12,13 @@ import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillQueryService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.returned.*;
+import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
+import cn.sisyphe.coffee.bill.viewmodel.returned.QueryOneReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,7 +26,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 
 /**
@@ -101,7 +111,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         }
         // 出库备注
         if (!StringUtils.isEmpty(addReturnedBillDTO.getOutMemo())) {
-            returnedBill.setOutMemo(addReturnedBillDTO.getOutMemo());
+            returnedBill.setOutStorageMemo(addReturnedBillDTO.getOutMemo());
         }
         // 操作人代码
         returnedBill.setOperatorCode(addReturnedBillDTO.getOperatorCode());
@@ -119,11 +129,11 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
                 detailDTOSet) {
             amount += detailDTO.getActualAmount();
         }
-        returnedBill.setAmount(amount);
+        returnedBill.setAdjustNumber(amount);
 
         //退货品种数
         int variety = detailDTOSet.size();
-        returnedBill.setVariety(variety);
+        returnedBill.setVarietyNumber(variety);
         //配送总价
         returnedBill.setTotalPrice(addReturnedBillDTO.getTotalPrice());
         //按货物还是按原料
@@ -321,7 +331,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         }
         // 出库备注
         if (!StringUtils.isEmpty(editReturnedBillDTO.getOutMemo())) {
-            returnedBill.setOutMemo(editReturnedBillDTO.getOutMemo());
+            returnedBill.setOutStorageMemo(editReturnedBillDTO.getOutMemo());
         }
         // 操作人代码
         returnedBill.setOperatorCode(editReturnedBillDTO.getOperatorCode());
@@ -352,10 +362,10 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
                 detailDTOSet) {
             amount += detailDTO.getActualAmount();
         }
-        returnedBill.setAmount(amount);
+        returnedBill.setAdjustNumber(amount);
         //退货品种数
         int variety = detailDTOSet.size();
-        returnedBill.setVariety(variety);
+        returnedBill.setVarietyNumber(variety);
         //配送总价
         returnedBill.setTotalPrice(editReturnedBillDTO.getTotalPrice());
         //按货物还是按原料
@@ -375,7 +385,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      */
     private void verification(AddReturnedBillDTO addReturnedBillDTO) {
         //来源单号
-        if (addReturnedBillDTO.getBillProperty() != cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum.NOPLAN) {
+        if (SourcePlanTypeEnum.NOPLAN.equals(addReturnedBillDTO.getBillProperty())) {
             if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
                 throw new DataException("500", "来源单号为空");
             }
@@ -436,7 +446,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             returnedBillDTO.setBillCode(returnedBill.getBillCode());
             returnedBillDTO.setAuditState(returnedBill.getAuditState());
             returnedBillDTO.setSubmitState(returnedBill.getSubmitState());
-            returnedBillDTO.setAmount(returnedBill.getAmount());
+            returnedBillDTO.setAmount(returnedBill.getAdjustNumber());
 
             returnedBillDTO.setAuditMemo(returnedBill.getAuditMemo());
 
@@ -455,13 +465,13 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             returnedBillDTO.setInLocation(returnedBill.getInLocation());
             returnedBillDTO.setInOrOutState(returnedBill.getInOrOutState());
             returnedBillDTO.setOutLocation(returnedBill.getOutLocation());
-            returnedBillDTO.setOutMemo(returnedBill.getOutMemo());
+            returnedBillDTO.setOutMemo(returnedBill.getOutStorageMemo());
             returnedBillDTO.setPlanMemo(returnedBill.getPlanMemo());
             returnedBillDTO.setProgress(returnedBill.getProgress());
             returnedBillDTO.setRootCode(returnedBill.getRootCode());
             returnedBillDTO.setSourceCode(returnedBill.getSourceCode());
             returnedBillDTO.setTotalPrice(returnedBill.getTotalPrice());
-            returnedBillDTO.setVariety(returnedBill.getVariety());
+            returnedBillDTO.setVariety(returnedBill.getVarietyNumber());
             returnedBillDTO.setCreateTime(returnedBill.getCreateTime());
             returnedBillDTOList.add(returnedBillDTO);
         }
