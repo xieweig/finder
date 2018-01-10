@@ -369,7 +369,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
      * @param dto
      * @return
      */
-    public String keyProducer(String prefix, DeliveryPickingEditDTO dto) {
+    private String keyProducer(String prefix, DeliveryPickingEditDTO dto) {
         String key = "";
         //  单据类型+站点+时间+进程id+6位流水编码
         Date currentTime = new Date();
