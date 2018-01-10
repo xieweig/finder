@@ -149,13 +149,13 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             /**
              * 配送总价开始
              */
-            if (conditionQueryAdjustBill.getTotalPriceStart().compareTo(BigDecimal.ZERO) > 0) {
+            if (conditionQueryAdjustBill.getTotalPriceStart() != null && conditionQueryAdjustBill.getTotalPriceStart().compareTo(BigDecimal.ZERO) > 0) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceStart()));
             }
             /**
              * 配送总价结束
              */
-            if (conditionQueryAdjustBill.getTotalPriceEnd().compareTo(BigDecimal.ZERO) > 0) {
+            if (conditionQueryAdjustBill.getTotalPriceEnd() != null && conditionQueryAdjustBill.getTotalPriceEnd().compareTo(BigDecimal.ZERO) > 0) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceEnd()));
             }
             /**
