@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -60,11 +59,11 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
     /**
      * 单据作用
      */
-    private String billPurpose;
+    private BillPurposeEnum billPurpose;
     /**
      * 单据种类
      */
-    private String specificBillType;
+    private BillTypeEnum specificBillType;
 
     /**
      * 单据名称
@@ -110,19 +109,19 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
         this.auditStates = auditStates;
     }
 
-    public String getBillPurpose() {
+    public BillPurposeEnum getBillPurpose() {
         return billPurpose;
     }
 
-    public void setBillPurpose(String billPurpose) {
+    public void setBillPurpose(BillPurposeEnum billPurpose) {
         this.billPurpose = billPurpose;
     }
 
-    public String getSpecificBillType() {
+    public BillTypeEnum getSpecificBillType() {
         return specificBillType;
     }
 
-    public void setSpecificBillType(String specificBillType) {
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
         this.specificBillType = specificBillType;
     }
 

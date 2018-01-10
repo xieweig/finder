@@ -117,7 +117,7 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             // 计划类型
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
-                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType())));
+                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
             }
 
             // 计划编码
@@ -184,11 +184,11 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             //单据的种类
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())) {
-                expressions.add(cb.equal(root.<String>get("specificBillType"), BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType())));
+                expressions.add(cb.equal(root.<String>get("specificBillType"), conditionQueryPlanBill.getSpecificBillType()));
             }
             //计划类型
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
-                expressions.add(cb.equal(root.<String>get("billPurpose"), BillPurposeEnum.valueOf(conditionQueryPlanBill.getBillPurpose())));
+                expressions.add(cb.equal(root.<String>get("billPurpose"), conditionQueryPlanBill.getBillPurpose()));
             }
             // 入库站点集合
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCodeArray())) {
