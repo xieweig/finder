@@ -21,42 +21,15 @@ import javax.persistence.Table;
 public class AdjustBillDetail extends BillDetail {
 
     /**
-     * 应拣数量
-     */
-    private Integer shippedAmount;
-
-    /**
-     * 实拣数量
-     */
-    private Integer actualAmount;
-
-    /**
      * 所属原料编码
      */
     private String belongMaterialCode;
 
-    public Integer getShippedAmount() {
-        return shippedAmount;
-    }
-
-    public void setShippedAmount(Integer shippedAmount) {
-        this.shippedAmount = shippedAmount;
-    }
-
-    public Integer getActualAmount() {
-        return actualAmount;
-    }
-
-    public void setActualAmount(Integer actualAmount) {
-        this.actualAmount = actualAmount;
-    }
-
     @Override
     public String toString() {
         return "AdjustBillDetail{" +
-                "shippedAmount=" + shippedAmount +
-                ", actualAmount=" + actualAmount +
-                "} " + super.toString();
+                "belongMaterialCode='" + belongMaterialCode + '\'' +
+                '}';
     }
 
     public String getBelongMaterialCode() {
