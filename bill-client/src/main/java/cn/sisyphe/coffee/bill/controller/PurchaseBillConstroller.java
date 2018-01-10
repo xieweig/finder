@@ -87,6 +87,21 @@ public class PurchaseBillConstroller {
     @RequestMapping(path = "/findByPurchaseBillCode", method = RequestMethod.GET)
     public ResponseResult findByPurchaseBillCode(@RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
         ResponseResult responseResult = new ResponseResult();
+        QueryOnePurchaseBillDTO billDTO = purchaseBillManager.queryOneByCode(purchaseBillCode);
+        responseResult.put("purchaseBill", billDTO);
+        return responseResult;
+    }
+
+    /**
+     * 根据进货单编码查询进货单详细信息
+     *
+     * @param purchaseBillCode 进货单编码
+     * @return
+     */
+    @ApiOperation(value = "根据进货单编码查询进货单详细信息")
+    @RequestMapping(path = "/openPurchaseBill", method = RequestMethod.GET)
+    public ResponseResult openPurchaseBill(@RequestParam(value = "purchaseBillCode") String purchaseBillCode) {
+        ResponseResult responseResult = new ResponseResult();
         QueryOnePurchaseBillDTO billDTO = purchaseBillManager.openBill(purchaseBillCode);
         responseResult.put("purchaseBill", billDTO);
         return responseResult;

@@ -1,5 +1,8 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -56,17 +59,17 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
     /**
      * 提交状态
      */
-    private List<String> submitStateCode;
+    private List<BillSubmitStateEnum> submitStateCode;
 
     /**
      * 审核状态
      */
-    private List<String> auditStateCode;
+    private List<BillAuditStateEnum> auditStateCode;
 
     /**
      * 出入库状态
      */
-    private List<String> inOrOutStateCode;
+    private List<BillInOrOutStateEnum> inOrOutStateCode;
 
     /**
      * 录单人编码集合
@@ -139,27 +142,27 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
         this.supplierCode = supplierCode;
     }
 
-    public List<String> getSubmitStateCode() {
+    public List<BillSubmitStateEnum> getSubmitStateCode() {
         return submitStateCode;
     }
 
-    public void setSubmitStateCode(List<String> submitStateCode) {
+    public void setSubmitStateCode(List<BillSubmitStateEnum> submitStateCode) {
         this.submitStateCode = submitStateCode;
     }
 
-    public List<String> getAuditStateCode() {
+    public List<BillAuditStateEnum> getAuditStateCode() {
         return auditStateCode;
     }
 
-    public void setAuditStateCode(List<String> auditStateCode) {
+    public void setAuditStateCode(List<BillAuditStateEnum> auditStateCode) {
         this.auditStateCode = auditStateCode;
     }
 
-    public List<String> getInOrOutStateCode() {
+    public List<BillInOrOutStateEnum> getInOrOutStateCode() {
         return inOrOutStateCode;
     }
 
-    public void setInOrOutStateCode(List<String> inOrOutStateCode) {
+    public void setInOrOutStateCode(List<BillInOrOutStateEnum> inOrOutStateCode) {
         this.inOrOutStateCode = inOrOutStateCode;
     }
 
