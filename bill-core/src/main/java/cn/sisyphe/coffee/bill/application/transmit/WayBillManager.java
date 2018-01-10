@@ -57,14 +57,12 @@ public class WayBillManager {
     public ScanFillBillDTO scanQueryBill(String billCode) {
 
         // TODO: 2018/1/9  通过不同的单据查询数据
-        //
-//
+
 //        现在在"运单跟踪"的出库单测试时使用以下临时规则：
 //        配送出库单 psckd+6为流水，比如psckd000001
 //        调剂出库单 tjckd+6位流水，比如tjckd000001
 //        退库出库单 tkckd+6位流水，比如tkckd000001
 //        退货出库单 thckd+6位流水，比如thckd000001
-
         if (StringUtils.isEmpty(billCode)) {
             return null;
         }
@@ -75,7 +73,7 @@ public class WayBillManager {
         }
         //调剂出库单
         if (billCode.toUpperCase().startsWith("TJCKD")) {
-
+            //
         }
         //退库出库单
         if (billCode.toUpperCase().startsWith("TKCKD")) {
@@ -84,7 +82,7 @@ public class WayBillManager {
         }
         //退货出库单
         if (billCode.toUpperCase().startsWith("TKCKD")) {
-
+            //
         }
         return null;
     }

@@ -119,7 +119,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         //
         return scanFillBillDTO;
     }
-
+    
 
     /**
      * 根据单号查询配送单
