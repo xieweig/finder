@@ -106,7 +106,6 @@ public class AdjustBillEventProcessor {
         Set<AdjustBillDetail> details = new HashSet<>();
         for (AdjustBillDetail adjustBillDetail : adjustBill.getBillDetails()) {
             AdjustBillDetail inAdjustBillDetail = new AdjustBillDetail();
-            inAdjustBillDetail.setMemo(adjustBillDetail.getMemo());
             inAdjustBillDetail.setBelongMaterialCode(adjustBillDetail.getBelongMaterialCode());
             inAdjustBillDetail.setActualAmount(adjustBillDetail.getActualAmount());
             inAdjustBillDetail.setShippedAmount(adjustBillDetail.getShippedAmount());
