@@ -179,6 +179,7 @@ public class PurchaseBillConstroller {
         noramlStorageOne.setTempStorageId(1L);
         noramlStorageOne.setTempStorageCode("Noraml001");
         noramlStorageOne.setTempStorageName("正常库01");
+        noramlStorageOne.setStorageType("NORAML");
         noramlStorageOne.setCreateTime(new Date());
         noramlStorageOne.setUpdateTime(new Date());
         noramlStorageOne.setVersion(0L);
@@ -191,6 +192,7 @@ public class PurchaseBillConstroller {
         noramlStorageTwo.setTempStorageId(2L);
         noramlStorageTwo.setTempStorageCode("Noraml002");
         noramlStorageTwo.setTempStorageName("正常库02");
+        noramlStorageTwo.setStorageType("NORAML");
         noramlStorageTwo.setCreateTime(new Date());
         noramlStorageTwo.setUpdateTime(new Date());
         noramlStorageTwo.setVersion(0L);
@@ -203,6 +205,7 @@ public class PurchaseBillConstroller {
         storage.setTempStorageId(3L);
         storage.setTempStorageCode("Storage001");
         storage.setTempStorageName("仓储库01");
+        storage.setStorageType("STORAGE");
         storage.setCreateTime(new Date());
         storage.setUpdateTime(new Date());
         storage.setVersion(0L);
@@ -215,6 +218,7 @@ public class PurchaseBillConstroller {
         inStorage.setTempStorageId(4L);
         inStorage.setTempStorageCode("In001");
         inStorage.setTempStorageName("进货库01");
+        inStorage.setStorageType("IN_STORAGE");
         inStorage.setCreateTime(new Date());
         inStorage.setUpdateTime(new Date());
         inStorage.setVersion(0L);
@@ -227,6 +231,7 @@ public class PurchaseBillConstroller {
         outStorage.setTempStorageId(5L);
         outStorage.setTempStorageCode("Out001");
         outStorage.setTempStorageName("退货库01");
+        inStorage.setStorageType("OUT_STORAGE");
         outStorage.setCreateTime(new Date());
         outStorage.setUpdateTime(new Date());
         outStorage.setVersion(0L);
@@ -239,6 +244,7 @@ public class PurchaseBillConstroller {
         onStorage.setTempStorageId(6L);
         onStorage.setTempStorageCode("On001");
         onStorage.setTempStorageName("在途库01");
+        inStorage.setStorageType("ON_STORAGE");
         onStorage.setCreateTime(new Date());
         onStorage.setUpdateTime(new Date());
         onStorage.setVersion(0L);
@@ -251,6 +257,7 @@ public class PurchaseBillConstroller {
         reservedStorage.setTempStorageId(7L);
         reservedStorage.setTempStorageCode("Reserved001");
         reservedStorage.setTempStorageName("预留库01");
+        inStorage.setStorageType("RESERVE_STORAGE");
         reservedStorage.setCreateTime(new Date());
         reservedStorage.setUpdateTime(new Date());
         reservedStorage.setVersion(0L);

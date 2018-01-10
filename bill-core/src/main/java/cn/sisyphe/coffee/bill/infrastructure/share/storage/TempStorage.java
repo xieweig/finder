@@ -25,6 +25,11 @@ public class TempStorage {
     private String tempStorageName;
 
     /**
+     * 库房类型
+     */
+    private String storageType;
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -38,6 +43,14 @@ public class TempStorage {
      * 版本号
      */
     private Long version;
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
+    }
 
     public Long getTempStorageId() {
         return tempStorageId;
@@ -93,6 +106,7 @@ public class TempStorage {
                 "tempStorageId=" + tempStorageId +
                 ", tempStorageCode='" + tempStorageCode + '\'' +
                 ", tempStorageName='" + tempStorageName + '\'' +
+                ", storageType='" + storageType + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", version=" + version +
