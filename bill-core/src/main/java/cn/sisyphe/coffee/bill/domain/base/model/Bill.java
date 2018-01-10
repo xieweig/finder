@@ -222,9 +222,15 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      */
     private BigDecimal progress;
 
+    /**
+     * 总价
+     */
     private BigDecimal totalPrice;
 
 
+    /**
+     * 单据来源类型
+     */
     private SourcePlanTypeEnum billProperty;
 
 
