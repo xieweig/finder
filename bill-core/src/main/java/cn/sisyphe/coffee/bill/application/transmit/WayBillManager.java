@@ -78,7 +78,7 @@ public class WayBillManager {
         //退库出库单
         if (billCode.toUpperCase().startsWith("TKCKD")) {
             //退库出库单
-            restockBillManager.findPackagInfoByBillCode(billCode);
+            //restockBillManager.findPackagInfoByBillCode(billCode);
         }
         //退货出库单
         if (billCode.toUpperCase().startsWith("TKCKD")) {
