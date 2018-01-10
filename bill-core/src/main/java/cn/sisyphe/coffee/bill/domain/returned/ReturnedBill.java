@@ -18,7 +18,10 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class ReturnedBill extends Bill<ReturnedBillDetail> {
+    public static final String RETURN_OUT_STORAGE_PREFIX = "THCK";
+
     public ReturnedBill() {
+        setBillCodePrefix(RETURN_OUT_STORAGE_PREFIX);
         setBillType(BillTypeEnum.RETURNED);
     }
 

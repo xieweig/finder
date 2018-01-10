@@ -171,8 +171,6 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             returnedBillDetail.setGoods(rawMaterial);
-            //备注
-            returnedBillDetail.setMemo(detail.getMemo());
             //应捡数量
             returnedBillDetail.setShippedAmount(detail.getShippedAmount());
             //实拣数量
@@ -495,7 +493,6 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             ReturnedBillDetailDTO returnedBillDetailDTO = new ReturnedBillDetailDTO();
             returnedBillDetailDTO.setRawMaterial((RawMaterial) returnedBillDetail.getGoods());
             returnedBillDetailDTO.setActualAmount(returnedBillDetail.getActualAmount());
-            returnedBillDetailDTO.setMemo(returnedBillDetail.getMemo());
             returnedBillDetailDTO.setShippedAmount(returnedBillDetail.getShippedAmount());
             returnedBillDetailDTOSet.add(returnedBillDetailDTO);
         }
