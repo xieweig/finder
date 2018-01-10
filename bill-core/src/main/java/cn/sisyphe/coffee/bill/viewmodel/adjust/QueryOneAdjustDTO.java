@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -96,6 +97,12 @@ public class QueryOneAdjustDTO {
      * 调剂原料计划详情
      */
     private List<AdjustBillMaterialDetailDTO> materialDetails;
+
+    /**
+     * 按原料还是按货物拣货
+      */
+    
+    private BasicEnum basicEnum;
 
     public String getBillCode() {
         return billCode;
@@ -247,6 +254,14 @@ public class QueryOneAdjustDTO {
 
     public void setMaterialDetails(List<AdjustBillMaterialDetailDTO> materialDetails) {
         this.materialDetails = materialDetails;
+    }
+
+    public BasicEnum getBasicEnum() {
+        return basicEnum;
+    }
+
+    public void setBasicEnum(BasicEnum basicEnum) {
+        this.basicEnum = basicEnum;
     }
 
     @Override
