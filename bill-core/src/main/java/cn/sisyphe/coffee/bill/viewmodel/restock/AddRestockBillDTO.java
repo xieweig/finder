@@ -1,11 +1,9 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.restock.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.restock.enums.PropertyEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -19,7 +17,7 @@ public class AddRestockBillDTO {
     /**
      * 单据属性
      */
-    private PropertyEnum billProperty;
+    private SourcePlanTypeEnum billProperty;
     /**
      * 按货物还是按种类
      */
@@ -98,11 +96,12 @@ public class AddRestockBillDTO {
         this.progress = progress;
     }
 
-    public PropertyEnum getBillProperty() {
+
+    public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(PropertyEnum billProperty) {
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
     }
 
@@ -145,14 +144,6 @@ public class AddRestockBillDTO {
     public void setOperatorCode(String operatorCode) {
         this.operatorCode = operatorCode;
     }
-
-//    public Storage getOutStorage() {
-//        return outStorage;
-//    }
-//
-//    public void setOutStorage(Storage outStorage) {
-//        this.outStorage = outStorage;
-//    }
 
     public Station getInStation() {
         return inStation;

@@ -209,7 +209,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         planBill.getBillDetails().clear();
         planBill.setSpecificBillType(planBillDTO.getBillType());
         planBill.setBillName(planBillDTO.getBillName());
-        planBill.setMemo(planBillDTO.getMemo());
+        planBill.setPlanMemo(planBillDTO.getMemo());
         planBill.setHqBill(true);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getPlanBillDetailDTOS()) {
@@ -331,7 +331,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         resultPlanBillDTO.setBillState(planBill.getBillState());
         resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
         resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
-        resultPlanBillDTO.setMemo(planBill.getMemo());
+        resultPlanBillDTO.setMemo(planBill.getPlanMemo());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
@@ -407,7 +407,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     private ChildPlanBillDTO mapChildPlanBillToDTO(PlanBill childPlanBill) {
         ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
-        childPlanBillDTO.setMemo(childPlanBill.getMemo());
+        childPlanBillDTO.setMemo(childPlanBill.getPlanMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/

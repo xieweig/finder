@@ -1,10 +1,14 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
-import cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
+import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,7 +16,6 @@ import java.util.Set;
 
 
 /**
- *
  * @author mayupeng
  */
 public class ReturnedBillDTO {
@@ -66,7 +69,7 @@ public class ReturnedBillDTO {
     /**
      * 单据属性
      */
-    private cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum billProperty;
+    private SourcePlanTypeEnum billProperty;
     /**
      * 总价
      */
@@ -75,7 +78,7 @@ public class ReturnedBillDTO {
     /**
      * 按货物还是按原料
      */
-    private cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum basicEnum;
+    private BasicEnum basicEnum;
 
     /**
      * 退货数量
@@ -246,11 +249,11 @@ public class ReturnedBillDTO {
         this.billDetails = billDetails;
     }
 
-    public cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum getBillProperty() {
+    public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
     }
 
-    public void setBillProperty(cn.sisyphe.coffee.bill.domain.returned.enums.PropertyEnum billProperty) {
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
     }
 
@@ -262,11 +265,11 @@ public class ReturnedBillDTO {
         this.totalPrice = totalPrice;
     }
 
-    public cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum getBasicEnum() {
+    public BasicEnum getBasicEnum() {
         return basicEnum;
     }
 
-    public void setBasicEnum(cn.sisyphe.coffee.bill.domain.returned.enums.BasicEnum basicEnum) {
+    public void setBasicEnum(BasicEnum basicEnum) {
         this.basicEnum = basicEnum;
     }
 
