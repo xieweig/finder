@@ -137,13 +137,13 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             /**
              * 配送品种开始数量
              */
-            if (conditionQueryAdjustBill.getVarietyStart() > 0) {
+            if (conditionQueryAdjustBill.getVarietyStart() != null && conditionQueryAdjustBill.getVarietyStart() > 0) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("adjustNumber").as(Integer.class), conditionQueryAdjustBill.getVarietyStart()));
             }
             /**
              * 配送品种结束数量
              */
-            if (conditionQueryAdjustBill.getVarietyEnd() > 0) {
+            if (conditionQueryAdjustBill.getVarietyEnd() != null && conditionQueryAdjustBill.getVarietyEnd() > 0) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("adjustNumber").as(Integer.class), conditionQueryAdjustBill.getVarietyEnd()));
             }
             /**
