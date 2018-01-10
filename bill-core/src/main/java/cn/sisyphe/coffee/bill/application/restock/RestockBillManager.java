@@ -531,7 +531,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      */
     private void verification(AddRestockBillDTO addRestockBillDTO) {
         //来源单号
-        if (addRestockBillDTO.getBillProperty() != PropertyEnum.NOPLAN) {
+        if (addRestockBillDTO.getBillProperty().equals(PropertyEnum.NOPLAN)) {
             if (StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
                 throw new DataException("500", "来源单号为空");
             }
@@ -589,10 +589,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         scanFillBillDTO.setOutStockTime(restockBill.getOutWareHouseTime());
         Set<RestockBillDetail> restockBillDetailSet = restockBill.getBillDetails();
         Set<String> packageCodeSet = new HashSet<>();
-        for(RestockBillDetail restockBillDetail : restockBillDetailSet){
+        for (RestockBillDetail restockBillDetail : restockBillDetailSet) {
             packageCodeSet.add(restockBillDetail.getPackageCode());
         }
-        for(String packageCode : packageCodeSet){
+        for (String packageCode : packageCodeSet) {
             packNumberList.add(packageCode);
         }
         scanFillBillDTO.setPackNumbers(packNumberList);
@@ -602,6 +602,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
     public RestockBill findByRestockBillCode(String restockBillCode) {
         RestockBill restockBill = restockBillQueryService.findByBillCode(restockBillCode);
-        return  restockBill;
+        return restockBill;
     }
 }
