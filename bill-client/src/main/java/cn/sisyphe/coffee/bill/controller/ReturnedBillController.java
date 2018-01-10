@@ -51,7 +51,7 @@ public class ReturnedBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
         //设定查询退库分片
-        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED.name());
+        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED);
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
             //测试使用

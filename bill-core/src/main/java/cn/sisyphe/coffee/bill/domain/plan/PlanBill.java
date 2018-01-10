@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -23,6 +24,9 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PlanBill extends Bill<PlanBillDetail> {
 
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private OperationStateEnum operationState;
 
     @Column
     private String billName;
@@ -38,6 +42,14 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private Boolean hqBill;
 
+
+    public OperationStateEnum getOperationState() {
+        return operationState;
+    }
+
+    public void setOperationState(OperationStateEnum operationState) {
+        this.operationState = operationState;
+    }
 
     public PlanBill() {
         setBillType(BillTypeEnum.PLAN);

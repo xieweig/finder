@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,6 +72,7 @@ public class JustForPlan {
         planBill.setAuditPersonCode(random.nextInt(100) + "0302");
         planBill.setBillCode("010" + random.nextInt(1000));
         planBill.setBillType(BillTypeEnum.PLAN);
+        planBill.setOperationState(OperationStateEnum.values()[random.nextInt(OperationStateEnum.values().length)]);
         Set<PlanBillDetail> details = new HashSet<>();
         for (int i = 0; i < 3; i++) {
 

@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -24,6 +25,15 @@ public class ChildPlanBillDTO {
      * 计划单编码
      */
     private String billCode;
+
+    /**
+     * 计划单编码
+     */
+    private OperationStateEnum operationState;
+
+    /**
+     * 状态
+     */
     private BillStateEnum billState;
     private BillAuditStateEnum auditState;
     private BillSubmitStateEnum submitState;
@@ -47,19 +57,31 @@ public class ChildPlanBillDTO {
     private String outStationCode;
     private BasicEnum basicEnum;
     private String operatorName;
-    //数量
+    /**
+     * 数量
+     */
     private Integer totalAmount;
 
     private Integer typeAmount;
 
     private BillTypeEnum billType;
 
-    //起始单号
+    /**
+     * 起始单号
+     */
     private String rootCode;
 
     private BigDecimal progress;
 
     private List<ChildPlanBillDetailDTO> childPlanBillDetails;
+
+    public OperationStateEnum getOperationState() {
+        return operationState;
+    }
+
+    public void setOperationState(OperationStateEnum operationState) {
+        this.operationState = operationState;
+    }
 
     public BigDecimal getProgress() {
         return progress;

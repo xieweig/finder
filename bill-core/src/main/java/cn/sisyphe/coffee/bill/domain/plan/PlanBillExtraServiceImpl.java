@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -32,6 +33,12 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Override
+    public void updateOperationStateByBill(PlanBill planBill, OperationStateEnum operationState){
+        planBill.setOperationState(operationState);
+        planBillRepository.save(planBill);
+    }
 
     @Override
     public Page<PlanBill> findPageByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
@@ -177,11 +184,11 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             //单据的种类
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getSpecificBillType())) {
-                expressions.add(cb.equal(root.<String>get("specificBillType"), BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType())));
+                expressions.add(cb.equal(root.<String>get("specificBillType"), conditionQueryPlanBill.getSpecificBillType()));
             }
             //计划类型
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
-                expressions.add(cb.equal(root.<String>get("billPurpose"), BillPurposeEnum.valueOf(conditionQueryPlanBill.getBillPurpose())));
+                expressions.add(cb.equal(root.<String>get("billPurpose"), conditionQueryPlanBill.getBillPurpose()));
             }
             // 入库站点集合
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCodeArray())) {
