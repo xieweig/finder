@@ -17,6 +17,7 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.util.BillCodeManager;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.sum;
@@ -191,7 +195,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         } else {
             adjustBill = (AdjustBill) new BillFactory().createBill(BillTypeEnum.ADJUST);
             // 设置单据编码
-            adjustBill.setBillCode(generateBillCode(adjustBill.getBelongStationCode()));
+            adjustBill.setBillCode(BillCodeManager.getBillCodeFun(ADJUST_OUT_STORAGE_PREFIX, adjustBill.getBelongStationCode()));
         }
         return adjustBill;
     }
@@ -218,27 +222,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             billDetails.add(adjustBillDetail);
         }
         return billDetails;
-    }
-
-    /**
-     * 临时单据编码
-     *
-     * @return
-     */
-    private String generateBillCode(String stationCode) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(ADJUST_OUT_STORAGE_PREFIX);
-        sb.append(stationCode);
-        Calendar cc = Calendar.getInstance();
-        int year = cc.get(Calendar.YEAR);
-        int month = cc.get(Calendar.MONTH);
-        int date = cc.get(Calendar.DATE);
-        sb.append(year);
-        sb.append(month);
-        sb.append(date);
-        sb.append("P10");
-        sb.append("000001");
-        return sb.toString();
     }
 
     /**
