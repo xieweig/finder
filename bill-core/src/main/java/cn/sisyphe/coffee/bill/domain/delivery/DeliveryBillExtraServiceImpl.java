@@ -24,7 +24,7 @@ import java.util.List;
  * @Date 2018/1/4 11:08
  **/
 @Service
-public class DeliveryBillQueryServiceImpl implements DeliveryBillQueryService {
+public class DeliveryBillExtraServiceImpl implements DeliveryBilExtraService {
 
 
     @Autowired

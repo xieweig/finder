@@ -195,9 +195,9 @@ public class DeliveryPickingEditDTO implements Serializable {
             //包号
             tempBillDetail.setPackageCode(item.getPackageCode());
             //出库库位
-            tempBillDetail.setOutLocation(item.getOutLocation());
+           // tempBillDetail.setOutLocation(item.getOutLocation());
             //
-            tempBillDetail.setInLocation(item.getInLocation());
+           // tempBillDetail.setInLocation(item.getInLocation());
             // 设置货物和原料信息
             RawMaterial rawMaterial = item.getRawMaterial();
 
