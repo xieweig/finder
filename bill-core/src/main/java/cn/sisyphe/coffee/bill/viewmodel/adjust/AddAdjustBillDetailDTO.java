@@ -31,10 +31,6 @@ public class AddAdjustBillDetailDTO {
      */
     private String belongMaterialCode;
 
-    /**
-     * 详情备注
-     */
-    private String memo;
 
     public Integer getShippedAmount() {
         return shippedAmount;
@@ -60,13 +56,6 @@ public class AddAdjustBillDetailDTO {
         this.rawMaterial = rawMaterial;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 
     public String getBelongMaterialCode() {
         return belongMaterialCode;
@@ -83,7 +72,6 @@ public class AddAdjustBillDetailDTO {
                 ", actualAmount=" + actualAmount +
                 ", rawMaterial=" + rawMaterial +
                 ", belongMaterialCode='" + belongMaterialCode + '\'' +
-                ", memo='" + memo + '\'' +
                 '}';
     }
 }
