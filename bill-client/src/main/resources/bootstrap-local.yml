@@ -1,6 +1,6 @@
 spring:
   application:
-    name: coffee-bill
+    name: coffee-bill-client
 
 info:
   name: 单据客户端
