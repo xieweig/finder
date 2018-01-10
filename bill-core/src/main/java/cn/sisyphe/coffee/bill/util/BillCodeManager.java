@@ -1,5 +1,9 @@
 package cn.sisyphe.coffee.bill.util;
 
+import cn.sisyphe.framework.common.utils.HexUtil;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,7 +30,8 @@ public class BillCodeManager {
         sb.append(year);
         sb.append(month);
         sb.append(date);
-        sb.append("P10");
+        sb.append(HexUtil.intTo32StrSeat(getProcessID(), 4));
+        // 补零操作
         String withZore = frontCompWithZore(addInteger.addAndGet(1), 6);
         sb.append(withZore);
 
@@ -47,5 +52,15 @@ public class BillCodeManager {
 
         return newString;
 
+    }
+
+    /**
+     * 获取当前线程
+     *
+     * @return
+     */
+    public static final int getProcessID() {
+        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+        return Integer.valueOf(runtimeMXBean.getName().split("@")[0]).intValue();
     }
 }
