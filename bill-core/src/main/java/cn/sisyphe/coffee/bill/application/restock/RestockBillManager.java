@@ -250,11 +250,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         //设置单据属性
         restockBill.setBillProperty(addRestockBillDTO.getBillProperty());
-        // 单据编码生成器
-        // TODO: 2017/12/29 单号生成器还没有实现
-        //测试使用
-        Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000) + "0302");
+
         // 来源单号
         if (!StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(addRestockBillDTO.getSourceCode());
@@ -390,11 +386,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //  restockBill.setBillType(BillTypeEnum.RESTOCK);
         //设置单据属性
         restockBill.setBillProperty(editRestockBillDTO.getBillProperty());
-        // 单据编码生成器
-        // TODO: 2017/12/29 单号生成器还没有实现
-        //测试使用
-//        Random random = new Random();
-//        restockBill.setBillCode(random.nextInt(10000) + "0302");
+
         restockBill.setRootCode(this.nextBillCode());
         // 来源单号
         if (!StringUtils.isEmpty(editRestockBillDTO.getSourceCode())) {

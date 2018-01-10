@@ -82,11 +82,13 @@ public class SaveCommitTest extends InstanceFactory{
 
     //测试拣货界面保存
     @Test
-    public void saveByAddRestockBillDTO() {
+    public void saveByAddRestockBillDTO() throws InterruptedException {
         for (int i = 0; i < 6; i++) {
             AddRestockBillDTO dto = this.nextRandomRestockBillDTO();
 
             this.restockBillManager.saveBill(dto);
+
+            TimeUnit.SECONDS.sleep(1);
 
         }
     }
@@ -144,6 +146,7 @@ public class SaveCommitTest extends InstanceFactory{
                 e.printStackTrace();
             }
         }
+
     }
 
     //测试修改界面修改
@@ -232,6 +235,13 @@ public class SaveCommitTest extends InstanceFactory{
         QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
         logger.info(queryRestockBillDTO.getTotalNumber()+queryRestockBillDTO.getContent().toString());
+    }
+    @Test
+    public void born(){
+        for (int i = 0; i <1 ; i++) {
+            this.restockBillRepository.save(this.nextRandomRestockBill(3));
+
+        }
     }
 
 }
