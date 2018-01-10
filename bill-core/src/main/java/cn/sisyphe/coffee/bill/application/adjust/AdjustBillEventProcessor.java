@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.application.adjust;
 
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
@@ -94,6 +93,7 @@ public class AdjustBillEventProcessor {
         inAdjustBill.setBillPurpose(BillPurposeEnum.InStorage);
         inAdjustBill.setBillCode(generateBillCode());
         inAdjustBill.setSourceCode(adjustBill.getBillCode());
+        inAdjustBill.setRootCode(adjustBill.getRootCode());
         inAdjustBill.setBelongStationCode(adjustBill.getInLocation().code());
         inAdjustBill.setInLocation(adjustBill.getInLocation());
         inAdjustBill.setOutLocation(adjustBill.getOutLocation());

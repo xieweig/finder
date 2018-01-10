@@ -38,9 +38,14 @@ public class AdjustBillDTO {
      */
     private String auditState;
     /**
-     * 来源单号
+     * 发起单号
      */
     private String rootCode;
+
+    /**
+     * 来源单号
+     */
+    private String sourceCode;
     /**
      * 录单时间
      */
@@ -210,6 +215,14 @@ public class AdjustBillDTO {
 
     public void setAuditorName(String auditorName) {
         this.auditorName = auditorName;
+    }
+
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
     }
 
     @Override

@@ -351,8 +351,10 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
         //单据状态
         adjustBillDTO.setBillState(adjustBill.getBillState());
-        // 来源单号
+        // 发起单号
         adjustBillDTO.setRootCode(adjustBill.getRootCode());
+        //来源单号
+        adjustBillDTO.setSourceCode(adjustBill.getSourceCode());
         // 单据编码
         adjustBillDTO.setBillCode(adjustBill.getBillCode());
         // 录单时间
