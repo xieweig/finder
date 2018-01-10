@@ -298,8 +298,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             restockBillDetail.setGoods(rawMaterial);
-            //备注
-            restockBillDetail.setMemo(detail.getMemo());
+/*            //备注
+            restockBillDetail.setMemo(detail.getMemo());*/
             //应捡数量
             restockBillDetail.setShippedAmount(detail.getShippedAmount());
             //实拣数量
@@ -471,7 +471,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
                 restockBillDetailDTO.setRawMaterial(rawMaterial);
             }
             restockBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
-            restockBillDetailDTO.setMemo(restockBillDetail.getMemo());
+            /*restockBillDetailDTO.setMemo(restockBillDetail.getMemo());*/
             restockBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
             restockBillDetailDTOSet.add(restockBillDetailDTO);
         }

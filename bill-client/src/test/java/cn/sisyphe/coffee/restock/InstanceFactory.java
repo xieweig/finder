@@ -86,7 +86,7 @@ public class InstanceFactory {
 
         RestockBillDetailDTO billDetailDTO = new RestockBillDetailDTO();
         billDetailDTO.setActualAmount(random.nextInt(100));
-        billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
+        /*billDetailDTO.setMemo("details remarks:" + random.nextInt(200));*/
         RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
         Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
 
