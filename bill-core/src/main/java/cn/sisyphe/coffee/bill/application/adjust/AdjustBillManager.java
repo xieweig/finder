@@ -17,13 +17,7 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -31,10 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.sum;
@@ -50,7 +41,7 @@ import static ch.lambdaj.Lambda.sum;
 @Service
 public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
 
-    public static final String ADJUST_OUT_STORAGE_PREFIX = "tjckd";
+    public static final String ADJUST_OUT_STORAGE_PREFIX = "TJCKD";
     @Autowired
     private PlanBillExtraService planBillExtraService;
     @Autowired
@@ -200,7 +191,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         } else {
             adjustBill = (AdjustBill) new BillFactory().createBill(BillTypeEnum.ADJUST);
             // 设置单据编码
-            adjustBill.setBillCode(generateBillCode());
+            adjustBill.setBillCode(generateBillCode(adjustBill.getBelongStationCode()));
         }
         return adjustBill;
     }
@@ -234,8 +225,20 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      *
      * @return
      */
-    private String generateBillCode() {
-        return String.valueOf(System.currentTimeMillis());
+    private String generateBillCode(String stationCode) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(ADJUST_OUT_STORAGE_PREFIX);
+        sb.append(stationCode);
+        Calendar cc = Calendar.getInstance();
+        int year = cc.get(Calendar.YEAR);
+        int month = cc.get(Calendar.MONTH);
+        int date = cc.get(Calendar.DATE);
+        sb.append(year);
+        sb.append(month);
+        sb.append(date);
+        sb.append("P10");
+        sb.append("000001");
+        return sb.toString();
     }
 
     /**

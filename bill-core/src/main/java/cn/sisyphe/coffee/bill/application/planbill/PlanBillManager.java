@@ -428,7 +428,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         planBillExtraService.save(planBill);
     }
 
-    public void Operation(String billCode, OperationStateEnum operationState) {
+    public void operation(String billCode, OperationStateEnum operationState) {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
         planBillExtraService.updateOperationStateByBill(planBill,operationState);
     }
