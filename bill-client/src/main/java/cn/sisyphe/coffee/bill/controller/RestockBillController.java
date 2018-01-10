@@ -114,6 +114,7 @@ public class RestockBillController {
     public ResponseResult saveRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
 //        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 //        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        addRestockBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
@@ -131,6 +132,7 @@ public class RestockBillController {
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
 //        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 //        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        addRestockBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.submitBill(addRestockBillDTO);
 
