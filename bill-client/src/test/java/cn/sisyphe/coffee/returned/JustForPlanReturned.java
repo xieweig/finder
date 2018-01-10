@@ -38,7 +38,8 @@ public class JustForPlanReturned {
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
     Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    public static final String[] CARGOCODE = {"AD","SSA","SDS","WEA"};
+    public static final String[] RAWMATERIALCODE = {"2","7","8","9"};
     @Resource
     private PlanBillRepository planBillRepository;
 
@@ -46,8 +47,9 @@ public class JustForPlanReturned {
         PlanBillDetail planBillDetail = new PlanBillDetail();
         planBillDetail.setAmount(random.nextInt(1000));
         planBillDetail.setPackageCode("test:03" + random.nextInt(100));
-        RawMaterial rawMaterial = new RawMaterial();
-        rawMaterial.setCargo(new Cargo("3002" + random.nextInt()));
+        RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
+        Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
+        rawMaterial.setCargo(cargo);
         rawMaterial.setRawMaterialName("测试原料名称" + random.nextInt(1000));
         planBillDetail.setGoods(rawMaterial);
         planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
