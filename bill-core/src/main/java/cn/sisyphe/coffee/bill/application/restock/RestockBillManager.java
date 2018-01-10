@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -212,6 +213,27 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         return QueryRestockBillDTO;
     }
+    private  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private   Random random = new Random();
+
+    private String nextBillCode(){
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("TKCK");
+        stringBuffer.append("CKG001");
+        stringBuffer.append(simpleDateFormat.format(new Date()));
+        stringBuffer.append("P10");
+        stringBuffer.append(""+(random.nextInt(800000)+100000));
+        return stringBuffer.toString();
+    }
+    /**
+     *
+     *
+     * @param
+     * @return
+     */
+
+
 
     /**
      * 保存和提交操作需要用到的DTO转换
@@ -371,8 +393,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
-        Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000) + "0302");
+//        Random random = new Random();
+//        restockBill.setBillCode(random.nextInt(10000) + "0302");
+        restockBill.setRootCode(this.nextBillCode());
         // 来源单号
         if (!StringUtils.isEmpty(editRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(editRestockBillDTO.getSourceCode());
