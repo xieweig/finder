@@ -224,7 +224,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             //实拣数量
             adjustBillDetail.setActualAmount(addAdjustBillDetailDTO.getActualAmount());
             //备注信息
-            adjustBillDetail.setMemo(addAdjustBillDetailDTO.getMemo());
             billDetails.add(adjustBillDetail);
         }
         return billDetails;
@@ -314,7 +313,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
                 adjustBillDetailDTO.setActualAmount(adjustBillDetail.getActualAmount());
                 adjustBillDetailDTO.setShippedAmount(adjustBillDetail.getShippedAmount());
                 adjustBillDetailDTO.setRawMaterial((RawMaterial) adjustBillDetail.getGoods());
-                adjustBillDetailDTO.setMemo(adjustBillDetail.getMemo());
                 detailDTOS.add(adjustBillDetailDTO);
             }
             queryOneAdjustDTO.setDetails(detailDTOS);
