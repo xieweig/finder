@@ -28,7 +28,6 @@ public enum BillTypeEnum {
      * 退库
      */
     RESTOCK,
-
     /**
      * 运单
      */

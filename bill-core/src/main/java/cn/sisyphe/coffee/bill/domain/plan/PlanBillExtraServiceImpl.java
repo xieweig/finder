@@ -110,7 +110,7 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
 
             // 计划类型
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
-                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
+                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(BillTypeEnum.valueOf(conditionQueryPlanBill.getSpecificBillType())));
             }
 
             // 计划编码

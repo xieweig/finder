@@ -24,6 +24,10 @@ public class ChildPlanBillDTO {
      * 计划单编码
      */
     private String billCode;
+
+    /**
+     * 状态
+     */
     private BillStateEnum billState;
     private BillAuditStateEnum auditState;
     private BillSubmitStateEnum submitState;
@@ -47,14 +51,18 @@ public class ChildPlanBillDTO {
     private String outStationCode;
     private BasicEnum basicEnum;
     private String operatorName;
-    //数量
+    /**
+     * 数量
+     */
     private Integer totalAmount;
 
     private Integer typeAmount;
 
     private BillTypeEnum billType;
 
-    //起始单号
+    /**
+     * 起始单号
+     */
     private String rootCode;
 
     private BigDecimal progress;

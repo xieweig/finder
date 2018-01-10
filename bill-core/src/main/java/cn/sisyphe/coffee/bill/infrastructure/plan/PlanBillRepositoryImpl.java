@@ -4,11 +4,18 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author ncmao
@@ -20,6 +27,11 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
 
     @Autowired
     private JPAPlanBillRepository jpaPlanBillRepository;
+
+    @PersistenceContext
+    private EntityManager em;
+
+
 
     @Override
     public PlanBill findOneByBillCode(String billCode) {
