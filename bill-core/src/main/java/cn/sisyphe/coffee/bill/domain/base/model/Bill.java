@@ -233,6 +233,11 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      */
     private SourcePlanTypeEnum billProperty;
 
+    /**
+     * 单据编码前缀
+     */
+    private String billCodePrefix;
+
 
     public AbstractLocation getOutLocation() {
         return outLocation;
@@ -470,6 +475,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
+    public String getBillCodePrefix() {
+        return billCodePrefix;
+    }
+
+    public void setBillCodePrefix(String billCodePrefix) {
+        this.billCodePrefix = billCodePrefix;
+    }
+
     @Override
     public String toString() {
         return "Bill{" +
@@ -490,6 +503,19 @@ public class Bill<T extends BillDetail> extends BaseEntity {
                 ", submitState=" + submitState +
                 ", auditState=" + auditState +
                 ", inOrOutState=" + inOrOutState +
+                ", outWareHouseTime=" + outWareHouseTime +
+                ", inWareHouseTime=" + inWareHouseTime +
+                ", outStateEnum=" + outStateEnum +
+                ", totalAmount=" + totalAmount +
+                ", totalVarietyAmount=" + totalVarietyAmount +
+                ", planMemo='" + planMemo + '\'' +
+                ", outStorageMemo='" + outStorageMemo + '\'' +
+                ", auditMemo='" + auditMemo + '\'' +
+                ", basicEnum=" + basicEnum +
+                ", progress=" + progress +
+                ", totalPrice=" + totalPrice +
+                ", billProperty=" + billProperty +
+                ", billCodePrefix='" + billCodePrefix + '\'' +
                 "} " + super.toString();
     }
 }

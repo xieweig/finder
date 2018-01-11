@@ -119,7 +119,16 @@ public class RestockBillController {
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
     }
-
+    @ApiOperation(value = "保存退库出库单 (站点自主)")
+    @RequestMapping(path = "/saveRestockBillBySelf", method = RequestMethod.POST)
+    public ResponseResult saveRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
+//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        addRestockBillDTO.setOperatorCode("001");
+        ResponseResult responseResult = new ResponseResult();
+        restockBillManager.saveBill(addRestockBillDTO);
+        return responseResult;
+    }
     /**
      * 提交退库单
      *
@@ -139,6 +148,18 @@ public class RestockBillController {
         return responseResult;
     }
 
+    @Transactional
+    @ApiOperation(value = "提交退库出库单")
+    @RequestMapping(path = "/submitRestockBillBySelf", method = RequestMethod.POST)
+    public ResponseResult submitRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
+//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+        addRestockBillDTO.setOperatorCode("001");
+        ResponseResult responseResult = new ResponseResult();
+        restockBillManager.submitBill(addRestockBillDTO);
+
+        return responseResult;
+    }
     /**
      * 多条件查询退库入库单
      *
@@ -180,9 +201,35 @@ public class RestockBillController {
      * @param restockBillCode
      * @return
      */
-    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息")
+    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息以查询")
     @RequestMapping(path = "/findByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCode(@RequestParam String restockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
+        RestockBill billDTO = restockBillManager.findByRestockBillCode(restockBillCode);
+        responseResult.put("RestockBill", billDTO);
+        return responseResult;
+    }
+    /**
+     * @param restockBillCode
+     * @return
+     */
+    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息以修改")
+    @RequestMapping(path = "/findByRestockBillCodeToEdit", method = RequestMethod.GET)
+    public ResponseResult findByRestockBillCodeToEdit(@RequestParam String restockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
+        RestockBill billDTO = restockBillManager.findByRestockBillCode(restockBillCode);
+        responseResult.put("RestockBill", billDTO);
+        return responseResult;
+    }
+    /**
+     * @param restockBillCode
+     * @return
+     */
+    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息以审核")
+    @RequestMapping(path = "/findByRestockBillCodeToAudit", method = RequestMethod.GET)
+    public ResponseResult findByRestockBillCodeToAudit(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
 //        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
         RestockBill billDTO = restockBillManager.findByRestockBillCode(restockBillCode);

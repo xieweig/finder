@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -78,16 +80,18 @@ public class InstanceIterator {
     private ReturnedBillDetailDTO nextRandomReturnedDetailDTO() {
 
         ReturnedBillDetailDTO billDetailDTO = new ReturnedBillDetailDTO();
-        billDetailDTO.setActualAmount(random.nextInt(100));
+        int amount = random.nextInt(100);
+        billDetailDTO.setShippedAmount(amount);
+        billDetailDTO.setActualAmount(amount+random.nextInt(6)-3);
+
         billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
         RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
         Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
         cargo.setCargoName("cargoName:" + random.nextInt(100));
         rawMaterial.setCargo(cargo);
-
-
-
         billDetailDTO.setRawMaterial(rawMaterial);
+
+
         return billDetailDTO;
 
 
@@ -102,5 +106,19 @@ public class InstanceIterator {
         station.setStationType(StationType.STORE);
         station.setStorage(storage);
         return station;
+    }
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+
+    //billode 生成器
+    private String nextBillCode(){
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("TKCK");
+        stringBuffer.append("CKG001");
+
+        stringBuffer.append(simpleDateFormat.format(new Date()));
+        stringBuffer.append("P10");
+        stringBuffer.append(""+(random.nextInt(800000)+100000));
+        return stringBuffer.toString();
     }
 }

@@ -37,7 +37,7 @@ public class OracleRunner extends InstanceIterator {
     //测试return bill 保存 提交
     @Test
     public void leafSave() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
 
             AddReturnedBillDTO addReturnedBillDTO = this.nextRandomAddReturnedBillDTO();
             this.returnedBillManager.saveBill(addReturnedBillDTO);

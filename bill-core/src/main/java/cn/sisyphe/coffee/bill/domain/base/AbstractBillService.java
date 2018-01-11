@@ -5,12 +5,11 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.BillBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurposeFactory;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
+import cn.sisyphe.coffee.bill.util.BillCodeManager;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by heyong on 2017/12/19 12:07
@@ -43,14 +42,18 @@ public abstract class AbstractBillService {
 
     /**
      * 构造方法
+     *
      * @param bill
      */
     public AbstractBillService(Bill bill) {
-        if (bill == null || bill.getBillPurpose() == null){
+        if (bill == null || bill.getBillPurpose() == null) {
             throw new DataException("001", "单据作用类型错误");
         }
 
         this.bill = bill;
+        if(StringUtils.isEmpty(this.bill.getBillCode())){
+            this.bill.setBillCode(BillCodeManager.getBillCodeFun(bill.getBillCodePrefix(), bill.getBelongStationCode()));
+        }
         this.billPurpose = BillPurposeFactory.createPurpose(bill.getBillPurpose());
         this.billPurpose.setBillService(this);
     }
@@ -84,17 +87,18 @@ public abstract class AbstractBillService {
 
     /**
      * 发送事件
+     *
      * @param applicationEventPublisher
      */
-    public void sendEvent(ApplicationEventPublisher applicationEventPublisher){
+    public void sendEvent(ApplicationEventPublisher applicationEventPublisher) {
         billBehavior.sendEvent(applicationEventPublisher);
     }
 
     /**
      * 保存单据
      */
-    public void save(){
-        if (billRepository == null){
+    public void save() {
+        if (billRepository == null) {
             throw new DataException("002", "没有设置单据的数据库仓库");
         }
 

@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -38,8 +40,8 @@ public class InstanceFactory {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private BufferedInputStream bufferedInputStream;
     //依赖数据库表内容 plan表的bill code
-    public static final String[] PLANCODES = {"010293", "010160", "010476"};
-    public static final String[] ROOTCODES = {"010293", "010160", "010476"};
+    public static final String[] PLANCODES = {"010537", "010150", "010476"};
+    public static final String[] ROOTCODES = {"010537", "010150", "010476"};
     public static final String[] CARGOCODE = {"AD","SSA","SDS","WEA"};
     public static final String[] RAWMATERIALCODE = {"2","7","8","9"};
 
@@ -51,7 +53,7 @@ public class InstanceFactory {
     public AddRestockBillDTO nextRandomRestockBillDTO(Integer detailsSize) {
 
         AddRestockBillDTO dto = new AddRestockBillDTO();
-
+      //  dto.setBillCode(this.nextBillCode());
         //dto.setBillCode("0101" + random.nextInt(1000));后台生成 update delete select 用到
         //一般性字段
         dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
@@ -61,13 +63,14 @@ public class InstanceFactory {
         dto.setRootCode(this.ROOTCODES[random.nextInt(ROOTCODES.length)]);
 
         dto.setProgress(new BigDecimal(random.nextInt(100) + 1));
-        ;
+
         dto.setOutMemo("OutRemarks: " + random.nextInt(20) + " ok!");
         dto.setPlanMemo("PlanRemarks: " + random.nextInt(100) + " ok!");
         dto.setOperatorCode("2200" + random.nextInt(100));
         dto.setTotalPrice(new BigDecimal(random.nextInt(1000) + 500));
         dto.setInStation(this.nextRandomStation());
         dto.setOutStation(this.nextRandomStation());
+
 
         Set<RestockBillDetailDTO> billDetails = new HashSet<>();
         for (int i = 0; i < detailsSize; i++) {
@@ -85,8 +88,10 @@ public class InstanceFactory {
     private RestockBillDetailDTO nextRandomRestockDetailDTO() {
 
         RestockBillDetailDTO billDetailDTO = new RestockBillDetailDTO();
-        billDetailDTO.setActualAmount(random.nextInt(100));
-        billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
+        int amount = random.nextInt(100);
+        billDetailDTO.setShippedAmount(amount);
+        billDetailDTO.setActualAmount(amount+random.nextInt(6)-3);
+        /*billDetailDTO.setMemo("details remarks:" + random.nextInt(200));*/
         RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
         Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
 
@@ -114,7 +119,7 @@ public class InstanceFactory {
     public RestockBill nextRandomRestockBill(Integer detailsSize) {
         BillFactory factory = new BillFactory();
         RestockBill restockBill = (RestockBill) factory.createBill(BillTypeEnum.RESTOCK);
-        restockBill.setBillCode("" + random.nextInt(9000) + 10000);
+        restockBill.setBillCode(this.nextBillCode());
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
         restockBill.setProgress(new BigDecimal(random.nextInt(100) + 1));
         restockBill.setTotalPrice(new BigDecimal(random.nextInt(600) + 100));
@@ -146,5 +151,17 @@ public class InstanceFactory {
         billDetail.setProgress(new BigDecimal(random.nextInt(100)));
         return billDetail;
     }
+     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    //billode 生成器
+    private String nextBillCode(){
 
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("TKCK");
+        stringBuffer.append("CKG001");
+
+        stringBuffer.append(simpleDateFormat.format(new Date()));
+        stringBuffer.append("P10");
+        stringBuffer.append(""+(random.nextInt(800000)+100000));
+        return stringBuffer.toString();
+    }
 }

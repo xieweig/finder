@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -212,6 +213,27 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         return QueryRestockBillDTO;
     }
+    private  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private   Random random = new Random();
+
+    private String nextBillCode(){
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("TKCK");
+        stringBuffer.append("CKG001");
+        stringBuffer.append(simpleDateFormat.format(new Date()));
+        stringBuffer.append("P10");
+        stringBuffer.append(""+(random.nextInt(800000)+100000));
+        return stringBuffer.toString();
+    }
+    /**
+     *
+     *
+     * @param
+     * @return
+     */
+
+
 
     /**
      * 保存和提交操作需要用到的DTO转换
@@ -228,11 +250,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
         //设置单据属性
         restockBill.setBillProperty(addRestockBillDTO.getBillProperty());
-        // 单据编码生成器
-        // TODO: 2017/12/29 单号生成器还没有实现
-        //测试使用
-        Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000) + "0302");
+
         // 来源单号
         if (!StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(addRestockBillDTO.getSourceCode());
@@ -298,8 +316,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             restockBillDetail.setGoods(rawMaterial);
-            //备注
-            restockBillDetail.setMemo(detail.getMemo());
+/*            //备注
+            restockBillDetail.setMemo(detail.getMemo());*/
             //应捡数量
             restockBillDetail.setShippedAmount(detail.getShippedAmount());
             //实拣数量
@@ -368,11 +386,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //  restockBill.setBillType(BillTypeEnum.RESTOCK);
         //设置单据属性
         restockBill.setBillProperty(editRestockBillDTO.getBillProperty());
-        // 单据编码生成器
-        // TODO: 2017/12/29 单号生成器还没有实现
-        //测试使用
-        Random random = new Random();
-        restockBill.setBillCode(random.nextInt(10000) + "0302");
+
+        restockBill.setRootCode(this.nextBillCode());
         // 来源单号
         if (!StringUtils.isEmpty(editRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(editRestockBillDTO.getSourceCode());
@@ -471,7 +486,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
                 restockBillDetailDTO.setRawMaterial(rawMaterial);
             }
             restockBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
-            restockBillDetailDTO.setMemo(restockBillDetail.getMemo());
+            /*restockBillDetailDTO.setMemo(restockBillDetail.getMemo());*/
             restockBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
             restockBillDetailDTOSet.add(restockBillDetailDTO);
         }

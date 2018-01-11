@@ -78,45 +78,8 @@ public class AdjustBillEventProcessor {
     public void billDone(BehaviorEvent event) {
         //冲减完成之后需要生成调剂入库单
         AdjustBill adjustBill = (AdjustBill) event.getBill();
-        AdjustBill inAdjustBill = generateInStorageBill(adjustBill);
-        adjustBillManager.save(inAdjustBill);
         System.out.println("DONE:" + adjustBill);
     }
 
-    // TODO: 2018/1/9 临时单据编码
-    private String generateBillCode() {
-        return ADJUST_IN_STORAGE_PREFIX + String.valueOf(System.currentTimeMillis());
-    }
-
-    private AdjustBill generateInStorageBill(AdjustBill adjustBill) {
-        AdjustBill inAdjustBill = (AdjustBill) new BillFactory().createBill(BillTypeEnum.ADJUST);
-        inAdjustBill.setBillPurpose(BillPurposeEnum.InStorage);
-        inAdjustBill.setBillCode(generateBillCode());
-        inAdjustBill.setSourceCode(adjustBill.getBillCode());
-        inAdjustBill.setRootCode(adjustBill.getRootCode());
-        inAdjustBill.setBelongStationCode(adjustBill.getInLocation().code());
-        inAdjustBill.setInLocation(adjustBill.getInLocation());
-        inAdjustBill.setOutLocation(adjustBill.getOutLocation());
-        inAdjustBill.setPlanMemo(adjustBill.getPlanMemo());
-        inAdjustBill.setOutStorageMemo(adjustBill.getOutStorageMemo());
-        inAdjustBill.setBasicEnum(adjustBill.getBasicEnum());
-        inAdjustBill.setTotalAmount(adjustBill.getTotalAmount());
-        inAdjustBill.setTotalVarietyAmount(adjustBill.getTotalVarietyAmount());
-        inAdjustBill.setBillProperty(adjustBill.getBillProperty());
-        Set<AdjustBillDetail> details = new HashSet<>();
-        for (AdjustBillDetail adjustBillDetail : adjustBill.getBillDetails()) {
-            AdjustBillDetail inAdjustBillDetail = new AdjustBillDetail();
-            inAdjustBillDetail.setBelongMaterialCode(adjustBillDetail.getBelongMaterialCode());
-            inAdjustBillDetail.setActualAmount(adjustBillDetail.getActualAmount());
-            inAdjustBillDetail.setShippedAmount(adjustBillDetail.getShippedAmount());
-            inAdjustBillDetail.setGoods(adjustBillDetail.getGoods());
-            inAdjustBillDetail.setAmount(adjustBillDetail.getAmount());
-            inAdjustBillDetail.setProgress(adjustBillDetail.getProgress());
-            details.add(inAdjustBillDetail);
-        }
-        inAdjustBill.setBillDetails(details);
-
-        return inAdjustBill;
-    }
 
 }

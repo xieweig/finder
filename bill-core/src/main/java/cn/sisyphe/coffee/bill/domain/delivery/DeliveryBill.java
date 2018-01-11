@@ -18,8 +18,9 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class DeliveryBill extends Bill<DeliveryBillDetail> {
-
+    public static final String DELIVERY_OUT_STORAGE_PREFIX = "PSCK";
     public DeliveryBill() {
+        setBillCodePrefix(DELIVERY_OUT_STORAGE_PREFIX);
         setBillType(BillTypeEnum.DELIVERY);
     }
 

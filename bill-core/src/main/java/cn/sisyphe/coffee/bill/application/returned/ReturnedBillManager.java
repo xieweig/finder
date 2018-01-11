@@ -26,11 +26,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -75,7 +72,20 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 保存单据
         save(returnedBill);
     }
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private   Random random = new Random();
+    //billode 生成器
+    private String nextBillCode(){
 
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("TKCK");
+        stringBuffer.append("CKG001");
+        stringBuffer.append(simpleDateFormat.format(new Date()));
+        stringBuffer.append("P10");
+        stringBuffer.append(""+(random.nextInt(800000)+100000));
+        System.err.println(" ====bill code ======"+stringBuffer.toString());
+        return stringBuffer.toString();
+    }
     /**
      * 保存和提交操作需要用到的DTO转换
      *
@@ -95,8 +105,9 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         // 单据编码生成器
         // TODO: 2017/12/29 单号生成器还没有实现
         //测试使用
-        Random random = new Random();
-        returnedBill.setBillCode(random.nextInt(10000) + "0302");
+//        Random random = new Random();
+//        returnedBill.setBillCode(random.nextInt(10000) + "0302");
+        returnedBill.setBillCode(this.nextBillCode());
         // 来源单号
         if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
             returnedBill.setSourceCode(addReturnedBillDTO.getSourceCode());
@@ -160,8 +171,6 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             returnedBillDetail.setGoods(rawMaterial);
-            //备注
-            returnedBillDetail.setMemo(detail.getMemo());
             //应捡数量
             returnedBillDetail.setShippedAmount(detail.getShippedAmount());
             //实拣数量
@@ -484,7 +493,6 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
             ReturnedBillDetailDTO returnedBillDetailDTO = new ReturnedBillDetailDTO();
             returnedBillDetailDTO.setRawMaterial((RawMaterial) returnedBillDetail.getGoods());
             returnedBillDetailDTO.setActualAmount(returnedBillDetail.getActualAmount());
-            returnedBillDetailDTO.setMemo(returnedBillDetail.getMemo());
             returnedBillDetailDTO.setShippedAmount(returnedBillDetail.getShippedAmount());
             returnedBillDetailDTOSet.add(returnedBillDetailDTO);
         }
