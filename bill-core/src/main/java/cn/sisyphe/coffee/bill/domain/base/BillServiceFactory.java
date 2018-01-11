@@ -45,7 +45,6 @@ public class BillServiceFactory {
                 billService = new RestockBillService(bill);
                 break;
             case ADJUST:
-                //运货单
                 billService = new AdjustBillService(bill);
                 break;
             default:
