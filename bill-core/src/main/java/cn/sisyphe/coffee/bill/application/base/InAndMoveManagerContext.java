@@ -1,12 +1,10 @@
-package cn.sisyphe.coffee.bill.domain.base;
+package cn.sisyphe.coffee.bill.application.base;
 
 import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
-import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
@@ -70,13 +68,13 @@ public class InAndMoveManagerContext {
         bill.setBillProperty(sourceBill.getBillProperty());
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
-            AdjustBillDetail inAdjustBillDetail = new AdjustBillDetail();
-            inAdjustBillDetail.setActualAmount(billDetail.getActualAmount());
-            inAdjustBillDetail.setShippedAmount(billDetail.getShippedAmount());
-            inAdjustBillDetail.setGoods(billDetail.getGoods());
-            inAdjustBillDetail.setAmount(billDetail.getAmount());
-            inAdjustBillDetail.setProgress(billDetail.getProgress());
-            details.add(inAdjustBillDetail);
+            BillDetail desBillDetail = new BillDetail();
+            desBillDetail.setActualAmount(billDetail.getActualAmount());
+            desBillDetail.setShippedAmount(billDetail.getShippedAmount());
+            desBillDetail.setGoods(billDetail.getGoods());
+            desBillDetail.setAmount(billDetail.getAmount());
+            desBillDetail.setProgress(billDetail.getProgress());
+            details.add(desBillDetail);
         }
         bill.setBillDetails(details);
 

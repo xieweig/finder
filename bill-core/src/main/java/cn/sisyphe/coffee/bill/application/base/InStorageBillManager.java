@@ -1,6 +1,5 @@
-package cn.sisyphe.coffee.bill.domain.base;
+package cn.sisyphe.coffee.bill.application.base;
 
-import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import org.springframework.stereotype.Service;
