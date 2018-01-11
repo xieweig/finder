@@ -19,8 +19,8 @@ public class InStorageBillManager extends InAndMoveManagerContext {
      */
     @SuppressWarnings("unchecked")
     public void convertInStorageBill(Bill outStorageBill) {
-        Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage, bill -> bill.setBillState(BillStateEnum.AUDIT_SUCCESS));
+        Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage, bill -> bill.setBillState(BillStateEnum.SAVED));
         AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
-        billManager.purpose(inBill);
+        billManager.unAllot(inBill);
     }
 }
