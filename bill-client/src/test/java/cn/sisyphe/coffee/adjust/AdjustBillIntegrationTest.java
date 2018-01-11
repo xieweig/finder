@@ -84,7 +84,7 @@ public class AdjustBillIntegrationTest {
 
     @Test
     public void shouldGenerateMoveStorageBill() {
-        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801105JC000001");
+        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ04201801104RG000001");
         moveStorageBillManager.convertMoveStorageBill(adjustBill);
     }
 

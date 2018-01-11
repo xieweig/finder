@@ -5,11 +5,15 @@ import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
+import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +73,7 @@ public class InAndMoveManagerContext {
         bill.setBillProperty(sourceBill.getBillProperty());
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
-            BillDetail desBillDetail = new BillDetail();
+            BillDetail desBillDetail = createBillDetail(sourceBill.getBillType());
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
@@ -80,5 +84,21 @@ public class InAndMoveManagerContext {
         bill.setBillDetails(details);
 
         return bill;
+    }
+
+    private BillDetail createBillDetail(BillTypeEnum billType) {
+        if (BillTypeEnum.DELIVERY.equals(billType)) {
+            return new DeliveryBillDetail();
+        }
+        if (BillTypeEnum.ADJUST.equals(billType)) {
+            return new AdjustBillDetail();
+        }
+        if (BillTypeEnum.RESTOCK.equals(billType)) {
+            return new RestockBillDetail();
+        }
+        if (BillTypeEnum.RETURNED.equals(billType)) {
+            return new ReturnedBillDetail();
+        }
+        return null;
     }
 }
