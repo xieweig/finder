@@ -45,6 +45,11 @@ public class AddAdjustBillDTO {
      * 出库库位
      */
     private Storage outStorage;
+
+    /**
+     * 入库库位
+     */
+    private Storage inStorage;
     /**
      * 入库站点编码
      */
@@ -245,6 +250,14 @@ public class AddAdjustBillDTO {
 
     public void setBillProperty(SourcePlanTypeEnum billProperty) {
         this.billProperty = billProperty;
+    }
+
+    public Storage getInStorage() {
+        return inStorage;
+    }
+
+    public void setInStorage(Storage inStorage) {
+        this.inStorage = inStorage;
     }
 
     @Override

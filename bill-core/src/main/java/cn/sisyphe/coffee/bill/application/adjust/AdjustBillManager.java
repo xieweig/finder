@@ -17,7 +17,13 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.*;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -150,7 +156,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         outLocation.setStorage(addAdjustBillDTO.getOutStorage());
         adjustBill.setOutLocation(outLocation);
         //设置入站站点
-        adjustBill.setInLocation(new Station(addAdjustBillDTO.getInStationCode()));
+        Station inLocation = new Station(addAdjustBillDTO.getInStationCode());
+        inLocation.setStorage(addAdjustBillDTO.getInStorage());
+        adjustBill.setInLocation(inLocation);
         //设置源单号
         if (isFromPlanBill(addAdjustBillDTO)) {
             adjustBill.setBillProperty(addAdjustBillDTO.getBillProperty());
