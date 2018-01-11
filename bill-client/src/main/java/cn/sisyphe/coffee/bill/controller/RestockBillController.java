@@ -102,7 +102,7 @@ public class RestockBillController {
      * @param addRestockBillDTO
      * @return
      */
-    @ApiOperation(value = "自主拣货")
+    @ApiOperation(value = "保存退库出库单（计划）")
     @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
     public ResponseResult saveRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
 //        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
@@ -197,7 +197,7 @@ public class RestockBillController {
      * @param restockBillCode
      * @return
      */
-    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息以查询")
+    @ApiOperation(value = "据退库出库单编码查详细信息以查询")
     @RequestMapping(path = "/findByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
@@ -211,7 +211,7 @@ public class RestockBillController {
      * @param restockBillCode
      * @return
      */
-    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息以修改")
+    @ApiOperation(value = "据退库出库单编码查详细信息以修改")
     @RequestMapping(path = "/findByRestockBillCodeToEdit", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCodeToEdit(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
@@ -225,7 +225,7 @@ public class RestockBillController {
      * @param restockBillCode
      * @return
      */
-    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息以审核")
+    @ApiOperation(value = "据退库出库单编码查详细信息以审核")
     @RequestMapping(path = "/findByRestockBillCodeToAudit", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCodeToAudit(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
