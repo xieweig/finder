@@ -6,11 +6,8 @@ import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
@@ -54,7 +51,7 @@ public class ReturnedBillController {
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
-        //设定查询退库分片
+        //设定查询退货分片
         conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED);
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
@@ -149,7 +146,7 @@ public class ReturnedBillController {
      * @param returnedBillCode
      * @return
      */
-    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息")
+    @ApiOperation(value = "根据退货单编码查询退货单详细信息")
     @RequestMapping(path = "/openByReturnedBillCode", method = RequestMethod.GET)
     public ResponseResult openByReturnedBillCode(@RequestParam String returnedBillCode) {
         ResponseResult responseResult = new ResponseResult();
@@ -161,7 +158,7 @@ public class ReturnedBillController {
     /**
      * 根据退货单编码查询退货单详细信息
      *
-     * @param ReturnedBillCode
+     * @param returnedBillCode
      * @return
      */
     @ApiOperation(value = "根据退货单编码查询退货单详细信息")

@@ -18,4 +18,29 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class ReturnedBillDetail extends BillDetail {
 
+    /**
+     * 应拣数量
+     */
+    private int shippedAmount;
+
+    /**
+     * 实拣数量
+     */
+    private int actualAmount;
+
+    public int getShippedAmount() {
+        return shippedAmount;
+    }
+
+    public void setShippedAmount(int shippedAmount) {
+        this.shippedAmount = shippedAmount;
+    }
+
+    public int getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(int actualAmount) {
+        this.actualAmount = actualAmount;
+    }
 }
