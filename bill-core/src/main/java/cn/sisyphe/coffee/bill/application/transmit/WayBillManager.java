@@ -80,7 +80,7 @@ public class WayBillManager {
         //退库出库单
         if (billCode.toUpperCase().startsWith("TKCK")) {
             //退库出库单
-            //restockBillManager.findPackagInfoByBillCode(billCode);
+            return restockBillManager.findPackageInfoByBillCode(billCode);
         }
         //退货出库单
         if (billCode.toUpperCase().startsWith("THCK")) {
