@@ -29,6 +29,7 @@ public class DeliveryPickingEditDTO implements Serializable {
 
     private List<DeliveryPickingEditItemDTO> billDetails;
 
+
     /**
      * 站点
      */
@@ -127,6 +128,10 @@ public class DeliveryPickingEditDTO implements Serializable {
         }
         //测试姓名
         deliveryBill.setOperatorName(dto.getOperatorName());
+
+        //出库时间
+        //deliveryBill.setOutWareHouseTime();
+
         //归属站点
         deliveryBill.setBelongStationCode(dto.getOutLocation().code());
         //入库站点

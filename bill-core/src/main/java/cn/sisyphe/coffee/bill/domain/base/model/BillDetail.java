@@ -137,6 +137,14 @@ public class BillDetail {
         this.actualAmount = actualAmount;
     }
 
+    public DbGoods getDbGoods() {
+        return dbGoods;
+    }
+
+    public void setDbGoods(DbGoods dbGoods) {
+        this.dbGoods = dbGoods;
+    }
+
     @Override
     public String toString() {
         return "BillDetail{" +
