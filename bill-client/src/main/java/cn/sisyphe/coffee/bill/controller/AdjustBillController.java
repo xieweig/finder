@@ -71,6 +71,24 @@ public class AdjustBillController {
     }
 
     /**
+     * 审核按钮--打开操作
+     *
+     * @param billCode 调剂单号
+     * @return
+     */
+    @ApiOperation(value = "根据调剂单号查询详细信息")
+    @RequestMapping(path = "/openBill", method = RequestMethod.GET)
+    public ResponseResult openBill(@RequestParam(value = "billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("adjustBill", adjustBillManager.openBill(billCode));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
      * 保存调剂单据信息
      *
      * @param addAdjustBillDTO
@@ -82,8 +100,9 @@ public class AdjustBillController {
 
         ResponseResult responseResult = new ResponseResult();
         try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            addAdjustBillDTO.setOperatorCode("test0001");
             responseResult.put("billCode", adjustBillManager.create(addAdjustBillDTO));
         } catch (DataException data) {
             responseResult.putException(data);
@@ -102,8 +121,9 @@ public class AdjustBillController {
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            addAdjustBillDTO.setOperatorCode("test0001");
             responseResult.put("billCode", adjustBillManager.submit(addAdjustBillDTO));
         } catch (DataException data) {
             responseResult.putException(data);
@@ -122,7 +142,7 @@ public class AdjustBillController {
     public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),false);
+        adjustBillManager.audit(adjustBillCode, "auditPerson001", false);
         return responseResult;
     }
 
@@ -137,7 +157,7 @@ public class AdjustBillController {
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        adjustBillManager.audit(adjustBillCode,loginInfo.getOperatorCode(),true);
+        adjustBillManager.audit(adjustBillCode, "auditPerson001", true);
         return responseResult;
     }
 }

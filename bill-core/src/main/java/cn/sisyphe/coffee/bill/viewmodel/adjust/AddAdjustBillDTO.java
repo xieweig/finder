@@ -45,7 +45,6 @@ public class AddAdjustBillDTO {
      * 出库库位
      */
     private Storage outStorage;
-
     /**
      * 入库库位
      */
@@ -55,17 +54,9 @@ public class AddAdjustBillDTO {
      */
     private String inStationCode;
     /**
-     * 出库状态编码
+     * 出入库状态
      */
     private BillOutStateEnum outStatusCode;
-    /**
-     * 提交状态
-     */
-    private String submitState;
-    /**
-     * 审核状态
-     */
-    private String auditState;
     /**
      * 调剂数量
      */
@@ -164,22 +155,6 @@ public class AddAdjustBillDTO {
         this.outStatusCode = outStatusCode;
     }
 
-    public String getSubmitState() {
-        return submitState;
-    }
-
-    public void setSubmitState(String submitState) {
-        this.submitState = submitState;
-    }
-
-    public String getAuditState() {
-        return auditState;
-    }
-
-    public void setAuditState(String auditState) {
-        this.auditState = auditState;
-    }
-
     public Integer getAdjustNumber() {
         return adjustNumber;
     }
@@ -272,8 +247,6 @@ public class AddAdjustBillDTO {
                 ", outStorage=" + outStorage +
                 ", inStationCode='" + inStationCode + '\'' +
                 ", outStatusCode=" + outStatusCode +
-                ", submitState='" + submitState + '\'' +
-                ", auditState='" + auditState + '\'' +
                 ", adjustNumber=" + adjustNumber +
                 ", varietyNumber=" + varietyNumber +
                 ", planMemo='" + planMemo + '\'' +

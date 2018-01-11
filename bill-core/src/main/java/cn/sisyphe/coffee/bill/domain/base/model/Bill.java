@@ -226,8 +226,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      * 总价
      */
     private BigDecimal totalPrice;
-
-
+    
     /**
      * 单据来源类型
      */
@@ -236,8 +235,8 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据编码前缀
      */
+    @Transient
     private String billCodePrefix;
-
 
     public AbstractLocation getOutLocation() {
         return outLocation;

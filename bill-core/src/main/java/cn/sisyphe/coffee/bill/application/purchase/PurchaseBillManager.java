@@ -12,7 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillDetail;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillQueryService;
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.*;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -38,7 +38,7 @@ import java.util.*;
 public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
 
     @Autowired
-    private PurchaseBillQueryService purchaseBillQueryService;
+    private PurchaseBillExtraService purchaseBillExtraService;
     @Autowired
     private SharedManager sharedManager;
 
@@ -86,7 +86,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         }
         // 验证属性
         verification(billDTO);
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
+        PurchaseBill purchaseBill = purchaseBillExtraService.findByBillCode(billDTO.getBillCode());
         if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
             purchaseBill.getBillDetails().clear();
         }
@@ -106,7 +106,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         }
         // 验证属性
         verification(billDTO);
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(billDTO.getBillCode());
+        PurchaseBill purchaseBill = purchaseBillExtraService.findByBillCode(billDTO.getBillCode());
         if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
             purchaseBill.getBillDetails().clear();
         }
@@ -125,7 +125,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         if (StringUtils.isEmpty(purchaseBillCode)) {
             throw new DataException("404", "单据编码为空");
         }
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+        PurchaseBill purchaseBill = purchaseBillExtraService.findByBillCode(purchaseBillCode);
         // 如果单据是提交状态，则进行打开动作
         if (purchaseBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
@@ -145,7 +145,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         if (StringUtils.isEmpty(purchaseBillCode)) {
             throw new DataException("404", "单据编码为空");
         }
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+        PurchaseBill purchaseBill = purchaseBillExtraService.findByBillCode(purchaseBillCode);
 
         return mapOneToDTO(purchaseBill);
     }
@@ -163,7 +163,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         if (StringUtils.isEmpty(auditPersonCode)) {
             throw new DataException("404", "审核人编码为空");
         }
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(purchaseBillCode);
+        PurchaseBill purchaseBill = purchaseBillExtraService.findByBillCode(purchaseBillCode);
         // 设置审核人编码
         purchaseBill.setAuditPersonCode(auditPersonCode);
 
@@ -180,7 +180,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         // 转换出单据信息
         PurchaseBill bill = responseResult.toClassObject(resultMap.get("bill"), PurchaseBill.class);
         // 根据单据编码查询数据库单据信息
-        PurchaseBill purchaseBill = purchaseBillQueryService.findByBillCode(bill.getBillCode());
+        PurchaseBill purchaseBill = purchaseBillExtraService.findByBillCode(bill.getBillCode());
         // 设置入库时间
         purchaseBill.setInWareHouseTime(new Date());
         // 处理完成
@@ -432,7 +432,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
         conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
-        Page<PurchaseBill> purchaseBillPage = purchaseBillQueryService.findByConditions(conditionQueryPurchaseBill);
+        Page<PurchaseBill> purchaseBillPage = purchaseBillExtraService.findByConditions(conditionQueryPurchaseBill);
         return purchaseBillPage.map(source -> toMapDTO(source));
     }
 

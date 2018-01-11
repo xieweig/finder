@@ -23,7 +23,7 @@ import java.util.List;
  * @author XiongJing
  */
 @Service
-public class PurchaseBillQueryServiceImpl implements PurchaseBillQueryService {
+public class PurchaseBillExtraServiceImpl implements PurchaseBillExtraService {
 
     @Autowired
     private PurchaseBillRepository purchaseBillRepository;

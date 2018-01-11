@@ -125,12 +125,39 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @return QueryOneAdjustDTO
      */
     public QueryOneAdjustDTO findByBillCode(String billCode) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
+        return commonFun(adjustBill);
+    }
+
+    /**
+     * 将单据动作更改为--打开
+     *
+     * @param billCode 单据编号
+     * @return QueryOneAdjustDTO
+     */
+    public QueryOneAdjustDTO openBill(String billCode) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
         AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
         // 如果单据是提交状态，则进行打开动作
         if (adjustBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
             open(adjustBill);
         }
+        return commonFun(adjustBill);
+    }
+
+    /**
+     * 公共方法
+     *
+     * @param adjustBill
+     * @return
+     */
+    private QueryOneAdjustDTO commonFun(AdjustBill adjustBill) {
         // 如果是根据原料拣货，则需要去查询一下总部计划单里面的数据
         if (BasicEnum.BY_MATERIAL.equals(adjustBill.getBasicEnum())) {
             PlanBill planBill = planBillExtraService.findByBillCode(adjustBill.getRootCode());
@@ -154,6 +181,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         Station outLocation = new Station(addAdjustBillDTO.getOutStationCode());
         //设置出库库位
         outLocation.setStorage(addAdjustBillDTO.getOutStorage());
+        //设置出库信息
         adjustBill.setOutLocation(outLocation);
         //设置入站站点
         Station inLocation = new Station(addAdjustBillDTO.getInStationCode());

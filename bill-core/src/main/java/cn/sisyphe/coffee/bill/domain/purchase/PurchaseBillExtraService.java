@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
  *
  * @author XiongJing
  */
-public interface PurchaseBillQueryService {
+public interface PurchaseBillExtraService {
 
     /**
      * 多条件查询进货单数据
