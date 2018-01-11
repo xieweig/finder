@@ -67,7 +67,7 @@ public class WayBill extends BaseEntity {
      * 物流公司名称
      */
     @Column(length = 255, nullable = false)
-   // @Pattern(regexp = "[a-zA-Z\\u4e00-\\u9fa5][a-zA-Z0-9\\u4e00-\\u9fa5]}", message = "格式错误")
+    // @Pattern(regexp = "[a-zA-Z\\u4e00-\\u9fa5][a-zA-Z0-9\\u4e00-\\u9fa5]}", message = "格式错误")
     private String logisticsCompanyName;
     /**
      * 目的地
