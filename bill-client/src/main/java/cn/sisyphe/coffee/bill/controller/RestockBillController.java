@@ -103,24 +103,6 @@ public class RestockBillController {
      * @param addRestockBillDTO
      * @return
      */
-    @ApiOperation(value = "按计划拣货生成退库出库单  ")
-    @RequestMapping(path = "/saveMa RestockBill", method = RequestMethod.POST)
-    public ResponseResult saveRawMaterialRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addRestockBillDTO.setOperatorCode("001");
-        ResponseResult responseResult = new ResponseResult();
-        restockBillManager.saveBill(addRestockBillDTO);
-        return responseResult;
-    }
-
-
-    /**
-     * 保存退库出库单
-     *
-     * @param addRestockBillDTO
-     * @return
-     */
     @ApiOperation(value = "自主拣货")
     @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
     public ResponseResult saveRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {

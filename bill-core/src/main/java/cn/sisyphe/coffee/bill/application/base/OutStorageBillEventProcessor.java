@@ -9,6 +9,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+/**
+ * 出库单监听事件
+ * @author bifenglin
+ */
 @Service
 public class OutStorageBillEventProcessor {
 
@@ -17,10 +21,10 @@ public class OutStorageBillEventProcessor {
     /**
      *
      *notes :
-     *  退库出库单的保存行为的回调函数
+     *  出库单的保存行为的回调函数
      */
-    @EventListener(condition = "#event.billState.toString() == 'SAVED'")
-    public void restockBillSave(BehaviorEvent event) {
+    @EventListener(condition = "#event.billState.toString() == 'SAVED' and #event.bill.billPurpose.OutStorage.toString() == 'OutStorage'")
+    public void billSave(BehaviorEvent event) {
         //修改子计划重捡状态
         Bill bill = event.getBill();
         if (!StringUtils.isEmpty(bill.getSourceCode())){
@@ -28,5 +32,24 @@ public class OutStorageBillEventProcessor {
         }
         System.err.println("Event Callback SAVED: === " + event.getBill());
     }
+
+    /**
+     *
+     *notes :
+     *  出库单的提交行为的回调函数
+     * @param event
+     */
+    @EventListener(condition = "#event.billState.toString() == 'SUBMITTED' and #event.bill.billPurpose.OutStorage.toString() == 'OutStorage'")
+    public void billSubmit(BehaviorEvent event) {
+        //修改子计划重捡状态
+        Bill bill = event.getBill();
+        if (!StringUtils.isEmpty(bill.getSourceCode())){
+            planBillManager.operation(bill.getSourceCode(), OperationStateEnum.OPERATION);
+        }
+        System.err.println("Event Callback SUBMITTED: === " + event.getBill());
+    }
+
+
+
 }
 
