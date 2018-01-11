@@ -4,6 +4,7 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
@@ -54,7 +55,7 @@ public class ReturnedBillController {
         //设定查询退货分片
         conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED);
         try {
-            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
+            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
             //测试使用
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 childPlanBillDTO.setOperatorName("操作人：懒羊羊");
