@@ -29,4 +29,9 @@ public class AdjustBillRepositoryImpl extends AbstractBillRepository<AdjustBill>
     public Page<AdjustBill> findAll(Specification<AdjustBill> ta, Pageable pageable) {
         return jpaAdjustBillRepository.findAll(ta, pageable);
     }
+
+    @Override
+    public AdjustBill findOneBySourceCode(String sourceCode) {
+        return jpaAdjustBillRepository.findOneBySourceCode(sourceCode);
+    }
 }

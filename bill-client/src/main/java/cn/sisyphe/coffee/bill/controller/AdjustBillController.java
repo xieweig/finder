@@ -44,6 +44,7 @@ public class AdjustBillController {
     private PlanBillManager planBillManager;
     @Autowired
     private AdjustBillManager adjustBillManager;
+
     /**
      * 计划单据多条件分页查询
      *
@@ -51,9 +52,8 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "子计划多条件查询")
     @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
-    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+    public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-        System.err.print("子计划多条件查询开始");
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill,
                     BillTypeEnum.ADJUST, BillPurposeEnum.OutStorage);
@@ -62,7 +62,6 @@ public class AdjustBillController {
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 restockCodeList.add(childPlanBillDTO.getBillCode());
             }
-
             responseResult.put("content", planBillDTOS);
         } catch (DataException e) {
             responseResult.putException(e);
@@ -70,32 +69,44 @@ public class AdjustBillController {
         return responseResult;
     }
 
+    /**
+     * 子计划直接查看已保存的拣货单
+     *
+     * @param sourceCode
+     * @return
+     */
     @ApiOperation(value = "子计划直接查看已保存的拣货单")
     @RequestMapping(path = "/findAdjustBillBySourceCode", method = RequestMethod.GET)
     public ResponseResult findAdjustBillBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-//            responseResult.put("restockBill", adjustBillManager.findRestockBillBySourceCode(sourceCode));
+            responseResult.put("restockBill", adjustBillManager.findAdjustBillBySourceCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
         return responseResult;
     }
 
-
-    @ApiOperation(value = "子计划单个查询")
-    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.POST)
-    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode) {
+    /**
+     * 查询子计划单个查询
+     *
+     * @param billCode
+     * @return
+     */
+    @ApiOperation(value = "查询子计划单个查询")
+    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.GET)
+    public ResponseResult findPlanBillByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.RESTOCK));
+            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.ADJUST));
         } catch (DataException e) {
             responseResult.putException(e);
         }
         return responseResult;
     }
+
     /**
-     * 多条件查询调剂出庫单据
+     * 多条件查询调剂出库单据
      *
      * @param conditionQueryAdjustBill 查询条件
      * @return
@@ -110,7 +121,7 @@ public class AdjustBillController {
     }
 
     /**
-     * 多条件查询调剂入庫单据
+     * 多条件查询调剂入库单据
      *
      * @param conditionQueryAdjustBill 查询条件
      * @return

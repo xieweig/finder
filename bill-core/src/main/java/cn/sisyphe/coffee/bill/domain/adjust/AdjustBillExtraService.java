@@ -21,6 +21,12 @@ public interface AdjustBillExtraService {
     AdjustBill findByBillCode(String billCode);
 
     /**
+     * 根据sourceCode查询调剂单据
+     * @param sourceCode
+     * @return
+     */
+    AdjustBill findBySourceCode(String sourceCode);
+    /**
      * 多条件查询调拨单信息
      *
      * @param conditionQueryAdjustBill 查询条件

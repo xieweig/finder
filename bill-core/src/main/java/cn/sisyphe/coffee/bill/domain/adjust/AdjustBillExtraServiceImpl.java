@@ -36,6 +36,11 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
         return adjustBillRepository.findOneByBillCode(billCode);
     }
 
+    @Override
+    public AdjustBill findBySourceCode(String sourceCode) {
+        return adjustBillRepository.findOneBySourceCode(sourceCode);
+    }
+
     /**
      * 多条件查询调拨单信息
      *

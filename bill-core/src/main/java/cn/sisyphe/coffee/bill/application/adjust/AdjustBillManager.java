@@ -58,7 +58,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     private SharedManager sharedManager;
 
     @Autowired
-    public AdjustBillManager(BillRepository<AdjustBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
+    public AdjustBillManager(BillRepository<AdjustBill> billRepository,
+                             ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
 
@@ -185,6 +186,16 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     }
 
     /**
+     * 根据sourceCode查询单据
+     *
+     * @param sourceCode
+     * @return
+     */
+    public AdjustBill findAdjustBillBySourceCode(String sourceCode) {
+        return adjustBillExtraService.findBySourceCode(sourceCode);
+    }
+
+    /**
      * map数据
      *
      * @param adjustBill       调拨单信息
@@ -297,8 +308,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         queryOneAdjustDTO.setBillCode(adjustBill.getBillCode());
         // 录单时间
         queryOneAdjustDTO.setCreateTime(adjustBill.getCreateTime());
-        // 出库时间
-        queryOneAdjustDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
+        // 出/入库时间
+        queryOneAdjustDTO.setInOrOutWareHouseTime(adjustBill.getOutWareHouseTime());
         // 录单人
         queryOneAdjustDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
         // 审核人
