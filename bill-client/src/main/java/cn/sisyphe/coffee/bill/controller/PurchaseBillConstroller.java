@@ -3,10 +3,11 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.infrastructure.share.storage.TempStorage;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.AddPurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.QueryOnePurchaseBillDTO;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -14,7 +15,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -69,6 +75,7 @@ public class PurchaseBillConstroller {
      */
     @ApiOperation(value = "多条件查询进货单")
     @RequestMapping(path = "/findByConditions", method = RequestMethod.POST)
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPurchaseBill.inStationCodeArray"},  token = "userCode")
     public ResponseResult findByConditions(@RequestBody ConditionQueryPurchaseBill conditionQueryPurchaseBill) {
         ResponseResult responseResult = new ResponseResult();
 

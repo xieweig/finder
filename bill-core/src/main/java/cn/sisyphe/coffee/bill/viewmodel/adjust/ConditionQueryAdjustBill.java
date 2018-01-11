@@ -41,12 +41,12 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
     /**
      * 出库站点
      */
-    private List<String> outStationCodeList;
+    private String outStationCodeArray;
 
     /**
      * 入库站点
      */
-    private List<String> inStationCodeList;
+    private String inStationCodeArray;
 
     /**
      * 录单开始时间
@@ -138,20 +138,20 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.billCode = billCode;
     }
 
-    public List<String> getOutStationCodeList() {
-        return outStationCodeList;
+    public String getOutStationCodeArray() {
+        return outStationCodeArray;
     }
 
-    public void setOutStationCodeList(List<String> outStationCodeList) {
-        this.outStationCodeList = outStationCodeList;
+    public void setOutStationCodeArray(String outStationCodeArray) {
+        this.outStationCodeArray = outStationCodeArray;
     }
 
-    public List<String> getInStationCodeList() {
-        return inStationCodeList;
+    public String getInStationCodeArray() {
+        return inStationCodeArray;
     }
 
-    public void setInStationCodeList(List<String> inStationCodeList) {
-        this.inStationCodeList = inStationCodeList;
+    public void setInStationCodeArray(String inStationCodeArray) {
+        this.inStationCodeArray = inStationCodeArray;
     }
 
     public Date getCreateStartTime() {
@@ -256,8 +256,8 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
                 "operatorName='" + operatorName + '\'' +
                 ", operatorCodeList=" + operatorCodeList +
                 ", billCode='" + billCode + '\'' +
-                ", outStationCodeList=" + outStationCodeList +
-                ", inStationCodeList=" + inStationCodeList +
+                ", outStationCodeArray='" + outStationCodeArray + '\'' +
+                ", inStationCodeArray='" + inStationCodeArray + '\'' +
                 ", createStartTime=" + createStartTime +
                 ", createEndTime=" + createEndTime +
                 ", inOrOutStartTime=" + inOrOutStartTime +

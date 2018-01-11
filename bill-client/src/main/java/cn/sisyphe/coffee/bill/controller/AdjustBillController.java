@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -114,6 +115,7 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "多条件查询调剂出库单据")
     @RequestMapping(path = "/findByConditionsToOut", method = RequestMethod.POST)
+    @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"},  token = "userCode")
     public ResponseResult findByConditionsToOut(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToOut(conditionQueryAdjustBill);
@@ -129,6 +131,7 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "多条件查询调剂入库单据")
     @RequestMapping(path = "/findByConditionsToIn", method = RequestMethod.POST)
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"},  token = "userCode")
     public ResponseResult findByConditionsToIn(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToIn(conditionQueryAdjustBill);

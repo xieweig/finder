@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -84,19 +85,21 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
              * 出库单号
              */
             if (!StringUtils.isEmpty(conditionQueryAdjustBill.getBillCode())) {
-                expressions.add(cb.equal(root.get("billCode").as(String.class), conditionQueryAdjustBill.getBillCode()));
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%"+conditionQueryAdjustBill.getBillCode()+"%"));
             }
             /**
-             * 出库站点
+             * 出库站点集合
              */
-            if (conditionQueryAdjustBill.getOutStationCodeList() != null && conditionQueryAdjustBill.getOutStationCodeList().size() > 0) {
-                expressions.add(root.get("outStationCode").as(String.class).in(conditionQueryAdjustBill.getOutStationCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getOutStationCodeArray())) {
+                String[] outStationCodeArr = conditionQueryAdjustBill.getOutStationCodeArray().split(",");
+                expressions.add(root.<String>get("dbStation").get("outStationCode").in(Arrays.asList(outStationCodeArr)));
             }
             /**
-             * 入库站点
+             * 入库站点集合
              */
-            if (conditionQueryAdjustBill.getInStationCodeList() != null && conditionQueryAdjustBill.getInStationCodeList().size() > 0) {
-                expressions.add(root.get("inStationCode").as(String.class).in(conditionQueryAdjustBill.getInStationCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getInStationCodeArray())) {
+                String[] inStationCodeArr = conditionQueryAdjustBill.getInStationCodeArray().split(",");
+                expressions.add(root.<String>get("dbStation").get("inStationCode").in(Arrays.asList(inStationCodeArr)));
             }
             /**
              * 录单开始时间
