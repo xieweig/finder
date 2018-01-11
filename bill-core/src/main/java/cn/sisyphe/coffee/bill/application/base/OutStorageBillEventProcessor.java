@@ -28,7 +28,7 @@ public class OutStorageBillEventProcessor {
         //修改子计划重捡状态
         Bill bill = event.getBill();
         if (!StringUtils.isEmpty(bill.getSourceCode())){
-            planBillManager.operation(bill.getSourceCode(), OperationStateEnum.OPERATION);
+            planBillManager.operationPickGood(bill.getSourceCode(), OperationStateEnum.OPERATION);
         }
         System.err.println("Event Callback SAVED: === " + event.getBill());
     }
@@ -44,7 +44,7 @@ public class OutStorageBillEventProcessor {
         //修改子计划重捡状态
         Bill bill = event.getBill();
         if (!StringUtils.isEmpty(bill.getSourceCode())){
-            planBillManager.operation(bill.getSourceCode(), OperationStateEnum.OPERATION);
+            planBillManager.operationPickGood(bill.getSourceCode(), OperationStateEnum.OPERATION);
         }
         System.err.println("Event Callback SUBMITTED: === " + event.getBill());
     }

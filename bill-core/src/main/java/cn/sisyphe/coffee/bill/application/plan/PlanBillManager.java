@@ -433,8 +433,16 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         planBillExtraService.save(planBill);
     }
 
-    public void operation(String billCode, OperationStateEnum operationState) {
+
+    /**
+     * @param billCode
+     * @param operationState
+     */
+    public void operationPickGood(String billCode, OperationStateEnum operationState) {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
+        if (planBill == null || OperationStateEnum.OPERATION.equals(planBill.getOperationState())) {
+            return;
+        }
         planBillExtraService.updateOperationStateByBill(planBill, operationState);
     }
 }
