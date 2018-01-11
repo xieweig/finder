@@ -2,9 +2,12 @@ package cn.sisyphe.coffee.adjust;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.amqp.ReceiverService;
-import cn.sisyphe.coffee.bill.application.adjust.AdjustBillEventProcessor;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
+import cn.sisyphe.coffee.bill.application.base.InStorageBillManager;
+import cn.sisyphe.coffee.bill.application.base.MoveStorageBillManager;
+import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
@@ -24,7 +27,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class AdjustBillIntegrationTest {
 
     @Autowired
-    private AdjustBillEventProcessor adjustBillEventProcessor;
+    private InStorageBillManager inStorageBillManager;
+
+    @Autowired
+    private MoveStorageBillManager moveStorageBillManager;
 
     @Autowired
     private AdjustBillExtraService adjustBillExtraService;
@@ -38,15 +44,13 @@ public class AdjustBillIntegrationTest {
 
     @Test
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
-//        Bill adjustBill = adjustBillExtraService.findByBillCode("1515570200185");
-//        Bill inStorageBill = receiverService.generateInStorageBill(adjustBill);
-//        AbstractBillManager billManager = receiverService.getBillManager(adjustBill.getBillType());
-//        billManager.save(inStorageBill);
-
+        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ0420180110C9K000001");
+        inStorageBillManager.convertInStorageBill(adjustBill);
     }
 
+
     @Test
-    public void saveBill(){
+    public void saveBill() {
 
         AddAdjustBillDTO billDTO = new AddAdjustBillDTO();
         // 源单据编码
@@ -76,8 +80,17 @@ public class AdjustBillIntegrationTest {
         //
         adjustBillManager.create(billDTO);
     }
-    @Test
-    public void submitBill(){
 
+
+    @Test
+    public void shouldGenerateMoveStorageBill() {
+        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801105JC000001");
+        moveStorageBillManager.convertMoveStorageBill(adjustBill);
+    }
+
+    @Test
+    public void shouldFindInStorageBill() {
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801105JC000001");
+        System.out.println(adjustBill.getBillCode());
     }
 }

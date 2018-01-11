@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
 
 /**
  * 单据作用
+ *
  * @author heyong
  */
 
@@ -18,6 +19,12 @@ public enum BillPurposeEnum {
     /**
      * 计划
      */
-    Plan
+    Plan,
+
+    /*
+     *调拨
+     */
+    moveStorage
+
 
 }

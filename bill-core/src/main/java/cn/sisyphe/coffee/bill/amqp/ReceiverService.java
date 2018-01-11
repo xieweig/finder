@@ -1,7 +1,8 @@
 package cn.sisyphe.coffee.bill.amqp;
 
+import cn.sisyphe.coffee.bill.application.base.InStorageBillManager;
+import cn.sisyphe.coffee.bill.application.base.MoveStorageBillManager;
 import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
-import cn.sisyphe.coffee.bill.domain.base.InStorageBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -25,6 +26,9 @@ public class ReceiverService {
     @Autowired
     private InStorageBillManager inStorageBillManager;
 
+    @Autowired
+    private MoveStorageBillManager moveStorageBillManager;
+
     /**
      * 日志
      */
@@ -43,7 +47,11 @@ public class ReceiverService {
             purchaseBillManager.doneBill(responseResult);
             return;
         }
-        Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
-        inStorageBillManager.convertInStorageBill(bill);
+
+        if (Constant.OUT_STORAGE_DONE.equals(responseResult.getCommandName())) {
+            Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
+            inStorageBillManager.convertInStorageBill(bill);
+        }
+
     }
 }
