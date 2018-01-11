@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @date: 2018/1/2
@@ -30,12 +29,12 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
     /**
      * 入库站点编号集合
      */
-    private Set<String> inStationCodeArray;
+    private String inStationCodeArray;
 
     /**
      * 出库站点编号集合
      */
-    private Set<String> outStationCodeArray;
+    private String outStationCodeArray;
 
     /**
      * 录单开始时间
@@ -104,19 +103,19 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      */
     private BigDecimal endTotalPrice;
 
-    public Set<String> getInStationCodeArray() {
+    public String getInStationCodeArray() {
         return inStationCodeArray;
     }
 
-    public void setInStationCodeArray(Set<String> inStationCodeArray) {
+    public void setInStationCodeArray(String inStationCodeArray) {
         this.inStationCodeArray = inStationCodeArray;
     }
 
-    public Set<String> getOutStationCodeArray() {
+    public String getOutStationCodeArray() {
         return outStationCodeArray;
     }
 
-    public void setOutStationCodeArray(Set<String> outStationCodeArray) {
+    public void setOutStationCodeArray(String outStationCodeArray) {
         this.outStationCodeArray = outStationCodeArray;
     }
 

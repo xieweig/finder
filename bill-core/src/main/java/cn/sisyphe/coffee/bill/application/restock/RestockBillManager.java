@@ -81,7 +81,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
       /*  if (addRestockBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
             System.err.print("按计划计划");
            PlanBill planBill = planBillRepository.findOneByBillCode(addRestockBillDTO.getSourceCode());
-           planBill.setReceiveBillCode(addRestockBillDTO.getSourceCode());
+           planBill.setReceiveBillCode(addRest ockBillDTO.getSourceCode());
            planBillRepository.save(planBill);
         }*/
 

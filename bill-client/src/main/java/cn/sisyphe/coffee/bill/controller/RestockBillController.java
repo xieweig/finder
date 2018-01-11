@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
@@ -53,10 +54,8 @@ public class RestockBillController {
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
-        //设定查询退库分片
-        conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         try {
-            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
+            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
 
             List<String> restockCodeList = new ArrayList<>();
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
@@ -124,6 +123,7 @@ public class RestockBillController {
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
     }
+
     /**
      * 提交退库单
      *
@@ -155,6 +155,7 @@ public class RestockBillController {
 
         return responseResult;
     }
+
     /**
      * 多条件查询退库入库单
      *
@@ -205,6 +206,7 @@ public class RestockBillController {
         responseResult.put("RestockBill", billDTO);
         return responseResult;
     }
+
     /**
      * @param restockBillCode
      * @return
@@ -218,6 +220,7 @@ public class RestockBillController {
         responseResult.put("RestockBill", billDTO);
         return responseResult;
     }
+
     /**
      * @param restockBillCode
      * @return
