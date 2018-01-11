@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 /**
  * @author bifenglin
  */
-public interface RestockBillQueryService {
+public interface RestockBillExtraService {
 
     /**
      * 根据

@@ -12,7 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
@@ -58,12 +58,12 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     }
 
     @Autowired
-    private RestockBillQueryService restockBillQueryService;
+    private RestockBillExtraService restockBillExtraService;
     @Autowired
     private PlanBillExtraService planBillExtraService;
 
     public RestockBill findRestockBillBySourceCode(String sourceCode) {
-        RestockBill restockBill = restockBillQueryService.findBySourceCode(sourceCode);
+        RestockBill restockBill = restockBillExtraService.findBySourceCode(sourceCode);
         return restockBill;
     }
 
@@ -111,7 +111,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         }
 /*        // 验证属性
         verification(billDTO);*/
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billDTO.getBillCode());
+        RestockBill restockBill = restockBillExtraService.findByBillCode(billDTO.getBillCode());
         if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
             restockBill.getBillDetails().clear();
         }
@@ -127,7 +127,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param billDTO
      */
     public void updateBillToSubmit(AddRestockBillDTO billDTO) {
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billDTO.getBillCode());
+        RestockBill restockBill = restockBillExtraService.findByBillCode(billDTO.getBillCode());
         restockBill.getBillDetails().clear();
         // 转换单据
         RestockBill mapBillAfter = dtoToMapRestockBillForEdit(billDTO, restockBill);
@@ -141,7 +141,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param restockBillCode
      */
     public RestockBill openBill(String restockBillCode) {
-        RestockBill restockBill = restockBillQueryService.findByBillCode(restockBillCode);
+        RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退库单据信息
         // 如果单据是提交状态，则进行打开动作
         if (restockBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
@@ -167,7 +167,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         if (StringUtils.isEmpty(auditPersonCode)) {
             throw new DataException("404", "审核人编码为空");
         }
-        RestockBill restockBill = restockBillQueryService.findByBillCode(restockBillCode);
+        RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         // 设置审核人编码
         restockBill.setAuditPersonCode(auditPersonCode);
 
@@ -184,7 +184,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // 转换出单据信息
         RestockBill bill = responseResult.toClassObject(resultMap.get("bill"), RestockBill.class);
         // 根据单据编码查询数据库单据信息
-        RestockBill restockBill = restockBillQueryService.findByBillCode(bill.getBillCode());
+        RestockBill restockBill = restockBillExtraService.findByBillCode(bill.getBillCode());
         // 设置入库时间
         restockBill.setInWareHouseTime(new Date());
         // 处理完成
@@ -201,7 +201,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         // SpringCloud调用查询录单人编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryRestockBill.getOperatorName());
         conditionQueryRestockBill.setOperatorCodeList(userCodeList);
-        Page<RestockBill> restockBillPage = restockBillQueryService.findPageByCondition(conditionQueryRestockBill);
+        Page<RestockBill> restockBillPage = restockBillExtraService.findPageByCondition(conditionQueryRestockBill);
 
         QueryRestockBillDTO QueryRestockBillDTO = new QueryRestockBillDTO();
         // 转换
@@ -596,7 +596,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
         }
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
+        RestockBill restockBill = restockBillExtraService.findByBillCode(billCode);
         ScanFillBillDTO scanFillBillDTO = restockToMapScanFillBillDTO(restockBill);
         return scanFillBillDTO;
     }
@@ -622,7 +622,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
 
     public RestockBill findByRestockBillCode(String restockBillCode) {
-        RestockBill restockBill = restockBillQueryService.findByBillCode(restockBillCode);
+        RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         return restockBill;
     }
 }

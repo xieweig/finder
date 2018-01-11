@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,7 @@ import java.util.List;
  * @author bifenglin
  */
 @Service
-public class RestockBillQueryServiceImpl implements RestockBillQueryService {
+public class RestockBillExtraServiceImpl implements RestockBillExtraService {
 
     @Autowired
     private RestockBillRepository restockBillRepository;
