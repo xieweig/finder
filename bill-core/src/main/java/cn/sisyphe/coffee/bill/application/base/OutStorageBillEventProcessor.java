@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.application.base;
 
-import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;

@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application.planbill;
+package cn.sisyphe.coffee.bill.application.plan;
 
 import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;

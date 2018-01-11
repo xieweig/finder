@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.application.transmit;
 
 
-import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
+import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;

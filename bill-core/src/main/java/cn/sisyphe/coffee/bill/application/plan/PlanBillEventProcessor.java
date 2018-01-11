@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application.planbill;
+package cn.sisyphe.coffee.bill.application.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;

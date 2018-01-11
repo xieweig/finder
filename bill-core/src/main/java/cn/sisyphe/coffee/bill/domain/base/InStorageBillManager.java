@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.domain.base;
 import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
-import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
+import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;

@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application.deliverybill;
+package cn.sisyphe.coffee.bill.application.delivery;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;

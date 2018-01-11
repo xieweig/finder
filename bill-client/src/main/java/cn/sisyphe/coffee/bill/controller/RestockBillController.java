@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;

@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill;
 
 
-import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.PlanBillController;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
