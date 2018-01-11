@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
 
 /**
  * 单据状态
+ *
  * @author heyong
  */
 
@@ -40,4 +41,16 @@ public enum BillStateEnum {
      * 完成
      */
     DONE,
+
+    /**
+     * 未调拨
+     */
+    UN_ALLOT,
+
+    /**
+     * 已调拨
+     */
+    ALLOT,
+
+
 }

@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
@@ -57,7 +58,7 @@ public class InAndMoveManagerContext {
      * @return Bill
      */
     @SuppressWarnings("unchecked")
-    Bill generateBill(Bill<BillDetail> sourceBill, BillPurposeEnum billPurpose) {
+    Bill generateBill(Bill<BillDetail> sourceBill, BillPurposeEnum billPurpose, Executor executor) {
         Bill<BillDetail> bill = new BillFactory().createBill(sourceBill.getBillType());
         bill.setBillPurpose(billPurpose);
         bill.setSourceCode(sourceBill.getBillCode());
@@ -71,6 +72,7 @@ public class InAndMoveManagerContext {
         bill.setTotalAmount(sourceBill.getTotalAmount());
         bill.setTotalVarietyAmount(sourceBill.getTotalVarietyAmount());
         bill.setBillProperty(sourceBill.getBillProperty());
+        bill.setBillState(BillStateEnum.UN_ALLOT);
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
             BillDetail desBillDetail = createBillDetail(sourceBill.getBillType());
@@ -82,6 +84,7 @@ public class InAndMoveManagerContext {
             details.add(desBillDetail);
         }
         bill.setBillDetails(details);
+        executor.apply(bill);
 
         return bill;
     }
@@ -100,5 +103,9 @@ public class InAndMoveManagerContext {
             return new ReturnedBillDetail();
         }
         return null;
+    }
+
+    interface Executor {
+        void apply(Bill bill);
     }
 }

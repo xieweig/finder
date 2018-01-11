@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +19,8 @@ public class InStorageBillManager extends InAndMoveManagerContext {
      */
     @SuppressWarnings("unchecked")
     public void convertInStorageBill(Bill outStorageBill) {
-        Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
+        Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage, bill -> bill.setBillState(BillStateEnum.AUDIT_SUCCESS));
         AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
-        billManager.save(inBill);
+        billManager.purpose(inBill);
     }
 }
