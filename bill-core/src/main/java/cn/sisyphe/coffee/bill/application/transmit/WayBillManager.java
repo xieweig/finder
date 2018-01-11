@@ -253,8 +253,7 @@ public class WayBillManager {
         List<EditWayBillDetailDTO> editWayBillDetailDTOList = new ArrayList<>();
         for (WayBillDetail wayBillDetail : wayBill.getWayBillDetailSet()) {
             EditWayBillDetailDTO wayBillDetailDTO = new EditWayBillDetailDTO();
-            //
-            //wayBillDetailDTO.setBillDetailCode(wayBillDetail.getWayBill().getBillCode());// code
+
             //出库时间
             wayBillDetailDTO.setOutStorageTime(wayBillDetail.getOutStorageTime());
             // 配送单号
@@ -294,8 +293,6 @@ public class WayBillManager {
     private WayBill convertUpdateDTOtoWayBill(EditWayBillDTO editWayBillDTO) throws DataException {
 
         WayBill wayBill = new WayBill();
-        //bill code
-        //wayBill.setBillId(editWayBillDTO.getBillId());// id
         //
         wayBill.setBillCode(editWayBillDTO.getWayBillCode());
 
@@ -312,7 +309,6 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
         //出入库站点名称
-
         // TODO: 2018/1/8  juge
         wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
         wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
@@ -363,8 +359,6 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//入库站点code
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());//出库站点code
         //出入库站点名称
-        // TODO: 2018/1/8 判断空指针   
-
         wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
         wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
         //
@@ -391,6 +385,7 @@ public class WayBillManager {
         for (EditWayBillDetailDTO item : editWayBillDetailDTOList) {
             //2运单明细
             //
+            //如果是供应商没有出库时间
             if (StringUtils.isEmpty(item.getOutStorageTime())) {
                 throw new DataException("40006", "出库时间不能为空");
             }

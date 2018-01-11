@@ -66,6 +66,11 @@ public class DeliveryPickingEditDTO implements Serializable {
 
 
     /**
+     * 操作人code
+     */
+    private String operatorName;
+
+    /**
      * 拣货方式
      */
     @Enumerated(value = EnumType.STRING)
@@ -98,44 +103,10 @@ public class DeliveryPickingEditDTO implements Serializable {
         this.inLocation = deliveryBill.getInLocation();
         //出库
         this.outLocation = deliveryBill.getOutLocation();
-
         //明细对象添加
         return this;
     }
 
-//
-//    /**
-//     * 临时单号生成器
-//     *
-//     * @param prefix
-//     * @param dto
-//     * @return
-//     */
-//    public String keyProducer(String prefix, DeliveryPickingEditDTO dto) {
-//        String key = "";
-//        //  单据类型+站点+时间+进程id+6位流水编码
-//        Date currentTime = new Date();
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-//        String dateString = formatter.format(currentTime);
-//
-//        String name = ManagementFactory.getRuntimeMXBean().getName();
-//        //System.out.println(name);
-//        // get pid
-//        String pid = name.split("@")[0];
-//
-//        //测试临时使用
-//        Random random = new Random();
-//        //配送单号
-//        AbstractLocation location = dto.getOutLocation();
-//        //目的站的code
-//        String toStationCode = "";
-//        if (location != null) {
-//            toStationCode = location.code();
-//        }
-//        // TODO: 2018/1/10  流水
-//        key = prefix + toStationCode + pid + dateString + random.nextInt(100000);
-//        return key;
-//    }
 
     /**
      * DTO  to bill
@@ -153,10 +124,9 @@ public class DeliveryPickingEditDTO implements Serializable {
         if (!StringUtils.isEmpty(dto.getBillCode())) {
             // bill code
             deliveryBill.setBillCode(dto.getBillCode());//
-        }// else {
-        //code
-//            deliveryBill.setBillCode(this.keyProducer("PSCK", dto));
-        // }
+        }
+        //测试姓名
+        deliveryBill.setOperatorName(dto.getOperatorName());
         //归属站点
         deliveryBill.setBelongStationCode(dto.getOutLocation().code());
         //入库站点
@@ -195,15 +165,17 @@ public class DeliveryPickingEditDTO implements Serializable {
             //包号
             tempBillDetail.setPackageCode(item.getPackageCode());
             //出库库位
-           // tempBillDetail.setOutLocation(item.getOutLocation());
+            // tempBillDetail.setOutLocation(item.getOutLocation());
             //
-           // tempBillDetail.setInLocation(item.getInLocation());
+            // tempBillDetail.setInLocation(item.getInLocation());
             // 设置货物和原料信息
             RawMaterial rawMaterial = item.getRawMaterial();
 
             tempBillDetail.setGoods(rawMaterial);
+            // tempBillDetail.setAmount(item.getActualAmount());
             //实际数量
-            tempBillDetail.setAmount(item.getActualAmount());
+            tempBillDetail.setActualAmount(item.getActualAmount());
+            //
             //备注
             item.setMemo(item.getMemo());
             //明细添加
@@ -250,6 +222,14 @@ public class DeliveryPickingEditDTO implements Serializable {
         return cardCodeList.size();
     }
 
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
 
     public String getBelongStationCode() {
         return belongStationCode;

@@ -37,12 +37,10 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     @Autowired
     private DeliveryBilExtraService deliveryBilExtraService;
 
-
     @Autowired
     public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
-
 
     /**
      * @param stationCode
@@ -79,7 +77,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         List<String> packNumbers = new ArrayList<>();
         for (DeliveryBillDetail detail : details) {
             totalCount += 1;// 总品种
-//            totalAmount += detail.getAmount();// 总数量
+//          totalAmount += detail.getAmount();// 总数量
             totalAmount += detail.getActualAmount();///实际拣货数量
             //包号不重复则添加
             if (!packNumbers.contains(detail.getPackageCode())) {
@@ -116,7 +114,6 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
             Station stationOut = this.findStation(deliveryBill.getOutLocation().code());
             scanFillBillDTO.setOutStationCode(stationOut.getStationCode());
             scanFillBillDTO.setOutStationName(stationOut.getStationName());
-
         }
         //
         return scanFillBillDTO;
