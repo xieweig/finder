@@ -29,10 +29,10 @@ public class QueryOneAdjustDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     /**
-     * 出库时间
+     * 出/入库时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date outWareHouseTime;
+    private Date inOrOutWareHouseTime;
     /**
      * 录单人
      */
@@ -53,6 +53,10 @@ public class QueryOneAdjustDTO {
      * 入库站点
      */
     private String inStationCode;
+    /**
+     * 入库库位
+     */
+    private String inStorageCode;
     /**
      * 单据属性
      */
@@ -90,6 +94,10 @@ public class QueryOneAdjustDTO {
      */
     private String auditMemo;
     /**
+     * 按原料还是按货物拣货
+     */
+    private BasicEnum basicEnum;
+    /**
      * 调剂货物计划详情
      */
     private List<AdjustBillDetailDTO> details;
@@ -97,12 +105,6 @@ public class QueryOneAdjustDTO {
      * 调剂原料计划详情
      */
     private List<AdjustBillMaterialDetailDTO> materialDetails;
-
-    /**
-     * 按原料还是按货物拣货
-      */
-    
-    private BasicEnum basicEnum;
 
     public String getBillCode() {
         return billCode;
@@ -120,12 +122,20 @@ public class QueryOneAdjustDTO {
         this.createTime = createTime;
     }
 
-    public Date getOutWareHouseTime() {
-        return outWareHouseTime;
+    public Date getInOrOutWareHouseTime() {
+        return inOrOutWareHouseTime;
     }
 
-    public void setOutWareHouseTime(Date outWareHouseTime) {
-        this.outWareHouseTime = outWareHouseTime;
+    public void setInOrOutWareHouseTime(Date inOrOutWareHouseTime) {
+        this.inOrOutWareHouseTime = inOrOutWareHouseTime;
+    }
+
+    public String getInStorageCode() {
+        return inStorageCode;
+    }
+
+    public void setInStorageCode(String inStorageCode) {
+        this.inStorageCode = inStorageCode;
     }
 
     public String getOperatorName() {
@@ -269,13 +279,14 @@ public class QueryOneAdjustDTO {
         return "QueryOneAdjustDTO{" +
                 "billCode='" + billCode + '\'' +
                 ", createTime=" + createTime +
-                ", outWareHouseTime=" + outWareHouseTime +
+                ", inOrOutWareHouseTime=" + inOrOutWareHouseTime +
                 ", operatorName='" + operatorName + '\'' +
                 ", auditorName='" + auditorName + '\'' +
                 ", outStationCode='" + outStationCode + '\'' +
                 ", outStorageCode='" + outStorageCode + '\'' +
                 ", inStationCode='" + inStationCode + '\'' +
-                ", billTypeStr='" + billTypeStr + '\'' +
+                ", inStorageCode='" + inStorageCode + '\'' +
+                ", billTypeStr=" + billTypeStr +
                 ", outStateEnum=" + outStateEnum +
                 ", submitState=" + submitState +
                 ", auditState=" + auditState +
@@ -286,7 +297,7 @@ public class QueryOneAdjustDTO {
                 ", auditMemo='" + auditMemo + '\'' +
                 ", details=" + details +
                 ", materialDetails=" + materialDetails +
+                ", basicEnum=" + basicEnum +
                 '}';
     }
-
 }

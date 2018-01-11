@@ -34,4 +34,12 @@ public interface JPAAdjustBillRepository extends JpaRepository<AdjustBill, Long>
     @Override
     Page<AdjustBill> findAll(Specification<AdjustBill> ta, Pageable pageable);
 
+    /**
+     * 根据源单号查询调剂单据
+     *
+     * @param sourceCode
+     * @return
+     */
+    AdjustBill findOneBySourceCode(String sourceCode);
+
 }

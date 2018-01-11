@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.adjust.AdjustBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -13,14 +14,16 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
-import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：
- * version:
+ * remark：调剂业务逻辑接口实现
+ * version: 1.0
+ *
+ * @author XiongJing
  */
 
 @Service
@@ -32,6 +35,11 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
     @Override
     public AdjustBill findByBillCode(String billCode) {
         return adjustBillRepository.findOneByBillCode(billCode);
+    }
+
+    @Override
+    public AdjustBill findBySourceCode(String sourceCode) {
+        return adjustBillRepository.findOneBySourceCode(sourceCode);
     }
 
     /**
@@ -77,21 +85,22 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
              * 出库单号
              */
             if (!StringUtils.isEmpty(conditionQueryAdjustBill.getBillCode())) {
-                expressions.add(cb.equal(root.get("billCode").as(String.class), conditionQueryAdjustBill.getBillCode()));
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%"+conditionQueryAdjustBill.getBillCode()+"%"));
             }
             /**
-             * 出库站点
+             * 出库站点集合
              */
-            if (conditionQueryAdjustBill.getOutStationCodeList() != null && conditionQueryAdjustBill.getOutStationCodeList().size() > 0) {
-                expressions.add(root.get("outStationCode").as(String.class).in(conditionQueryAdjustBill.getOutStationCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getOutStationCodeArray())) {
+                String[] outStationCodeArr = conditionQueryAdjustBill.getOutStationCodeArray().split(",");
+                expressions.add(root.<String>get("dbStation").get("outStationCode").in(Arrays.asList(outStationCodeArr)));
             }
             /**
-             * 入库站点
+             * 入库站点集合
              */
-            if (conditionQueryAdjustBill.getInStationCodeList() != null && conditionQueryAdjustBill.getInStationCodeList().size() > 0) {
-                expressions.add(root.get("inStationCode").as(String.class).in(conditionQueryAdjustBill.getInStationCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getInStationCodeArray())) {
+                String[] inStationCodeArr = conditionQueryAdjustBill.getInStationCodeArray().split(",");
+                expressions.add(root.<String>get("dbStation").get("inStationCode").in(Arrays.asList(inStationCodeArr)));
             }
-
             /**
              * 录单开始时间
              */
@@ -107,14 +116,14 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
             /**
              * 出库开始时间
              */
-            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getOutStartTime())) {
-                expressions.add(cb.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryAdjustBill.getOutStartTime()));
+            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getInOrOutStartTime())) {
+                expressions.add(cb.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryAdjustBill.getInOrOutStartTime()));
             }
             /**
              * 出库结束时间
              */
-            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getOutEndTime())) {
-                expressions.add(cb.lessThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryAdjustBill.getOutEndTime()));
+            if (!StringUtils.isEmpty(conditionQueryAdjustBill.getInOrOutEndTime())) {
+                expressions.add(cb.lessThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryAdjustBill.getInOrOutEndTime()));
             }
             /**
              * 提交状态
@@ -147,22 +156,16 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
                 expressions.add(cb.lessThanOrEqualTo(root.get("adjustNumber").as(Integer.class), conditionQueryAdjustBill.getVarietyEnd()));
             }
             /**
-             * 配送总价开始
-             */
-            if (conditionQueryAdjustBill.getTotalPriceStart() != null && conditionQueryAdjustBill.getTotalPriceStart().compareTo(BigDecimal.ZERO) > 0) {
-                expressions.add(cb.greaterThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceStart()));
-            }
-            /**
-             * 配送总价结束
-             */
-            if (conditionQueryAdjustBill.getTotalPriceEnd() != null && conditionQueryAdjustBill.getTotalPriceEnd().compareTo(BigDecimal.ZERO) > 0) {
-                expressions.add(cb.lessThanOrEqualTo(root.get("totalPrice").as(BigDecimal.class), conditionQueryAdjustBill.getTotalPriceEnd()));
-            }
-            /**
              * 单据作用
              */
             if (conditionQueryAdjustBill.getPurposeEnum() != null) {
                 expressions.add(cb.equal(root.get("billPurpose").as(BillPurposeEnum.class), conditionQueryAdjustBill.getPurposeEnum()));
+            }
+            /**
+             * 单据主状态
+             */
+            if (conditionQueryAdjustBill.getBillStateEnum() != null) {
+                expressions.add(cb.equal(root.get("billState").as(BillStateEnum.class), conditionQueryAdjustBill.getBillStateEnum()));
             }
 
             return predicate;

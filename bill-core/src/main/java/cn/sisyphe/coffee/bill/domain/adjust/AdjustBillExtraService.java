@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：
- * version:
+ * remark：调剂业务逻辑接口
+ * version: 1.0
+ *
+ * @author XiongJing
  */
 public interface AdjustBillExtraService {
 
@@ -18,6 +20,12 @@ public interface AdjustBillExtraService {
      */
     AdjustBill findByBillCode(String billCode);
 
+    /**
+     * 根据sourceCode查询调剂单据
+     * @param sourceCode
+     * @return
+     */
+    AdjustBill findBySourceCode(String sourceCode);
     /**
      * 多条件查询调拨单信息
      *

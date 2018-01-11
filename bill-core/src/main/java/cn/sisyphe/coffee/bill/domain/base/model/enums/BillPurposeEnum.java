@@ -21,8 +21,8 @@ public enum BillPurposeEnum {
      */
     Plan,
 
-    /*
-     *调拨
+    /**
+     * 调拨
      */
     moveStorage
 

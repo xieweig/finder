@@ -14,4 +14,9 @@ import org.springframework.data.jpa.domain.Specification;
 public interface AdjustBillRepository extends BillRepository<AdjustBill> {
 
     Page<AdjustBill> findAll(Specification<AdjustBill> ta, Pageable pageable);
+
+    /**
+     * 根据单据来源单号查询
+     */
+    AdjustBill findOneBySourceCode(String sourceCode);
 }

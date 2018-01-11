@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.application.base;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.BillServiceFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.AbstractBillBehavior;
+import cn.sisyphe.coffee.bill.domain.base.behavior.AllotBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.AuditBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.DoneBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.OpenBehavior;
@@ -99,6 +100,16 @@ public class AbstractBillManager<T extends Bill> {
      */
     public T unAllot(T bill) {
         return dispose(bill, new UnAllotBehavior());
+    }
+
+    /**
+     * 未调拨
+     *
+     * @param bill
+     * @return
+     */
+    public T allot(T bill) {
+        return dispose(bill, new AllotBehavior());
     }
 
     /**

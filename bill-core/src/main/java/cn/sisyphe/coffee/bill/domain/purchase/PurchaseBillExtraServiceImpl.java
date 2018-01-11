@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class PurchaseBillExtraServiceImpl implements PurchaseBillExtraService {
              * 进货单编码
              */
             if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getBillCode())) {
-                expressions.add(cb.equal(root.get("billCode").as(String.class), conditionQueryPurchaseBill.getBillCode()));
+                expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryPurchaseBill.getBillCode() + "%"));
             }
             /**
              * 入库开始时间
@@ -143,16 +144,18 @@ public class PurchaseBillExtraServiceImpl implements PurchaseBillExtraService {
                 expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryPurchaseBill.getInOrOutStateCode()));
             }
             /**
-             * 拼接入库站点
+             * 出库站点集合
              */
-            if (conditionQueryPurchaseBill.getInStationCodeList() != null && conditionQueryPurchaseBill.getInStationCodeList().size() > 0) {
-                expressions.add(root.get("inStationCode").as(String.class).in(conditionQueryPurchaseBill.getInStationCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getOutStationCodeArray())) {
+                String[] outStationCodeArr = conditionQueryPurchaseBill.getOutStationCodeArray().split(",");
+                expressions.add(root.<String>get("dbStation").get("outStationCode").in(Arrays.asList(outStationCodeArr)));
             }
             /**
-             * 拼接入库库位
+             * 入库站点集合
              */
-            if (conditionQueryPurchaseBill.getInStorageCodeList() != null && conditionQueryPurchaseBill.getInStorageCodeList().size() > 0) {
-                expressions.add(root.get("inStorageCode").as(String.class).in(conditionQueryPurchaseBill.getInStorageCodeList()));
+            if (!StringUtils.isEmpty(conditionQueryPurchaseBill.getInStationCodeArray())) {
+                String[] inStationCodeArr = conditionQueryPurchaseBill.getInStationCodeArray().split(",");
+                expressions.add(root.<String>get("dbStation").get("inStationCode").in(Arrays.asList(inStationCodeArr)));
             }
 
             return predicate;

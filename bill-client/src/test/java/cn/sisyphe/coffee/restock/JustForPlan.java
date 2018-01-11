@@ -2,13 +2,12 @@
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
@@ -41,7 +40,7 @@ public class JustForPlan {
 
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
-    Logger logger = LoggerFactory.getLogger(SaveCommitTest.class);
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     public static final String[] CARGOCODE = {"AD","SSA","SDS","WEA"};
     public static final String[] RAWMATERIALCODE = {"2","7","8","9"};
     @Resource
@@ -60,8 +59,11 @@ public class JustForPlan {
         return planBillDetail;
     }
 //为restock生成plan测试用
+    private BillFactory billFactory = new BillFactory();
     private PlanBill createPlanBill() {
-        PlanBill planBill = new PlanBill();
+
+
+        PlanBill planBill = (PlanBill)billFactory.createBill(BillTypeEnum.PLAN);
         planBill.setHqBill(false);
         */
 /*

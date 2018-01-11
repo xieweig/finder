@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -32,11 +34,11 @@ public class AdjustBillDTO {
     /**
      * 提交状态
      */
-    private String submitState;
+    private BillSubmitStateEnum submitState;
     /**
      * 审核状态
      */
-    private String auditState;
+    private BillAuditStateEnum auditState;
     /**
      * 发起单号
      */
@@ -105,19 +107,19 @@ public class AdjustBillDTO {
         this.outStatusCode = outStatusCode;
     }
 
-    public String getSubmitState() {
+    public BillSubmitStateEnum getSubmitState() {
         return submitState;
     }
 
-    public void setSubmitState(String submitState) {
+    public void setSubmitState(BillSubmitStateEnum submitState) {
         this.submitState = submitState;
     }
 
-    public String getAuditState() {
+    public BillAuditStateEnum getAuditState() {
         return auditState;
     }
 
-    public void setAuditState(String auditState) {
+    public void setAuditState(BillAuditStateEnum auditState) {
         this.auditState = auditState;
     }
 

@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -10,13 +11,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：调剂单据查询条件
+ * remark：调剂-站点出库单据查询条件
  * version: 1.0
  *
  * @author XiongJing
@@ -41,12 +41,12 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
     /**
      * 出库站点
      */
-    private List<String> outStationCodeList;
+    private String outStationCodeArray;
 
     /**
      * 入库站点
      */
-    private List<String> inStationCodeList;
+    private String inStationCodeArray;
 
     /**
      * 录单开始时间
@@ -66,13 +66,13 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date outStartTime;
+    private Date inOrOutStartTime;
     /**
      * 出库结束时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date outEndTime;
+    private Date inOrOutEndTime;
 
     /**
      * 提交状态
@@ -105,19 +105,14 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
     private Integer varietyEnd;
 
     /**
-     * 配送总价开始
-     */
-    private BigDecimal totalPriceStart;
-
-    /**
-     * 配送总价结束
-     */
-    private BigDecimal totalPriceEnd;
-
-    /**
      * 单据作用
      */
     private BillPurposeEnum purposeEnum;
+
+    /**
+     * 单据状态
+     */
+    private BillStateEnum billStateEnum;
 
     public String getOperatorName() {
         return operatorName;
@@ -143,20 +138,20 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.billCode = billCode;
     }
 
-    public List<String> getOutStationCodeList() {
-        return outStationCodeList;
+    public String getOutStationCodeArray() {
+        return outStationCodeArray;
     }
 
-    public void setOutStationCodeList(List<String> outStationCodeList) {
-        this.outStationCodeList = outStationCodeList;
+    public void setOutStationCodeArray(String outStationCodeArray) {
+        this.outStationCodeArray = outStationCodeArray;
     }
 
-    public List<String> getInStationCodeList() {
-        return inStationCodeList;
+    public String getInStationCodeArray() {
+        return inStationCodeArray;
     }
 
-    public void setInStationCodeList(List<String> inStationCodeList) {
-        this.inStationCodeList = inStationCodeList;
+    public void setInStationCodeArray(String inStationCodeArray) {
+        this.inStationCodeArray = inStationCodeArray;
     }
 
     public Date getCreateStartTime() {
@@ -175,20 +170,20 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.createEndTime = createEndTime;
     }
 
-    public Date getOutStartTime() {
-        return outStartTime;
+    public Date getInOrOutStartTime() {
+        return inOrOutStartTime;
     }
 
-    public void setOutStartTime(Date outStartTime) {
-        this.outStartTime = outStartTime;
+    public void setInOrOutStartTime(Date inOrOutStartTime) {
+        this.inOrOutStartTime = inOrOutStartTime;
     }
 
-    public Date getOutEndTime() {
-        return outEndTime;
+    public Date getInOrOutEndTime() {
+        return inOrOutEndTime;
     }
 
-    public void setOutEndTime(Date outEndTime) {
-        this.outEndTime = outEndTime;
+    public void setInOrOutEndTime(Date inOrOutEndTime) {
+        this.inOrOutEndTime = inOrOutEndTime;
     }
 
     public List<BillSubmitStateEnum> getSubmitStateCode() {
@@ -213,22 +208,6 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
 
     public void setVarietyEnd(Integer varietyEnd) {
         this.varietyEnd = varietyEnd;
-    }
-
-    public BigDecimal getTotalPriceStart() {
-        return totalPriceStart;
-    }
-
-    public void setTotalPriceStart(BigDecimal totalPriceStart) {
-        this.totalPriceStart = totalPriceStart;
-    }
-
-    public BigDecimal getTotalPriceEnd() {
-        return totalPriceEnd;
-    }
-
-    public void setTotalPriceEnd(BigDecimal totalPriceEnd) {
-        this.totalPriceEnd = totalPriceEnd;
     }
 
     public List<BillAuditStateEnum> getAuditStateCode() {
@@ -263,27 +242,34 @@ public class ConditionQueryAdjustBill extends BaseConditionQuery {
         this.purposeEnum = purposeEnum;
     }
 
+    public BillStateEnum getBillStateEnum() {
+        return billStateEnum;
+    }
+
+    public void setBillStateEnum(BillStateEnum billStateEnum) {
+        this.billStateEnum = billStateEnum;
+    }
+
     @Override
     public String toString() {
         return "ConditionQueryAdjustBill{" +
                 "operatorName='" + operatorName + '\'' +
                 ", operatorCodeList=" + operatorCodeList +
                 ", billCode='" + billCode + '\'' +
-                ", outStationCodeList=" + outStationCodeList +
-                ", inStationCodeList=" + inStationCodeList +
+                ", outStationCodeArray='" + outStationCodeArray + '\'' +
+                ", inStationCodeArray='" + inStationCodeArray + '\'' +
                 ", createStartTime=" + createStartTime +
                 ", createEndTime=" + createEndTime +
-                ", outStartTime=" + outStartTime +
-                ", outEndTime=" + outEndTime +
+                ", inOrOutStartTime=" + inOrOutStartTime +
+                ", inOrOutEndTime=" + inOrOutEndTime +
                 ", submitStateCode=" + submitStateCode +
                 ", auditStateCode=" + auditStateCode +
                 ", inOrOutStateCode=" + inOrOutStateCode +
                 ", billTypeCodeList=" + billTypeCodeList +
                 ", varietyStart=" + varietyStart +
                 ", varietyEnd=" + varietyEnd +
-                ", totalPriceStart=" + totalPriceStart +
-                ", totalPriceEnd=" + totalPriceEnd +
                 ", purposeEnum=" + purposeEnum +
+                ", billStateEnum=" + billStateEnum +
                 "} " + super.toString();
     }
 }

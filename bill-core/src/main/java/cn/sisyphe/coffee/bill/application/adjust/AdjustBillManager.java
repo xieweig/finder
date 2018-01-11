@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.MoveStorageBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.interfaces.Executor;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
@@ -22,6 +24,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -58,7 +61,11 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     private SharedManager sharedManager;
 
     @Autowired
-    public AdjustBillManager(BillRepository<AdjustBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
+    private MoveStorageBillManager moveStorageBillManager;
+
+    @Autowired
+    public AdjustBillManager(BillRepository<AdjustBill> billRepository,
+                             ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
     }
 
@@ -110,10 +117,26 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param conditionQueryAdjustBill 查询条件
      * @return 分页信息
      */
-    public Page<AdjustBillDTO> findByConditions(ConditionQueryAdjustBill conditionQueryAdjustBill) {
+    public Page<AdjustBillDTO> findByConditionsToOut(ConditionQueryAdjustBill conditionQueryAdjustBill) {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.OutStorage);
+        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
+        return adjustBillPage.map(source -> toMapConditionsDTO(source));
+    }
+
+    /**
+     * 根据多条件查询调拨单据信息
+     *
+     * @param conditionQueryAdjustBill 查询条件
+     * @return 分页信息
+     */
+    public Page<AdjustBillDTO> findByConditionsToIn(ConditionQueryAdjustBill conditionQueryAdjustBill) {
+        // SpringCloud调用查询用户编码
+        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
+        conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.moveStorage);
         Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
@@ -166,6 +189,16 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         } else {
             return toMapOneDTO(adjustBill, null);
         }
+    }
+
+    /**
+     * 根据sourceCode查询单据
+     *
+     * @param sourceCode
+     * @return
+     */
+    public AdjustBill findAdjustBillBySourceCode(String sourceCode) {
+        return adjustBillExtraService.findBySourceCode(sourceCode);
     }
 
     /**
@@ -281,8 +314,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         queryOneAdjustDTO.setBillCode(adjustBill.getBillCode());
         // 录单时间
         queryOneAdjustDTO.setCreateTime(adjustBill.getCreateTime());
-        // 出库时间
-        queryOneAdjustDTO.setOutWareHouseTime(adjustBill.getOutWareHouseTime());
+        // 出/入库时间
+        queryOneAdjustDTO.setInOrOutWareHouseTime(adjustBill.getOutWareHouseTime());
         // 录单人
         queryOneAdjustDTO.setOperatorName(sharedManager.findOneByUserCode(adjustBill.getOperatorCode()));
         // 审核人
@@ -364,14 +397,14 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 出库状态
         adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
         // 提交状态
-        adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
+        adjustBillDTO.setSubmitState(adjustBill.getSubmitState());
         // 审核状态
-        adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
-        //单据状态
+        adjustBillDTO.setAuditState(adjustBill.getAuditState());
+        // 单据状态
         adjustBillDTO.setBillState(adjustBill.getBillState());
         // 发起单号
         adjustBillDTO.setRootCode(adjustBill.getRootCode());
-        //来源单号
+        // 来源单号
         adjustBillDTO.setSourceCode(adjustBill.getSourceCode());
         // 单据编码
         adjustBillDTO.setBillCode(adjustBill.getBillCode());
@@ -399,6 +432,25 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 配送品种数
         adjustBillDTO.setVarietyNumber(adjustBill.getTotalVarietyAmount());
         return adjustBillDTO;
+
+    }
+
+    /**
+     * 生成调拨单
+     *
+     * @param allotDTO 调拨页面数据DTO
+     */
+    public void createAllotBill(AllotDTO allotDTO) {
+        final AdjustBill adjustBill = adjustBillExtraService.findByBillCode(allotDTO.getBillCode());
+
+        moveStorageBillManager.convertMoveStorageBill(adjustBill, (Executor<AdjustBill>) bill -> {
+            Station inLocation = (Station) adjustBill.getInLocation();
+            inLocation.setStorage(allotDTO.getInStorage());
+            bill.setInLocation(inLocation);
+            for (AdjustBillDetail adjustBillDetail : bill.getBillDetails()) {
+                adjustBillDetail.setActualAmount(allotDTO.getDetails().get(adjustBillDetail.getGoods().code()));
+            }
+        });
 
     }
 }
