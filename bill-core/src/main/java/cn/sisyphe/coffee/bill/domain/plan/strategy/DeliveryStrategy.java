@@ -4,7 +4,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
