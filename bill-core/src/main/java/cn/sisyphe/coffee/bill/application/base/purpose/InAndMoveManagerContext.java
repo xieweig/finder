@@ -59,7 +59,7 @@ public class InAndMoveManagerContext {
      * @return Bill
      */
     @SuppressWarnings("unchecked")
-    Bill generateBill(Bill<BillDetail> sourceBill, BillPurposeEnum billPurpose, Executor executor) {
+    Bill generateBill(Bill<BillDetail> sourceBill, BillPurposeEnum billPurpose) {
         Bill<BillDetail> bill = new BillFactory().createBill(sourceBill.getBillType());
         bill.setBillPurpose(billPurpose);
         bill.setSourceCode(sourceBill.getBillCode());
@@ -85,7 +85,6 @@ public class InAndMoveManagerContext {
             details.add(desBillDetail);
         }
         bill.setBillDetails(details);
-        executor.apply(bill);
 
         return bill;
     }
@@ -104,9 +103,5 @@ public class InAndMoveManagerContext {
             return new ReturnedBillDetail();
         }
         return null;
-    }
-
-    interface Executor {
-        void apply(Bill bill);
     }
 }

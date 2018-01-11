@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.MoveStorageBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.interfaces.Executor;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
@@ -22,6 +24,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -56,6 +59,9 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     private AdjustBillExtraService adjustBillExtraService;
     @Autowired
     private SharedManager sharedManager;
+
+    @Autowired
+    private MoveStorageBillManager moveStorageBillManager;
 
     @Autowired
     public AdjustBillManager(BillRepository<AdjustBill> billRepository,
@@ -426,6 +432,25 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 配送品种数
         adjustBillDTO.setVarietyNumber(adjustBill.getTotalVarietyAmount());
         return adjustBillDTO;
+
+    }
+
+    /**
+     * 生成调拨单
+     *
+     * @param allotDTO 调拨页面数据DTO
+     */
+    public void createAllotBill(AllotDTO allotDTO) {
+        final AdjustBill adjustBill = adjustBillExtraService.findByBillCode(allotDTO.getBillCode());
+
+        moveStorageBillManager.convertMoveStorageBill(adjustBill, (Executor<AdjustBill>) bill -> {
+            Station inLocation = (Station) adjustBill.getInLocation();
+            inLocation.setStorage(allotDTO.getInStorage());
+            bill.setInLocation(inLocation);
+            for (AdjustBillDetail adjustBillDetail : bill.getBillDetails()) {
+                adjustBillDetail.setActualAmount(allotDTO.getDetails().get(adjustBillDetail.getGoods().code()));
+            }
+        });
 
     }
 }

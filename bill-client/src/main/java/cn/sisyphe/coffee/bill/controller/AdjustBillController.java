@@ -7,6 +7,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -243,4 +244,19 @@ public class AdjustBillController {
         adjustBillManager.audit(adjustBillCode, "auditPerson001", true);
         return responseResult;
     }
+
+    @ApiOperation(value = "调拨")
+    @RequestMapping(path = "/allot", method = RequestMethod.POST)
+    public ResponseResult allot(@RequestBody AllotDTO allotDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            adjustBillManager.createAllotBill(allotDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
 }

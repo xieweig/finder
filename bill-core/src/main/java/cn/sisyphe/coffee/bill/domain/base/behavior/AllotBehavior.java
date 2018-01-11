@@ -16,7 +16,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum
 public class AllotBehavior extends AbstractBillBehavior {
     @Override
     public BillStateEnum[] allowableStates() {
-        return new BillStateEnum[]{BillStateEnum.SAVED};
+        return new BillStateEnum[]{BillStateEnum.SAVED, BillStateEnum.UN_ALLOT};
     }
 
     /**

@@ -7,9 +7,9 @@ import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.application.base.purpose.MoveStorageBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
@@ -120,7 +120,9 @@ public class AdjustBillIntegrationTest {
     @Test
     public void shouldGenerateMoveStorageBill() {
         Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ04201801104RG000001");
-        moveStorageBillManager.convertMoveStorageBill(adjustBill);
+        moveStorageBillManager.convertMoveStorageBill(adjustBill, bill -> {
+
+        });
     }
 
     @Test
