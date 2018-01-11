@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application.planbill;
+package cn.sisyphe.coffee.bill.application.plan;
 
 import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
@@ -45,10 +45,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.by;
-import static ch.lambdaj.Lambda.group;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sum;
+import static ch.lambdaj.Lambda.*;
 
 /**
  * 计划单据manager
@@ -421,9 +418,10 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return childPlanBillDTO;
     }
 
-    public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
+    public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billType, BillPurposeEnum billPurpose) {
+        conditionQueryPlanBill.setSpecificBillType(billType);
+        conditionQueryPlanBill.setBillPurpose(billPurpose);
         Page<PlanBill> childPlanBill = planBillExtraService.findChildPlanBillBy(conditionQueryPlanBill);
-
         return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
 
@@ -433,8 +431,16 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         planBillExtraService.save(planBill);
     }
 
-    public void operation(String billCode, OperationStateEnum operationState) {
+
+    /**
+     * @param billCode
+     * @param operationState
+     */
+    public void operationPickGood(String billCode, OperationStateEnum operationState) {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
+        if (planBill == null || OperationStateEnum.OPERATION.equals(planBill.getOperationState())) {
+            return;
+        }
         planBillExtraService.updateOperationStateByBill(planBill, operationState);
     }
 }

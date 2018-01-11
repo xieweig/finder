@@ -79,12 +79,12 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
     /**
      * 入库站点
      */
-    private List<String> inStationCodeList;
+    private String inStationCodeArray;
 
     /**
      * 入库库位
      */
-    private List<String> inStorageCodeList;
+    private String outStationCodeArray;
 
     public String getOperatorName() {
         return operatorName;
@@ -174,20 +174,20 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
         this.operatorCodeList = operatorCodeList;
     }
 
-    public List<String> getInStationCodeList() {
-        return inStationCodeList;
+    public String getInStationCodeArray() {
+        return inStationCodeArray;
     }
 
-    public void setInStationCodeList(List<String> inStationCodeList) {
-        this.inStationCodeList = inStationCodeList;
+    public void setInStationCodeArray(String inStationCodeArray) {
+        this.inStationCodeArray = inStationCodeArray;
     }
 
-    public List<String> getInStorageCodeList() {
-        return inStorageCodeList;
+    public String getOutStationCodeArray() {
+        return outStationCodeArray;
     }
 
-    public void setInStorageCodeList(List<String> inStorageCodeList) {
-        this.inStorageCodeList = inStorageCodeList;
+    public void setOutStationCodeArray(String outStationCodeArray) {
+        this.outStationCodeArray = outStationCodeArray;
     }
 
     @Override
@@ -204,8 +204,8 @@ public class ConditionQueryPurchaseBill extends BaseConditionQuery {
                 ", auditStateCode=" + auditStateCode +
                 ", inOrOutStateCode=" + inOrOutStateCode +
                 ", operatorCodeList=" + operatorCodeList +
-                ", inStationCodeList=" + inStationCodeList +
-                ", inStorageCodeList=" + inStorageCodeList +
+                ", inStationCodeArray='" + inStationCodeArray + '\'' +
+                ", outStationCodeArray='" + outStationCodeArray + '\'' +
                 "} " + super.toString();
     }
 }

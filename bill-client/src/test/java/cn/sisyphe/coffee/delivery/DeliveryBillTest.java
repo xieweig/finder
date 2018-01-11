@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.delivery;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
-import cn.sisyphe.coffee.bill.application.deliverybill.DeliveryBillManager;
+import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;

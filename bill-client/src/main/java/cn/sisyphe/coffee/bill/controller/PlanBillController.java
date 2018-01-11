@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
@@ -12,12 +11,7 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -138,7 +132,7 @@ public class PlanBillController {
      *
      * @return
      */
-    @ApiOperation(value = "子计划多条件查询")
+   /* @ApiOperation(value = "子计划多条件查询")
     @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -151,9 +145,9 @@ public class PlanBillController {
         }
         return responseResult;
     }
+*/
 
-
-    @ApiOperation(value = "子计划单个查询")
+  /*  @ApiOperation(value = "子计划单个查询")
     @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
     public ResponseResult findByBillCode(@RequestParam("billCode") String billCode, @RequestParam(value = "billType", required = false)BillTypeEnum billType) {
         ResponseResult responseResult = new ResponseResult();
@@ -163,5 +157,5 @@ public class PlanBillController {
             responseResult.putException(e);
         }
         return responseResult;
-    }
+    }*/
 }

@@ -67,8 +67,8 @@ public class WayBill extends BaseEntity {
      * 物流公司名称
      */
     @Column(length = 255, nullable = false)
+    // @Pattern(regexp = "[a-zA-Z\\u4e00-\\u9fa5][a-zA-Z0-9\\u4e00-\\u9fa5]}", message = "格式错误")
     private String logisticsCompanyName;
-
     /**
      * 目的地
      */
@@ -142,28 +142,7 @@ public class WayBill extends BaseEntity {
         this.outStationName = outStationName;
     }
 
-    /**
-     * 总运货件数
-     *
-     * @return
-     */
-//    private int calcTotalPackageAmount() {
-//        //包号
-//        List<String> packAgesList = new ArrayList<>();
-//        if (wayBillDetailSet == null || wayBillDetailSet.isEmpty()) {
-//            return 0;
-//        }
-//        for (WayBillDetail wayBillDetail : wayBillDetailSet) {
-//            //包号不为空
-//            if (!StringUtils.isEmpty(wayBillDetail.getPackageCode())) {
-//                //
-//                if (!packAgesList.contains(wayBillDetail.getPackageCode())) {
-//                    packAgesList.add(wayBillDetail.getPackageCode());//
-//                }
-//            }
-//        }
-//        return packAgesList.size();
-//    }
+
     public String getOperatorCode() {
         return operatorCode;
     }

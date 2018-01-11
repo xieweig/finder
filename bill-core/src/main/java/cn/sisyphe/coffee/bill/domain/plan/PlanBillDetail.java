@@ -108,4 +108,5 @@ public class PlanBillDetail extends BillDetail {
     public void setTransferLocation(AbstractLocation transferLocation) {
         this.transferLocation = transferLocation;
     }
+
 }

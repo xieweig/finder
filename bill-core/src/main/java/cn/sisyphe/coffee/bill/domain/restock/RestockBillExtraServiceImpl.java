@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +12,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * @author bifenglin
  */
 @Service
-public class RestockBillQueryServiceImpl implements RestockBillQueryService {
+public class RestockBillExtraServiceImpl implements RestockBillExtraService {
 
     @Autowired
     private RestockBillRepository restockBillRepository;
@@ -81,14 +81,16 @@ public class RestockBillQueryServiceImpl implements RestockBillQueryService {
             /**
              * 入库站点集合
              */
-            if (conditionQueryRestockBill.getInStationCodeArray() != null && conditionQueryRestockBill.getInStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("inStationCode").in(conditionQueryRestockBill.getInStationCodeArray()));
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getInStationCodeArray())) {
+                String[] inStationCodeArr = conditionQueryRestockBill.getInStationCodeArray().split(",");
+                expressions.add(root.get("dbStation").get("inStationCode").in(Arrays.asList(inStationCodeArr)));
             }
             /**
              * 出库站点集合
              */
-            if (conditionQueryRestockBill.getOutStationCodeArray() != null && conditionQueryRestockBill.getOutStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("outStationCode").in(conditionQueryRestockBill.getOutStationCodeArray()));
+            if (!StringUtils.isEmpty(conditionQueryRestockBill.getOutStationCodeArray())) {
+                String[] outStationCodeArr = conditionQueryRestockBill.getOutStationCodeArray().split(",");
+                expressions.add(root.get("dbStation").get("outStationCode").in(Arrays.asList(outStationCodeArr)));
             }
             /**
              * 录单开始时间

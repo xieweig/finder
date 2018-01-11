@@ -1,13 +1,12 @@
 
 package cn.sisyphe.coffee.restock;
 
-import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillQueryService;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
@@ -55,7 +54,7 @@ public class SaveCommitTest extends InstanceFactory{
 
     //辅助提供findByCode
     @Resource
-    private RestockBillQueryService restockBillQueryService;
+    private RestockBillExtraService restockBillExtraService;
 
     @Resource
     private RestockBillRepository restockBillRepository;
@@ -107,7 +106,7 @@ public class SaveCommitTest extends InstanceFactory{
     private void saveModify(String billCode) throws InterruptedException {
 
         //由于manager 封装了find 所以在此另外重复一遍
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
+        RestockBill restockBill = restockBillExtraService.findByBillCode(billCode);
 
         logger.info("===="+ToStringBuilder.reflectionToString(restockBill,ToStringStyle.SHORT_PREFIX_STYLE));
 
@@ -117,7 +116,7 @@ public class SaveCommitTest extends InstanceFactory{
 
         this.restockBillManager.updateBillToSave(dto);
 
-        RestockBill restockBilled = restockBillQueryService.findByBillCode(billCode);
+        RestockBill restockBilled = restockBillExtraService.findByBillCode(billCode);
 
         logger.info("===="+ ToStringBuilder.reflectionToString(restockBill), ToStringStyle.SHORT_PREFIX_STYLE);
         //等一秒钟数据库查询
@@ -153,13 +152,13 @@ public class SaveCommitTest extends InstanceFactory{
 
     private void submitModify(String billCode) throws InterruptedException  {
 
-        RestockBill restockBill = restockBillQueryService.findByBillCode(billCode);
+        RestockBill restockBill = restockBillExtraService.findByBillCode(billCode);
         //模拟更新操作
         AddRestockBillDTO dto = this.nextRandomRestockBillDTO(3);
         dto.setBillCode(billCode);
         this.restockBillManager.updateBillToSubmit(dto);
 
-        RestockBill restockBilled = restockBillQueryService.findByBillCode(billCode);
+        RestockBill restockBilled = restockBillExtraService.findByBillCode(billCode);
 
         //等一秒钟数据库查询
         TimeUnit.SECONDS.sleep(1);

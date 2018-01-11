@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
@@ -102,6 +103,12 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
             }
+
+            // 计划类型
+            if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
+                expressions.add(root.get("billPurpose").as(BillPurposeEnum.class).in(conditionQueryPlanBill.getBillPurpose()));
+            }
+
 
             // 计划编码
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillCode())) {

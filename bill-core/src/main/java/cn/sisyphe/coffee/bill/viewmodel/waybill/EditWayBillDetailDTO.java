@@ -47,8 +47,15 @@ public class EditWayBillDetailDTO implements Serializable {
      */
     private String outStorageBillCode;//
 
+
     /**
-     * 录单人
+     * 录单人code
+     */
+    private String operatorCode;
+
+
+    /**
+     * 录单人Name
      */
     private String operatorName;
 
@@ -84,7 +91,6 @@ public class EditWayBillDetailDTO implements Serializable {
     public Boolean singlePacking;
 
 
-
     public Boolean getSinglePacking() {
         return singlePacking;
     }
@@ -98,6 +104,15 @@ public class EditWayBillDetailDTO implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStorageTime;
+
+
+    public String getOperatorCode() {
+        return operatorCode;
+    }
+
+    public void setOperatorCode(String operatorCode) {
+        this.operatorCode = operatorCode;
+    }
 
     public String getBillDetailCode() {
         return billDetailCode;

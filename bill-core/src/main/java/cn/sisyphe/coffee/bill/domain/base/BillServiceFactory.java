@@ -44,12 +44,7 @@ public class BillServiceFactory {
             case RESTOCK:
                 billService = new RestockBillService(bill);
                 break;
-            case TRANSMIT:
-                //运货单
-                billService = new RestockBillService(bill);
-                break;
             case ADJUST:
-                //运货单
                 billService = new AdjustBillService(bill);
                 break;
             default:
