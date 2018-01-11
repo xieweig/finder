@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.lang.management.ManagementFactory;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -105,7 +107,7 @@ public class WayBillManager {
         //code
         if (StringUtils.isEmpty(wayBill.getBillCode())) {//
             //
-            wayBill.setBillCode("YD" + UUID.randomUUID().toString());
+            wayBill.setBillCode(this.keyProducer("YD", editWayBillDTO));
         }
         //
         wayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);// 收货状态
@@ -312,8 +314,15 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
         //出入库站点名
-        wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
-        wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
+
+        Station inStation = this.findStationByCode(editWayBillDTO.getInStationCode());
+        if (inStation != null) {
+            wayBill.setInStationName(inStation.getStationName());
+        }
+        Station outStation = this.findStationByCode(editWayBillDTO.getOutStationCode());
+        if (outStation != null) {
+            wayBill.setOutStationName(outStation.getStationName());
+        }
         //
         //添加明细
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO));
@@ -363,9 +372,14 @@ public class WayBillManager {
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//入库站点code
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());//出库站点code
         //出入库站点名称
-        wayBill.setInStationName(this.findStationByCode(editWayBillDTO.getInStationCode()).getStationName());
-        wayBill.setOutStationName((this.findStationByCode(editWayBillDTO.getOutStationCode()).getStationName()));
-        //
+        Station inStation = this.findStationByCode(editWayBillDTO.getInStationCode());
+        if (inStation != null) {
+            wayBill.setInStationName(inStation.getStationName());
+        }
+        Station outStation = this.findStationByCode(editWayBillDTO.getOutStationCode());
+        if (outStation != null) {
+            wayBill.setOutStationName(outStation.getStationName());
+        }
         wayBill.setMemo(editWayBillDTO.getMemo());//备注
         //添加明细
         wayBill.setWayBillDetailSet(this.addBillItem(editWayBillDTO));
@@ -427,6 +441,7 @@ public class WayBillManager {
      * @param editWayBillDTO
      * @throws DataException
      */
+
     private void checkParams(EditWayBillDTO editWayBillDTO) throws DataException {
         if (editWayBillDTO == null) {
             throw new DataException("40001", "参数为空");
@@ -470,8 +485,15 @@ public class WayBillManager {
             temp.setLogisticsCompanyName(wayBill.getLogisticsCompanyName());//公司名称
 
             temp.setWayBillCode(wayBill.getBillCode());//bill code
-            temp.setOperatorName(wayBill.getOperatorName());// 操作人姓名
 
+            //根据code 查询用户名称;
+            String userName = this.findUserNameByCode(wayBill.getOperatorCode());
+            // temp.setOperatorName(wayBill.getOperatorName());// 操作人姓名
+            if (!StringUtils.isEmpty(userName)) {
+                temp.setOperatorName(userName);// 操作人姓名
+            } else {
+                temp.setOperatorName("");
+            }
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
@@ -501,5 +523,32 @@ public class WayBillManager {
 
     }
 
+    /**
+     * 临时单号
+     *
+     * @param prefix
+     * @param dto
+     * @return
+     */
+    private String keyProducer(String prefix, EditWayBillDTO dto) {
+        String key = "";
+        //  单据类型+站点+时间+进程id+6位流水编码
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        String dateString = formatter.format(currentTime);
+
+        String name = ManagementFactory.getRuntimeMXBean().getName();
+        //System.out.println(name);
+        // get pid
+        String pid = name.split("@")[0];
+
+        //测试临时使用
+        Random random = new Random();
+        //配送单号
+        String toStationCode = dto.getOutStationCode();///
+        //目的站的code
+        key = prefix + toStationCode + pid + dateString + random.nextInt(1000);
+        return key;
+    }
 
 }
