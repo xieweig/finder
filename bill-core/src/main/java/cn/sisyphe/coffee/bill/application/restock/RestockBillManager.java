@@ -627,4 +627,51 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         return restockBill;
     }
+    /**
+     * 将入库单信息转换为入库单信息dto
+     *
+     * @param restockBill
+     * @return
+     */
+    private QueryOneRestockInstoryBillDTO restockToMapRestockInstoryBillDTO(RestockBill restockBill){
+        // SpringCloud调用查询录单人
+        String operatorName =sharedManager.findOneByUserCode(restockBill.getOperatorCode());
+        QueryOneRestockInstoryBillDTO queryOneRestockInstoryBillDTO = new QueryOneRestockInstoryBillDTO();
+        queryOneRestockInstoryBillDTO.setBillCode(restockBill.getBillCode());
+        queryOneRestockInstoryBillDTO.setCreateTime(restockBill.getCreateTime());
+        queryOneRestockInstoryBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
+        queryOneRestockInstoryBillDTO.setOperatorName(operatorName);
+        queryOneRestockInstoryBillDTO.setOutLocation(restockBill.getOutLocation());
+        queryOneRestockInstoryBillDTO.setInLocation(restockBill.getInLocation());
+        queryOneRestockInstoryBillDTO.setBillProperty(restockBill.getBillProperty());
+        queryOneRestockInstoryBillDTO.setTotalAmount(restockBill.getTotalAmount());
+        queryOneRestockInstoryBillDTO.setTotalVarietyAmount(restockBill.getTotalVarietyAmount());
+        queryOneRestockInstoryBillDTO.setPlanMemo(restockBill.getPlanMemo());
+        queryOneRestockInstoryBillDTO.setOutStorageMemo(restockBill.getOutStorageMemo());
+        queryOneRestockInstoryBillDTO.setAuditMemo(restockBill.getAuditMemo());
+        List<QueryOneRestockInstoryBillDetailDTO> queryOneRestockInstoryBillDetailDTOList = toMapRestockInstoryBillDTO(restockBill.getBillDetails());
+        queryOneRestockInstoryBillDTO.setBillDetailDTOList(queryOneRestockInstoryBillDetailDTOList);
+
+        return queryOneRestockInstoryBillDTO;
+
+    }
+    /**
+     * 将入库单信息明细转换为入库单信息明细dto
+     *
+     * @param restockBillDetailList
+     * @return
+     */
+    private List<QueryOneRestockInstoryBillDetailDTO> toMapRestockInstoryBillDTO(Set<RestockBillDetail> restockBillDetailList){
+        List<QueryOneRestockInstoryBillDetailDTO> queryOneRestockInstoryBillDetailDTOList = new ArrayList<>();
+        for (RestockBillDetail restockBillDetail : restockBillDetailList) {
+            QueryOneRestockInstoryBillDetailDTO queryOneRestockInstoryBillDetailDTO = new QueryOneRestockInstoryBillDetailDTO();
+            queryOneRestockInstoryBillDetailDTO.setRawMaterial((RawMaterial) restockBillDetail.getGoods());
+            queryOneRestockInstoryBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
+            queryOneRestockInstoryBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
+            queryOneRestockInstoryBillDetailDTOList.add(queryOneRestockInstoryBillDetailDTO);
+        }
+        return queryOneRestockInstoryBillDetailDTOList;
+
+
+    }
 }
