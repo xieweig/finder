@@ -1,7 +1,8 @@
-package cn.sisyphe.coffee.bill.application.base;
+package cn.sisyphe.coffee.bill.application.base.purpose;
 
 import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
