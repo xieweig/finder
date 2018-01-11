@@ -79,7 +79,8 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         List<String> packNumbers = new ArrayList<>();
         for (DeliveryBillDetail detail : details) {
             totalCount += 1;// 总品种
-            totalAmount += detail.getAmount();// 总数量
+//            totalAmount += detail.getAmount();// 总数量
+            totalAmount += detail.getActualAmount();///实际拣货数量
             //包号不重复则添加
             if (!packNumbers.contains(detail.getPackageCode())) {
                 //添加包号
@@ -106,13 +107,13 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         //入库站点
         if (deliveryBill.getInLocation() != null) {
             //
-            Station station = this.findStation(deliveryBill.getInLocation().code());
-            scanFillBillDTO.setInStationCode(station.getStationCode());
-            scanFillBillDTO.setInStationName(station.getStationName());
+            Station stationIn = this.findStation(deliveryBill.getInLocation().code());
+            scanFillBillDTO.setInStationCode(stationIn.getStationCode());
+            scanFillBillDTO.setInStationName(stationIn.getStationName());
         }
         //出库站点
         if (deliveryBill.getOutLocation() != null) {
-            Station stationOut = this.findStation(deliveryBill.getInLocation().code());
+            Station stationOut = this.findStation(deliveryBill.getOutLocation().code());
             scanFillBillDTO.setOutStationCode(stationOut.getStationCode());
             scanFillBillDTO.setOutStationName(stationOut.getStationName());
 
