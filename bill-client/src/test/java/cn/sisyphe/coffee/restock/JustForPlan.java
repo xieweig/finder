@@ -1,3 +1,4 @@
+/*
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
@@ -27,11 +28,13 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+*/
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/8
  * @Description:仅仅服务于restock测试用，数据做的字段不全
- */
+ *//*
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
 public class JustForPlan {
@@ -60,8 +63,10 @@ public class JustForPlan {
     private PlanBill createPlanBill() {
         PlanBill planBill = new PlanBill();
         planBill.setHqBill(false);
-        /*
-        * bill plan 生成对应的restock*/
+        */
+/*
+        * bill plan 生成对应的restock*//*
+
         planBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         planBill.setAuditMemo("remarks: " + random.nextInt(1000));
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
@@ -90,3 +95,4 @@ public class JustForPlan {
         }
     }
 }
+*/

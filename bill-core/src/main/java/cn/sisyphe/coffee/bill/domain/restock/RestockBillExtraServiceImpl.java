@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,17 @@ public class RestockBillExtraServiceImpl implements RestockBillExtraService {
             Predicate predicate = cb.conjunction();
 
             List<Expression<Boolean>> expressions = predicate.getExpressions();
+
+            // 计划类型
+            if (conditionQueryRestockBill.getBillType() != null) {
+                expressions.add(root.get("billType").as(BillTypeEnum.class).in(conditionQueryRestockBill.getBillType()));
+            }
+
+            //计划类型
+            if (conditionQueryRestockBill.getBillPurpose() != null) {
+                expressions.add(root.get("billPurpose").as(BillPurposeEnum.class).in(conditionQueryRestockBill.getBillPurpose()));
+            }
+
             /**
              * 录单人
              */

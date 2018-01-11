@@ -1,18 +1,13 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * bifenglin
@@ -134,7 +129,7 @@ public class RestockBillDTO {
      */
     private BillInOrOutStateEnum inOrOutState;
 
-    private Set<RestockBillDetailDTO> billDetails;
+    private List<RestockBillDetailDTO> billDetails;
 
     public Date getCreateTime() {
         return createTime;
@@ -240,11 +235,11 @@ public class RestockBillDTO {
         this.inOrOutState = inOrOutState;
     }
 
-    public Set<RestockBillDetailDTO> getBillDetails() {
+    public List<RestockBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<RestockBillDetailDTO> billDetails) {
+    public void setBillDetails(List<RestockBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 

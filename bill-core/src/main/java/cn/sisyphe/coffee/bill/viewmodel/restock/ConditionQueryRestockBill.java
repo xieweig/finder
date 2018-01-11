@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -26,6 +28,11 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      * 出库单号
      */
     private String billCode;
+
+    private BillTypeEnum billType;
+
+    private BillPurposeEnum billPurpose;
+
     /**
      * 入库站点编号集合
      */
@@ -102,6 +109,22 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
      * 结束配送总价
      */
     private BigDecimal endTotalPrice;
+
+    public BillTypeEnum getBillType() {
+        return billType;
+    }
+
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
+    }
+
+    public BillPurposeEnum getBillPurpose() {
+        return billPurpose;
+    }
+
+    public void setBillPurpose(BillPurposeEnum billPurpose) {
+        this.billPurpose = billPurpose;
+    }
 
     public String getInStationCodeArray() {
         return inStationCodeArray;

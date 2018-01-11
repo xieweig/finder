@@ -14,12 +14,7 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.QueryOneRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -31,14 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -197,43 +185,52 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param conditionQueryRestockBill 查询条件
      * @return
      */
-    public QueryRestockBillDTO findByConditions(ConditionQueryRestockBill conditionQueryRestockBill) {
-        // SpringCloud调用查询录单人编码
-        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryRestockBill.getOperatorName());
-        conditionQueryRestockBill.setOperatorCodeList(userCodeList);
-        Page<RestockBill> restockBillPage = restockBillExtraService.findPageByCondition(conditionQueryRestockBill);
+    public Page<RestockBillDTO> findByConditions(ConditionQueryRestockBill conditionQueryRestockBill, BillTypeEnum billType, BillPurposeEnum billPurpose) {
+        conditionQueryRestockBill.setBillType(billType);
+        conditionQueryRestockBill.setBillPurpose(billPurpose);
+        Page<RestockBill> restockBills = restockBillExtraService.findPageByCondition(conditionQueryRestockBill);
 
-        QueryRestockBillDTO QueryRestockBillDTO = new QueryRestockBillDTO();
-        // 转换
-        List<RestockBillDTO> billDTOList = toMapDTO(restockBillPage.getContent());
-        // 总数
-        QueryRestockBillDTO.setTotalNumber(restockBillPage.getTotalElements());
-        // 退库单据数据
-        QueryRestockBillDTO.setContent(billDTOList);
-
-        return QueryRestockBillDTO;
+        return restockBills.map(this::mapRestockBillToDTO);
     }
-    private  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-    private   Random random = new Random();
 
-    private String nextBillCode(){
-
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("TKCK");
-        stringBuffer.append("CKG001");
-        stringBuffer.append(simpleDateFormat.format(new Date()));
-        stringBuffer.append("P10");
-        stringBuffer.append(""+(random.nextInt(800000)+100000));
-        return stringBuffer.toString();
-    }
     /**
+     * 转换成子计划单DTO
      *
-     *
-     * @param
-     * @return
+     * @param restockBill 子计划单
+     * @return 子计划单DTO
      */
+    private RestockBillDTO mapRestockBillToDTO(RestockBill restockBill) {
 
+        //name没有改变
+        RestockBillDTO restockBillDTO = new RestockBillDTO();
+        restockBillDTO.setOperatorName(restockBill.getOperatorCode());
+        restockBillDTO.setCreateTime(restockBill.getCreateTime());
+        restockBillDTO.setSourceCode(restockBill.getSourceCode());
+        restockBillDTO.setVariety(restockBill.getTotalVarietyAmount());
+        restockBillDTO.setTotalPrice(restockBill.getTotalPrice());
+        restockBillDTO.setRootCode(restockBill.getRootCode());
+        restockBillDTO.setProgress(restockBill.getProgress());
+        restockBillDTO.setPlanMemo(restockBill.getPlanMemo());
+        restockBillDTO.setOutMemo(restockBill.getOutStorageMemo());
+        restockBillDTO.setOutLocation(restockBill.getOutLocation());
+        restockBillDTO.setInOrOutState(restockBill.getInOrOutState());
+        restockBillDTO.setInLocation(restockBill.getInLocation());
+        restockBillDTO.setBillType(restockBill.getBillType());
+        restockBillDTO.setBillState(restockBill.getBillState());
+        restockBillDTO.setBillPurpose(restockBill.getBillPurpose());
+        restockBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
+        restockBillDTO.setBasicEnum(restockBill.getBasicEnum());
+        restockBillDTO.setAuditMemo(restockBill.getAuditMemo());
+        restockBillDTO.setSubmitState(restockBill.getSubmitState());
+        restockBillDTO.setAuditState(restockBill.getAuditState());
+        restockBillDTO.setBillCode(restockBill.getBillCode());
+        restockBillDTO.setAuditPersonName(restockBill.getAuditPersonCode());
+        restockBillDTO.setAmount(restockBill.getTotalAmount());
+        restockBillDTO.setBillProperty(restockBill.getBillProperty());
+        restockBillDTO.setBillDetails(setDetailMapToListMapDetail(restockBill.getBillDetails()));
 
+        return restockBillDTO;
+    }
 
     /**
      * 保存和提交操作需要用到的DTO转换
@@ -359,14 +356,12 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         List<RestockBillDetailDTO> detailDTOList = new ArrayList<>();
         for (RestockBillDetail detail : restockBillDetails) {
             RestockBillDetailDTO detailDTO = new RestockBillDetailDTO();
+
+            detailDTO.setShippedAmount(detail.getShippedAmount());
+            detailDTO.setActualAmount(detail.getActualAmount());
             // 设置货物和原料信息
             RawMaterial rawMaterial = (RawMaterial) detail.getGoods();
-           /* detailDTO.setRawMaterial(rawMaterial);
-            //设置数量
-            detailDTO.setAmount(detail.getAmount());
-            //备注
-            detailDTO.se
-*/
+            detailDTO.setRawMaterial(rawMaterial);
             detailDTOList.add(detailDTO);
         }
         return detailDTOList;
@@ -387,7 +382,13 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //设置单据属性
         restockBill.setBillProperty(editRestockBillDTO.getBillProperty());
 
-        restockBill.setRootCode(this.nextBillCode());
+        //若没有root编码则自己的编码就是root编码
+        if (!StringUtils.isEmpty(editRestockBillDTO.getRootCode())) {
+            restockBill.setRootCode(restockBill.getRootCode());
+        } else {
+            restockBill.setRootCode(restockBill.getBillCode());
+        }
+
         // 来源单号
         if (!StringUtils.isEmpty(editRestockBillDTO.getSourceCode())) {
             restockBill.setSourceCode(editRestockBillDTO.getSourceCode());
@@ -451,7 +452,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             restockBillDTO.setOperatorName(sharedManager.findOneByUserCode(restockBill.getOperatorCode()));
             restockBillDTO.setAuditPersonName(sharedManager.findOneByUserCode(restockBill.getAuditPersonCode()));
             restockBillDTO.setBasicEnum(restockBill.getBasicEnum());
-            restockBillDTO.setBillDetails(billDetailsToRestockBillDetailDTO(restockBill.getBillDetails()));
             restockBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
             restockBillDTO.setBillProperty(restockBill.getBillProperty());
             restockBillDTO.setBillPurpose(restockBill.getBillPurpose());
@@ -468,13 +468,15 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             restockBillDTO.setTotalPrice(restockBill.getTotalPrice());
             restockBillDTO.setVariety(restockBill.getTotalVarietyAmount());
             restockBillDTO.setCreateTime(restockBill.getCreateTime());
+
+            restockBillDTO.setBillDetails(billDetailsToRestockBillDetailDTO(restockBill.getBillDetails()));
             restockBillDTOList.add(restockBillDTO);
         }
         return restockBillDTOList;
     }
 
-    private Set<RestockBillDetailDTO> billDetailsToRestockBillDetailDTO(Set<RestockBillDetail> restockBillDetails) {
-        Set<RestockBillDetailDTO> restockBillDetailDTOSet = new HashSet<>();
+    private List<RestockBillDetailDTO> billDetailsToRestockBillDetailDTO(Set<RestockBillDetail> restockBillDetails) {
+        List<RestockBillDetailDTO> restockBillDetailDTOSet = new ArrayList<>();
         for (RestockBillDetail restockBillDetail : restockBillDetails) {
             RestockBillDetailDTO restockBillDetailDTO = new RestockBillDetailDTO();
             if (restockBillDetail.getGoods() instanceof RawMaterial) {

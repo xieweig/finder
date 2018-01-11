@@ -167,7 +167,7 @@ public class RestockBillController {
     public ResponseResult findByConditions(@RequestBody ConditionQueryRestockBill conditionQueryRestockBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        QueryRestockBillDTO billPage = restockBillManager.findByConditions(conditionQueryRestockBill);
+        QueryRestockBillDTO billPage = (QueryRestockBillDTO) restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
         List<RestockBillDTO> list = billPage.getContent();
         //测试使用
         for (RestockBillDTO restockBillDTO :
@@ -201,7 +201,6 @@ public class RestockBillController {
     @RequestMapping(path = "/findByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
         RestockBill billDTO = restockBillManager.findByRestockBillCode(restockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
@@ -215,7 +214,6 @@ public class RestockBillController {
     @RequestMapping(path = "/findByRestockBillCodeToEdit", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCodeToEdit(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
         RestockBill billDTO = restockBillManager.findByRestockBillCode(restockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
@@ -229,7 +227,6 @@ public class RestockBillController {
     @RequestMapping(path = "/findByRestockBillCodeToAudit", method = RequestMethod.GET)
     public ResponseResult findByRestockBillCodeToAudit(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
         RestockBill billDTO = restockBillManager.findByRestockBillCode(restockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
@@ -324,5 +321,25 @@ public class RestockBillController {
         }
         return responseResult;
     }
+
+    /**
+     * 多条件退库调拨单查询
+     *
+     * @param billCode
+     * @return responseResult
+     */
+ /*   @ApiOperation(value = "多条件退库调拨单查询")
+    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
+    public ResponseResult findPackageInfoByBillCode(@RequestParam String billCode) {
+
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            ScanFillBillDTO scanFillBillDTO = restockBillManager.findPackageInfoByBillCode(billCode);
+            responseResult.put("content", scanFillBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }*/
 
 }

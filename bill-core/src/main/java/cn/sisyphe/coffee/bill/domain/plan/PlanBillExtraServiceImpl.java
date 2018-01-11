@@ -1,9 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
@@ -104,8 +102,8 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
             }
 
-            // 计划类型
-            if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillPurpose())) {
+            //计划类型
+            if (conditionQueryPlanBill.getBillPurpose() != null) {
                 expressions.add(root.get("billPurpose").as(BillPurposeEnum.class).in(conditionQueryPlanBill.getBillPurpose()));
             }
 
@@ -220,14 +218,6 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             //货物编号模糊查询
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoCode())) {
                 expressions.add(cb.like(planBillDetailDbGoodsJoin.<String>get("cargoCode"), "%" + conditionQueryPlanBill.getCargoCode() + "%"));
-            }
-
-            if (conditionQueryPlanBill.getSubmitStates() != null && conditionQueryPlanBill.getSubmitStates().size() > 0) {
-                expressions.add(root.get("submitState").as(BillSubmitStateEnum.class).in(conditionQueryPlanBill.getSubmitStates()));
-            }
-
-            if (conditionQueryPlanBill.getAuditStates() != null && conditionQueryPlanBill.getAuditStates().size() > 0) {
-                expressions.add(root.get("auditState").as(BillAuditStateEnum.class).in(conditionQueryPlanBill.getAuditStates()));
             }
             expressions.add(cb.equal(root.get("hqBill").as(Boolean.class), true));
             return predicate;
