@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.amqp;
 
 import cn.sisyphe.coffee.bill.application.base.InStorageBillManager;
-import cn.sisyphe.coffee.bill.application.base.MoveStorageBillManager;
 import cn.sisyphe.coffee.bill.application.purchase.PurchaseBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.util.Constant;
@@ -25,9 +24,6 @@ public class ReceiverService {
 
     @Autowired
     private InStorageBillManager inStorageBillManager;
-
-    @Autowired
-    private MoveStorageBillManager moveStorageBillManager;
 
     /**
      * 日志
