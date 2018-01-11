@@ -30,4 +30,9 @@ public final class Constant {
     // 在途库：PASSAGELIBRARY
     // 预留库：RESERVEDLIBRARY
 
+
+    public static final String OUT_STORAGE_DONE = "OUT_STORAGE_DONE";
+
+    public static final String IN_STORAGE_DONE = "IN_STORAGE_DONE";
+
 }
