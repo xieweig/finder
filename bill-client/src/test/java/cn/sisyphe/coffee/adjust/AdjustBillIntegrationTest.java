@@ -1,10 +1,9 @@
 package cn.sisyphe.coffee.adjust;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
+import cn.sisyphe.coffee.bill.amqp.ReceiverService;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillEventProcessor;
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
-import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +25,16 @@ public class AdjustBillIntegrationTest {
     @Autowired
     private AdjustBillExtraService adjustBillExtraService;
 
+    @Autowired
+    private ReceiverService receiverService;
+
 
     @Test
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
-        AdjustBill adjustBill = adjustBillExtraService.findByBillCode("tjckd1515552192738");
-        BehaviorEvent<AdjustBill> adjustBillBehaviorEvent = new BehaviorEvent<>(adjustBill);
-        adjustBillEventProcessor.billDone(adjustBillBehaviorEvent);
+//        Bill adjustBill = adjustBillExtraService.findByBillCode("1515570200185");
+//        Bill inStorageBill = receiverService.generateInStorageBill(adjustBill);
+//        AbstractBillManager billManager = receiverService.getBillManager(adjustBill.getBillType());
+//        billManager.save(inStorageBill);
 
     }
 }

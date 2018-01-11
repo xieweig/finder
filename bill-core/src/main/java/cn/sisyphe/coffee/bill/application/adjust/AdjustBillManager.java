@@ -17,7 +17,6 @@ import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.util.BillCodeManager;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.*;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,6 @@ import static ch.lambdaj.Lambda.sum;
 @Service
 public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
 
-    public static final String ADJUST_OUT_STORAGE_PREFIX = "TJCKD";
     @Autowired
     private PlanBillExtraService planBillExtraService;
     @Autowired
@@ -194,8 +192,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             }
         } else {
             adjustBill = (AdjustBill) new BillFactory().createBill(BillTypeEnum.ADJUST);
-            // 设置单据编码
-            adjustBill.setBillCode(BillCodeManager.getBillCodeFun(ADJUST_OUT_STORAGE_PREFIX, adjustBill.getBelongStationCode()));
         }
         return adjustBill;
     }
