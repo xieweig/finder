@@ -28,9 +28,9 @@ import java.util.concurrent.TimeUnit;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {CoreApplication.class, ClientApplication.class})
-@WebAppConfiguration
+//@WebAppConfiguration
 public class ControllerTest {
-    private  String[] names={"牛奶","咖啡","乳酪","啤酒","面包","排骨","米饭","馒头","鸭肉","鸡肉"};
+
     public static final String PREFIX = "http://localhost:15009/api/bill/restock/";
     @Resource
     private WebApplicationContext webApplicationContext;
@@ -38,34 +38,6 @@ public class ControllerTest {
     private Random random;
     private MockMvc mvc;
 
-//
 
-    @Before
-    public void setUp(){
-        mvc= MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        random = new Random();
-    }
-
-    @Test
-  public void funny() {
-        ResultActions resultActions;
-        try {
-            TimeUnit.SECONDS.sleep(2);
-            RequestBuilder requestBuilder =MockMvcRequestBuilders
-                    .post(PREFIX+"saveRestockBill")
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("addRestockBillDTO","{\'billCode\':\'10001\',\'memo\':\'remarks\'}");
-            logger.info("test:---"+requestBuilder.toString());
-             resultActions=  mvc.perform(requestBuilder);
-             resultActions.andReturn();
-
-          //  MvcResult mvcResult = resultActions.andReturn();
-
-            System.out.println("--------" );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }

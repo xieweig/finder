@@ -43,4 +43,12 @@ public class ChildPlanBillDetailDTO {
     public void setGoodsCode(String goodsCode) {
         this.goodsCode = goodsCode;
     }
+
+    public RawMaterial getRawMaterial() {
+        return rawMaterial;
+    }
+
+    public void setRawMaterial(RawMaterial rawMaterial) {
+        this.rawMaterial = rawMaterial;
+    }
 }

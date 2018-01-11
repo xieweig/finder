@@ -5,26 +5,20 @@ import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
-import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -109,7 +103,7 @@ public class RestockBillController {
      * @param addRestockBillDTO
      * @return
      */
-    @ApiOperation(value = "保存退库出库单  ")
+    @ApiOperation(value = "自主拣货")
     @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
     public ResponseResult saveRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
 //        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
@@ -119,6 +113,7 @@ public class RestockBillController {
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
     }
+
     @ApiOperation(value = "保存退库出库单 (站点自主)")
     @RequestMapping(path = "/saveRestockBillBySelf", method = RequestMethod.POST)
     public ResponseResult saveRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
@@ -174,8 +169,8 @@ public class RestockBillController {
         QueryRestockBillDTO billPage = restockBillManager.findByConditions(conditionQueryRestockBill);
         List<RestockBillDTO> list = billPage.getContent();
         //测试使用
-        for (RestockBillDTO restockBillDTO:
-             list) {
+        for (RestockBillDTO restockBillDTO :
+                list) {
             restockBillDTO.setAuditPersonName("审核人：海绵宝宝");
             restockBillDTO.setOperatorName("操作人：派大星");
         }
@@ -187,7 +182,7 @@ public class RestockBillController {
      * @param restockBillCode
      * @return
      */
-    @ApiOperation(value = "根据退库出库单编码查询图库出库单详细信息")
+    @ApiOperation(value = "入库单审核")
     @RequestMapping(path = "/openByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult openByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
@@ -303,9 +298,10 @@ public class RestockBillController {
         ResponseResult responseResult = new ResponseResult();
 //        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 
-        restockBillManager.auditBill(restockBillCode,  "001", true);
+        restockBillManager.auditBill(restockBillCode, "001", true);
         return responseResult;
     }
+
     /**
      * 通过单据号billCode汇总查询出打包的信息
      *

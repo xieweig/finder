@@ -23,10 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: xie_wei_guang
@@ -161,7 +158,17 @@ public class InstanceFactory {
 
         stringBuffer.append(simpleDateFormat.format(new Date()));
         stringBuffer.append("P10");
-        stringBuffer.append(""+(random.nextInt(800000)+100000));
+        stringBuffer.append(""+(random.nextInt(900000)+100000));
         return stringBuffer.toString();
+    }
+    //测试一个小解析器 未处理null;“”也会是一个list元素;
+    protected List<String> parseByDotToList(String source){
+        String sign = "\\.";
+        //未判断不带dot：
+        String[] result = source.split(sign);
+
+        List<String> list = Arrays.asList(result);
+
+        return list;
     }
 }

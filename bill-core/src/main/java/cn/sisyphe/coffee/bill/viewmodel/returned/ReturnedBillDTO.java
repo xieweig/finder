@@ -1,11 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -64,7 +59,7 @@ public class ReturnedBillDTO {
     /**
      * 审核人编码
      */
-    private String auditPersonCode;
+    private String auditPersonName;
 
     /**
      * 单据属性
@@ -201,12 +196,12 @@ public class ReturnedBillDTO {
         this.rootCode = rootCode;
     }
 
-    public String getAuditPersonCode() {
-        return auditPersonCode;
+    public String getAuditPersonName() {
+        return auditPersonName;
     }
 
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
+    public void setAuditPersonName(String auditPersonName) {
+        this.auditPersonName = auditPersonName;
     }
 
     public BillStateEnum getBillState() {

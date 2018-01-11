@@ -2,12 +2,9 @@ package cn.sisyphe.coffee.bill.application.restock;
 
 import cn.sisyphe.coffee.bill.application.planbill.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
-import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 /**
  *@date: 2018/1/2
@@ -27,11 +24,6 @@ public class RestockBillEventProcessor  {
      */
     @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'SAVED'")
     public void restockBillSave(BehaviorEvent event) {
-        //修改子计划重捡状态
-        RestockBill restockBill = (RestockBill) event.getBill();
-        if (!StringUtils.isEmpty(restockBill.getSourceCode())){
-            planBillManager.operation(restockBill.getSourceCode(), OperationStateEnum.OPERATION);
-        }
         System.err.println("Event Callback SAVED: === " + event.getBill());
     }
     /**
@@ -41,12 +33,6 @@ public class RestockBillEventProcessor  {
      */
     @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'SUBMITTED'")
     public void restockBillCommit(BehaviorEvent event) {
-        //修改子计划重捡状态
-        RestockBill restockBill = (RestockBill) event.getBill();
-        if (!StringUtils.isEmpty(restockBill.getSourceCode())){
-            planBillManager.operation(restockBill.getSourceCode(), OperationStateEnum.OPERATION);
-        }
         System.err.println("Event Callback SUBMITTED: === " + event.getBill());
-
     }
 }

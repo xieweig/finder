@@ -407,7 +407,13 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
             ChildPlanBillDetailDTO childPlanBillDetailDTO = new ChildPlanBillDetailDTO();
             childPlanBillDetailDTO.setAmount(planBillDetail.getAmount());
-            childPlanBillDetailDTO.setGoodsCode(planBillDetail.getGoods().code());
+            RawMaterial rawMaterial = new RawMaterial();
+            if (planBillDetail.getGoods() instanceof Cargo) {
+                rawMaterial.setCargo((Cargo) planBillDetail.getGoods());
+            } else {
+                rawMaterial = (RawMaterial) planBillDetail.getGoods();
+            }
+            childPlanBillDetailDTO.setRawMaterial(rawMaterial);
             childPlanBillDetailDTOS.add(childPlanBillDetailDTO);
 
         }
@@ -417,7 +423,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
         Page<PlanBill> childPlanBill = planBillExtraService.findChildPlanBillBy(conditionQueryPlanBill);
-
 
         return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
@@ -430,6 +435,6 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
 
     public void operation(String billCode, OperationStateEnum operationState) {
         PlanBill planBill = planBillExtraService.findByBillCode(billCode);
-        planBillExtraService.updateOperationStateByBill(planBill,operationState);
+        planBillExtraService.updateOperationStateByBill(planBill, operationState);
     }
 }

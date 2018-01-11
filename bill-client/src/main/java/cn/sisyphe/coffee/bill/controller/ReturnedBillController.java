@@ -6,12 +6,12 @@ import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.QueryReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author mayupeng
@@ -50,7 +51,7 @@ public class ReturnedBillController {
     public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
-        //设定查询退库分片
+        //设定查询退货分片
         conditionQueryPlanBill.setSpecificBillType(BillTypeEnum.RETURNED);
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill);
@@ -100,7 +101,7 @@ public class ReturnedBillController {
     @ApiOperation(value = "保存退货单")
     @RequestMapping(path = "/saveReturnedBill", method = RequestMethod.POST)
     public ResponseResult saveRuturnedBill(HttpServletRequest request, @RequestBody AddReturnedBillDTO addReturnedBillDTO) {
-        addReturnedBillDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
+        //addReturnedBillDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.saveBill(addReturnedBillDTO);
         return responseResult;
@@ -115,7 +116,7 @@ public class ReturnedBillController {
     @ApiOperation(value = "提交退货单")
     @RequestMapping(path = "/submitReturnedBill", method = RequestMethod.POST)
     public ResponseResult submitReturnedBill(HttpServletRequest request, @RequestBody AddReturnedBillDTO addReturnedBillDTO) {
-        addReturnedBillDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
+        //addReturnedBillDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.submitBill(addReturnedBillDTO);
         return responseResult;
@@ -132,21 +133,39 @@ public class ReturnedBillController {
     public ResponseResult findByConditions(@RequestBody ConditionQueryReturnedBill conditionQueryReturnedBill) {
         ResponseResult responseResult = new ResponseResult();
         QueryReturnedBillDTO billPage = returnedBillManager.findByConditions(conditionQueryReturnedBill);
+        //测试使用
+        List<ReturnedBillDTO> list = billPage.getContent();
+        for (ReturnedBillDTO returnedBillDTO: list) {
+            returnedBillDTO.setAuditPersonName("审核人：海绵宝宝");
+            returnedBillDTO.setOperatorName("操作人：派大星");
+        }
         responseResult.put("content", billPage);
         return responseResult;
     }
-
+    /**
+     * @param returnedBillCode
+     * @return
+     */
+    @ApiOperation(value = "根据退货单编码查询退货单详细信息")
+    @RequestMapping(path = "/openByReturnedBillCode", method = RequestMethod.GET)
+    public ResponseResult openByReturnedBillCode(@RequestParam String returnedBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+//        QueryOneReturnedBillDTO billDTO = returnedBillManager.openBill(ReturnedBillCode);
+        ReturnedBill billDTO = returnedBillManager.openBill(returnedBillCode);
+        responseResult.put("ReturnedBill", billDTO);
+        return responseResult;
+    }
     /**
      * 根据退货单编码查询退货单详细信息
      *
-     * @param ReturnedBillCode
+     * @param returnedBillCode
      * @return
      */
     @ApiOperation(value = "根据退货单编码查询退货单详细信息")
     @RequestMapping(path = "/findByReturnedBillCode", method = RequestMethod.GET)
-    public ResponseResult findByReturnedBillCode(@RequestParam String ReturnedBillCode) {
+    public ResponseResult findByReturnedBillCode(@RequestParam String returnedBillCode) {
         ResponseResult responseResult = new ResponseResult();
-        ReturnedBill billDTO = returnedBillManager.openBill(ReturnedBillCode);
+        ReturnedBill billDTO = returnedBillManager.findByReturnedBillCode(returnedBillCode);
         responseResult.put("ReturnedBill", billDTO);
         return responseResult;
     }
@@ -160,7 +179,7 @@ public class ReturnedBillController {
     @ApiOperation(value = "修改退货单单据信息--保存")
     @RequestMapping(path = "/updateReturnedBillToSave", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSaved(HttpServletRequest request, @RequestBody AddReturnedBillDTO billDTO) {
-        billDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
+        //billDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
             returnedBillManager.updateBillToSave(billDTO);
@@ -179,7 +198,7 @@ public class ReturnedBillController {
     @ApiOperation(value = "修改退货单单据信息--提交审核")
     @RequestMapping(path = "/updateReturnedBillToSubmit", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSubmit(HttpServletRequest request, @RequestBody AddReturnedBillDTO billDTO) {
-        billDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
+        //billDTO.setOperatorCode(LoginInfo.getLoginInfo(request).getOperatorCode());
         ResponseResult responseResult = new ResponseResult();
         try {
             returnedBillManager.updateBillToSubmit(billDTO);
@@ -198,9 +217,10 @@ public class ReturnedBillController {
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(HttpServletRequest request, @RequestParam String ReturnedBillCode) {
-        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        //LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        returnedBillManager.auditBill(ReturnedBillCode, loginInfo.getOperatorCode(), false);
+        //returnedBillManager.auditBill(ReturnedBillCode, loginInfo.getOperatorCode(), false);
+        returnedBillManager.auditBill(ReturnedBillCode, "001", false);
         return responseResult;
     }
 
@@ -213,9 +233,10 @@ public class ReturnedBillController {
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam String ReturnedBillCode) {
-        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        //LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        returnedBillManager.auditBill(ReturnedBillCode, loginInfo.getOperatorCode(), true);
+        //returnedBillManager.auditBill(ReturnedBillCode, loginInfo.getOperatorCode(), true);
+        returnedBillManager.auditBill(ReturnedBillCode, "001", true);
         return responseResult;
     }
 
