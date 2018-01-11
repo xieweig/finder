@@ -110,10 +110,26 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param conditionQueryAdjustBill 查询条件
      * @return 分页信息
      */
-    public Page<AdjustBillDTO> findByConditions(ConditionQueryAdjustBill conditionQueryAdjustBill) {
+    public Page<AdjustBillDTO> findByConditionsToOut(ConditionQueryAdjustBill conditionQueryAdjustBill) {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.OutStorage);
+        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
+        return adjustBillPage.map(source -> toMapConditionsDTO(source));
+    }
+
+    /**
+     * 根据多条件查询调拨单据信息
+     *
+     * @param conditionQueryAdjustBill 查询条件
+     * @return 分页信息
+     */
+    public Page<AdjustBillDTO> findByConditionsToIn(ConditionQueryAdjustBill conditionQueryAdjustBill) {
+        // SpringCloud调用查询用户编码
+        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
+        conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.moveStorage);
         Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
@@ -364,14 +380,14 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // 出库状态
         adjustBillDTO.setOutStatusCode(adjustBill.getOutStateEnum());
         // 提交状态
-        adjustBillDTO.setSubmitState(adjustBill.getSubmitState().name());
+        adjustBillDTO.setSubmitState(adjustBill.getSubmitState());
         // 审核状态
-        adjustBillDTO.setAuditState(adjustBill.getAuditState().name());
-        //单据状态
+        adjustBillDTO.setAuditState(adjustBill.getAuditState());
+        // 单据状态
         adjustBillDTO.setBillState(adjustBill.getBillState());
         // 发起单号
         adjustBillDTO.setRootCode(adjustBill.getRootCode());
-        //来源单号
+        // 来源单号
         adjustBillDTO.setSourceCode(adjustBill.getSourceCode());
         // 单据编码
         adjustBillDTO.setBillCode(adjustBill.getBillCode());

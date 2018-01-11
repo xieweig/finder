@@ -7,15 +7,22 @@ import cn.sisyphe.coffee.bill.application.base.InStorageBillManager;
 import cn.sisyphe.coffee.bill.application.base.MoveStorageBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Date 2018/1/10 10:03
@@ -54,19 +61,19 @@ public class AdjustBillIntegrationTest {
 
         AddAdjustBillDTO billDTO = new AddAdjustBillDTO();
         // 源单据编码
-        billDTO.setRootCode("planBill001");
+        billDTO.setRootCode("planBill002");
         // 录单人编码
-        billDTO.setOperatorCode("operator001");
+        billDTO.setOperatorCode("operator002");
         // 出库站点
-        billDTO.setOutStationCode("HDQA01");
+        billDTO.setOutStationCode("HDQA02");
         // 入库站点
         billDTO.setInStationCode("HDQA02");
         // 出库库房
         Storage outStorage = new Storage();
-        outStorage.setStorageCode("Noraml001");
+        outStorage.setStorageCode("Noraml002");
         // 入库库房
         Storage inStorage = new Storage();
-        inStorage.setStorageCode("Noraml001");
+        inStorage.setStorageCode("Noraml002");
         // 调剂数量
         billDTO.setAdjustNumber(10);
         // 调剂品种数
@@ -74,10 +81,38 @@ public class AdjustBillIntegrationTest {
         // 计划备注
         billDTO.setPlanMemo("计划单备注测试信息");
         // 出库备注
-        billDTO.setOutStorageMemo("务必三日之内送到");
+        billDTO.setOutStorageMemo("务必2日之内送到");
         // 按照货物还是原料拣货
         billDTO.setBasicEnum(BasicEnum.BY_CARGO);
-        //
+        // 单据来源类型
+        billDTO.setBillProperty(SourcePlanTypeEnum.ADJUST);
+
+        List<AddAdjustBillDetailDTO> dtoList = new ArrayList<>();
+        AddAdjustBillDetailDTO detailDTO1 = new AddAdjustBillDetailDTO();
+        detailDTO1.setShippedAmount(10);
+        detailDTO1.setActualAmount(10);
+        RawMaterial rawMaterial1 = new RawMaterial();
+        Cargo cargo = new Cargo();
+        cargo.setCargoCode("cargoCode002");
+        rawMaterial1.setCargo(cargo);
+        detailDTO1.setRawMaterial(rawMaterial1);
+        detailDTO1.setBelongMaterialCode("YL002");
+        dtoList.add(detailDTO1);
+
+
+        AddAdjustBillDetailDTO detailDTO2 = new AddAdjustBillDetailDTO();
+        detailDTO2.setShippedAmount(10);
+        detailDTO2.setActualAmount(10);
+        RawMaterial rawMaterial2 = new RawMaterial();
+        Cargo cargo2 = new Cargo();
+        cargo2.setCargoCode("cargoCode003");
+        rawMaterial2.setCargo(cargo2);
+        detailDTO2.setRawMaterial(rawMaterial2);
+        detailDTO2.setBelongMaterialCode("YL003");
+        dtoList.add(detailDTO2);
+
+        billDTO.setDetails(dtoList);
+
         adjustBillManager.create(billDTO);
     }
 

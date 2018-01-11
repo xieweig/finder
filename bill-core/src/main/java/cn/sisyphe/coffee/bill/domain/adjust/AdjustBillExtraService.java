@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 
 /**
  * Created by XiongJing on 2018/1/8.
- * remark：
- * version:
+ * remark：调剂业务逻辑接口
+ * version: 1.0
+ *
+ * @author XiongJing
  */
 public interface AdjustBillExtraService {
 

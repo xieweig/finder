@@ -1,17 +1,10 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -24,9 +17,6 @@ import java.util.Set;
 public class AdjustBillEventProcessor {
     @Autowired
     private AdjustBillManager adjustBillManager;
-
-
-    public static final String ADJUST_IN_STORAGE_PREFIX = "tjrkd";
 
     /**
      * 已创建事件
