@@ -11,7 +11,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -46,12 +45,12 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
      * @param inStorageBill 生成调拨单
      */
     @SuppressWarnings("unchecked")
-    public void createAllotBill(Bill inStorageBill, Executor executor) {
+    public AllotBill createAllotBill(Bill inStorageBill, Executor executor) {
         AllotBill allotBill = generateBill(inStorageBill, BillPurposeEnum.moveStorage);
         allotBill.setBillState(BillStateEnum.UN_ALLOT);
         executor.apply(allotBill);
         //生成调拨单，未调拨
-        purpose(allotBill);
+        return purpose(allotBill);
     }
 
 

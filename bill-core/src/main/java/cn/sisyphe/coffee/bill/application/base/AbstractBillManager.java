@@ -15,6 +15,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.context.ApplicationEventPublisher;
 
+import java.util.Date;
+
 /**
  * Created by heyong on 2018/1/2 17:47
  * Description: 单据基础管理器
@@ -102,6 +104,7 @@ public class AbstractBillManager<T extends Bill> {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setBillState(BillStateEnum.ALLOT);
+        bill.setInWareHouseTime(new Date());
         billRepository.save(bill);
     }
 
