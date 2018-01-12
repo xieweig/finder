@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -437,4 +438,8 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
 
     }
 
+    @Override
+    public Bill findEntityByBillCode(String billCode) {
+        return adjustBillExtraService.findByBillCode(billCode);
+    }
 }
