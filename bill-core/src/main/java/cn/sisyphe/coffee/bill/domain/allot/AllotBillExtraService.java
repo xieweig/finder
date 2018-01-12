@@ -14,4 +14,10 @@ public interface AllotBillExtraService {
      * @return
      */
     Page<AllotBill> findPageByCondition(ConditionQueryAllotBill conditionQueryAllotBill);
+    /**
+     * 根据单据单号查询调拨单
+     * @param conditionQueryAllotBill
+     * @return
+     */
+    AllotBill findOneByBillCode(String billCode);
 }

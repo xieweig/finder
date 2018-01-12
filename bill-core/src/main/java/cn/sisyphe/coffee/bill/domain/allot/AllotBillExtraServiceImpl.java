@@ -41,6 +41,11 @@ public class AllotBillExtraServiceImpl implements AllotBillExtraService {
         return allotBillPage;
     }
 
+    @Override
+    public AllotBill findOneByBillCode(String billCode) {
+        return allotBillRepository.findOneByBillCode(billCode);
+    }
+
     private Page<AllotBill> queryByParams(ConditionQueryAllotBill conditionQueryAllotBill, Pageable pageable) {
         return allotBillRepository.findAll((root, criteriaQuery, cb) -> {
             //去重

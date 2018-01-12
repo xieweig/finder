@@ -37,13 +37,30 @@ public class AllotBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("调拨单据多条件分页查询");
         try {
-            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.RESTOCK);
+            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.ALLOT);
 
             for (AllotBillDTO allotBillDTO : allotBillDTOS) {
                 //测试使用
                 allotBillDTO.setOperatorName("操作人：懒羊羊");
             }
             responseResult.put("content", allotBillDTOS);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 调拨单查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "调拨单据多条件分页查询")
+    @RequestMapping(path = "/findAllotBillByBillCode", method = RequestMethod.POST)
+    public ResponseResult findAllotBillByBillCode(@RequestBody String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("allotBill", allotBillManager.findAllotBillByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
