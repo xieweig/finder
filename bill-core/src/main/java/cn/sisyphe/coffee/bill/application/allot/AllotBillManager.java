@@ -82,7 +82,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         allotBillDTO.setTotalPrice(allotBill.getTotalPrice());
         allotBillDTO.setTotalVarietyAmount(allotBill.getTotalVarietyAmount());
         allotBillDTO.setBillDetails(billDetailToBillDetailDTO(allotBill.getBillDetails()));
-        return null;
+        return allotBillDTO;
     }
 
     /**

@@ -125,7 +125,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     }
 
     /**
-     * 根据多条件查询调拨单据信息
+     * 根据多条件查询入库单据信息
      *
      * @param conditionQueryAdjustBill 查询条件
      * @return 分页信息
@@ -134,7 +134,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
-        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.moveStorage);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.InStorage);
         Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
