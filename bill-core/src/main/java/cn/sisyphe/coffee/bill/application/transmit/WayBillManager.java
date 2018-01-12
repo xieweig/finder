@@ -167,18 +167,22 @@ public class WayBillManager {
      * @throws DataException
      */
     public QueryWayBillDTO findPageByCondition(ConditionQueryWayBill conditionQueryWayBill) throws DataException {
-        // TODO: 2018/1/2
         //1 根据具体的运单号查询,只有唯一的显示，显示一条
         //2 根据配送出库查询可能会有多条
         //3 所有都是模糊匹配
         //所有的产品表中的数据
         Page<WayBill> wayBillPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
+        //
+//        long totalNumbers = wayBillPage.getTotalElements();
+
+//        System.out.println("totalNumbers:" + totalNumbers);
 
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
-        //
+        // 总页数
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
+
         queryWayBillDTO.setContent(wayBillDTOList);
         return queryWayBillDTO;
     }
@@ -438,9 +442,9 @@ public class WayBillManager {
             wayBillDetail.setOutStorageTime(item.getOutStorageTime());//出库时间
             //
             String userName = this.findUserNameByCode(item.getOperatorCode());
-            if (!StringUtils.isEmpty(userName)) {
-                wayBillDetail.setOperatorName(userName);//来源单录单人
-            }
+
+            wayBillDetail.setOperatorName((userName == null) ? "" : userName);
+
             //供应商录单人手动输入的，系统没有
             if (!StringUtils.isEmpty(item.getOperatorName())) {
                 wayBillDetail.setOperatorName(item.getOperatorName());//来源单录单人
