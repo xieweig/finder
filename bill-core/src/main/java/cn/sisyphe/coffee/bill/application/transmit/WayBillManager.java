@@ -224,6 +224,7 @@ public class WayBillManager {
         if (wayBill == null) {
             return null;
         }
+
         EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
 
         editWayBillDTO.setBillId(wayBill.getBillId());//id
@@ -294,7 +295,6 @@ public class WayBillManager {
             //包号
             wayBillDetailDTO.setPackageNumbers(wayBillDetail.getPackageCode());
             wayBillDetailDTO.setSinglePacking(wayBillDetail.getSinglePacking());//是否单独打包
-
             editWayBillDetailDTOList.add(wayBillDetailDTO);// 设置dto
         }
         //
