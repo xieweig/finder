@@ -173,10 +173,6 @@ public class WayBillManager {
         //所有的产品表中的数据
         Page<WayBill> wayBillPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
         //
-//        long totalNumbers = wayBillPage.getTotalElements();
-
-//        System.out.println("totalNumbers:" + totalNumbers);
-
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
