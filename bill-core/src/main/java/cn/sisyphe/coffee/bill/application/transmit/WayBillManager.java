@@ -327,7 +327,7 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
         String userName = this.findUserNameByCode(editWayBillDTO.getOperatorCode());
-        wayBill.setOperatorName(userName);//录单人姓名
+        wayBill.setOperatorName((userName == null) ? "" : userName);//录单人姓名
 
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
@@ -384,7 +384,7 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
         //
         String userName = this.findUserNameByCode(editWayBillDTO.getOperatorCode());
-        wayBill.setOperatorName(userName);//录单人姓名
+        wayBill.setOperatorName((userName == null) ? "" : userName);//录单人姓名
 
         wayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);//未收货
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//入库站点code
@@ -507,11 +507,9 @@ public class WayBillManager {
             //根据code 查询用户名称;
             String userName = this.findUserNameByCode(wayBill.getOperatorCode());
             // temp.setOperatorName(wayBill.getOperatorName());// 操作人姓名
-            if (!StringUtils.isEmpty(userName)) {
-                temp.setOperatorName(userName);// 操作人姓名
-            } else {
-                temp.setOperatorName("");
-            }
+            // 操作人姓名
+            temp.setOperatorName((userName == null) ? "" : userName);
+
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
