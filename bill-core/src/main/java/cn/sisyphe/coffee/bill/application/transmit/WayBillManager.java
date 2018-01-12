@@ -244,9 +244,9 @@ public class WayBillManager {
         //录单人code
         editWayBillDTO.setOperatorCode(wayBill.getOperatorCode());
         //录单人name
-        String userName = this.findUserNameByCode((wayBill.getOperatorCode()));
+        String userName = this.findUserNameByCode(wayBill.getOperatorCode());
         //录单人name
-        editWayBillDTO.setOperatorName(userName);
+        editWayBillDTO.setOperatorName((userName == null) ? "" : userName);
 
         //总重量
         editWayBillDTO.setTotalWeight(wayBill.getTotalWeight());
