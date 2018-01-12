@@ -25,6 +25,7 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createStartTime;
+
     /**
      * 录单结束时间
      */
@@ -46,8 +47,6 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      */
     private String creatorName;
 
-    private List<String> creatorCodeList;
-
     /**
      * 单据作用
      */
@@ -61,6 +60,7 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      * 单据名称
      */
     private String billName;
+
     /**
      * 是否为总部计划单据
      */
@@ -70,20 +70,16 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      * 货物编号集合
      */
     private Set<String> cargoCodeArray;
+
     /**
      * 货物编号
      */
     private String cargoCode;
 
+    /**
+     * 操作人编码集合
+     */
     private List<String> operatorCodes;
-
-    public List<String> getCreatorCodeList() {
-        return creatorCodeList;
-    }
-
-    public void setCreatorCodeList(List<String> creatorCodeList) {
-        this.creatorCodeList = creatorCodeList;
-    }
 
     public BillPurposeEnum getBillPurpose() {
         return billPurpose;
