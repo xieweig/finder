@@ -7,7 +7,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -115,7 +114,7 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "多条件查询调剂出库单据")
     @RequestMapping(path = "/findByConditionsToOut", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"},  token = "userCode")
+    @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findByConditionsToOut(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToOut(conditionQueryAdjustBill);
@@ -131,7 +130,7 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "多条件查询调剂入库单据")
     @RequestMapping(path = "/findByConditionsToIn", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"},  token = "userCode")
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findByConditionsToIn(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToIn(conditionQueryAdjustBill);
@@ -165,10 +164,11 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
     @RequestMapping(path = "/openBill", method = RequestMethod.GET)
-    public ResponseResult openBill(@RequestParam(value = "billCode") String billCode) {
+    public ResponseResult openBill(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         try {
-            responseResult.put("adjustBill", adjustBillManager.openBill(billCode));
+            responseResult.put("adjustBill", adjustBillManager.openBill(billCode, loginInfo.getOperatorCode()));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -245,20 +245,6 @@ public class AdjustBillController {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
         adjustBillManager.audit(adjustBillCode, "auditPerson001", true);
-        return responseResult;
-    }
-
-    @ApiOperation(value = "调拨")
-    @RequestMapping(path = "/allot", method = RequestMethod.POST)
-    public ResponseResult allot(@RequestBody AllotDTO allotDTO) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-            adjustBillManager.createAllotBill(allotDTO);
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
         return responseResult;
     }
 

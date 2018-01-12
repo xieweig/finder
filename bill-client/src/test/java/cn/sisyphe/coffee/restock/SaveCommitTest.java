@@ -1,17 +1,18 @@
-/*
+
 
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +39,12 @@ import java.util.concurrent.TimeUnit;
 
 
 
-*/
+
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/5
  * @Description: manager 级别上的测试
- *//*
+ */
 
 
 @RunWith(SpringRunner.class)
@@ -226,14 +228,19 @@ public class SaveCommitTest extends InstanceFactory{
         queryRestockBill.setPage(1);
         queryRestockBill.setPageSize(5);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        logger.info(queryRestockBillDTO.toString());
+        Page<RestockBillDTO> restockBillDTO = this.restockBillManager.findByConditions(queryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+        logger.info(restockBillDTO.getContent().toString());
     }
     @Test
     public void selectByBasicCondition(){
         ConditionQueryRestockBill queryRestockBill = new ConditionQueryRestockBill();
-        queryRestockBill.setBillCode("74780302");
+        queryRestockBill.setBillCode("58300302");
+        queryRestockBill.setPageSize(10);
+        queryRestockBill.setPage(1);
+        queryRestockBill.setBillType(BillTypeEnum.RESTOCK);
+        Page<RestockBillDTO> restockBillDTO  = this.restockBillManager.findByConditions(queryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        logger.info(queryRestockBillDTO.getTotalNumber() +queryRestockBillDTO.getContent().toString());
+        logger.info(restockBillDTO.getTotalPages()+restockBillDTO.getContent().toString());
     }
     @Test
     public void born(){
@@ -242,9 +249,16 @@ public class SaveCommitTest extends InstanceFactory{
 
         }
     }
+    @Test
+    public void inStorage(){
+//        String[] billCodes = {"76040302"};
+//        OneRestockInStorageBillDTO queryOne =  this.restockBillManager.f(billCodes[0]);
+//        logger.info("InStorage======:"+ToStringBuilder.reflectionToString(queryOne,ToStringStyle.SHORT_PREFIX_STYLE));
+
+    }
 
 
 
 }
 
-*/
+

@@ -1,5 +1,8 @@
 package cn.sisyphe.coffee.bill.domain.purchase;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -127,21 +130,21 @@ public class PurchaseBillExtraServiceImpl implements PurchaseBillExtraService {
              * 拼接提交状态
              */
             if (conditionQueryPurchaseBill.getSubmitStateCode() != null && conditionQueryPurchaseBill.getSubmitStateCode().size() > 0) {
-                expressions.add(root.get("submitState").as(String.class).in(conditionQueryPurchaseBill.getSubmitStateCode()));
+                expressions.add(root.get("submitState").as(BillSubmitStateEnum.class).in(conditionQueryPurchaseBill.getSubmitStateCode()));
             }
 
             /**
              * 拼接审核状态
              */
             if (conditionQueryPurchaseBill.getAuditStateCode() != null && conditionQueryPurchaseBill.getAuditStateCode().size() > 0) {
-                expressions.add(root.get("auditState").as(String.class).in(conditionQueryPurchaseBill.getSubmitStateCode()));
+                expressions.add(root.get("auditState").as(BillAuditStateEnum.class).in(conditionQueryPurchaseBill.getAuditStateCode()));
             }
 
             /**
              * 拼接出入库状态
              */
             if (conditionQueryPurchaseBill.getInOrOutStateCode() != null && conditionQueryPurchaseBill.getInOrOutStateCode().size() > 0) {
-                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryPurchaseBill.getInOrOutStateCode()));
+                expressions.add(root.get("inOrOutState").as(BillInOrOutStateEnum.class).in(conditionQueryPurchaseBill.getInOrOutStateCode()));
             }
             /**
              * 出库站点集合

@@ -56,6 +56,7 @@ public class WayBillServiceImpl implements WayBillService {
         // 改变页码导致的页面为空时，获取最后一页
         if (configurePage.getContent().size() < 1 && configurePage.getTotalElements() > 0) {
             pageable = new PageRequest(configurePage.getTotalPages() - 1, conditionQueryWayBill.getPageSize());
+
             configurePage = pageCondition(conditionQueryWayBill, pageable);
         }
         return configurePage;
@@ -73,10 +74,10 @@ public class WayBillServiceImpl implements WayBillService {
         return wayBillRepository.findAll((root, query, cb) -> {
             // 分组后去重复
             query.distinct(true);
-            Predicate predicate = cb.conjunction();
-            //左连接
+            // left join
             Join<WayBill, WayBillDetail> itemJoin = root.join("wayBillDetailSet", JoinType.LEFT);
-            //
+            Predicate predicate = cb.conjunction();
+
             List<Expression<Boolean>> expressions = predicate.getExpressions();
             //billCode
             if (!StringUtils.isEmpty(conditionQueryWayBill.getWayBillCode())) {
@@ -116,7 +117,6 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.equal(root.get("receivedStatus").as(String.class),
                         conditionQueryWayBill.getReceivedStatus()));
             }
-
             /**
              * 录单开始时间
              */
@@ -151,10 +151,15 @@ public class WayBillServiceImpl implements WayBillService {
             //运货件数
             if (conditionQueryWayBill.getAmountOfPackages() != null) {
                 expressions.add(cb.equal(root.<String>get("amountOfPackages"),
-                        "" + conditionQueryWayBill.getAmountOfPackages() + ""));
+                        +conditionQueryWayBill.getAmountOfPackages()));
             }
+//          query.groupBy(root.get("billCode"));
+            // query.multiselect(root.get("billCode"), root.get("wayBillDetailSet.sourceCode"));
             //分组查询
-            query.groupBy(root.get("billCode"));
+            if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStorageBillCode())) {
+                query.multiselect(root.get("billCode"));
+                query.groupBy(root.get("billCode"));
+            }
             return predicate;
         }, pageable);
 

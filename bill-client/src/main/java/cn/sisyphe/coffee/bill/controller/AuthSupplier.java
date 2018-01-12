@@ -26,6 +26,9 @@ public class AuthSupplier implements AuthenticationSupplier {
         //读取缓存
         JSONArray jsonArray = (JSONArray) CacheHelper.cache().hashPop(OAUTH_USER_MANAGEMENT_SCOPE, s);
         Set<String> stationCodeSet = new HashSet<>();
+        if(jsonArray==null){
+            return stationCodeSet;
+        }
         for (Object object : jsonArray.getJSONArray(1)) {
             stationCodeSet.add(object.toString());
         }

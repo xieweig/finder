@@ -4,21 +4,21 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 
 /**
  * @author mayupeng
- * @Date 2018/01/07
- * @description 退货入库调拨单明细
+ * @Date 2018/01/12
+ * @description 退库调拨单明细DTO
  */
-public class OneRestockInStorageBillDetailDTO {
+public class RestockAllotDetailBillDTO {
     /**
      * 原料
      */
     private RawMaterial rawMaterial;
     /**
-     * 应拣数量
+     * 入库数量
      */
     private int shippedAmount;
 
     /**
-     * 实拣数量
+     * 实调数量
      */
     private int actualAmount;
 

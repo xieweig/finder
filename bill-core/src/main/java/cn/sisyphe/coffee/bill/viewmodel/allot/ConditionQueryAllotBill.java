@@ -1,18 +1,22 @@
 package cn.sisyphe.coffee.bill.viewmodel.allot;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @date: 2018/1/12
  * @description: 多条件查询退库调拨单查询
  * @author：bifenglin
  */
-public class ConditionQueryAllotBill {
+public class ConditionQueryAllotBill  extends BaseConditionQuery implements Serializable {
 
     /**
      * 调拨单号
@@ -34,6 +38,7 @@ public class ConditionQueryAllotBill {
 
     private String operatorCode;
 
+    private List<String> operatorCodeList;
 
     /**
      * 入库站点编号集合
@@ -52,6 +57,24 @@ public class ConditionQueryAllotBill {
      * 出库库位
      */
     private Storage outStorage;
+
+    private BillTypeEnum specificBillType;
+
+    public List<String> getOperatorCodeList() {
+        return operatorCodeList;
+    }
+
+    public void setOperatorCodeList(List<String> operatorCodeList) {
+        this.operatorCodeList = operatorCodeList;
+    }
+
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
+    }
+
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
+    }
 
     public String getBillCode() {
         return billCode;
