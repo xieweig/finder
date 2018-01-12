@@ -86,6 +86,8 @@ public class WayBillServiceImpl implements WayBillService {
             }
             //出库单号
             if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStorageBillCode())) {
+                //必须加上这个multiSelect
+                query.multiselect(root.get("billCode"));
                 expressions.add(cb.like(itemJoin.<String>get("sourceCode"),
                         "%" + conditionQueryWayBill.getOutStorageBillCode() + "%"));
             }
@@ -153,13 +155,7 @@ public class WayBillServiceImpl implements WayBillService {
                 expressions.add(cb.equal(root.<String>get("amountOfPackages"),
                         +conditionQueryWayBill.getAmountOfPackages()));
             }
-//          query.groupBy(root.get("billCode"));
-            // query.multiselect(root.get("billCode"), root.get("wayBillDetailSet.sourceCode"));
-            //分组查询
-            if (!StringUtils.isEmpty(conditionQueryWayBill.getOutStorageBillCode())) {
-                query.multiselect(root.get("billCode"));
-                query.groupBy(root.get("billCode"));
-            }
+            //query.groupBy(root.get("billCode"));
             return predicate;
         }, pageable);
 
