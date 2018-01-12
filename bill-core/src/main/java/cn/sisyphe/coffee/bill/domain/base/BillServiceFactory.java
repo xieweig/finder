@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base;
 
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillService;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
@@ -46,6 +47,9 @@ public class BillServiceFactory {
                 break;
             case ADJUST:
                 billService = new AdjustBillService(bill);
+                break;
+            case ALLOT:
+                billService = new AllotBillService(bill);
                 break;
             default:
                 break;

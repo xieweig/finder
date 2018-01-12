@@ -1,3 +1,4 @@
+/*
 package cn.sisyphe.coffee.returned;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
@@ -15,11 +16,13 @@ import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Random;
 
+*/
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/7
  * @Description:
- */
+ *//*
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
@@ -71,4 +74,4 @@ public class OracleRunner extends InstanceIterator {
         this.returnedBillManager.updateBillToSubmit(addReturnedBillDTO);
 
     }
-}
+}*/

@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import org.springframework.data.domain.Page;
 
@@ -29,4 +30,5 @@ public interface RestockBillExtraService {
      * @return
      */
     RestockBill findBySourceCode(String sourceCode);
+
 }

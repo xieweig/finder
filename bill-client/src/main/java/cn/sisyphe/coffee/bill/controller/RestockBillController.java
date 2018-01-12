@@ -10,20 +10,17 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,11 +34,11 @@ import java.util.List;
 @Api(description = "退库相关操作")
 public class RestockBillController {
 
-    @Resource
+    @Autowired
     private RestockBillManager restockBillManager;
-    @Resource
+    @Autowired
     private PlanBillManager planBillManager;
-    @Resource
+    @Autowired
     private SharedManager sharedManager;
 
     /**
@@ -57,7 +54,6 @@ public class RestockBillController {
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
 
-            List<String> restockCodeList = new ArrayList<>();
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 //测试使用
                 childPlanBillDTO.setOperatorName("操作人：懒羊羊");
@@ -130,7 +126,6 @@ public class RestockBillController {
      * @param addRestockBillDTO
      * @return
      */
-    @Transactional
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBill", method = RequestMethod.POST)
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
@@ -143,7 +138,6 @@ public class RestockBillController {
         return responseResult;
     }
 
-    @Transactional
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBillBySelf", method = RequestMethod.POST)
     public ResponseResult submitRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
@@ -167,7 +161,7 @@ public class RestockBillController {
     public ResponseResult findByConditions(@RequestBody ConditionQueryRestockBill conditionQueryRestockBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        QueryRestockBillDTO billPage = (QueryRestockBillDTO) restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+        Page<RestockBillDTO> billPage =  restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
         List<RestockBillDTO> list = billPage.getContent();
         //测试使用
         for (RestockBillDTO restockBillDTO :
@@ -187,7 +181,6 @@ public class RestockBillController {
     @RequestMapping(path = "/openByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult openByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
         RestockBill billDTO = restockBillManager.openBill(restockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;

@@ -7,11 +7,10 @@ import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
-
+import java.util.List;
 
 /**
- * @author mayupeng
+ * bifenglin
  */
 public class ReturnedBillDTO {
     /**
@@ -78,7 +77,7 @@ public class ReturnedBillDTO {
     /**
      * 退货数量
      */
-    private int amount;
+    private Integer amount;
 
     /**
      * 退货品种数
@@ -130,7 +129,7 @@ public class ReturnedBillDTO {
      */
     private BillInOrOutStateEnum inOrOutState;
 
-    private Set<ReturnedBillDetailDTO> billDetails;
+    private List<ReturnedBillDetailDTO> billDetails;
 
     public Date getCreateTime() {
         return createTime;
@@ -236,11 +235,11 @@ public class ReturnedBillDTO {
         this.inOrOutState = inOrOutState;
     }
 
-    public Set<ReturnedBillDetailDTO> getBillDetails() {
+    public List<ReturnedBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<ReturnedBillDetailDTO> billDetails) {
+    public void setBillDetails(List<ReturnedBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 
@@ -276,11 +275,11 @@ public class ReturnedBillDTO {
         this.operatorName = operatorName;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 

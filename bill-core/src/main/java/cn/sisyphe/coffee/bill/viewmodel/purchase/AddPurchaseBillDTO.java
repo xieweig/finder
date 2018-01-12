@@ -37,6 +37,8 @@ public class AddPurchaseBillDTO {
      * 操作人代码
      */
     private String operatorCode;
+    
+     // TODO: 2018/1/11 更改
     /**
      * 库房
      */

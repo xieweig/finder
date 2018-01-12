@@ -1,3 +1,4 @@
+/*
 package cn.sisyphe.coffee.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
@@ -22,11 +23,13 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+*/
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/9
  * @Description:
- */
+ *//*
+
 
 public class InstanceIterator {
 
@@ -122,3 +125,4 @@ public class InstanceIterator {
         return stringBuffer.toString();
     }
 }
+*/
