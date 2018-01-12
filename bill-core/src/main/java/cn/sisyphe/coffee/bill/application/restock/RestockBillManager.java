@@ -632,13 +632,13 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param restockBillCode
      * @return
      */
-    public QueryOneRestockInStorageBillDTO findRestockInStorageBillByRestockBillCode(String restockBillCode) {
+    public OneRestockInStorageBillDTO findRestockInStorageBillByRestockBillCode(String restockBillCode) {
         if (StringUtils.isEmpty(restockBillCode)){
             throw new DataException("404", "单据编码为空");
         }
         RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
-        QueryOneRestockInStorageBillDTO queryOneRestockInStorageBillDTO = restockToMapRestockInStorageBillDTO(restockBill);
-        return queryOneRestockInStorageBillDTO;
+        OneRestockInStorageBillDTO oneRestockInStorageBillDTO = restockToMapRestockInStorageBillDTO(restockBill);
+        return oneRestockInStorageBillDTO;
     }
     /**
      * 将入库单信息转换为入库单信息dto
@@ -646,26 +646,26 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param restockBill
      * @return
      */
-    private QueryOneRestockInStorageBillDTO restockToMapRestockInStorageBillDTO(RestockBill restockBill){
+    private OneRestockInStorageBillDTO restockToMapRestockInStorageBillDTO(RestockBill restockBill){
         // SpringCloud调用查询录单人
         String operatorName =sharedManager.findOneByUserCode(restockBill.getOperatorCode());
-        QueryOneRestockInStorageBillDTO queryOneRestockInStorageBillDTO = new QueryOneRestockInStorageBillDTO();
-        queryOneRestockInStorageBillDTO.setBillCode(restockBill.getBillCode());
-        queryOneRestockInStorageBillDTO.setCreateTime(restockBill.getCreateTime());
-        queryOneRestockInStorageBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
-        queryOneRestockInStorageBillDTO.setOperatorName(operatorName);
-        queryOneRestockInStorageBillDTO.setOutLocation(restockBill.getOutLocation());
-        queryOneRestockInStorageBillDTO.setInLocation(restockBill.getInLocation());
-        queryOneRestockInStorageBillDTO.setBillProperty(restockBill.getBillProperty());
-        queryOneRestockInStorageBillDTO.setTotalAmount(restockBill.getTotalAmount());
-        queryOneRestockInStorageBillDTO.setTotalVarietyAmount(restockBill.getTotalVarietyAmount());
-        queryOneRestockInStorageBillDTO.setPlanMemo(restockBill.getPlanMemo());
-        queryOneRestockInStorageBillDTO.setOutStorageMemo(restockBill.getOutStorageMemo());
-        queryOneRestockInStorageBillDTO.setAuditMemo(restockBill.getAuditMemo());
-        List<QueryOneRestockInStorageBillDetailDTO> queryOneRestockInStorageBillDetailDTOList = toMapRestockInStorageBillDTO(restockBill.getBillDetails());
-        queryOneRestockInStorageBillDTO.setBillDetailDTOList(queryOneRestockInStorageBillDetailDTOList);
+        OneRestockInStorageBillDTO oneRestockInStorageBillDTO = new OneRestockInStorageBillDTO();
+        oneRestockInStorageBillDTO.setBillCode(restockBill.getBillCode());
+        oneRestockInStorageBillDTO.setCreateTime(restockBill.getCreateTime());
+        oneRestockInStorageBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
+        oneRestockInStorageBillDTO.setOperatorName(operatorName);
+        oneRestockInStorageBillDTO.setOutLocation(restockBill.getOutLocation());
+        oneRestockInStorageBillDTO.setInLocation(restockBill.getInLocation());
+        oneRestockInStorageBillDTO.setBillProperty(restockBill.getBillProperty());
+        oneRestockInStorageBillDTO.setTotalAmount(restockBill.getTotalAmount());
+        oneRestockInStorageBillDTO.setTotalVarietyAmount(restockBill.getTotalVarietyAmount());
+        oneRestockInStorageBillDTO.setPlanMemo(restockBill.getPlanMemo());
+        oneRestockInStorageBillDTO.setOutStorageMemo(restockBill.getOutStorageMemo());
+        oneRestockInStorageBillDTO.setAuditMemo(restockBill.getAuditMemo());
+        List<OneRestockInStorageBillDetailDTO> oneRestockInStorageBillDetailDTOList = toMapRestockInStorageBillDTO(restockBill.getBillDetails());
+        oneRestockInStorageBillDTO.setBillDetailDTOList(oneRestockInStorageBillDetailDTOList);
 
-        return queryOneRestockInStorageBillDTO;
+        return oneRestockInStorageBillDTO;
 
     }
     /**
@@ -674,17 +674,15 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      * @param restockBillDetailList
      * @return
      */
-    private List<QueryOneRestockInStorageBillDetailDTO> toMapRestockInStorageBillDTO(Set<RestockBillDetail> restockBillDetailList){
-        List<QueryOneRestockInStorageBillDetailDTO> queryOneRestockInStorageBillDetailDTOList = new ArrayList<>();
+    private List<OneRestockInStorageBillDetailDTO> toMapRestockInStorageBillDTO(Set<RestockBillDetail> restockBillDetailList){
+        List<OneRestockInStorageBillDetailDTO> oneRestockInStorageBillDetailDTOList = new ArrayList<>();
         for (RestockBillDetail restockBillDetail : restockBillDetailList) {
-            QueryOneRestockInStorageBillDetailDTO queryOneRestockInStorageBillDetailDTO = new QueryOneRestockInStorageBillDetailDTO();
-            queryOneRestockInStorageBillDetailDTO.setRawMaterial((RawMaterial) restockBillDetail.getGoods());
-            queryOneRestockInStorageBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
-            queryOneRestockInStorageBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
-            queryOneRestockInStorageBillDetailDTOList.add(queryOneRestockInStorageBillDetailDTO);
+            OneRestockInStorageBillDetailDTO oneRestockInStorageBillDetailDTO = new OneRestockInStorageBillDetailDTO();
+            oneRestockInStorageBillDetailDTO.setRawMaterial((RawMaterial) restockBillDetail.getGoods());
+            oneRestockInStorageBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
+            oneRestockInStorageBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
+            oneRestockInStorageBillDetailDTOList.add(oneRestockInStorageBillDetailDTO);
         }
-        return queryOneRestockInStorageBillDetailDTOList;
-
-
+        return oneRestockInStorageBillDetailDTOList;
     }
 }
