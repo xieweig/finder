@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.movestorage;
+package cn.sisyphe.coffee.bill.domain.allot;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -20,11 +20,11 @@ import javax.persistence.Table;
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class MoveStorageBill extends Bill<MoveStorageBillDetail> {
+public class AllotBill extends Bill<AllotBillDetail> {
 
 
-    public MoveStorageBill() {
-        setBillType(BillTypeEnum.MOVE_STORAGE);
+    public AllotBill() {
+        setBillType(BillTypeEnum.ALLOT);
     }
 
     /**
