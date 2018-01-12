@@ -45,13 +45,13 @@ public class ReceiverService {
         }
 
         //接收到入库冲减完成将，入库单转存一份入库单
-        if (Constant.OUT_STORAGE_DONE.equals(responseResult.getCommandName())) {
+        if (Constant.OUT_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
             Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
             inStorageBillManager.convertInStorageBill(bill);
         }
 
         //接收到入库冲减完成，更新入库单和差错单的状态的状态
-        if (Constant.OFFSET_DONE.equals(responseResult.getCommandName())) {
+        if (Constant.IN_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
             Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
             inStorageBillManager.allotedForInStorageBill(bill);
             //TODO 还需要将结果发给唐华玲，她要更改误差单状态
