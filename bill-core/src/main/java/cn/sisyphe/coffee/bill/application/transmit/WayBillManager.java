@@ -177,6 +177,7 @@ public class WayBillManager {
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
+        //
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
         queryWayBillDTO.setContent(wayBillDTOList);
         return queryWayBillDTO;
@@ -223,6 +224,7 @@ public class WayBillManager {
         if (wayBill == null) {
             return null;
         }
+
         EditWayBillDTO editWayBillDTO = new EditWayBillDTO();
 
         editWayBillDTO.setBillId(wayBill.getBillId());//id
@@ -240,9 +242,13 @@ public class WayBillManager {
         editWayBillDTO.setDeliveryTime(wayBill.getDeliveryTime());//
         //计划到达时间
         editWayBillDTO.setPlanArrivalTime(wayBill.getPlanArrivalTime());
-
+        //录单人code
         editWayBillDTO.setOperatorCode(wayBill.getOperatorCode());
-        editWayBillDTO.setOperatorName(wayBill.getOperatorName());
+        //录单人name
+        String userName = this.findUserNameByCode(wayBill.getOperatorCode());
+        //录单人name
+        editWayBillDTO.setOperatorName((userName == null) ? "" : userName);
+
         //总重量
         editWayBillDTO.setTotalWeight(wayBill.getTotalWeight());
         //TODO: 2018/1/2 运货件数验证（手动填写+自动提取）
@@ -262,20 +268,33 @@ public class WayBillManager {
             wayBillDetailDTO.setOutStorageBillCode(wayBillDetail.getSourceCode());
             // id
             wayBillDetailDTO.setBillDetailId(wayBillDetail.getBillDetailId());
-
-            wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
             // 数量
             wayBillDetailDTO.setTotalAmount(wayBillDetail.getTotalAmount());
             // 品种
             wayBillDetailDTO.setTotalCount(wayBillDetail.getTotalCount());
-            //
+            //入库站点code
+            wayBillDetailDTO.setInStationCode(wayBillDetail.getInStationCode());
+            //出库站点code
+            wayBillDetailDTO.setOutStationCode(wayBillDetail.getOutStationCode());
+            //出入库站点名
+            Station inStation = this.findStationByCode(wayBillDetail.getInStationCode());
+            if (inStation != null) {
+                wayBillDetailDTO.setInStationName(inStation.getStationName());
+            }
+            Station outStation = this.findStationByCode(wayBillDetail.getOutStationCode());
+            if (outStation != null) {
+                wayBillDetailDTO.setOutStationName(outStation.getStationName());
+            }
+            //明细的录单人,有可能没有code
+            wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
+
             if (wayBillDetail.getPackAgeTypeEnum() != null) {
+                //
                 wayBillDetailDTO.setPackageType(wayBillDetail.getPackAgeTypeEnum().name());//打包类型
             }
             //包号
             wayBillDetailDTO.setPackageNumbers(wayBillDetail.getPackageCode());
             wayBillDetailDTO.setSinglePacking(wayBillDetail.getSinglePacking());//是否单独打包
-
             editWayBillDetailDTOList.add(wayBillDetailDTO);// 设置dto
         }
         //
