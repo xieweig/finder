@@ -1,4 +1,3 @@
-/*
 
 package cn.sisyphe.coffee.restock;
 
@@ -35,14 +34,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
-
-
-*/
-/**
- * @Author: xie_wei_guang
- * @Date: 2018/1/5
- * @Description: manager 级别上的测试
- *//*
 
 
 @RunWith(SpringRunner.class)
@@ -226,14 +217,12 @@ public class SaveCommitTest extends InstanceFactory{
         queryRestockBill.setPage(1);
         queryRestockBill.setPageSize(5);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        logger.info(queryRestockBillDTO.toString());
     }
     @Test
     public void selectByBasicCondition(){
         ConditionQueryRestockBill queryRestockBill = new ConditionQueryRestockBill();
         queryRestockBill.setBillCode("74780302");
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        logger.info(queryRestockBillDTO.getTotalNumber() +queryRestockBillDTO.getContent().toString());
     }
     @Test
     public void born(){
@@ -247,4 +236,3 @@ public class SaveCommitTest extends InstanceFactory{
 
 }
 
-*/

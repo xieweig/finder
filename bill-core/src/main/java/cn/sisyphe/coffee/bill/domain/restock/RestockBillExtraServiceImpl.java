@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.restock;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +141,7 @@ public class RestockBillExtraServiceImpl implements RestockBillExtraService {
              * 拼接审核状态
              */
             if (conditionQueryRestockBill.getAuditStateCode() != null && conditionQueryRestockBill.getAuditStateCode().size() > 0) {
-                expressions.add(root.get("auditState").as(String.class).in(conditionQueryRestockBill.getSubmitStateCode()));
+                expressions.add(root.get("auditState").as(String.class).in(conditionQueryRestockBill.getAuditStateCode()));
             }
 
             /**
