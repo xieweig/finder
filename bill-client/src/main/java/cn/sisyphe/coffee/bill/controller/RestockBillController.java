@@ -11,9 +11,7 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -355,6 +353,44 @@ public class RestockBillController {
             responseResult.put("allotBill", allotBillManager.findAllotBillByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 据入库单编号查找入库单详细信息
+     *
+     * @param restockBillCode
+     * @return
+     */
+    @ApiOperation(value = "据入库单编号查找入库单详细信息")
+    @RequestMapping(path = "/findRestockInStorageBillByRestockBillCode", method = RequestMethod.GET)
+    public ResponseResult findRestockInStorageBillByRestockBillCode(@RequestParam String restockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            RestockInStorageBillDTO restockInStorageBillDTO = restockBillManager.findRestockInStorageBillByRestockBillCode(restockBillCode);
+            responseResult.put("content", restockInStorageBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 据入库单编号查找入库调拨单详细信息
+     *
+     * @param restockBillCode
+     * @return
+     */
+    @ApiOperation(value = "据入库单编号查找入库调拨单详细信息")
+    @RequestMapping(path = "/findRestockAllotBillByRestockBillCode", method = RequestMethod.GET)
+    public ResponseResult findRestockAllotBillByRestockBillCode(@RequestParam String restockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            RestockAllotBillDTO restockAllotBillDTO = restockBillManager.findRestockAllotBillByRestockBillCode(restockBillCode);
+            responseResult.put("content", restockAllotBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
         }
         return responseResult;
     }

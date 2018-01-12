@@ -578,8 +578,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         restockAllotBillDTO.setBillProperty(restockBill.getBillProperty());
         // 设置出库站点
         restockAllotBillDTO.setOutLocation(restockBill.getOutLocation());
-        // 设置入库站点（调出库位）
-        restockAllotBillDTO.setInLocationOutStorage(restockBill.getInLocation());
+        // 设置入库站点
+        restockAllotBillDTO.setInLocation(restockBill.getInLocation());
         // 设置入库时间
         restockAllotBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
         // 转换退库调拨单明细信息
