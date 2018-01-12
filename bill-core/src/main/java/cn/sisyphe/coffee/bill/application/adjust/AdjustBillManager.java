@@ -27,7 +27,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -164,7 +164,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param billCode 单据编号
      * @return QueryOneAdjustDTO
      */
-    public QueryOneAdjustDTO openBill(String billCode) {
+    public QueryOneAdjustDTO openBill(String billCode,String operatorCode) {
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
         }
@@ -174,6 +174,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             // 打开单据
             open(adjustBill);
         }
+        adjustBill.setOperatorCode(operatorCode);
         return commonFun(adjustBill);
     }
 
@@ -211,6 +212,10 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param addAdjustBillDTO
      */
     private void mapBill(AdjustBill adjustBill, AddAdjustBillDTO addAdjustBillDTO) {
+        //操作人编码
+        adjustBill.setOperatorCode(addAdjustBillDTO.getOperatorCode());
+        //审核人编码
+        adjustBill.setAuditPersonCode(addAdjustBillDTO.getAuditPersonCode());
         //设置单据作用
         adjustBill.setBillPurpose(BillPurposeEnum.OutStorage);
         //设置出库站点
@@ -229,7 +234,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             adjustBill.setRootCode(addAdjustBillDTO.getRootCode());
             adjustBill.setSourceCode(addAdjustBillDTO.getRootCode());
         }
-
         //设置计划备注
         adjustBill.setPlanMemo(addAdjustBillDTO.getPlanMemo());
         //设置计划详情
