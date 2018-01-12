@@ -35,5 +35,10 @@ public enum BillTypeEnum {
     /**
      * 退货
      */
-    RETURNED
+    RETURNED,
+
+    /**
+     * 调拨
+      */
+    MOVE_STORAGE
 }
