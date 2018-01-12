@@ -22,7 +22,7 @@ public class SubmitBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillStateEnum[] allowableStates() {
-        return new BillStateEnum[]{BillStateEnum.SAVED, BillStateEnum.AUDIT_FAILURE};
+        return new BillStateEnum[]{BillStateEnum.SAVED, BillStateEnum.AUDIT_FAILURE, BillStateEnum.SUBMITTED};
     }
 
     /**

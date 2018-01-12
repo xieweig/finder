@@ -1,10 +1,9 @@
 package cn.sisyphe.coffee.bill.domain.returned;
 
-
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.returned.ReturnedBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
-import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,23 +14,18 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Mayupeng on 2018/01/05.
- * remark：退货单查询服务接口实现
- * version: 1.0
- *
- * @author Mayupeng
+ * @author bifenglin
  */
 @Service
-public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
-    @Autowired
-    private ReturnedBillRepository returnedBillRepository;
+public class ReturnedBillExtraServiceImpl implements ReturnedBillExtraService {
 
     @Autowired
-    private UserRepository userRepository;
+    private ReturnedBillRepository returnedBillRepository;
 
     /**
      * 根据单据编码查询单据信息
@@ -41,24 +35,14 @@ public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
      */
     @Override
     public ReturnedBill findByBillCode(String billCode) {
-        if (StringUtils.isEmpty(billCode)) {
-            throw new DataException("20011", "进货单编码为空");
-        }
         ReturnedBill returnedBill = returnedBillRepository.findOneByBillCode(billCode);
-        if (returnedBill != null) {
-            return returnedBill;
-        } else {
-            throw new DataException("20012", "根据该进货单编码没有查询到具体的进货单信息");
-        }
+        return returnedBill;
     }
 
     @Override
     public Page<ReturnedBill> findPageByCondition(ConditionQueryReturnedBill conditionQueryReturnedBill) {
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryReturnedBill.getPage() - 1, conditionQueryReturnedBill.getPageSize());
-        // SpringCloud调用查询录单人编码
-        List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryReturnedBill.getOperatorName());
-        conditionQueryReturnedBill.setOperatorCodeList(userCodeList);
 
         Page<ReturnedBill> returnedBillPage;
         returnedBillPage = queryByParams(conditionQueryReturnedBill, pageable);
@@ -69,7 +53,6 @@ public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
             returnedBillPage = queryByParams(conditionQueryReturnedBill, pageable);
         }
         return returnedBillPage;
-
     }
 
     @Override
@@ -84,6 +67,17 @@ public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
             Predicate predicate = cb.conjunction();
 
             List<Expression<Boolean>> expressions = predicate.getExpressions();
+
+            // 计划类型
+            if (conditionQueryReturnedBill.getBillType() != null) {
+                expressions.add(root.get("billType").as(BillTypeEnum.class).in(conditionQueryReturnedBill.getBillType()));
+            }
+
+            //计划类型
+            if (conditionQueryReturnedBill.getBillPurpose() != null) {
+                expressions.add(root.get("billPurpose").as(BillPurposeEnum.class).in(conditionQueryReturnedBill.getBillPurpose()));
+            }
+
             /**
              * 录单人
              */
@@ -100,14 +94,16 @@ public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
             /**
              * 入库站点集合
              */
-            if (conditionQueryReturnedBill.getInStationCodeArray() != null && conditionQueryReturnedBill.getInStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("inStationCode").in(conditionQueryReturnedBill.getInStationCodeArray()));
+            if (!StringUtils.isEmpty(conditionQueryReturnedBill.getInStationCodeArray())) {
+                String[] inStationCodeArr = conditionQueryReturnedBill.getInStationCodeArray().split(",");
+                expressions.add(root.get("dbStation").get("inStationCode").in(Arrays.asList(inStationCodeArr)));
             }
             /**
              * 出库站点集合
              */
-            if (conditionQueryReturnedBill.getOutStationCodeArray() != null && conditionQueryReturnedBill.getOutStationCodeArray().size() > 0) {
-                expressions.add(root.<String>get("outStationCode").in(conditionQueryReturnedBill.getOutStationCodeArray()));
+            if (!StringUtils.isEmpty(conditionQueryReturnedBill.getOutStationCodeArray())) {
+                String[] outStationCodeArr = conditionQueryReturnedBill.getOutStationCodeArray().split(",");
+                expressions.add(root.get("dbStation").get("outStationCode").in(Arrays.asList(outStationCodeArr)));
             }
             /**
              * 录单开始时间
@@ -126,7 +122,7 @@ public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
              * 入库开始时间
              */
             if (!StringUtils.isEmpty(conditionQueryReturnedBill.getInStartTime())) {
-                expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryReturnedBill.getInStartTime()));
+                expressions.add(cb.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQueryReturnedBill.getInStartTime()));
             }
             /**
              * 入库结束时间
@@ -152,8 +148,8 @@ public class ReturnedBillQueryServiceImpl implements ReturnedBillQueryService {
             /**
              * 拼接出入库状态
              */
-            if (conditionQueryReturnedBill.getOutStateCode() != null && conditionQueryReturnedBill.getOutStateCode().size() > 0) {
-                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryReturnedBill.getOutStateCode()));
+            if (conditionQueryReturnedBill.getInOrOutStateCode() != null && conditionQueryReturnedBill.getInOrOutStateCode().size() > 0) {
+                expressions.add(root.get("inOrOutState").as(String.class).in(conditionQueryReturnedBill.getInOrOutStateCode()));
             }
             /**
              * 配送总价

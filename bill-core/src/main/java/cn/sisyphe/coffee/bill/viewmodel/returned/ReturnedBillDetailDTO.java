@@ -2,12 +2,12 @@ package cn.sisyphe.coffee.bill.viewmodel.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 
-
 /**
  *
- * @author mayupeng
+ * @author bifenglin
  */
 public class ReturnedBillDetailDTO {
+
     /**
      * 应拣数量
      */
@@ -18,16 +18,10 @@ public class ReturnedBillDetailDTO {
      */
     private int actualAmount;
 
-
     /**
      * 原料
      */
     private RawMaterial rawMaterial;
-
-    /**
-     * 备注
-     */
-    private String memo;
 
     public int getShippedAmount() {
         return shippedAmount;
@@ -53,11 +47,4 @@ public class ReturnedBillDetailDTO {
         this.rawMaterial = rawMaterial;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 }

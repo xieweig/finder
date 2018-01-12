@@ -116,11 +116,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      *
      * @param restockBillCode
      */
-    public RestockBill openBill(String restockBillCode, BillPurposeEnum billPurpose) {
+    public RestockBill openBill(String restockBillCode) {
         RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退库单据信息
         // 如果单据是提交状态，则进行打开动作
-        restockBill.setBillPurpose(billPurpose);
         if (restockBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
             restockBill = open(restockBill);

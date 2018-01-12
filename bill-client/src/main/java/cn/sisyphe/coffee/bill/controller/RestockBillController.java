@@ -183,7 +183,7 @@ public class RestockBillController {
     @RequestMapping(path = "/openByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult openByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-        RestockBill billDTO = restockBillManager.openBill(restockBillCode, BillPurposeEnum.OutStorage);
+        RestockBill billDTO = restockBillManager.openBill(restockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
     }
