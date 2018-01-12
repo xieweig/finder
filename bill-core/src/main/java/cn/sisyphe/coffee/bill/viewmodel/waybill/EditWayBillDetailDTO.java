@@ -61,6 +61,16 @@ public class EditWayBillDetailDTO implements Serializable {
 
 
     /**
+     * 入库站点名称
+     */
+    private String inStationName;//
+
+
+    /**
+     * 出库站点名称
+     */
+    private String outStationName;//
+    /**
      * 打包方式
      */
     private String packageType;
@@ -105,6 +115,21 @@ public class EditWayBillDetailDTO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outStorageTime;
 
+    public String getInStationName() {
+        return inStationName;
+    }
+
+    public void setInStationName(String inStationName) {
+        this.inStationName = inStationName;
+    }
+
+    public String getOutStationName() {
+        return outStationName;
+    }
+
+    public void setOutStationName(String outStationName) {
+        this.outStationName = outStationName;
+    }
 
     public String getOperatorCode() {
         return operatorCode;
