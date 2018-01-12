@@ -1,10 +1,9 @@
 package cn.sisyphe.coffee.adjust;
 
 import cn.sisyphe.coffee.bill.ClientApplication;
-import cn.sisyphe.coffee.bill.amqp.ReceiverService;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
-import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
@@ -14,6 +13,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2018/1/10 10:03
@@ -45,14 +47,24 @@ public class AdjustBillIntegrationTest {
     @Autowired
     private AdjustBillManager adjustBillManager;
 
-    @Autowired
-    private ReceiverService receiverService;
-
 
     @Test
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
         Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ0420180120EL4000001");
         inStorageBillManager.convertInStorageBill(adjustBill);
+    }
+
+
+    @Test
+    public void shouldGenerateAllotBillAfterOffsetDone() {
+        AllotDTO allotDTO = new AllotDTO();
+        allotDTO.setBillCode("TJCKCQ05201801206TK000001");
+        allotDTO.setInStorage(new Storage("AA00"));
+        Map<String, Integer> details = new HashMap<>();
+        details.put("cargo2", 10);
+        details.put("cargo1", 5);
+        allotDTO.setDetails(details);
+        adjustBillManager.createAllotBill(allotDTO);
     }
 
 
@@ -190,7 +202,7 @@ public class AdjustBillIntegrationTest {
 //    @Test
 //    public void shouldGenerateMoveStorageBill() {
 //        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ04201801104RG000001");
-//        moveStorageBillManager.convertMoveStorageBill(adjustBill, bill -> {
+//        moveStorageBillManager.createAllotBill(adjustBill, bill -> {
 //
 //        });
 //    }

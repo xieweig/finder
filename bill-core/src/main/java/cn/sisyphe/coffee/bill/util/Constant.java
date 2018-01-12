@@ -31,6 +31,14 @@ public final class Constant {
     // 预留库：RESERVEDLIBRARY
 
 
-    public static final String OUT_STORAGE_DONE = "OUT_STORAGE_DONE";
+    /**
+     * 出库冲减完成
+     */
+    public static final String OUT_STORAGE_OFFSET_DONE = "OUT_STORAGE_OFFSET_DONE";
+
+    /**
+     * 入库冲减完成
+     */
+    public static final String IN_STORAGE_OFFSET_DONE = "IN_STORAGE_OFFSET_DONE";
 
 }

@@ -16,12 +16,11 @@ import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,11 +34,11 @@ import java.util.List;
 @Api(description = "退库相关操作")
 public class RestockBillController {
 
-    @Resource
+    @Autowired
     private RestockBillManager restockBillManager;
-    @Resource
+    @Autowired
     private PlanBillManager planBillManager;
-    @Resource
+    @Autowired
     private SharedManager sharedManager;
 
     /**
@@ -55,7 +54,6 @@ public class RestockBillController {
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
 
-            List<String> restockCodeList = new ArrayList<>();
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 //测试使用
                 childPlanBillDTO.setOperatorName("操作人：懒羊羊");

@@ -56,6 +56,20 @@ public class InStorageBillManager {
     }
 
     /**
+     * 更新入库单状态为已调拨
+     *
+     * @param bill 入库单
+     * @return
+     */
+
+    @SuppressWarnings("unchecked")
+    public void allotedForInStorageBill(Bill bill) {
+        AbstractBillManager abstractBillManager = getAbstractBillManager(bill.getBillType());
+        Bill foundBill = abstractBillManager.findEntityByBillCode(bill.getBillCode());
+        abstractBillManager.committed(foundBill);
+    }
+
+    /**
      * 生成入库单
      *
      * @param sourceBill

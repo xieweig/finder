@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.restock;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -461,5 +462,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     public RestockBill findByRestockBillCode(String restockBillCode) {
         RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         return restockBill;
+    }
+
+    @Override
+    public Bill findEntityByBillCode(String billCode) {
+        return findByRestockBillCode(billCode);
     }
 }
