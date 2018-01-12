@@ -51,7 +51,7 @@ public class AdjustBillIntegrationTest {
 
     @Test
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
-        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ0420180110C9K000001");
+        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ0420180120EL4000001");
         inStorageBillManager.convertInStorageBill(adjustBill);
     }
 

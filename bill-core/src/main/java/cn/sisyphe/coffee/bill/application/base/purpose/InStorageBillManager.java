@@ -50,7 +50,7 @@ public class InStorageBillManager {
     @SuppressWarnings("unchecked")
     public void convertInStorageBill(Bill outStorageBill) {
         Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
-        inBill.setBillState(BillStateEnum.SAVED);
+        inBill.setBillState(BillStateEnum.UN_ALLOT);
         AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
         billManager.purpose(inBill);
     }
