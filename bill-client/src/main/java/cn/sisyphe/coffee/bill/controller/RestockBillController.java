@@ -10,7 +10,6 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -167,7 +166,7 @@ public class RestockBillController {
     public ResponseResult findByConditions(@RequestBody ConditionQueryRestockBill conditionQueryRestockBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        QueryRestockBillDTO billPage = (QueryRestockBillDTO) restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+        Page<RestockBillDTO> billPage =  restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
         List<RestockBillDTO> list = billPage.getContent();
         //测试使用
         for (RestockBillDTO restockBillDTO :
@@ -187,7 +186,6 @@ public class RestockBillController {
     @RequestMapping(path = "/openByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult openByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-//        QueryOneRestockBillDTO billDTO = restockBillManager.openBill(RestockBillCode);
         RestockBill billDTO = restockBillManager.openBill(restockBillCode);
         responseResult.put("RestockBill", billDTO);
         return responseResult;

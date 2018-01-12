@@ -57,7 +57,6 @@ public class AddRestockBillDTO {
     /**
      * 单据编码
      */
-//    private String billCode;
 
     /**
      * 总价
@@ -69,7 +68,9 @@ public class AddRestockBillDTO {
      */
     private Set<RestockBillDetailDTO> billDetails;
 
-    //完成度
+    /**
+     * 完成度
+     */
     private BigDecimal progress;
 
     public String getRootCode() {
@@ -176,4 +177,25 @@ public class AddRestockBillDTO {
     public void setSourceCode(String sourceCode) {
         this.sourceCode = sourceCode;
     }
+
+
+    @Override
+    public String toString() {
+        return "AddRestockBillDTO{" +
+                "BillCode='" + BillCode + '\'' +
+                ", billProperty=" + billProperty +
+                ", basicEnum=" + basicEnum +
+                ", sourceCode='" + sourceCode + '\'' +
+                ", rootCode='" + rootCode + '\'' +
+                ", planMemo='" + planMemo + '\'' +
+                ", outMemo='" + outMemo + '\'' +
+                ", operatorCode='" + operatorCode + '\'' +
+                ", inStation=" + inStation +
+                ", outStation=" + outStation +
+                ", totalPrice=" + totalPrice +
+                ", billDetails=" + billDetails +
+                ", progress=" + progress +
+                '}';
+    }
+
 }
