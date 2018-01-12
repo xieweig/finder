@@ -52,7 +52,7 @@ public class InStorageBillManager {
         Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
         inBill.setBillState(BillStateEnum.SAVED);
         AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
-        billManager.unAllot(inBill);
+        billManager.purpose(inBill);
     }
 
     /**
