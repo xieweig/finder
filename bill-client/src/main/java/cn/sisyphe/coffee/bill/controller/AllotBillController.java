@@ -3,45 +3,47 @@ package cn.sisyphe.coffee.bill.controller;
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author bifenglin
  * @Date 2018/1/12
  * @description
  */
+@RestController
+@RequestMapping("/api/bill/allotBill")
+@Api(description = "调拨相关接口")
+@CrossOrigin(origins = "*")
 public class AllotBillController {
 
     @Autowired
     AllotBillManager allotBillManager;
 
     /**
-     * 计划单据多条件分页查询
+     * 调拨单据多条件分页查询
      *
      * @return
      */
-    @ApiOperation(value = "子计划多条件查询")
-    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
-    public ResponseResult findAllotBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+    @ApiOperation(value = "调拨单据多条件分页查询")
+    @RequestMapping(path = "/findAllotBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findAllotBillByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
-        System.err.print("子计划多条件查询开始");
+        System.err.print("调拨单据多条件分页查询");
         try {
-            Page<AllotBillDTO> planBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK);
+            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.RESTOCK);
 
-            for (AllotBillDTO allotBillDTO : planBillDTOS) {
+            for (AllotBillDTO allotBillDTO : allotBillDTOS) {
                 //测试使用
                 allotBillDTO.setOperatorName("操作人：懒羊羊");
             }
-
-            responseResult.put("content", planBillDTOS);
+            responseResult.put("content", allotBillDTOS);
         } catch (DataException e) {
             responseResult.putException(e);
         }

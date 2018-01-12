@@ -2,7 +2,7 @@ package cn.sisyphe.coffee.bill.domain.allot;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.allot.AllotBillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +26,7 @@ public class AllotBillExtraServiceImpl implements AllotBillExtraService {
     private AllotBillRepository allotBillRepository;
     
     @Override
-    public Page<AllotBill> findPageByCondition(ConditionQueryPlanBill conditionQueryAllotBill) {
+    public Page<AllotBill> findPageByCondition(ConditionQueryAllotBill conditionQueryAllotBill) {
         // 组装页面
         Pageable pageable = new PageRequest(conditionQueryAllotBill.getPage() - 1, conditionQueryAllotBill.getPageSize());
 
@@ -41,7 +41,7 @@ public class AllotBillExtraServiceImpl implements AllotBillExtraService {
         return allotBillPage;
     }
 
-    private Page<AllotBill> queryByParams(ConditionQueryPlanBill conditionQueryAllotBill, Pageable pageable) {
+    private Page<AllotBill> queryByParams(ConditionQueryAllotBill conditionQueryAllotBill, Pageable pageable) {
         return allotBillRepository.findAll((root, criteriaQuery, cb) -> {
             //去重
             criteriaQuery.distinct(true);
@@ -56,9 +56,9 @@ public class AllotBillExtraServiceImpl implements AllotBillExtraService {
             /**
              * 录单人
              */
-            if (conditionQueryAllotBill.getOperatorCodes() != null
-                    && conditionQueryAllotBill.getOperatorCodes().size() > 0) {
-                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryAllotBill.getOperatorCodes()));
+            if (conditionQueryAllotBill.getOperatorCodeList() != null
+                    && conditionQueryAllotBill.getOperatorCodeList().size() > 0) {
+                expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryAllotBill.getOperatorCodeList()));
             }
             /**
              * 出库单编码

@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.allot;
 
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import org.springframework.data.domain.Page;
 
 /**
@@ -13,5 +13,5 @@ public interface AllotBillExtraService {
      * @param conditionQueryAllotBill
      * @return
      */
-    Page<AllotBill> findPageByCondition(ConditionQueryPlanBill conditionQueryAllotBill);
+    Page<AllotBill> findPageByCondition(ConditionQueryAllotBill conditionQueryAllotBill);
 }

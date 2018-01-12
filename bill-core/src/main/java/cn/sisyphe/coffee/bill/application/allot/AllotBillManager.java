@@ -13,6 +13,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -89,7 +90,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         return allotBill;
     }
 
-    public Page<AllotBillDTO> findAllotBillByCondition(ConditionQueryPlanBill conditionQueryAllotBill, BillTypeEnum specificBillType) {
+    public Page<AllotBillDTO> findAllotBillByCondition(ConditionQueryAllotBill conditionQueryAllotBill, BillTypeEnum specificBillType) {
         conditionQueryAllotBill.setSpecificBillType(specificBillType);
 //        conditionQueryAllotBill.setBillPurpose(billPurpose);
         Page<AllotBill> allotBills = allotBillExtraService.findPageByCondition(conditionQueryAllotBill);
