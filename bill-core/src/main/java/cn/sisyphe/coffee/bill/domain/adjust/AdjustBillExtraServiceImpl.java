@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.adjust.AdjustBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -129,13 +131,13 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
              * 提交状态
              */
             if (conditionQueryAdjustBill.getSubmitStateCode() != null && conditionQueryAdjustBill.getSubmitStateCode().size() > 0) {
-                expressions.add(root.get("submitState").as(SourcePlanTypeEnum.class).in(conditionQueryAdjustBill.getSubmitStateCode()));
+                expressions.add(root.get("submitState").as(BillSubmitStateEnum.class).in(conditionQueryAdjustBill.getSubmitStateCode()));
             }
             /**
              * 拼接审核状态
              */
             if (conditionQueryAdjustBill.getAuditStateCode() != null && conditionQueryAdjustBill.getAuditStateCode().size() > 0) {
-                expressions.add(root.get("auditState").as(SourcePlanTypeEnum.class).in(conditionQueryAdjustBill.getAuditStateCode()));
+                expressions.add(root.get("auditState").as(BillAuditStateEnum.class).in(conditionQueryAdjustBill.getAuditStateCode()));
             }
             /**
              * 单据属性
