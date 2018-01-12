@@ -14,15 +14,13 @@ import org.springframework.data.jpa.domain.Specification;
 public interface ReturnedBillRepository extends BillRepository<ReturnedBill> {
     /**
      * 根据多条件查询
+     *
      * @param ta
      * @param pageable
      * @return
      */
     Page<ReturnedBill> findAll(Specification<ReturnedBill> ta, Pageable pageable);
-    /**
-     * 根据单据单号查询
-     */
-    ReturnedBill findOneByBillCode(String billCode);
+
     /**
      * 根据单据来源单号查询
      */
