@@ -1,4 +1,4 @@
-/*
+
 package cn.sisyphe.coffee.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
@@ -23,12 +23,12 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-*/
+
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/9
  * @Description:
- *//*
+ */
 
 
 public class InstanceIterator {
@@ -87,7 +87,6 @@ public class InstanceIterator {
         billDetailDTO.setShippedAmount(amount);
         billDetailDTO.setActualAmount(amount+random.nextInt(6)-3);
 
-        billDetailDTO.setMemo("details remarks:" + random.nextInt(200));
         RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
         Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
         cargo.setCargoName("cargoName:" + random.nextInt(100));
@@ -125,4 +124,4 @@ public class InstanceIterator {
         return stringBuffer.toString();
     }
 }
-*/
+
