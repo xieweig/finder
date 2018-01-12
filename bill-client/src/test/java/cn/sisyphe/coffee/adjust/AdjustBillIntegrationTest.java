@@ -4,7 +4,7 @@ import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.amqp.ReceiverService;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
-import cn.sisyphe.coffee.bill.application.movestorage.AllotBillManager;
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;

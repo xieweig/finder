@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
-import cn.sisyphe.coffee.bill.application.movestorage.AllotBillManager;
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;

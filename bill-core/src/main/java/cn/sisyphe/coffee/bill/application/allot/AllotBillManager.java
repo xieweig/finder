@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application.movestorage;
+package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
@@ -32,7 +32,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
 
 
     /**
-     * 生成入库单
+     * 生成调拨单
      *
      * @param sourceBill
      * @return Bill
