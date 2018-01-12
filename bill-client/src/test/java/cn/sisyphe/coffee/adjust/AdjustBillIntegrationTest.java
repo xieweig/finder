@@ -4,7 +4,7 @@ import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.amqp.ReceiverService;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
-import cn.sisyphe.coffee.bill.application.base.purpose.MoveStorageBillManager;
+import cn.sisyphe.coffee.bill.application.movestorage.AllotBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
@@ -37,7 +37,7 @@ public class AdjustBillIntegrationTest {
     private InStorageBillManager inStorageBillManager;
 
     @Autowired
-    private MoveStorageBillManager moveStorageBillManager;
+    private AllotBillManager allotBillManager;
 
     @Autowired
     private AdjustBillExtraService adjustBillExtraService;
@@ -117,13 +117,13 @@ public class AdjustBillIntegrationTest {
     }
 
 
-    @Test
-    public void shouldGenerateMoveStorageBill() {
-        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ04201801104RG000001");
-        moveStorageBillManager.convertMoveStorageBill(adjustBill, bill -> {
-
-        });
-    }
+//    @Test
+//    public void shouldGenerateMoveStorageBill() {
+//        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ04201801104RG000001");
+//        moveStorageBillManager.convertMoveStorageBill(adjustBill, bill -> {
+//
+//        });
+//    }
 
     @Test
     public void shouldFindInStorageBill() {
