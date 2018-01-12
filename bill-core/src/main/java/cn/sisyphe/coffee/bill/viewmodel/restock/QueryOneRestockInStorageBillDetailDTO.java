@@ -7,7 +7,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
  * @Date 2018/01/07
  * @description 退货入库调拨单明细
  */
-public class QueryOneRestockInstoryBillDetailDTO {
+public class QueryOneRestockInStorageBillDetailDTO {
     /**
      * 原料
      */

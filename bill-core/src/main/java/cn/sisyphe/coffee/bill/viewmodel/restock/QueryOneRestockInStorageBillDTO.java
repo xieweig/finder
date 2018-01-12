@@ -12,7 +12,7 @@ import java.util.List;
  * @Date 2018/01/07
  * @description 退货入库调拨单
  */
-public class QueryOneRestockInstoryBillDTO {
+public class QueryOneRestockInStorageBillDTO {
     /**
      * 单号
      */
@@ -64,7 +64,7 @@ public class QueryOneRestockInstoryBillDTO {
     /**
      * 退货入库调拨单明细
      */
-    private List<QueryOneRestockInstoryBillDetailDTO> billDetailDTOList;
+    private List<QueryOneRestockInStorageBillDetailDTO> billDetailDTOList;
 
     public String getBillCode() {
         return billCode;
@@ -162,11 +162,11 @@ public class QueryOneRestockInstoryBillDTO {
         this.billProperty = billProperty;
     }
 
-    public List<QueryOneRestockInstoryBillDetailDTO> getBillDetailDTOList() {
+    public List<QueryOneRestockInStorageBillDetailDTO> getBillDetailDTOList() {
         return billDetailDTOList;
     }
 
-    public void setBillDetailDTOList(List<QueryOneRestockInstoryBillDetailDTO> billDetailDTOList) {
+    public void setBillDetailDTOList(List<QueryOneRestockInStorageBillDetailDTO> billDetailDTOList) {
         this.billDetailDTOList = billDetailDTOList;
     }
 }
