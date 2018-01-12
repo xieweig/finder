@@ -102,7 +102,6 @@ public class WayBillController {
         return responseResult;
     }
 
-
     /**
      * 确认收货
      *
@@ -114,6 +113,8 @@ public class WayBillController {
     public ResponseResult confirmReceiptBill(@RequestParam String wayBillCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
+
+            // 操作人code
             wayBillManager.confirmReceiptBill(wayBillCode);
         } catch (DataException data) {
             responseResult.putException(data);
@@ -145,3 +146,14 @@ public class WayBillController {
 
 
 }
+
+//    //
+//    @ApiOperation(value = "运单多条件分页查询2")
+//    @RequestMapping(path = "/findWayBillByConditions2", method = RequestMethod.POST)
+//    public ResponseResult findWayBillByConditions2(@RequestBody ConditionQueryWayBill conditionQueryWayBill) {
+//        ResponseResult responseResult = new ResponseResult();
+//
+//        responseResult.put("wayBillList", wayBillManager.findPageByCondition2(conditionQueryWayBill));
+//        return responseResult;
+//    }
+
