@@ -17,7 +17,6 @@ import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -129,7 +128,6 @@ public class RestockBillController {
      * @param addRestockBillDTO
      * @return
      */
-    @Transactional
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBill", method = RequestMethod.POST)
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
@@ -142,7 +140,6 @@ public class RestockBillController {
         return responseResult;
     }
 
-    @Transactional
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBillBySelf", method = RequestMethod.POST)
     public ResponseResult submitRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
@@ -186,7 +183,7 @@ public class RestockBillController {
     @RequestMapping(path = "/openByRestockBillCode", method = RequestMethod.GET)
     public ResponseResult openByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
-        RestockBill billDTO = restockBillManager.openBill(restockBillCode);
+        RestockBill billDTO = restockBillManager.openBill(restockBillCode, BillPurposeEnum.OutStorage);
         responseResult.put("RestockBill", billDTO);
         return responseResult;
     }

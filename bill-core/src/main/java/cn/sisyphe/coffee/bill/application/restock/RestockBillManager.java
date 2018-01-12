@@ -11,7 +11,10 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.restock.*;
+import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -113,10 +116,11 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
      *
      * @param restockBillCode
      */
-    public RestockBill openBill(String restockBillCode) {
+    public RestockBill openBill(String restockBillCode, BillPurposeEnum billPurpose) {
         RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退库单据信息
         // 如果单据是提交状态，则进行打开动作
+        restockBill.setBillPurpose(billPurpose);
         if (restockBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
             restockBill = open(restockBill);
@@ -297,8 +301,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
             // 设置货物和原料信息
             RawMaterial rawMaterial = detail.getRawMaterial();
             restockBillDetail.setGoods(rawMaterial);
-/*            //备注
-            restockBillDetail.setMemo(detail.getMemo());*/
             //应捡数量
             restockBillDetail.setShippedAmount(detail.getShippedAmount());
             //实拣数量
@@ -337,17 +339,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     /**
      * 修改需要转换DTO
      *
-     * @param AddRestockBillDTO
+     * @param addRestockBillDTO
      * @return
      */
     private RestockBill restockBillDTOEditAddRestockBill(AddRestockBillDTO addRestockBillDTO, RestockBill restockBill) {
-
-        // 设置单据的作用
-        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
-        // 设置单据类型
-        //  restockBill.setBillType(BillTypeEnum.RESTOCK);
-        //设置单据属性
-        restockBill.setBillProperty(addRestockBillDTO.getBillProperty());
 
         //若没有root编码则自己的编码就是root编码
         if (!StringUtils.isEmpty(addRestockBillDTO.getRootCode())) {
@@ -355,32 +350,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         } else {
             restockBill.setRootCode(restockBill.getBillCode());
         }
-
-        // 来源单号
-        if (!StringUtils.isEmpty(addRestockBillDTO.getSourceCode())) {
-            restockBill.setSourceCode(addRestockBillDTO.getSourceCode());
-        }
-        // 发起单号
-        if (!StringUtils.isEmpty(addRestockBillDTO.getRootCode())) {
-            restockBill.setRootCode(addRestockBillDTO.getRootCode());
-        }
-        // 计划备注
-        if (!StringUtils.isEmpty(addRestockBillDTO.getPlanMemo())) {
-            restockBill.setPlanMemo(addRestockBillDTO.getPlanMemo());
-        }
         // 出库备注
         if (!StringUtils.isEmpty(addRestockBillDTO.getOutMemo())) {
             restockBill.setOutStorageMemo(addRestockBillDTO.getOutMemo());
         }
-       /* // 操作人代码
-        restockBill.setOperatorCode(editRestockBillDTO.getOperatorCode());
-        // 归属站点
-        restockBill.setBelongStationCode(editRestockBillDTO.getOutStation().code());
-        //入库站点
-        restockBill.setInLocation(editRestockBillDTO.getInStation());
-        //出库站点
-        restockBill.setOutLocation(editRestockBillDTO.getOutStation());*/
-
         Set<RestockBillDetailDTO> detailDTOSet = addRestockBillDTO.getBillDetails();
         //退货数量
         int amount = 0;
@@ -390,6 +363,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         }
         restockBill.setTotalAmount(amount);
 
+        //出库库位
+        if (restockBill.getOutLocation() != null){
+            restockBill.setOutLocation(addRestockBillDTO.getOutStation());
+        }
         //退货品种数
         int variety = detailDTOSet.size();
         restockBill.setTotalVarietyAmount(variety);
@@ -398,12 +375,13 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         //配送总价
         restockBill.setTotalPrice(addRestockBillDTO.getTotalPrice());
         //按货物还是按原料
-        restockBill.setBasicEnum(addRestockBillDTO.getBasicEnum());
+        if (restockBill.getBasicEnum() != null){
+            restockBill.setBasicEnum(addRestockBillDTO.getBasicEnum());
+        }
         // 转换单据明细信息
         Set<RestockBillDetail> detailSet = billDetaiDTOToBillDetail(detailDTOSet);
         // 设置单据明细信息
         restockBill.getBillDetails().addAll(detailSet);
-
         return restockBill;
     }
 
