@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.delivery;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
@@ -391,5 +392,10 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
         // TODO: 2018/1/10  流水
         key = prefix + toStationCode + pid + dateString + random.nextInt(100000);
         return key;
+    }
+
+    @Override
+    public Bill findEntityByBillCode(String billCode) {
+        return deliveryBilExtraService.findOneByBillCode(billCode);
     }
 }

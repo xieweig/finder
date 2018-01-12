@@ -10,6 +10,8 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.PurposeBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SubmitBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -91,6 +93,19 @@ public class AbstractBillManager<T extends Bill> {
     }
 
     /**
+     * 已调拨
+     *
+     * @param bill
+     */
+    public void committed(T bill) {
+        if (!BillPurposeEnum.InStorage.equals(bill.getBillPurpose())) {
+            throw new UnsupportedOperationException("不支持此操作");
+        }
+        bill.setBillState(BillStateEnum.ALLOT);
+        billRepository.save(bill);
+    }
+
+    /**
      * 处理完成
      *
      * @param bill
@@ -124,6 +139,10 @@ public class AbstractBillManager<T extends Bill> {
         billService.sendEvent(applicationEventPublisher);
 
         return bill;
+    }
+
+    public Bill findEntityByBillCode(String billCode) {
+        throw new UnsupportedOperationException();
     }
 
 }

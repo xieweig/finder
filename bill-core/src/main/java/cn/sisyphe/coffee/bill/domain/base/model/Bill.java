@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.mistake.TransferMistakeBill;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -237,6 +238,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      */
     @Transient
     private String billCodePrefix;
+
+
+    /**
+     * 差错单
+     */
+    @Transient
+    private TransferMistakeBill transferMistakeBill;
+
 
     public AbstractLocation getOutLocation() {
         return outLocation;
@@ -480,6 +489,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setBillCodePrefix(String billCodePrefix) {
         this.billCodePrefix = billCodePrefix;
+    }
+
+    public TransferMistakeBill getTransferMistakeBill() {
+        return transferMistakeBill;
+    }
+
+    public void setTransferMistakeBill(TransferMistakeBill transferMistakeBill) {
+        this.transferMistakeBill = transferMistakeBill;
     }
 
     @Override

@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.returned;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -461,5 +462,10 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
     public ReturnedBill findByReturnedBillCode(String returnedBillCode) {
         ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(returnedBillCode);
         return returnedBill;
+    }
+
+    @Override
+    public Bill findEntityByBillCode(String billCode) {
+        return findByReturnedBillCode(billCode);
     }
 }

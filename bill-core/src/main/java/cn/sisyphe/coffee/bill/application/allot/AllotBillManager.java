@@ -1,12 +1,14 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.interfaces.Executor;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,21 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
     @Autowired
     public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
+    }
+
+
+    /**
+     * 入库单转换成调拨单
+     *
+     * @param inStorageBill 生成调拨单
+     */
+    @SuppressWarnings("unchecked")
+    public void createAllotBill(Bill inStorageBill, Executor executor) {
+        AllotBill allotBill = generateBill(inStorageBill, BillPurposeEnum.moveStorage);
+        allotBill.setBillState(BillStateEnum.UN_ALLOT);
+        executor.apply(allotBill);
+        //生成调拨单，未调拨
+        purpose(allotBill);
     }
 
 
