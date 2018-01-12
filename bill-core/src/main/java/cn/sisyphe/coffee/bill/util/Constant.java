@@ -33,10 +33,12 @@ public final class Constant {
 
     /**
      * 出库冲减完成
-      */
-    public static final String OUT_STORAGE_DONE = "OUT_STORAGE_DONE";
+     */
+    public static final String OUT_STORAGE_OFFSET_DONE = "OUT_STORAGE_OFFSET_DONE";
 
-    //入库重建完成
-    public static final String OFFSET_DONE = "OFFSET_DONE";
+    /**
+     * 入库冲减完成
+     */
+    public static final String IN_STORAGE_OFFSET_DONE = "IN_STORAGE_OFFSET_DONE";
 
 }
