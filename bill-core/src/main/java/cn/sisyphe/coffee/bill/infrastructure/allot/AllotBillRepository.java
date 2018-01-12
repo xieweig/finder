@@ -1,6 +1,6 @@
-package cn.sisyphe.coffee.bill.infrastructure.delivery;
+package cn.sisyphe.coffee.bill.infrastructure.allot;
 
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
  * @company 西西弗文化传播
  * @Date 2018/1/4 10:04
  **/
-public interface DeliveryBillRepository extends BillRepository<DeliveryBill> {
+public interface AllotBillRepository extends BillRepository<AllotBill> {
 
 
     /**
@@ -23,6 +23,6 @@ public interface DeliveryBillRepository extends BillRepository<DeliveryBill> {
      * @param pageable
      * @return
      */
-    Page<DeliveryBill> findAll(Specification<DeliveryBill> ta, Pageable pageable);
+    Page<AllotBill> findAll(Specification<AllotBill> ta, Pageable pageable);
 
 }

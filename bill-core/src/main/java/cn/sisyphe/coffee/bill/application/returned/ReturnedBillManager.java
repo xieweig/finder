@@ -1,81 +1,70 @@
 package cn.sisyphe.coffee.bill.application.returned;
 
-
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillQueryService;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.returned.*;
+import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
+import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
- * @author mayupeng
- * @Date 2018/01/07
- * @description 退货单协调层
+ * @date: 2018/1/2
+ * @description:
+ * @author：xieweiguang
  */
 @Service
 public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
-    @Autowired
-    private ReturnedBillQueryService returnedBillQueryService;
-
-    @Autowired
-    private PlanBillRepository planBillRepository;
 
     @Autowired
     private SharedManager sharedManager;
 
 
-    public ReturnedBillManager(BillRepository<ReturnedBill> returnedBill, ApplicationEventPublisher applicationEventPublisher) {
-        super(returnedBill, applicationEventPublisher);
+    public ReturnedBillManager(BillRepository<ReturnedBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
+        super(billRepository, applicationEventPublisher);
     }
 
+    @Autowired
+    private ReturnedBillExtraService returnedBillExtraService;
+
     public ReturnedBill findReturnedBillBySourceCode(String sourceCode) {
-        ReturnedBill returnedBill = returnedBillQueryService.findBySourceCode(sourceCode);
+        ReturnedBill returnedBill = returnedBillExtraService.findBySourceCode(sourceCode);
         return returnedBill;
     }
 
     /**
-     * 保存退货单
+     * 保存进货单
      *
      * @param addReturnedBillDTO
      */
-    @Transactional
     public void saveBill(AddReturnedBillDTO addReturnedBillDTO) {
         verification(addReturnedBillDTO);
         // 转换单据
-        ReturnedBill returnedBill = dtoToMapReturnedBill(addReturnedBillDTO);
-        //若是计划转则保存PLANBILL的from
-//        if (addReturnedBillDTO.getBillProperty()!= PropertyEnum.NOPLAN){
-//            System.err.print("按计划");
-//            PlanBill planBill = planBillRepository.findOneByBillCode(addReturnedBillDTO.getSourceCode());
-//            planBill.setReceiveBillCode(addReturnedBillDTO.getBillCode());
-//            planBillRepository.save(planBill);
-//        }
+        ReturnedBill returnedBill = addReturnedBillToReturnedBillDTO(addReturnedBillDTO);
         // 保存单据
         save(returnedBill);
     }
+
     /**
      * 提交进货单
      *
@@ -83,11 +72,12 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      */
     public void submitBill(AddReturnedBillDTO addReturnedBillDTO) {
         // 转换单据
-        ReturnedBill returnedBill = dtoToMapReturnedBill(addReturnedBillDTO);
+        ReturnedBill returnedBill = addReturnedBillToReturnedBillDTO(addReturnedBillDTO);
         submit(returnedBill);
     }
+
     /**
-     * 修改退货单--保存
+     * 修改退库单--保存
      *
      * @param billDTO
      */
@@ -95,55 +85,54 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
             throw new DataException("404", "单据编码为空");
         }
-        // 验证属性
-        //verification(billDTO);
-        ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(billDTO.getBillCode());
+/*        // 验证属性
+        verification(billDTO);*/
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(billDTO.getBillCode());
         if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
             returnedBill.getBillDetails().clear();
         }
         // 转换单据
-        ReturnedBill mapBillAfter = dtoToMapReturnedBillForEdit(billDTO, returnedBill);
+        ReturnedBill mapBillAfter = returnedBillDTOEditAddReturnedBill(billDTO, returnedBill);
+
         save(mapBillAfter);
     }
+
     /**
-     * 修改退货单--提交审核
+     * 修改退库单--提交审核
      *
      * @param billDTO
      */
     public void updateBillToSubmit(AddReturnedBillDTO billDTO) {
-        if (StringUtils.isEmpty(billDTO.getBillCode())) {
-            throw new DataException("404", "单据编码为空");
-        }
-        // 验证属性
-        verification(billDTO);
-        ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(billDTO.getBillCode());
-        if (billDTO.getBillDetails() != null && billDTO.getBillDetails().size() > 0) {
-            returnedBill.getBillDetails().clear();
-        }
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(billDTO.getBillCode());
+        returnedBill.getBillDetails().clear();
         // 转换单据
-        ReturnedBill mapBillAfter = dtoToMapReturnedBillForEdit(billDTO, returnedBill);
+        ReturnedBill mapBillAfter = returnedBillDTOEditAddReturnedBill(billDTO, returnedBill);
 
         submit(mapBillAfter);
     }
+
     /**
-     * 打开退货单
+     * 打开退库单
      *
      * @param returnedBillCode
      */
     public ReturnedBill openBill(String returnedBillCode) {
-        ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(returnedBillCode);
-        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退货单据信息
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(returnedBillCode);
+        // 如果单据是打开状态或者是审核失败状态，则直接返回转换后的退库单据信息
         // 如果单据是提交状态，则进行打开动作
         if (returnedBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
             returnedBill = open(returnedBill);
+//            return mapOneToDTO(returnedBill);
             return returnedBill;
         } else {
+//            return mapOneToDTO(returnedBill);
             return returnedBill;
         }
     }
+
     /**
-     * 审核退货单
+     * 审核退库单
      *
      * @param returnedBillCode
      */
@@ -154,19 +143,89 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         if (StringUtils.isEmpty(auditPersonCode)) {
             throw new DataException("404", "审核人编码为空");
         }
-        ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(returnedBillCode);
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(returnedBillCode);
         // 设置审核人编码
         returnedBill.setAuditPersonCode(auditPersonCode);
 
         audit(returnedBill, isSuccess);
     }
+
+    /**
+     * 单据出入库完成
+     *
+     * @param responseResult
+     */
+    public void doneBill(ResponseResult responseResult) {
+        Map<String, Object> resultMap = responseResult.getResult();
+        // 转换出单据信息
+        ReturnedBill bill = responseResult.toClassObject(resultMap.get("bill"), ReturnedBill.class);
+        // 根据单据编码查询数据库单据信息
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(bill.getBillCode());
+        // 设置入库时间
+        returnedBill.setInWareHouseTime(new Date());
+        // 处理完成
+        done(bill);
+    }
+
+    /**
+     * 根据多条件查询退库单据信息
+     *
+     * @param conditionQueryReturnedBill 查询条件
+     * @return
+     */
+    public Page<ReturnedBillDTO> findByConditions(ConditionQueryReturnedBill conditionQueryReturnedBill, BillTypeEnum billType, BillPurposeEnum billPurpose) {
+        conditionQueryReturnedBill.setBillType(billType);
+        conditionQueryReturnedBill.setBillPurpose(billPurpose);
+        Page<ReturnedBill> returnedBills = returnedBillExtraService.findPageByCondition(conditionQueryReturnedBill);
+
+        return returnedBills.map(this::returnedBillToReturnedBillDTO);
+    }
+
+    /**
+     * 转换成子计划单DTO
+     *
+     * @param returnedBill 子计划单
+     * @return 子计划单DTO
+     */
+    private ReturnedBillDTO returnedBillToReturnedBillDTO(ReturnedBill returnedBill) {
+        //name没有改变
+        ReturnedBillDTO returnedBillDTO = new ReturnedBillDTO();
+        returnedBillDTO.setOperatorName(sharedManager.findOneByUserCode(returnedBill.getOperatorCode()));
+        returnedBillDTO.setCreateTime(returnedBill.getCreateTime());
+        returnedBillDTO.setSourceCode(returnedBill.getSourceCode());
+        returnedBillDTO.setVariety(returnedBill.getTotalVarietyAmount());
+        returnedBillDTO.setTotalPrice(returnedBill.getTotalPrice());
+        returnedBillDTO.setRootCode(returnedBill.getRootCode());
+        returnedBillDTO.setProgress(returnedBill.getProgress());
+        returnedBillDTO.setPlanMemo(returnedBill.getPlanMemo());
+        returnedBillDTO.setOutMemo(returnedBill.getOutStorageMemo());
+        returnedBillDTO.setOutLocation(returnedBill.getOutLocation());
+        returnedBillDTO.setInOrOutState(returnedBill.getInOrOutState());
+        returnedBillDTO.setInLocation(returnedBill.getInLocation());
+        returnedBillDTO.setBillType(returnedBill.getBillType());
+        returnedBillDTO.setBillState(returnedBill.getBillState());
+        returnedBillDTO.setBillPurpose(returnedBill.getBillPurpose());
+        returnedBillDTO.setInWareHouseTime(returnedBill.getInWareHouseTime());
+        returnedBillDTO.setBasicEnum(returnedBill.getBasicEnum());
+        returnedBillDTO.setAuditMemo(returnedBill.getAuditMemo());
+        returnedBillDTO.setSubmitState(returnedBill.getSubmitState());
+        returnedBillDTO.setAuditState(returnedBill.getAuditState());
+        returnedBillDTO.setBillCode(returnedBill.getBillCode());
+        returnedBillDTO.setAuditPersonName(sharedManager.findOneByUserCode(returnedBill.getAuditPersonCode()));
+        returnedBillDTO.setAmount(returnedBill.getTotalAmount());
+        returnedBillDTO.setBillProperty(returnedBill.getBillProperty());
+        returnedBillDTO.setBillDetails(billDetailToBillDetailDTO(returnedBill.getBillDetails()));
+
+        return returnedBillDTO;
+    }
+
     /**
      * 保存和提交操作需要用到的DTO转换
      *
      * @param addReturnedBillDTO 前端传递的DTO参数信息
      * @return
      */
-    private ReturnedBill dtoToMapReturnedBill(AddReturnedBillDTO addReturnedBillDTO) {
+    private ReturnedBill addReturnedBillToReturnedBillDTO(AddReturnedBillDTO addReturnedBillDTO) {
         //通过工厂方法生成具体种类的单据
         BillFactory billFactory = new BillFactory();
         ReturnedBill returnedBill = (ReturnedBill) billFactory.createBill(BillTypeEnum.RETURNED);
@@ -175,6 +234,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
 
         //设置单据属性
         returnedBill.setBillProperty(addReturnedBillDTO.getBillProperty());
+
         // 来源单号
         if (!StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
             returnedBill.setSourceCode(addReturnedBillDTO.getSourceCode());
@@ -201,7 +261,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         returnedBill.setOutLocation(addReturnedBillDTO.getOutStation());
 
         Set<ReturnedBillDetailDTO> detailDTOSet = addReturnedBillDTO.getBillDetails();
-        //退货数量
+        //退库数量
         int amount = 0;
         for (ReturnedBillDetailDTO detailDTO :
                 detailDTOSet) {
@@ -209,7 +269,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         }
         returnedBill.setTotalAmount(amount);
 
-        //退货品种数
+        //退库品种数
         int variety = detailDTOSet.size();
         returnedBill.setTotalVarietyAmount(variety);
         //进度
@@ -219,7 +279,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         //按货物还是按原料
         returnedBill.setBasicEnum(addReturnedBillDTO.getBasicEnum());
         // 转换单据明细信息
-        Set<ReturnedBillDetail> detailSet = listDetailMapToSetDetail(detailDTOSet);
+        Set<ReturnedBillDetail> detailSet = billDetaiDTOToBillDetail(detailDTOSet);
         // 设置单据明细信息
         returnedBill.setBillDetails(detailSet);
 
@@ -232,7 +292,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      * @param billDetails
      * @return
      */
-    private Set<ReturnedBillDetail> listDetailMapToSetDetail(Set<ReturnedBillDetailDTO> billDetails) {
+    private Set<ReturnedBillDetail> billDetaiDTOToBillDetail(Set<ReturnedBillDetailDTO> billDetails) {
 
         Set<ReturnedBillDetail> detailSet = new HashSet<>();
         for (ReturnedBillDetailDTO detail : billDetails) {
@@ -250,98 +310,50 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         return detailSet;
     }
 
-
-
-
-
-    private QueryOneReturnedBillDTO mapOneToDTO(ReturnedBill returnedBill) {
-        QueryOneReturnedBillDTO billDTO = new QueryOneReturnedBillDTO();
-        // 备注
-//        Station station = (Station) returnedBill.getInLocation();
-     /*   // 库位名称
-        billDTO.setInStorageCode(station.getStorage().getStorageCode());
-
-        station = (Station) returnedBill.getOutLocation();
-        // 库位名称
-        billDTO.setInStorageCode(station.getStorage().getStorageCode());
-*/
-        // 转换进货单明细信息
-        List<ReturnedBillDetailDTO> detailDTOList = setDetailMapToListMapDetail(returnedBill.getBillDetails());
-
-        // 进货单明细信息
-        billDTO.setBillDetails(detailDTOList);
-        System.err.println("查询到的进货单据信息：" + billDTO.toString());
-        return billDTO;
-    }
-
     /**
      * 前端查询单个单据明细信息将set转换为dto
      *
      * @param returnedBillDetails
      * @return
      */
-    private List<ReturnedBillDetailDTO> setDetailMapToListMapDetail(Set<ReturnedBillDetail> returnedBillDetails) {
+    private List<ReturnedBillDetailDTO> billDetailToBillDetailDTO(Set<ReturnedBillDetail> returnedBillDetails) {
 
         List<ReturnedBillDetailDTO> detailDTOList = new ArrayList<>();
         for (ReturnedBillDetail detail : returnedBillDetails) {
             ReturnedBillDetailDTO detailDTO = new ReturnedBillDetailDTO();
+
+            detailDTO.setShippedAmount(detail.getShippedAmount());
+            detailDTO.setActualAmount(detail.getActualAmount());
             // 设置货物和原料信息
-            RawMaterial rawMaterial = (RawMaterial) detail.getGoods();
-           /* detailDTO.setRawMaterial(rawMaterial);
-            //设置数量
-            detailDTO.setAmount(detail.getAmount());
-            //备注
-            detailDTO.se
-*/
+            RawMaterial rawMaterial = new RawMaterial();
+            if (detail.getGoods() instanceof RawMaterial){
+                rawMaterial = (RawMaterial) detail.getGoods();
+            }
+            detailDTO.setRawMaterial(rawMaterial);
             detailDTOList.add(detailDTO);
         }
         return detailDTOList;
     }
 
-
-
-
-
-
     /**
      * 修改需要转换DTO
      *
-     * @param editReturnedBillDTO
+     * @param addReturnedBillDTO
      * @return
      */
-    private ReturnedBill dtoToMapReturnedBillForEdit(AddReturnedBillDTO editReturnedBillDTO, ReturnedBill returnedBill) {
-        // 设置单据的作用
-        returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
-        // 设置单据类型
-        //  returnedBill.setBillType(BillTypeEnum.RETURNED);
-        //设置单据属性
-        returnedBill.setBillProperty(editReturnedBillDTO.getBillProperty());
-        // 来源单号
-        if (!StringUtils.isEmpty(editReturnedBillDTO.getSourceCode())) {
-            returnedBill.setSourceCode(editReturnedBillDTO.getSourceCode());
-        }
-        // 发起单号
-        if (!StringUtils.isEmpty(editReturnedBillDTO.getRootCode())) {
-            returnedBill.setRootCode(editReturnedBillDTO.getRootCode());
-        }
-        // 计划备注
-        if (!StringUtils.isEmpty(editReturnedBillDTO.getPlanMemo())) {
-            returnedBill.setPlanMemo(editReturnedBillDTO.getPlanMemo());
+    private ReturnedBill returnedBillDTOEditAddReturnedBill(AddReturnedBillDTO addReturnedBillDTO, ReturnedBill returnedBill) {
+
+        //若没有root编码则自己的编码就是root编码
+        if (!StringUtils.isEmpty(addReturnedBillDTO.getRootCode())) {
+            returnedBill.setRootCode(returnedBill.getRootCode());
+        } else {
+            returnedBill.setRootCode(returnedBill.getBillCode());
         }
         // 出库备注
-        if (!StringUtils.isEmpty(editReturnedBillDTO.getOutMemo())) {
-            returnedBill.setOutStorageMemo(editReturnedBillDTO.getOutMemo());
+        if (!StringUtils.isEmpty(addReturnedBillDTO.getOutMemo())) {
+            returnedBill.setOutStorageMemo(addReturnedBillDTO.getOutMemo());
         }
-       /* // 操作人代码
-        returnedBill.setOperatorCode(editReturnedBillDTO.getOperatorCode());
-        // 归属站点
-        returnedBill.setBelongStationCode(editReturnedBillDTO.getOutStation().code());
-        //入库站点
-        returnedBill.setInLocation(editReturnedBillDTO.getInStation());
-        //出库站点
-        returnedBill.setOutLocation(editReturnedBillDTO.getOutStation());*/
-
-        Set<ReturnedBillDetailDTO> detailDTOSet = editReturnedBillDTO.getBillDetails();
+        Set<ReturnedBillDetailDTO> detailDTOSet = addReturnedBillDTO.getBillDetails();
         //退货数量
         int amount = 0;
         for (ReturnedBillDetailDTO detailDTO :
@@ -350,20 +362,25 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         }
         returnedBill.setTotalAmount(amount);
 
+        //出库库位
+        if (returnedBill.getOutLocation() != null){
+            returnedBill.setOutLocation(addReturnedBillDTO.getOutStation());
+        }
         //退货品种数
         int variety = detailDTOSet.size();
         returnedBill.setTotalVarietyAmount(variety);
         //进度
-        returnedBill.setProgress(editReturnedBillDTO.getProgress());
+        returnedBill.setProgress(addReturnedBillDTO.getProgress());
         //配送总价
-        returnedBill.setTotalPrice(editReturnedBillDTO.getTotalPrice());
+        returnedBill.setTotalPrice(addReturnedBillDTO.getTotalPrice());
         //按货物还是按原料
-        returnedBill.setBasicEnum(editReturnedBillDTO.getBasicEnum());
+        if (returnedBill.getBasicEnum() != null){
+            returnedBill.setBasicEnum(addReturnedBillDTO.getBasicEnum());
+        }
         // 转换单据明细信息
-        Set<ReturnedBillDetail> detailSet = listDetailMapToSetDetail(detailDTOSet);
+        Set<ReturnedBillDetail> detailSet = billDetaiDTOToBillDetail(detailDTOSet);
         // 设置单据明细信息
         returnedBill.getBillDetails().addAll(detailSet);
-
         return returnedBill;
     }
 
@@ -374,7 +391,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
      */
     private void verification(AddReturnedBillDTO addReturnedBillDTO) {
         //来源单号
-        if (addReturnedBillDTO.getBillProperty() != SourcePlanTypeEnum.NOPLAN) {
+        if (!addReturnedBillDTO.getBillProperty().equals(SourcePlanTypeEnum.NOPLAN)) {
             if (StringUtils.isEmpty(addReturnedBillDTO.getSourceCode())) {
                 throw new DataException("500", "来源单号为空");
             }
@@ -409,83 +426,40 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
     }
 
     /**
-     * 根据多条件查询退货单据信息
+     * 通过单据号billCode汇总查询出打包的信息
      *
-     * @param conditionQueryReturnedBill 查询条件
+     * @param billCode
      * @return
      */
-    public QueryReturnedBillDTO findByConditions(ConditionQueryReturnedBill conditionQueryReturnedBill) {
-        // SpringCloud调用查询录单人编码
-        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryReturnedBill.getOperatorName());
-        conditionQueryReturnedBill.setOperatorCodeList(userCodeList);
-        Page<ReturnedBill> returnedBillPage = returnedBillQueryService.findPageByCondition(conditionQueryReturnedBill);
-
-        QueryReturnedBillDTO QueryReturnedBillDTO = new QueryReturnedBillDTO();
-        // 转换
-        List<ReturnedBillDTO> billDTOList = toMapDTO(returnedBillPage.getContent());
-        // 总数
-        QueryReturnedBillDTO.setTotalNumber(returnedBillPage.getTotalElements());
-        // 退货单据数据
-        QueryReturnedBillDTO.setContent(billDTOList);
-
-        return QueryReturnedBillDTO;
+    public ScanFillBillDTO findPackageInfoByBillCode(String billCode) {
+        if (StringUtils.isEmpty(billCode)) {
+            throw new DataException("404", "单据编码为空");
+        }
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(billCode);
+        ScanFillBillDTO scanFillBillDTO = returnedToMapScanFillBillDTO(returnedBill);
+        return scanFillBillDTO;
     }
 
-    private List<ReturnedBillDTO> toMapDTO(List<ReturnedBill> returnedBillList) {
-        List<ReturnedBillDTO> returnedBillDTOList = new ArrayList<>();
-        for (ReturnedBill returnedBill : returnedBillList) {
-            ReturnedBillDTO returnedBillDTO = new ReturnedBillDTO();
-            returnedBillDTO.setBillCode(returnedBill.getBillCode());
-            returnedBillDTO.setAuditState(returnedBill.getAuditState());
-            returnedBillDTO.setSubmitState(returnedBill.getSubmitState());
-            returnedBillDTO.setAmount(returnedBill.getTotalAmount());
-            returnedBillDTO.setAuditMemo(returnedBill.getAuditMemo());
-            returnedBillDTO.setOperatorName(sharedManager.findOneByUserCode(returnedBill.getOperatorCode()));
-            returnedBillDTO.setAuditPersonName(sharedManager.findOneByUserCode(returnedBill.getAuditPersonCode()));
-            returnedBillDTO.setBasicEnum(returnedBill.getBasicEnum());
-            returnedBillDTO.setBillDetails(billDetailsToReturnedBillDetailDTO(returnedBill.getBillDetails()));
-            returnedBillDTO.setInWareHouseTime(returnedBill.getInWareHouseTime());
-            returnedBillDTO.setBillProperty(returnedBill.getBillProperty());
-            returnedBillDTO.setBillPurpose(returnedBill.getBillPurpose());
-            returnedBillDTO.setBillState(returnedBill.getBillState());
-            returnedBillDTO.setBillType(returnedBill.getBillType());
-            returnedBillDTO.setInLocation(returnedBill.getInLocation());
-            returnedBillDTO.setInOrOutState(returnedBill.getInOrOutState());
-            returnedBillDTO.setOutLocation(returnedBill.getOutLocation());
-            returnedBillDTO.setOutMemo(returnedBill.getOutStorageMemo());
-            returnedBillDTO.setPlanMemo(returnedBill.getPlanMemo());
-            returnedBillDTO.setProgress(returnedBill.getProgress());
-            returnedBillDTO.setRootCode(returnedBill.getRootCode());
-            returnedBillDTO.setSourceCode(returnedBill.getSourceCode());
-            returnedBillDTO.setTotalPrice(returnedBill.getTotalPrice());
-            returnedBillDTO.setVariety(returnedBill.getTotalVarietyAmount());
-            returnedBillDTO.setCreateTime(returnedBill.getCreateTime());
-            returnedBillDTOList.add(returnedBillDTO);
+    private ScanFillBillDTO returnedToMapScanFillBillDTO(ReturnedBill returnedBill) {
+        ScanFillBillDTO scanFillBillDTO = new ScanFillBillDTO();
+        List<String> packNumberList = new ArrayList<>();
+        scanFillBillDTO.setTotalCount(returnedBill.getTotalVarietyAmount());
+        scanFillBillDTO.setTotalAmount(returnedBill.getTotalAmount());
+        scanFillBillDTO.setOperatorCode(returnedBill.getOperatorCode());
+        scanFillBillDTO.setOutStockTime(returnedBill.getOutWareHouseTime());
+        Set<ReturnedBillDetail> returnedBillDetailSet = returnedBill.getBillDetails();
+        Set<String> packageCodeSet = new HashSet<>();
+        for (ReturnedBillDetail returnedBillDetail : returnedBillDetailSet) {
+            packageCodeSet.add(returnedBillDetail.getPackageCode());
         }
-        return returnedBillDTOList;
-    }
-
-    private Set<ReturnedBillDetailDTO> billDetailsToReturnedBillDetailDTO(Set<ReturnedBillDetail> returnedBillDetails) {
-        Set<ReturnedBillDetailDTO> returnedBillDetailDTOSet = new HashSet<>();
-        for (ReturnedBillDetail returnedBillDetail : returnedBillDetails) {
-            ReturnedBillDetailDTO returnedBillDetailDTO = new ReturnedBillDetailDTO();
-            if (returnedBillDetail.getGoods() instanceof RawMaterial) {
-                returnedBillDetailDTO.setRawMaterial((RawMaterial) returnedBillDetail.getGoods());
-            } else {
-                //若没有原料
-                RawMaterial rawMaterial = new RawMaterial();
-                rawMaterial.setCargo((Cargo) returnedBillDetail.getGoods());
-                returnedBillDetailDTO.setRawMaterial(rawMaterial);
-            }
-            returnedBillDetailDTO.setActualAmount(returnedBillDetail.getActualAmount());
-            returnedBillDetailDTO.setShippedAmount(returnedBillDetail.getShippedAmount());
-            returnedBillDetailDTOSet.add(returnedBillDetailDTO);
+        for (String packageCode : packageCodeSet) {
+            packNumberList.add(packageCode);
         }
-        return returnedBillDetailDTOSet;
+        scanFillBillDTO.setPackNumbers(packNumberList);
+        return scanFillBillDTO;
     }
     public ReturnedBill findByReturnedBillCode(String returnedBillCode) {
-        ReturnedBill returnedBill = returnedBillQueryService.findByBillCode(returnedBillCode);
+        ReturnedBill returnedBill = returnedBillExtraService.findByBillCode(returnedBillCode);
         return returnedBill;
     }
-
 }

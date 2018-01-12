@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
-
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
@@ -9,11 +8,11 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 /**
- * @author mayupeng
- * @Date 2018/01/07
- * @description 退货计划单
+ * @author bifenglin
  */
 public class AddReturnedBillDTO {
+
+    private String BillCode;
 
     /**
      * 单据属性
@@ -58,7 +57,6 @@ public class AddReturnedBillDTO {
     /**
      * 单据编码
      */
-    private String billCode;
 
     /**
      * 总价
@@ -70,7 +68,9 @@ public class AddReturnedBillDTO {
      */
     private Set<ReturnedBillDetailDTO> billDetails;
 
-    //完成度
+    /**
+     * 完成度
+     */
     private BigDecimal progress;
 
     public String getRootCode() {
@@ -81,6 +81,14 @@ public class AddReturnedBillDTO {
         this.rootCode = rootCode;
     }
 
+    public String getBillCode() {
+        return BillCode;
+    }
+
+    public void setBillCode(String billCode) {
+        BillCode = billCode;
+    }
+
     public BigDecimal getProgress() {
         return progress;
     }
@@ -88,6 +96,7 @@ public class AddReturnedBillDTO {
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
     }
+
 
     public SourcePlanTypeEnum getBillProperty() {
         return billProperty;
@@ -153,14 +162,6 @@ public class AddReturnedBillDTO {
         this.outStation = outStation;
     }
 
-    public String getBillCode() {
-        return billCode;
-    }
-
-    public void setBillCode(String billCode) {
-        this.billCode = billCode;
-    }
-
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
@@ -176,4 +177,25 @@ public class AddReturnedBillDTO {
     public void setSourceCode(String sourceCode) {
         this.sourceCode = sourceCode;
     }
+
+
+    @Override
+    public String toString() {
+        return "AddReturnedBillDTO{" +
+                "BillCode='" + BillCode + '\'' +
+                ", billProperty=" + billProperty +
+                ", basicEnum=" + basicEnum +
+                ", sourceCode='" + sourceCode + '\'' +
+                ", rootCode='" + rootCode + '\'' +
+                ", planMemo='" + planMemo + '\'' +
+                ", outMemo='" + outMemo + '\'' +
+                ", operatorCode='" + operatorCode + '\'' +
+                ", inStation=" + inStation +
+                ", outStation=" + outStation +
+                ", totalPrice=" + totalPrice +
+                ", billDetails=" + billDetails +
+                ", progress=" + progress +
+                '}';
+    }
+
 }

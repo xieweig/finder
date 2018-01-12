@@ -44,7 +44,7 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
         Pageable pageable = new PageRequest(conditionQueryPlanBill.getPage() - 1, conditionQueryPlanBill.getPageSize());
         // SpringCloud调用查询录单人编码
         List<String> userCodeList = userRepository.findByLikeUserName(conditionQueryPlanBill.getCreatorName());
-        conditionQueryPlanBill.setCreatorCodeList(userCodeList);
+        conditionQueryPlanBill.setOperatorCodes(userCodeList);
         Page<PlanBill> planBillPage;
         planBillPage = queryByParams(conditionQueryPlanBill, pageable);
 
@@ -101,43 +101,33 @@ public class PlanBillExtraServiceImpl implements PlanBillExtraService {
             if (conditionQueryPlanBill.getSpecificBillType() != null) {
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQueryPlanBill.getSpecificBillType()));
             }
-
-            //计划类型
+            // 计划类型
             if (conditionQueryPlanBill.getBillPurpose() != null) {
                 expressions.add(root.get("billPurpose").as(BillPurposeEnum.class).in(conditionQueryPlanBill.getBillPurpose()));
             }
-
-
             // 计划编码
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getBillCode())) {
                 expressions.add(cb.like(root.get("billCode").as(String.class), "%" + conditionQueryPlanBill.getBillCode() + "%"));
             }
-
             // 入库站点集合
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getInStationCodeArray())) {
                 String[] inStationCodeArr = conditionQueryPlanBill.getInStationCodeArray().split(",");
                 expressions.add(root.get("dbStation").get("inStationCode").in(Arrays.asList(inStationCodeArr)));
             }
-            //出库站点集合
+            // 出库站点集合
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getOutStationCodeArray())) {
                 String[] outStationCodeArr = conditionQueryPlanBill.getOutStationCodeArray().split(",");
                 expressions.add(root.get("dbStation").get("outStationCode").in(Arrays.asList(outStationCodeArr)));
             }
-            /*
-             * 录单开始时间
-             */
+            // 录单开始时间
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateStartTime())) {
                 expressions.add(cb.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateStartTime()));
             }
-            /*
-             * 录单结束时间
-             */
+            // 录单结束时间
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreateEndTime())) {
                 expressions.add(cb.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQueryPlanBill.getCreateEndTime()));
             }
-            /*
-             * 录单人
-             */
+            // 录单人
             if (!StringUtils.isEmpty(conditionQueryPlanBill.getCreatorName())) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQueryPlanBill.getOperatorCodes()));
             }

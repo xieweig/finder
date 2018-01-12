@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,13 +12,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
- * @author mayupeng
- * @Date 2018/01/07
- * @description 退货计划单
+ * @date: 2018/1/2
+ * @description:
+ * @author：bifenglin
  */
+
 public class ConditionQueryReturnedBill extends BaseConditionQuery implements Serializable {
     /**
      * 录单人名称
@@ -26,15 +28,20 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
      * 出库单号
      */
     private String billCode;
+
+    private BillTypeEnum billType;
+
+    private BillPurposeEnum billPurpose;
+
     /**
      * 入库站点编号集合
      */
-    private Set<String> inStationCodeArray;
+    private String inStationCodeArray;
 
     /**
      * 出库站点编号集合
      */
-    private Set<String> outStationCodeArray;
+    private String outStationCodeArray;
 
     /**
      * 录单开始时间
@@ -77,9 +84,9 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
     private List<String> auditStateCode;
 
     /**
-     * 出库状态
+     * 出入库状态
      */
-    private List<String> outStateCode;
+    private List<String> inOrOutStateCode;
     /**
      * 录单人编码集合
      */
@@ -103,19 +110,35 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
      */
     private BigDecimal endTotalPrice;
 
-    public Set<String> getInStationCodeArray() {
+    public BillTypeEnum getBillType() {
+        return billType;
+    }
+
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
+    }
+
+    public BillPurposeEnum getBillPurpose() {
+        return billPurpose;
+    }
+
+    public void setBillPurpose(BillPurposeEnum billPurpose) {
+        this.billPurpose = billPurpose;
+    }
+
+    public String getInStationCodeArray() {
         return inStationCodeArray;
     }
 
-    public void setInStationCodeArray(Set<String> inStationCodeArray) {
+    public void setInStationCodeArray(String inStationCodeArray) {
         this.inStationCodeArray = inStationCodeArray;
     }
 
-    public Set<String> getOutStationCodeArray() {
+    public String getOutStationCodeArray() {
         return outStationCodeArray;
     }
 
-    public void setOutStationCodeArray(Set<String> outStationCodeArray) {
+    public void setOutStationCodeArray(String outStationCodeArray) {
         this.outStationCodeArray = outStationCodeArray;
     }
 
@@ -223,6 +246,13 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
         this.auditStateCode = auditStateCode;
     }
 
+    public List<String> getInOrOutStateCode() {
+        return inOrOutStateCode;
+    }
+
+    public void setInOrOutStateCode(List<String> inOrOutStateCode) {
+        this.inOrOutStateCode = inOrOutStateCode;
+    }
 
     public List<String> getOperatorCodeList() {
         return operatorCodeList;
@@ -230,13 +260,5 @@ public class ConditionQueryReturnedBill extends BaseConditionQuery implements Se
 
     public void setOperatorCodeList(List<String> operatorCodeList) {
         this.operatorCodeList = operatorCodeList;
-    }
-
-    public List<String> getOutStateCode() {
-        return outStateCode;
-    }
-
-    public void setOutStateCode(List<String> outStateCode) {
-        this.outStateCode = outStateCode;
     }
 }

@@ -1,8 +1,7 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
-import cn.sisyphe.coffee.bill.application.base.purpose.MoveStorageBillManager;
-import cn.sisyphe.coffee.bill.application.base.purpose.interfaces.Executor;
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
@@ -61,7 +60,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     private SharedManager sharedManager;
 
     @Autowired
-    private MoveStorageBillManager moveStorageBillManager;
+    private AllotBillManager allotBillManager;
 
     @Autowired
     public AdjustBillManager(BillRepository<AdjustBill> billRepository,
@@ -441,16 +440,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param allotDTO 调拨页面数据DTO
      */
     public void createAllotBill(AllotDTO allotDTO) {
-        final AdjustBill adjustBill = adjustBillExtraService.findByBillCode(allotDTO.getBillCode());
-
-        moveStorageBillManager.convertMoveStorageBill(adjustBill, (Executor<AdjustBill>) bill -> {
-            Station inLocation = (Station) adjustBill.getInLocation();
-            inLocation.setStorage(allotDTO.getInStorage());
-            bill.setInLocation(inLocation);
-            for (AdjustBillDetail adjustBillDetail : bill.getBillDetails()) {
-                adjustBillDetail.setActualAmount(allotDTO.getDetails().get(adjustBillDetail.getGoods().code()));
-            }
-        });
+        return;
 
     }
 }
