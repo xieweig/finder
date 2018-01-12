@@ -40,5 +40,5 @@ public enum BillTypeEnum {
     /**
      * 调拨
       */
-    MOVE_STORAGE
+    ALLOT
 }

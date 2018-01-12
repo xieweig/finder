@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.movestorage;
+package cn.sisyphe.coffee.bill.domain.allot;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,5 +15,5 @@ import javax.persistence.Table;
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class MoveStorageBillDetail extends BillDetail {
+public class AllotBillDetail extends BillDetail {
 }
