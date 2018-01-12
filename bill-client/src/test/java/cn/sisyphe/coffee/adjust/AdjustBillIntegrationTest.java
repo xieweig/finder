@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
@@ -51,11 +52,15 @@ public class AdjustBillIntegrationTest {
     @Autowired
     private AdjustBillManager adjustBillManager;
 
+    @Autowired
+    private RestockBillExtraService restockBillExtraService;
+
 
     @Test
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
-        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ0420180120EL4000001");
-        inStorageBillManager.convertInStorageBill(adjustBill);
+        Bill adjustBill = restockBillExtraService.findByBillCode("TKCKCKG00120180110P10507428");
+        Bill inStorageBill = inStorageBillManager.convertInStorageBill(adjustBill);
+        inStorageBillManager.allotedForInStorageBill(inStorageBill);
     }
 
 
