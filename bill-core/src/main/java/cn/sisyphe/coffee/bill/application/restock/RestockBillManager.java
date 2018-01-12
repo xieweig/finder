@@ -12,10 +12,7 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -467,5 +464,149 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     @Override
     public Bill findEntityByBillCode(String billCode) {
         return findByRestockBillCode(billCode);
+    }
+
+    /**
+     * 根据restockBillCode查找入库单
+     *
+     * @param restockBillCode
+     * @return
+     */
+    public RestockInStorageBillDTO findRestockInStorageBillByRestockBillCode(String restockBillCode) {
+        if (StringUtils.isEmpty(restockBillCode)){
+            throw new DataException("404", "单据编码为空");
+        }
+        RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
+        RestockInStorageBillDTO restockInStorageBillDTO = restockBillToRestockInStorageBillDTO(restockBill);
+        return restockInStorageBillDTO;
+    }
+    /**
+     * 将入库单信息转换为入库单信息dto
+     *
+     * @param restockBill
+     * @return
+     */
+    private RestockInStorageBillDTO restockBillToRestockInStorageBillDTO(RestockBill restockBill){
+        // SpringCloud调用查询录单人
+        String operatorName =sharedManager.findOneByUserCode(restockBill.getOperatorCode());
+        RestockInStorageBillDTO restockInStorageBillDTO = new RestockInStorageBillDTO();
+        // 设置订单编号
+        restockInStorageBillDTO.setBillCode(restockBill.getBillCode());
+        // 设置录单时间
+        restockInStorageBillDTO.setCreateTime(restockBill.getCreateTime());
+        // 设置入库时间
+        restockInStorageBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
+        // 设置录单人
+        restockInStorageBillDTO.setOperatorName(operatorName);
+        // 设置出库站点
+        restockInStorageBillDTO.setOutLocation(restockBill.getOutLocation());
+        // 设置入库站点
+        restockInStorageBillDTO.setInLocation(restockBill.getInLocation());
+        // 设置单据属性
+        restockInStorageBillDTO.setBillProperty(restockBill.getBillProperty());
+        // 设置调剂数量
+        restockInStorageBillDTO.setTotalAmount(restockBill.getTotalAmount());
+        // 设置调剂品种数
+        restockInStorageBillDTO.setTotalVarietyAmount(restockBill.getTotalVarietyAmount());
+        // 设置计划备注
+        restockInStorageBillDTO.setPlanMemo(restockBill.getPlanMemo());
+        // 设置出库备注
+        restockInStorageBillDTO.setOutStorageMemo(restockBill.getOutStorageMemo());
+        // 设置审核意见
+        restockInStorageBillDTO.setAuditMemo(restockBill.getAuditMemo());
+        List<RestockInStorageBillDetailDTO> restockInStorageBillDetailDTOList = restockBillDetailToRestockInStorageBillDetailDTO(restockBill.getBillDetails());
+        // 设置入库单明细
+        restockInStorageBillDTO.setBillDetailDTOList(restockInStorageBillDetailDTOList);
+
+        return restockInStorageBillDTO;
+
+    }
+    /**
+     * 将入库单信息明细转换为入库单信息明细dto
+     *
+     * @param restockBillDetailSet
+     * @return
+     */
+    private List<RestockInStorageBillDetailDTO> restockBillDetailToRestockInStorageBillDetailDTO(Set<RestockBillDetail> restockBillDetailSet){
+        List<RestockInStorageBillDetailDTO> restockInStorageBillDetailDTOList = new ArrayList<>();
+        for (RestockBillDetail restockBillDetail : restockBillDetailSet) {
+            RestockInStorageBillDetailDTO restockInStorageBillDetailDTO = new RestockInStorageBillDetailDTO();
+            // 设置货物和原料信息
+            RawMaterial rawMaterial = (RawMaterial) restockBillDetail.getGoods();
+            if (rawMaterial != null) {
+                restockInStorageBillDetailDTO.setRawMaterial(rawMaterial);
+            }
+            // 设置实拣数量
+            restockInStorageBillDetailDTO.setActualAmount(restockBillDetail.getActualAmount());
+            // 设置应拣数量
+            restockInStorageBillDetailDTO.setShippedAmount(restockBillDetail.getShippedAmount());
+            restockInStorageBillDetailDTOList.add(restockInStorageBillDetailDTO);
+        }
+        return restockInStorageBillDetailDTOList;
+
+
+    }
+    /**
+     * 根据restockBillCode查找入库单
+     *
+     * @param restockBillCode
+     * @return
+     */
+    public RestockAllotBillDTO findRestockAllotBillByRestockBillCode(String restockBillCode) {
+        if (StringUtils.isEmpty(restockBillCode)){
+            throw new DataException("404", "单据编码为空");
+        }
+        RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
+
+        RestockAllotBillDTO restockAllotBillDTO = restockBillToRestockAllotBillDTO(restockBill);
+        return restockAllotBillDTO;
+    }
+    /**
+     * 将restockBill转换为RestockAllotBillDTO
+     *
+     * @param restockBill
+     * @return
+     */
+    private RestockAllotBillDTO restockBillToRestockAllotBillDTO(RestockBill restockBill){
+        RestockAllotBillDTO restockAllotBillDTO = new RestockAllotBillDTO();
+        // 设置货单编号
+        restockAllotBillDTO.setBillCode(restockBill.getBillCode());
+        // 设置单据属性
+        restockAllotBillDTO.setBillProperty(restockBill.getBillProperty());
+        // 设置出库站点
+        restockAllotBillDTO.setOutLocation(restockBill.getOutLocation());
+        // 设置入库站点（调出库位）
+        restockAllotBillDTO.setInLocationOutStorage(restockBill.getInLocation());
+        // 设置入库时间
+        restockAllotBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
+        // 转换退库调拨单明细信息
+        List<RestockAllotDetailBillDTO> restockAllotDetailBillDTOList = restockDetailBillToRestockDetailAllotBillDTO(restockBill.getBillDetails());
+        restockAllotBillDTO.setRestockAllotDetailBillDTOList(restockAllotDetailBillDTOList);
+        return restockAllotBillDTO;
+    }
+    /**
+     * 将RestockBillDetail转换为RestockBillDetailDTO
+     *
+     * @param restockBillDetailSet
+     * @return
+     */
+    private List<RestockAllotDetailBillDTO> restockDetailBillToRestockDetailAllotBillDTO(Set<RestockBillDetail> restockBillDetailSet){
+        List<RestockAllotDetailBillDTO> restockAllotDetailBillDTOList = new ArrayList<>();
+        if(null != restockBillDetailSet && restockBillDetailSet.size() > 0){
+            for(RestockBillDetail restockBillDetail : restockBillDetailSet){
+                RestockAllotDetailBillDTO restockAllotDetailBillDTO = new RestockAllotDetailBillDTO();
+                // 设置货物和原料信息
+                RawMaterial rawMaterial = (RawMaterial) restockBillDetail.getGoods();
+                if (rawMaterial != null) {
+                    restockAllotDetailBillDTO.setRawMaterial(rawMaterial);
+                }
+                // 设置入库数量
+                restockAllotDetailBillDTO.setActualAmount(restockBillDetail.getActualAmount());
+                // 设置实调数量
+                restockAllotDetailBillDTO.setShippedAmount(restockBillDetail.getShippedAmount());
+                restockAllotDetailBillDTOList.add(restockAllotDetailBillDTO);
+            }
+        }
+        return restockAllotDetailBillDTOList;
     }
 }
