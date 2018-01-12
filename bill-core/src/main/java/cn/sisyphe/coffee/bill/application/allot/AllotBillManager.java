@@ -113,7 +113,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         allotBill.setBelongStationCode(addAllotBillDTO.getInStation().code());
         allotBill.setInLocation(addAllotBillDTO.getInStation());
         allotBill.setOutLocation(addAllotBillDTO.getOutStation());
-        allotBill.setPlanMemo(addAllotBillDTO.getMemo());
+        allotBill.setAllotMemo(addAllotBillDTO.getMemo());
         allotBill.setSourceCode(addAllotBillDTO.getInStorageBillCode());
         allotBill.setBasicEnum(addAllotBillDTO.getBasicEnum());
         allotBill.setSpecificBillType(addAllotBillDTO.getInStorageBillType());

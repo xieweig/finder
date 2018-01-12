@@ -22,6 +22,11 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class AllotBill extends Bill<AllotBillDetail> {
 
+    /**
+     * 调拨备注
+     */
+    private String allotMemo;
+
 
     public AllotBill() {
         setBillType(BillTypeEnum.ALLOT);
@@ -40,5 +45,13 @@ public class AllotBill extends Bill<AllotBillDetail> {
 
     public void setSpecificBillType(BillTypeEnum specificBillType) {
         this.specificBillType = specificBillType;
+    }
+
+    public String getAllotMemo() {
+        return allotMemo;
+    }
+
+    public void setAllotMemo(String allotMemo) {
+        this.allotMemo = allotMemo;
     }
 }
