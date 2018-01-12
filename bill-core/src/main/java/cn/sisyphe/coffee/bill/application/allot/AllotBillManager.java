@@ -12,8 +12,10 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.mistake.TransferMistakeBill;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AddAllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
@@ -135,6 +137,58 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         allotBillDTO.setTotalVarietyAmount(allotBill.getTotalVarietyAmount());
         allotBillDTO.setBillDetails(billDetailToBillDetailDTO(allotBill.getBillDetails()));
         return null;
+    }
+
+    /**
+     * DTO转调拨单
+     *
+     * @param allotBillDTO 生成调拨单DTO
+     */
+
+    public void createAllotBill(AddAllotBillDTO allotBillDTO) {
+
+        AllotBill allotBill = mapAllotBill(allotBillDTO);
+        //TODO 调用唐华玲的差错单生成接口生成差错单
+        allotBill.setTransferMistakeBill(new TransferMistakeBill());
+        purpose(allotBill);
+    }
+
+    /**
+     * map调拨单
+     *
+     * @param addAllotBillDTO 调拨单DTO
+     * @return 调拨单
+     */
+
+    private AllotBill mapAllotBill(AddAllotBillDTO addAllotBillDTO) {
+        AllotBill allotBill = (AllotBill) new BillFactory().createBill(BillTypeEnum.ALLOT);
+        allotBill.setBillPurpose(BillPurposeEnum.moveStorage);
+        allotBill.setInLocation(addAllotBillDTO.getInStation());
+        allotBill.setOutLocation(addAllotBillDTO.getOutStation());
+        allotBill.setPlanMemo(addAllotBillDTO.getMemo());
+        allotBill.setSourceCode(addAllotBillDTO.getInStorageBillCode());
+        allotBill.setSpecificBillType(addAllotBillDTO.getInStorageBillType());
+        allotBill.getBillDetails().clear();
+        allotBill.getBillDetails().addAll(mapDetails(addAllotBillDTO));
+        return allotBill;
+    }
+
+    /**
+     * map调拨单详情
+     *
+     * @param addAllotBillDTO 调拨单详情
+     * @return map出的调剂单details
+     */
+    private Set<AllotBillDetail> mapDetails(AddAllotBillDTO addAllotBillDTO) {
+        Set<AllotBillDetail> details = new HashSet<>();
+        for (AllotBillDetailDTO allotBillDetailDTO : addAllotBillDTO.getDetails()) {
+            AllotBillDetail allotBillDetail = new AllotBillDetail();
+            allotBillDetail.setGoods(allotBillDetailDTO.getRawMaterial());
+            allotBillDetail.setShippedAmount(allotBillDetailDTO.getShippedAmount());
+            allotBillDetail.setActualAmount(allotBillDetailDTO.getActualAmount());
+            details.add(allotBillDetail);
+        }
+        return details;
     }
 
     private Set<AllotBillDetailDTO> billDetailToBillDetailDTO(Set<AllotBillDetail> billDetails) {
