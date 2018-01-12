@@ -17,7 +17,6 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
-import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Date 2018/1/10 10:03
@@ -63,18 +60,6 @@ public class AdjustBillIntegrationTest {
         inStorageBillManager.allotedForInStorageBill(inStorageBill);
     }
 
-
-    @Test
-    public void shouldGenerateAllotBillAfterOffsetDone() {
-        AllotDTO allotDTO = new AllotDTO();
-        allotDTO.setBillCode("TJCKCQ05201801206TK000001");
-        allotDTO.setInStorage(new Storage("AA00"));
-        Map<String, Integer> details = new HashMap<>();
-        details.put("cargo2", 10);
-        details.put("cargo1", 5);
-        allotDTO.setDetails(details);
-        adjustBillManager.createAllotBill(allotDTO);
-    }
 
 
     /**
