@@ -12,7 +12,6 @@ import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.QueryRestockBillDTO;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -227,16 +226,14 @@ public class SaveCommitTest extends InstanceFactory{
         queryRestockBill.setPage(1);
         queryRestockBill.setPageSize(5);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
         logger.info(queryRestockBillDTO.toString());
     }
     @Test
     public void selectByBasicCondition(){
         ConditionQueryRestockBill queryRestockBill = new ConditionQueryRestockBill();
         queryRestockBill.setBillCode("74780302");
-        QueryRestockBillDTO queryRestockBillDTO = this.restockBillManager.findByConditions(queryRestockBill);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        logger.info(queryRestockBillDTO.getTotalNumber()+queryRestockBillDTO.getContent().toString());
+        logger.info(queryRestockBillDTO.getTotalNumber() +queryRestockBillDTO.getContent().toString());
     }
     @Test
     public void born(){
