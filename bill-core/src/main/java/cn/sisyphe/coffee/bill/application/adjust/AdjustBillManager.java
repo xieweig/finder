@@ -27,7 +27,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;

@@ -13,7 +13,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
