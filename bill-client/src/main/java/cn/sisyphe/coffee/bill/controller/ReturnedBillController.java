@@ -16,10 +16,10 @@ import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +35,11 @@ import java.util.List;
 @Api(description = "退库相关操作")
 public class ReturnedBillController {
 
-    @Resource
+    @Autowired
     private ReturnedBillManager returnedBillManager;
-    @Resource
+    @Autowired
     private PlanBillManager planBillManager;
-    @Resource
+    @Autowired
     private SharedManager sharedManager;
 
     /**
@@ -316,25 +316,5 @@ public class ReturnedBillController {
         }
         return responseResult;
     }
-
-    /**
-     * 多条件退库调拨单查询
-     *
-     * @param billCode
-     * @return responseResult
-     */
- /*   @ApiOperation(value = "多条件退库调拨单查询")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPackageInfoByBillCode(@RequestParam String billCode) {
-
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            ScanFillBillDTO scanFillBillDTO = returnedBillManager.findPackageInfoByBillCode(billCode);
-            responseResult.put("content", scanFillBillDTO);
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }*/
 
 }

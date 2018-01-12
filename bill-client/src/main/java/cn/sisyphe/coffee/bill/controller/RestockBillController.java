@@ -1,11 +1,14 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
@@ -40,6 +43,8 @@ public class RestockBillController {
     private PlanBillManager planBillManager;
     @Autowired
     private SharedManager sharedManager;
+    @Autowired
+    private AllotBillManager allotBillManager;
 
     /**
      * 计划单据多条件分页查询
@@ -314,23 +319,44 @@ public class RestockBillController {
     }
 
     /**
-     * 多条件退库调拨单查询
+     * 调拨单据多条件分页查询
      *
-     * @param billCode
-     * @return responseResult
+     * @return
      */
- /*   @ApiOperation(value = "多条件退库调拨单查询")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPackageInfoByBillCode(@RequestParam String billCode) {
-
+    @ApiOperation(value = "调拨单据多条件分页查询")
+    @RequestMapping(path = "/findAllotBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findAllotBillByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
+        System.err.print("调拨单据多条件分页查询");
         try {
-            ScanFillBillDTO scanFillBillDTO = restockBillManager.findPackageInfoByBillCode(billCode);
-            responseResult.put("content", scanFillBillDTO);
-        } catch (DataException data) {
-            responseResult.putException(data);
+            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.RESTOCK);
+
+            for (AllotBillDTO allotBillDTO : allotBillDTOS) {
+                //测试使用
+                allotBillDTO.setOperatorName("操作人：懒羊羊");
+            }
+            responseResult.put("content", allotBillDTOS);
+        } catch (DataException e) {
+            responseResult.putException(e);
         }
         return responseResult;
-    }*/
+    }
+
+    /**
+     * 调拨单查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "根据单号查询调拨单")
+    @RequestMapping(path = "/findAllotBillByBillCode", method = RequestMethod.POST)
+    public ResponseResult findAllotBillByBillCode(@RequestBody String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("allotBill", allotBillManager.findAllotBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
 
 }

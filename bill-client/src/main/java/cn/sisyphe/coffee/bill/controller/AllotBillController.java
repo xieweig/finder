@@ -56,7 +56,7 @@ public class AllotBillController {
      *
      * @return
      */
-    @ApiOperation(value = "调拨单据多条件分页查询")
+    @ApiOperation(value = "根据单号查询调拨单")
     @RequestMapping(path = "/findAllotBillByBillCode", method = RequestMethod.POST)
     public ResponseResult findAllotBillByBillCode(@RequestBody String billCode) {
         ResponseResult responseResult = new ResponseResult();
