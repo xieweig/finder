@@ -45,7 +45,6 @@ public class AddAdjustBillDTO {
      * 出库库位
      */
     private Storage outStorage;
-
     /**
      * 入库库位
      */

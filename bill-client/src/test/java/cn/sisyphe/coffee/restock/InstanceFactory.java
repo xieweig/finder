@@ -51,7 +51,7 @@ public class InstanceFactory {
 
         AddRestockBillDTO dto = new AddRestockBillDTO();
       //  dto.setBillCode(this.nextBillCode());
-        //dto.setBillCode("0101" + random.nextInt(1000));后台生成 update delete select 用到
+
         //一般性字段
         dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
         dto.setBillProperty(SourcePlanTypeEnum.RESTOCK);

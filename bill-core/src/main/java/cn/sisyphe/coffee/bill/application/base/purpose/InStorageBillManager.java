@@ -48,11 +48,26 @@ public class InStorageBillManager {
      * @param outStorageBill 出库单
      */
     @SuppressWarnings("unchecked")
-    public void convertInStorageBill(Bill outStorageBill) {
+    public Bill convertInStorageBill(Bill outStorageBill) {
         Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
         inBill.setBillState(BillStateEnum.UN_ALLOT);
         AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
         billManager.purpose(inBill);
+        return inBill;
+    }
+
+    /**
+     * 更新入库单状态为已调拨
+     *
+     * @param bill 入库单
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Bill allotedForInStorageBill(Bill bill) {
+        AbstractBillManager abstractBillManager = getAbstractBillManager(bill.getBillType());
+        Bill foundBill = abstractBillManager.findEntityByBillCode(bill.getBillCode());
+        abstractBillManager.committed(foundBill);
+        return foundBill;
     }
 
     /**
@@ -77,6 +92,9 @@ public class InStorageBillManager {
         bill.setTotalVarietyAmount(sourceBill.getTotalVarietyAmount());
         bill.setBillProperty(sourceBill.getBillProperty());
         bill.setBillState(BillStateEnum.UN_ALLOT);
+        bill.setTotalPrice(sourceBill.getTotalPrice());
+        bill.setProgress(sourceBill.getProgress());
+        bill.setOperatorCode(sourceBill.getOperatorCode());
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
             BillDetail desBillDetail = createBillDetail(sourceBill.getBillType());

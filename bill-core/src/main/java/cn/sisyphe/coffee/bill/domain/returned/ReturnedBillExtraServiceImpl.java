@@ -142,7 +142,7 @@ public class ReturnedBillExtraServiceImpl implements ReturnedBillExtraService {
              * 拼接审核状态
              */
             if (conditionQueryReturnedBill.getAuditStateCode() != null && conditionQueryReturnedBill.getAuditStateCode().size() > 0) {
-                expressions.add(root.get("auditState").as(String.class).in(conditionQueryReturnedBill.getSubmitStateCode()));
+                expressions.add(root.get("auditState").as(String.class).in(conditionQueryReturnedBill.getAuditStateCode()));
             }
 
             /**

@@ -24,5 +24,4 @@ public interface AllotBillRepository extends BillRepository<AllotBill> {
      * @return
      */
     Page<AllotBill> findAll(Specification<AllotBill> ta, Pageable pageable);
-
 }

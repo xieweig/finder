@@ -16,9 +16,8 @@ import java.util.List;
 /**
  * @date: 2018/1/2
  * @description:
- * @author：xieweiguang
+ * @author：bifenglin
  */
-
 public class ConditionQueryRestockBill extends BaseConditionQuery implements Serializable {
     /**
      * 录单人名称

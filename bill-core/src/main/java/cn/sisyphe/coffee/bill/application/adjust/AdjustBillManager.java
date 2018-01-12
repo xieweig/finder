@@ -1,11 +1,14 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
-import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.interfaces.Executor;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -13,6 +16,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.mistake.TransferMistakeBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
@@ -23,7 +27,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillMaterialDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AllotDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -160,7 +164,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param billCode 单据编号
      * @return QueryOneAdjustDTO
      */
-    public QueryOneAdjustDTO openBill(String billCode) {
+    public QueryOneAdjustDTO openBill(String billCode,String operatorCode) {
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
         }
@@ -170,6 +174,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             // 打开单据
             open(adjustBill);
         }
+        adjustBill.setOperatorCode(operatorCode);
         return commonFun(adjustBill);
     }
 
@@ -207,6 +212,10 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param addAdjustBillDTO
      */
     private void mapBill(AdjustBill adjustBill, AddAdjustBillDTO addAdjustBillDTO) {
+        //操作人编码
+        adjustBill.setOperatorCode(addAdjustBillDTO.getOperatorCode());
+        //审核人编码
+        adjustBill.setAuditPersonCode(addAdjustBillDTO.getAuditPersonCode());
         //设置单据作用
         adjustBill.setBillPurpose(BillPurposeEnum.OutStorage);
         //设置出库站点
@@ -225,7 +234,6 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             adjustBill.setRootCode(addAdjustBillDTO.getRootCode());
             adjustBill.setSourceCode(addAdjustBillDTO.getRootCode());
         }
-
         //设置计划备注
         adjustBill.setPlanMemo(addAdjustBillDTO.getPlanMemo());
         //设置计划详情
@@ -440,7 +448,15 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
      * @param allotDTO 调拨页面数据DTO
      */
     public void createAllotBill(AllotDTO allotDTO) {
-        return;
-
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(allotDTO.getBillCode());
+        allotBillManager.createAllotBill(adjustBill, (Executor<AllotBill>) bill -> {
+            Station inLocation = (Station) bill.getInLocation();
+            inLocation.setStorage(allotDTO.getInStorage());
+            for (AllotBillDetail billDetail : bill.getBillDetails()) {
+                billDetail.setActualAmount(allotDTO.getDetails().get(billDetail.getGoods().code()));
+            }
+            //TODO 调用唐华玲的差错单生成接口生成差错单
+            bill.setTransferMistakeBill(new TransferMistakeBill());
+        });
     }
 }

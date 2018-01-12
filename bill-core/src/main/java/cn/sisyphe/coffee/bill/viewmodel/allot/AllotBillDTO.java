@@ -1,34 +1,12 @@
-package cn.sisyphe.coffee.bill.domain.base.model;
-
+package cn.sisyphe.coffee.bill.viewmodel.allot;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
-import cn.sisyphe.coffee.bill.domain.mistake.TransferMistakeBill;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.PostPersist;
-import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
@@ -36,34 +14,19 @@ import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
-/**
- * 单据基础类
- *
- * @author heyong
- */
-@MappedSuperclass
-public class Bill<T extends BillDetail> extends BaseEntity {
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long billId;
-
+public class AllotBillDTO {
     /**
      * 单据号
      */
-    @Column(unique = true)
     private String billCode;
 
     /**
      * 单据种类
      */
-    @Enumerated(EnumType.STRING)
     private BillTypeEnum billType;
     /**
      * 单据作用
      */
-    @Enumerated(EnumType.STRING)
     private BillPurposeEnum billPurpose;
 
     /**
@@ -74,13 +37,11 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 出库位置
      */
-    @Transient
     private AbstractLocation outLocation;
 
     /**
      * 入库位置
      */
-    @Transient
     private AbstractLocation inLocation;
 
     /**
@@ -101,77 +62,39 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 操作人代码
      */
-    private String operatorCode;
+    private String operatorName;
     /**
      * 审核人编码
      */
-    private String auditPersonCode;
+    private String auditPersonName;
     /**
      * 物品明细
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    // 去掉外健
-    @org.hibernate.annotations.ForeignKey(name = "none")
-    // 设置子类的 billCode
-    @JoinColumn(name = "billCode", referencedColumnName = "billCode")
-    private Set<T> billDetails = new HashSet<>();
+    private Set<AllotBillDetailDTO> billDetails = new HashSet<>();
 
     /**
      * 单据状态
      */
-    @Enumerated(EnumType.STRING)
     private BillStateEnum billState = BillStateEnum.SAVED;
 
     /**
      * 提交状态
      */
-    @Enumerated(EnumType.STRING)
     private BillSubmitStateEnum submitState;
 
     /**
      * 审核状态
      */
-    @Enumerated(EnumType.STRING)
     private BillAuditStateEnum auditState;
 
     /**
      * 出入库状态
      */
-    @Enumerated(EnumType.STRING)
     private BillInOrOutStateEnum inOrOutState;
-
-
-    /**
-     * 更新前, 在数据库操作中调用
-     */
-    public void update() {
-        if (inLocation != null) {
-            dbStation.setInLocation(inLocation);
-        }
-
-        if (outLocation != null) {
-            dbStation.setOutLocation(outLocation);
-        }
-    }
-
-    /**
-     * 载入
-     */
-    @PostLoad
-    @PostPersist
-    public void load() {
-        if (dbStation == null) {
-            return;
-        }
-
-        inLocation = dbStation.getInLocation();
-        outLocation = dbStation.getOutLocation();
-    }
 
     /**
      * 出库时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
 
     /**
@@ -184,7 +107,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 出库状态编码
      */
-    @Enumerated(EnumType.STRING)
     private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
 
     /**
@@ -215,7 +137,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 按货物还是按原料
      */
-    @Enumerated(EnumType.STRING)
     private BasicEnum basicEnum;
 
     /**
@@ -227,7 +148,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      * 总价
      */
     private BigDecimal totalPrice;
-    
+
     /**
      * 单据来源类型
      */
@@ -236,39 +157,19 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据编码前缀
      */
-    @Transient
     private String billCodePrefix;
 
-
     /**
-     * 差错单
+     * 具体的单据类型
      */
-    @Transient
-    private TransferMistakeBill transferMistakeBill;
+    private BillTypeEnum specificBillType;
 
-
-    public AbstractLocation getOutLocation() {
-        return outLocation;
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
     }
 
-    public void setOutLocation(AbstractLocation outLocation) {
-        this.outLocation = outLocation;
-    }
-
-    public AbstractLocation getInLocation() {
-        return inLocation;
-    }
-
-    public void setInLocation(AbstractLocation inLocation) {
-        this.inLocation = inLocation;
-    }
-
-    public BillTypeEnum getBillType() {
-        return billType;
-    }
-
-    public void setBillType(BillTypeEnum billType) {
-        this.billType = billType;
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
     }
 
     public String getBillCode() {
@@ -277,6 +178,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setBillCode(String billCode) {
         this.billCode = billCode;
+    }
+
+    public BillTypeEnum getBillType() {
+        return billType;
+    }
+
+    public void setBillType(BillTypeEnum billType) {
+        this.billType = billType;
     }
 
     public BillPurposeEnum getBillPurpose() {
@@ -295,6 +204,30 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.belongStationCode = belongStationCode;
     }
 
+    public AbstractLocation getOutLocation() {
+        return outLocation;
+    }
+
+    public void setOutLocation(AbstractLocation outLocation) {
+        this.outLocation = outLocation;
+    }
+
+    public AbstractLocation getInLocation() {
+        return inLocation;
+    }
+
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
+    }
+
+    public DbStation getDbStation() {
+        return dbStation;
+    }
+
+    public void setDbStation(DbStation dbStation) {
+        this.dbStation = dbStation;
+    }
+
     public String getSourceCode() {
         return sourceCode;
     }
@@ -311,28 +244,28 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.rootCode = rootCode;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public String getOperatorName() {
+        return operatorName;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
-    public Set<T> getBillDetails() {
+    public String getAuditPersonName() {
+        return auditPersonName;
+    }
+
+    public void setAuditPersonName(String auditPersonName) {
+        this.auditPersonName = auditPersonName;
+    }
+
+    public Set<AllotBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<T> billDetails) {
+    public void setBillDetails(Set<AllotBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
-    }
-
-    public Long getBillId() {
-        return billId;
-    }
-
-    public void setBillId(Long billId) {
-        this.billId = billId;
     }
 
     public BillStateEnum getBillState() {
@@ -341,18 +274,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setBillState(BillStateEnum billState) {
         this.billState = billState;
-    }
-
-    public String getAuditPersonCode() {
-        return auditPersonCode;
-    }
-
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
-    }
-
-    public void addBillDetails(T billDetails) {
-        this.billDetails.add(billDetails);
     }
 
     public BillSubmitStateEnum getSubmitState() {
@@ -379,14 +300,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.inOrOutState = inOrOutState;
     }
 
-    public DbStation getDbStation() {
-        return dbStation;
-    }
-
-    public void setDbStation(DbStation dbStation) {
-        this.dbStation = dbStation;
-    }
-
     public Date getOutWareHouseTime() {
         return outWareHouseTime;
     }
@@ -401,14 +314,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setInWareHouseTime(Date inWareHouseTime) {
         this.inWareHouseTime = inWareHouseTime;
-    }
-
-    public SourcePlanTypeEnum getBillProperty() {
-        return billProperty;
-    }
-
-    public void setBillProperty(SourcePlanTypeEnum billProperty) {
-        this.billProperty = billProperty;
     }
 
     public BillOutStateEnum getOutStateEnum() {
@@ -483,6 +388,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
+    public SourcePlanTypeEnum getBillProperty() {
+        return billProperty;
+    }
+
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
+        this.billProperty = billProperty;
+    }
+
     public String getBillCodePrefix() {
         return billCodePrefix;
     }
@@ -491,19 +404,10 @@ public class Bill<T extends BillDetail> extends BaseEntity {
         this.billCodePrefix = billCodePrefix;
     }
 
-    public TransferMistakeBill getTransferMistakeBill() {
-        return transferMistakeBill;
-    }
-
-    public void setTransferMistakeBill(TransferMistakeBill transferMistakeBill) {
-        this.transferMistakeBill = transferMistakeBill;
-    }
-
     @Override
     public String toString() {
-        return "Bill{" +
-                "billId=" + billId +
-                ", billCode='" + billCode + '\'' +
+        return "AllotBillDTO{" +
+                "billCode='" + billCode + '\'' +
                 ", billType=" + billType +
                 ", billPurpose=" + billPurpose +
                 ", belongStationCode='" + belongStationCode + '\'' +
@@ -512,8 +416,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
                 ", dbStation=" + dbStation +
                 ", sourceCode='" + sourceCode + '\'' +
                 ", rootCode='" + rootCode + '\'' +
-                ", operatorCode='" + operatorCode + '\'' +
-                ", auditPersonCode='" + auditPersonCode + '\'' +
                 ", billDetails=" + billDetails +
                 ", billState=" + billState +
                 ", submitState=" + submitState +
@@ -532,6 +434,6 @@ public class Bill<T extends BillDetail> extends BaseEntity {
                 ", totalPrice=" + totalPrice +
                 ", billProperty=" + billProperty +
                 ", billCodePrefix='" + billCodePrefix + '\'' +
-                "} " + super.toString();
+                '}';
     }
 }

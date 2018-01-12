@@ -1,16 +1,25 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.interfaces.Executor;
+import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -24,10 +33,30 @@ import java.util.Set;
 @Service
 public class AllotBillManager extends AbstractBillManager<AllotBill> {
 
+    @Autowired
+    AllotBillExtraService allotBillExtraService;
+
+    @Autowired
+    SharedManager sharedManager;
 
     @Autowired
     public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(billRepository, applicationEventPublisher);
+    }
+
+
+    /**
+     * 入库单转换成调拨单
+     *
+     * @param inStorageBill 生成调拨单
+     */
+    @SuppressWarnings("unchecked")
+    public AllotBill createAllotBill(Bill inStorageBill, Executor executor) {
+        AllotBill allotBill = generateBill(inStorageBill, BillPurposeEnum.moveStorage);
+        allotBill.setBillState(BillStateEnum.UN_ALLOT);
+        executor.apply(allotBill);
+        //生成调拨单，未调拨
+        return purpose(allotBill);
     }
 
 
@@ -64,6 +93,70 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         allotBill.setBillDetails(details);
 
         return allotBill;
+    }
+
+    public Page<AllotBillDTO> findAllotBillByCondition(ConditionQueryAllotBill conditionQueryAllotBill, BillTypeEnum specificBillType) {
+        conditionQueryAllotBill.setSpecificBillType(specificBillType);
+//        conditionQueryAllotBill.setBillPurpose(billPurpose);
+        Page<AllotBill> allotBills = allotBillExtraService.findPageByCondition(conditionQueryAllotBill);
+
+        return allotBills.map(this::allotBillToAllotBillDTO);
+    }
+
+    private AllotBillDTO allotBillToAllotBillDTO(AllotBill allotBill) {
+        AllotBillDTO allotBillDTO = new AllotBillDTO();
+        allotBillDTO.setOperatorName(sharedManager.findOneByUserCode(allotBill.getOperatorCode()));
+        allotBillDTO.setAuditMemo(allotBill.getAuditMemo());
+        allotBillDTO.setAuditPersonName(sharedManager.findOneByUserCode(allotBill.getAuditPersonCode()));
+        allotBillDTO.setAuditState(allotBill.getAuditState());
+        allotBillDTO.setBasicEnum(allotBill.getBasicEnum());
+        allotBillDTO.setBelongStationCode(allotBillDTO.getBelongStationCode());
+        allotBillDTO.setBillCode(allotBill.getBillCode());
+        allotBillDTO.setAuditState(allotBill.getAuditState());
+//        allotBillDTO.setBillDetails(allotBill.getBillDetails());
+        allotBillDTO.setBillProperty(allotBill.getBillProperty());
+        allotBillDTO.setBillPurpose(allotBill.getBillPurpose());
+        allotBillDTO.setBillState(allotBill.getBillState());
+        allotBillDTO.setInLocation(allotBill.getInLocation());
+        allotBillDTO.setInOrOutState(allotBill.getInOrOutState());
+        allotBillDTO.setInWareHouseTime(allotBill.getInWareHouseTime());
+        allotBillDTO.setOutLocation(allotBill.getOutLocation());
+        allotBillDTO.setOutStateEnum(allotBill.getOutStateEnum());
+        allotBillDTO.setOutStorageMemo(allotBill.getOutStorageMemo());
+        allotBillDTO.setOutWareHouseTime(allotBill.getOutWareHouseTime());
+        allotBillDTO.setPlanMemo(allotBill.getPlanMemo());
+        allotBillDTO.setProgress(allotBillDTO.getProgress());
+        allotBillDTO.setRootCode(allotBill.getRootCode());
+        allotBillDTO.setSourceCode(allotBill.getSourceCode());
+        allotBillDTO.setSpecificBillType(allotBill.getSpecificBillType());
+        allotBillDTO.setSubmitState(allotBill.getSubmitState());
+        allotBillDTO.setTotalAmount(allotBill.getTotalAmount());
+        allotBillDTO.setTotalPrice(allotBill.getTotalPrice());
+        allotBillDTO.setTotalVarietyAmount(allotBill.getTotalVarietyAmount());
+        allotBillDTO.setBillDetails(billDetailToBillDetailDTO(allotBill.getBillDetails()));
+        return null;
+    }
+
+    private Set<AllotBillDetailDTO> billDetailToBillDetailDTO(Set<AllotBillDetail> billDetails) {
+        Set<AllotBillDetailDTO> allotBillDetailDTOS = new HashSet<>();
+        for (AllotBillDetail allotBillDetail : billDetails) {
+            AllotBillDetailDTO allotBillDetailDTO = new AllotBillDetailDTO();
+            allotBillDetailDTO.setActualAmount(allotBillDetail.getActualAmount());
+            RawMaterial rawMaterial;
+            if (allotBillDetail.getGoods() != null && allotBillDetail.getGoods() instanceof RawMaterial){
+                rawMaterial = (RawMaterial) allotBillDetail.getGoods();
+                allotBillDetailDTO.setRawMaterial(rawMaterial);
+            }
+            allotBillDetailDTO.setShippedAmount(allotBillDetail.getShippedAmount());
+            allotBillDetailDTOS.add(allotBillDetailDTO);
+        }
+        return allotBillDetailDTOS;
+    }
+
+    public AllotBillDTO findAllotBillByBillCode(String billCode) {
+        AllotBill allotBill = allotBillExtraService.findOneByBillCode(billCode);
+        AllotBillDTO allotBillDTO= allotBillToAllotBillDTO(allotBill);
+        return allotBillDTO;
     }
 }
 
