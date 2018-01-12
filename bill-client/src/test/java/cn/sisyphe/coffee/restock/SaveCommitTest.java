@@ -1,3 +1,4 @@
+/*
 
 package cn.sisyphe.coffee.restock;
 
@@ -37,11 +38,13 @@ import java.util.concurrent.TimeUnit;
 
 
 
+*/
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/5
  * @Description: manager 级别上的测试
- */
+ *//*
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {CoreApplication.class})
@@ -247,3 +250,4 @@ public class SaveCommitTest extends InstanceFactory{
 
 }
 
+*/

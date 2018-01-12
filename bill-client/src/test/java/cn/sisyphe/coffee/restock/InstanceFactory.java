@@ -140,6 +140,8 @@ public class InstanceFactory {
     private RestockBillDetail nextRandomBillDetail() {
         RawMaterial rawMaterial = new RawMaterial("030201" + random.nextInt(2000));
         Cargo cargo = new Cargo("00205" + random.nextInt(1000));
+
+
         cargo.setCargoName("cargoName:" + random.nextInt(100));
         rawMaterial.setCargo(cargo);
 

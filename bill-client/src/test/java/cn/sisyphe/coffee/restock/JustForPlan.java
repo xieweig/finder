@@ -1,13 +1,13 @@
+/*
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
@@ -27,18 +27,20 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+*/
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/8
  * @Description:仅仅服务于restock测试用，数据做的字段不全
- */
+ *//*
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
 public class JustForPlan {
 
     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
-    Logger logger = LoggerFactory.getLogger(SaveCommitTest.class);
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     public static final String[] CARGOCODE = {"AD","SSA","SDS","WEA"};
     public static final String[] RAWMATERIALCODE = {"2","7","8","9"};
     @Resource
@@ -46,7 +48,7 @@ public class JustForPlan {
 
     private PlanBillDetail createPlanBillDetail() {
         PlanBillDetail planBillDetail = new PlanBillDetail();
-        planBillDetail.setAmount(random.nextInt(100));
+        planBillDetail.setShippedAmount(random.nextInt(100));
         planBillDetail.setPackageCode("test:03" + random.nextInt(100));
         RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
         Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
@@ -57,11 +59,16 @@ public class JustForPlan {
         return planBillDetail;
     }
 //为restock生成plan测试用
+    private BillFactory billFactory = new BillFactory();
     private PlanBill createPlanBill() {
-        PlanBill planBill = new PlanBill();
+
+
+        PlanBill planBill = (PlanBill)billFactory.createBill(BillTypeEnum.PLAN);
         planBill.setHqBill(false);
-        /*
-        * bill plan 生成对应的restock*/
+        */
+/*
+        * bill plan 生成对应的restock*//*
+
         planBill.setSpecificBillType(BillTypeEnum.RESTOCK);
         planBill.setAuditMemo("remarks: " + random.nextInt(1000));
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
@@ -90,3 +97,4 @@ public class JustForPlan {
         }
     }
 }
+*/

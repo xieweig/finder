@@ -45,7 +45,7 @@ public abstract class AbstractCastableStrategy {
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {
             PlanBillDetail planBillDetail = new PlanBillDetail();
             planBillDetail.setGoods(planBillPayloadDetail.getGoods());
-            planBillDetail.setAmount(planBillPayloadDetail.getAmount());
+            planBillDetail.setShippedAmount(planBillPayloadDetail.getAmount());
             planBillDetails.add(planBillDetail);
         }
         planBill.setBillDetails(planBillDetails);

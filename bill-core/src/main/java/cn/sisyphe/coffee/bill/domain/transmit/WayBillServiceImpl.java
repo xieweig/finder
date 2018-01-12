@@ -215,19 +215,19 @@ public class WayBillServiceImpl implements WayBillService {
         wayBillDB.getWayBillDetailSet().clear();
 
         // 入库站点code
-        if (StringUtils.isEmpty(wayBill.getInStationCode())) {
+        if (!StringUtils.isEmpty(wayBill.getInStationCode())) {
             wayBillDB.setInStationCode(wayBill.getInStationCode());
         }
 
-        if (StringUtils.isEmpty(wayBill.getInStationName())) {
+        if (!StringUtils.isEmpty(wayBill.getInStationName())) {
             wayBillDB.setInStationName(wayBill.getInStationName());
         }
         //出库站点code
-        if (StringUtils.isEmpty(wayBill.getOutStationCode())) {
+        if (!StringUtils.isEmpty(wayBill.getOutStationCode())) {
             wayBillDB.setOutStationCode(wayBill.getOutStationCode());
         }
         //
-        if (StringUtils.isEmpty(wayBill.getOutStationName())) {
+        if (!StringUtils.isEmpty(wayBill.getOutStationName())) {
             wayBillDB.setOutStationName(wayBill.getOutStationName());
         }
         //公司名称

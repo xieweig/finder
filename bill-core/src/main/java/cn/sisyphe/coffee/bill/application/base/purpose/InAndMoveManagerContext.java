@@ -80,7 +80,6 @@ public class InAndMoveManagerContext {
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
-            desBillDetail.setAmount(billDetail.getAmount());
             desBillDetail.setProgress(billDetail.getProgress());
             details.add(desBillDetail);
         }

@@ -41,7 +41,6 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
      */
     private String outStationCodeArray;
 
-
     /**
      * 录单人
      */
@@ -49,13 +48,6 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
 
     private List<String> creatorCodeList;
 
-    /**
-     * 单据状态
-     */
-    private List<BillSubmitStateEnum> submitStates;
-
-
-    private List<BillAuditStateEnum> auditStates;
     /**
      * 单据作用
      */
@@ -91,22 +83,6 @@ public class ConditionQueryPlanBill extends BaseConditionQuery implements Serial
 
     public void setCreatorCodeList(List<String> creatorCodeList) {
         this.creatorCodeList = creatorCodeList;
-    }
-
-    public List<BillSubmitStateEnum> getSubmitStates() {
-        return submitStates;
-    }
-
-    public void setSubmitStates(List<BillSubmitStateEnum> submitStates) {
-        this.submitStates = submitStates;
-    }
-
-    public List<BillAuditStateEnum> getAuditStates() {
-        return auditStates;
-    }
-
-    public void setAuditStates(List<BillAuditStateEnum> auditStates) {
-        this.auditStates = auditStates;
     }
 
     public BillPurposeEnum getBillPurpose() {

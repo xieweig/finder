@@ -58,8 +58,6 @@ public class WayBillManager {
      */
     public ScanFillBillDTO scanQueryBill(String billCode) {
 
-        // TODO: 2018/1/9  通过不同的单据查询数据
-
 //        现在在"运单跟踪"的出库单测试时使用以下临时规则：
 //        单据类型+站点+时间+进程id+6位流水编码
 //        配送出库单 ：PSCK+CKG001+20180110+P10+6位流水 -> PSCKCKG00120180110P10000001
@@ -67,6 +65,7 @@ public class WayBillManager {
 //        退库出库单 ：TKCK+CKG001+20180110+P10+6位流水 -> TKCKCKG00120180110P10000001
 //        退货出库单 ：THCK+CKG001+20180110+P10+6位流水 -> THCKCKG00120180110P10000001
 
+        // TODO: 2018/1/11  匹配新的规则
         if (StringUtils.isEmpty(billCode)) {
             return null;
         }

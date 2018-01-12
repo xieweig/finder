@@ -374,7 +374,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
             for (PlanBillDetail planBillDetail : billDetails) {
                 AdjustBillMaterialDetailDTO dto = new AdjustBillMaterialDetailDTO();
                 // 应拣数量
-                dto.setShippedAmount(planBillDetail.getAmount());
+                dto.setShippedAmount(planBillDetail.getShippedAmount());
                 // 原料信息
                 RawMaterial rawMaterial = (RawMaterial) planBillDetail.getGoods();
                 dto.setRawMaterial(rawMaterial);

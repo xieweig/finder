@@ -275,7 +275,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
                 }
                 if (detail.getAmount() != null) {
                     // 实收数量-最小单位数量
-                    purchaseBillDetail.setAmount(detail.getAmount());
+                    purchaseBillDetail.setActualAmount(detail.getAmount());
                 }
                 if (detail.getDifferenceNumber() != null) {
                     // 数量差值
@@ -355,7 +355,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
                     detailDTO.setRawMaterial(rawMaterial);
                 }
                 // 实收数量-最小单位数量
-                detailDTO.setAmount(detail.getAmount());
+                detailDTO.setAmount(detail.getActualAmount());
                 // 包号
                 detailDTO.setPackageCode(detail.getPackageCode());
                 // 生产日期
@@ -489,17 +489,17 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         // 差价总和
         BigDecimal differencePrice = BigDecimal.ZERO;
         for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetailSet) {
-            if (purchaseBillDetail.getAmount() > 0) {
+            if (purchaseBillDetail.getActualAmount() > 0) {
                 // 累加实收数量
-                amount += purchaseBillDetail.getAmount();
+                amount += purchaseBillDetail.getActualAmount();
             }
             if (purchaseBillDetail.getDifferenceNumber() > 0) {
                 // 累加数量差值
                 differenceNumber += purchaseBillDetail.getDifferenceNumber();
             }
-            if (purchaseBillDetail.getUnitPrice() != null && purchaseBillDetail.getAmount() > 0) {
+            if (purchaseBillDetail.getUnitPrice() != null && purchaseBillDetail.getActualAmount() > 0) {
                 // 累加进货总价
-                inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getAmount())));
+                inTotalPrice = inTotalPrice.add(purchaseBillDetail.getUnitPrice().multiply(new BigDecimal(purchaseBillDetail.getActualAmount())));
             }
             if (purchaseBillDetail.getDifferencePrice() != null) {
                 // 累加差价总和
