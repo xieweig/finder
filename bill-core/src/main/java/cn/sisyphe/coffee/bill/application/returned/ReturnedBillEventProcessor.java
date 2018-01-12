@@ -1,29 +1,29 @@
-package cn.sisyphe.coffee.bill.application.restock;
+package cn.sisyphe.coffee.bill.application.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 /**
  *@date: 2018/1/2
- *@description: 
+ *@description:
  *@author：xieweiguang
  */
 @Service
-public class RestockBillEventProcessor  {
+public class ReturnedBillEventProcessor  {
 
     @Autowired
-    private RestockBillManager restockBillManager;
+    private ReturnedBillManager returnedBillManager;
 
     /**
      *
      *notes :
      *  退库出库单的保存行为的回调函数
      */
-    @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'SAVED'")
-    public void restockBillSave(BehaviorEvent event) {
+    @EventListener(condition = "#event.billType.toString() ==  'RETURNED' and #event.billState.toString() == 'SAVED'")
+    public void returnedBillSave(BehaviorEvent event) {
         System.err.println("Event Callback SAVED: === " + event.getBill());
     }
     /**
@@ -31,8 +31,8 @@ public class RestockBillEventProcessor  {
      *notes :
      *  退库出库单的提交行为的回调函数
      */
-    @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'SUBMITTED'")
-    public void restockBillCommit(BehaviorEvent event) {
+    @EventListener(condition = "#event.billType.toString() ==  'RETURNED' and #event.billState.toString() == 'SUBMITTED'")
+    public void returnedBillCommit(BehaviorEvent event) {
         System.err.println("Event Callback SUBMITTED: === " + event.getBill());
     }
 
@@ -41,7 +41,7 @@ public class RestockBillEventProcessor  {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'AUDIT_FAILURE'")
+    @EventListener(condition = "#event.billType.toString() ==  'RETURNED' and #event.billState.toString() == 'AUDIT_FAILURE'")
     public void billFailure(BehaviorEvent event) {
         System.err.println("AUDIT_FAILURE:" + event.getBill());
     }
@@ -51,10 +51,10 @@ public class RestockBillEventProcessor  {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'AUDIT_SUCCESS'")
+    @EventListener(condition = "#event.billType.toString() ==  'RETURNED' and #event.billState.toString() == 'AUDIT_SUCCESS'")
     public void billSuccess(BehaviorEvent event) {
         System.err.println("AUDIT_SUCCESS:" + event.getBill());
-        restockBillManager.purpose((RestockBill) event.getBill());
+        returnedBillManager.purpose((ReturnedBill) event.getBill());
     }
 
     /**
@@ -62,7 +62,7 @@ public class RestockBillEventProcessor  {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'DONE'")
+    @EventListener(condition = "#event.billType.toString() ==  'RETURNED' and #event.billState.toString() == 'DONE'")
     public void billDone(BehaviorEvent event) {
         System.err.println("DONE:" + event.getBill());
     }

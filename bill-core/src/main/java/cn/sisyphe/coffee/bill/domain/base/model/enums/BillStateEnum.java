@@ -52,5 +52,10 @@ public enum BillStateEnum {
      */
     ALLOT,
 
+    /**
+     * 调拨中
+     */
+    ALLOTING,
+
 
 }

@@ -229,7 +229,10 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
         // 设置单据的作用
         restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
-
+        //设置根单号
+        if (addRestockBillDTO.getRootCode() == null){
+            restockBill.setRootCode(restockBill.getBillCode());
+        }
         //设置单据属性
         restockBill.setBillProperty(addRestockBillDTO.getBillProperty());
 
@@ -575,8 +578,8 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         restockAllotBillDTO.setBillProperty(restockBill.getBillProperty());
         // 设置出库站点
         restockAllotBillDTO.setOutLocation(restockBill.getOutLocation());
-        // 设置入库站点（调出库位）
-        restockAllotBillDTO.setInLocationOutStorage(restockBill.getInLocation());
+        // 设置入库站点
+        restockAllotBillDTO.setInLocation(restockBill.getInLocation());
         // 设置入库时间
         restockAllotBillDTO.setInWareHouseTime(restockBill.getInWareHouseTime());
         // 转换退库调拨单明细信息

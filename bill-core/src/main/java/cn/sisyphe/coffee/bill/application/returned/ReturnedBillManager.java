@@ -232,7 +232,10 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         ReturnedBill returnedBill = (ReturnedBill) billFactory.createBill(BillTypeEnum.RETURNED);
         // 设置单据的作用
         returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
-
+        //设置根单号
+        if (addReturnedBillDTO.getRootCode() == null){
+            returnedBill.setRootCode(returnedBill.getBillCode());
+        }
         //设置单据属性
         returnedBill.setBillProperty(addReturnedBillDTO.getBillProperty());
 

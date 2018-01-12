@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AddAllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -37,7 +38,7 @@ public class AllotBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("调拨单据多条件分页查询");
         try {
-            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.RESTOCK);
+            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.ALLOT);
 
             for (AllotBillDTO allotBillDTO : allotBillDTOS) {
                 //测试使用
@@ -46,6 +47,37 @@ public class AllotBillController {
             responseResult.put("content", allotBillDTOS);
         } catch (DataException e) {
             responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 调拨单查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "调拨单单个查询")
+    @RequestMapping(path = "/findAllotBillByBillCode", method = RequestMethod.GET)
+    public ResponseResult findAllotBillByBillCode(@RequestParam String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("allotBill", allotBillManager.findAllotBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    @ApiOperation(value = "调拨")
+    @RequestMapping(path = "/create", method = RequestMethod.POST)
+    public ResponseResult allot(@RequestBody AddAllotBillDTO allotDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            allotBillManager.createAllotBill(allotDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
         }
         return responseResult;
     }

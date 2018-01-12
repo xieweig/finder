@@ -167,18 +167,18 @@ public class WayBillManager {
      * @throws DataException
      */
     public QueryWayBillDTO findPageByCondition(ConditionQueryWayBill conditionQueryWayBill) throws DataException {
-        // TODO: 2018/1/2
         //1 根据具体的运单号查询,只有唯一的显示，显示一条
         //2 根据配送出库查询可能会有多条
         //3 所有都是模糊匹配
         //所有的产品表中的数据
         Page<WayBill> wayBillPage = iWayBillService.findPageByCondition(conditionQueryWayBill);
-
+        //
         QueryWayBillDTO queryWayBillDTO = new QueryWayBillDTO();
         // 转换
         List<ReturnWayBillDTO> wayBillDTOList = convertToDTO(wayBillPage.getContent());
-        //
+        // 总页数
         queryWayBillDTO.setTotalNumber(wayBillPage.getTotalElements());//
+
         queryWayBillDTO.setContent(wayBillDTOList);
         return queryWayBillDTO;
     }
@@ -327,7 +327,7 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
 
         String userName = this.findUserNameByCode(editWayBillDTO.getOperatorCode());
-        wayBill.setOperatorName(userName);//录单人姓名
+        wayBill.setOperatorName((userName == null) ? "" : userName);//录单人姓名
 
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//
         wayBill.setOutStationCode(editWayBillDTO.getOutStationCode());
@@ -384,7 +384,7 @@ public class WayBillManager {
         wayBill.setOperatorCode(editWayBillDTO.getOperatorCode());//user code
         //
         String userName = this.findUserNameByCode(editWayBillDTO.getOperatorCode());
-        wayBill.setOperatorName(userName);//录单人姓名
+        wayBill.setOperatorName((userName == null) ? "" : userName);//录单人姓名
 
         wayBill.setReceivedStatus(ReceivedStatusEnum.IS_NOT_RECEIVED);//未收货
         wayBill.setInStationCode(editWayBillDTO.getInStationCode());//入库站点code
@@ -438,9 +438,9 @@ public class WayBillManager {
             wayBillDetail.setOutStorageTime(item.getOutStorageTime());//出库时间
             //
             String userName = this.findUserNameByCode(item.getOperatorCode());
-            if (!StringUtils.isEmpty(userName)) {
-                wayBillDetail.setOperatorName(userName);//来源单录单人
-            }
+
+            wayBillDetail.setOperatorName((userName == null) ? "" : userName);
+
             //供应商录单人手动输入的，系统没有
             if (!StringUtils.isEmpty(item.getOperatorName())) {
                 wayBillDetail.setOperatorName(item.getOperatorName());//来源单录单人
@@ -507,11 +507,9 @@ public class WayBillManager {
             //根据code 查询用户名称;
             String userName = this.findUserNameByCode(wayBill.getOperatorCode());
             // temp.setOperatorName(wayBill.getOperatorName());// 操作人姓名
-            if (!StringUtils.isEmpty(userName)) {
-                temp.setOperatorName(userName);// 操作人姓名
-            } else {
-                temp.setOperatorName("");
-            }
+            // 操作人姓名
+            temp.setOperatorName((userName == null) ? "" : userName);
+
             temp.setDeliveryTime(wayBill.getDeliveryTime());//发货时间
             temp.setCreateTime(wayBill.getCreateTime());//
             temp.setAmountOfPackages(wayBill.getAmountOfPackages());// 发货件数
