@@ -284,7 +284,7 @@ public class WayBillManager {
             if (outStation != null) {
                 wayBillDetailDTO.setOutStationName(outStation.getStationName());
             }
-            //明细的录单人
+            //明细的录单人,有可能没有code
             wayBillDetailDTO.setOperatorName(wayBillDetail.getOperatorName());
 
             if (wayBillDetail.getPackAgeTypeEnum() != null) {
