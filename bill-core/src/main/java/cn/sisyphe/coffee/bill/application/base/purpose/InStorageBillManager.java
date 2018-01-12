@@ -70,11 +70,6 @@ public class InStorageBillManager {
         return foundBill;
     }
 
-    public Bill findByBillCode(String billCode, BillTypeEnum billType) {
-        AbstractBillManager abstractBillManager = getAbstractBillManager(billType);
-        return abstractBillManager.findEntityByBillCode(billCode);
-    }
-
     /**
      * 生成入库单
      *

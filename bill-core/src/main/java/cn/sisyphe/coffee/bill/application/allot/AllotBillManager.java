@@ -7,6 +7,7 @@ import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.mistake.TransferMistakeBill;
@@ -108,10 +109,13 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
     private AllotBill mapAllotBill(AddAllotBillDTO addAllotBillDTO) {
         AllotBill allotBill = (AllotBill) new BillFactory().createBill(BillTypeEnum.ALLOT);
         allotBill.setBillPurpose(BillPurposeEnum.moveStorage);
+        allotBill.setBillState(BillStateEnum.UN_ALLOT);
+        allotBill.setBelongStationCode(addAllotBillDTO.getInStation().code());
         allotBill.setInLocation(addAllotBillDTO.getInStation());
         allotBill.setOutLocation(addAllotBillDTO.getOutStation());
         allotBill.setPlanMemo(addAllotBillDTO.getMemo());
         allotBill.setSourceCode(addAllotBillDTO.getInStorageBillCode());
+        allotBill.setBasicEnum(addAllotBillDTO.getBasicEnum());
         allotBill.setSpecificBillType(addAllotBillDTO.getInStorageBillType());
         allotBill.getBillDetails().clear();
         allotBill.getBillDetails().addAll(mapDetails(addAllotBillDTO));
