@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +39,9 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
 
     @Autowired
     SharedManager sharedManager;
+
+    @Autowired
+    private InStorageBillManager inStorageBillManager;
 
     @Autowired
     public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
@@ -97,6 +102,9 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         //TODO 调用唐华玲的差错单生成接口生成差错单
         allotBill.setTransferMistakeBill(new TransferMistakeBill());
         purpose(allotBill);
+        if (!StringUtils.isEmpty(allotBillDTO.getInStorageBillCode())){
+            inStorageBillManager.commiting(allotBillDTO.getInStorageBillCode(), allotBillDTO.getInStorageBillType());
+        }
     }
 
     /**

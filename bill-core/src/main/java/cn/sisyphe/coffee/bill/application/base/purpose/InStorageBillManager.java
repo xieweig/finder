@@ -71,6 +71,20 @@ public class InStorageBillManager {
     }
 
     /**
+     * 更新入库单状态为调拨中
+     *
+     * @param billCode          入库单
+     * @param inStorageBillType
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Bill commiting(String billCode, BillTypeEnum inStorageBillType) {
+        AbstractBillManager abstractBillManager = getAbstractBillManager(inStorageBillType);
+        Bill foundBill = abstractBillManager.findEntityByBillCode(billCode);
+        abstractBillManager.committing(foundBill);
+        return foundBill;
+    }
+    /**
      * 生成入库单
      *
      * @param sourceBill

@@ -109,6 +109,20 @@ public class AbstractBillManager<T extends Bill> {
     }
 
     /**
+     * 调拨中
+     *
+     * @param bill
+     */
+    public void committing(T bill) {
+        if (!BillPurposeEnum.InStorage.equals(bill.getBillPurpose())) {
+            throw new UnsupportedOperationException("不支持此操作");
+        }
+        bill.setBillState(BillStateEnum.ALLOTING);
+        billRepository.save(bill);
+    }
+
+
+    /**
      * 处理完成
      *
      * @param bill
