@@ -165,10 +165,11 @@ public class AdjustBillController {
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
     @RequestMapping(path = "/openBill", method = RequestMethod.GET)
-    public ResponseResult openBill(@RequestParam(value = "billCode") String billCode) {
+    public ResponseResult openBill(HttpServletRequest request,@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         try {
-            responseResult.put("adjustBill", adjustBillManager.openBill(billCode));
+            responseResult.put("adjustBill", adjustBillManager.openBill(billCode,loginInfo.getOperatorCode()));
         } catch (DataException data) {
             responseResult.putException(data);
         }
