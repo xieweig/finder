@@ -59,7 +59,7 @@ public class PlanPurpose extends AbstractBillPurpose {
             planBillPayload.setBillCode(bill.getBillCode() + "_" + index);
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 PlanBillPayloadDetail planBillPayloadDetail = new PlanBillPayloadDetail();
-                planBillPayloadDetail.setAmount(planBillDetail.getAmount());
+                planBillPayloadDetail.setAmount(planBillDetail.getShippedAmount());
                 planBillPayloadDetail.setGoods(planBillDetail.getGoods());
                 planBillPayload.addGoodsDetail(planBillPayloadDetail);
             }

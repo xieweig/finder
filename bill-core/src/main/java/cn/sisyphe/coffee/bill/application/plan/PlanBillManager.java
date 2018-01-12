@@ -39,13 +39,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -213,7 +215,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getPlanBillDetailDTOS()) {
             for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
                 PlanBillDetail planBillDetail = new PlanBillDetail();
-                planBillDetail.setAmount(planBillStationDTO.getAmount());
+                planBillDetail.setShippedAmount(planBillStationDTO.getAmount());
                 planBillDetail.setInLocation(getLocation(planBillStationDTO.getInStation()));
                 planBillDetail.setOutLocation(getLocation(planBillStationDTO.getOutStation()));
                 planBillDetail.setGoods(mapGoods(planBillDetailDTO.getRawMaterialCode(), planBillDetailDTO.getCargoCode(), planBill.getBasicEnum()));
@@ -323,7 +325,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
                 ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
                 resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
                 resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
-                resultPlanBillLocationDTO.setAmount(planBillDetail.getAmount());
+                resultPlanBillLocationDTO.setAmount(planBillDetail.getShippedAmount());
                 resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
             }
             resultPlanBillGoodsDTO.setResultPlanBillDetailDTOSet(resultPlanBillLocationDTOSet);
@@ -393,7 +395,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());
         childPlanBillDTO.setOperatorName(userName);
         childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
-        childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getAmount()));
+        childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getShippedAmount()));
         childPlanBillDTO.setBillState(childPlanBill.getBillState());
         childPlanBillDTO.setSubmitState(childPlanBill.getSubmitState());
         childPlanBillDTO.setAuditState(childPlanBill.getAuditState());
@@ -403,7 +405,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS = new ArrayList<>();
         for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
             ChildPlanBillDetailDTO childPlanBillDetailDTO = new ChildPlanBillDetailDTO();
-            childPlanBillDetailDTO.setAmount(planBillDetail.getAmount());
+            childPlanBillDetailDTO.setAmount(planBillDetail.getShippedAmount());
             RawMaterial rawMaterial = new RawMaterial();
             if (planBillDetail.getGoods() instanceof Cargo) {
                 rawMaterial.setCargo((Cargo) planBillDetail.getGoods());
@@ -418,19 +420,18 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
         return childPlanBillDTO;
     }
 
+    /**
+     * 多条件查询子计划查询
+      *@param conditionQueryPlanBill
+     * @return
+      */
+
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billType, BillPurposeEnum billPurpose) {
         conditionQueryPlanBill.setSpecificBillType(billType);
         conditionQueryPlanBill.setBillPurpose(billPurpose);
         Page<PlanBill> childPlanBill = planBillExtraService.findChildPlanBillBy(conditionQueryPlanBill);
         return childPlanBill.map(this::mapChildPlanBillToDTO);
     }
-
-    public void updateChildProgress(String billCode, BigDecimal progress) {
-        PlanBill planBill = planBillExtraService.findByBillCode(billCode);
-        planBill.setProgress(progress);
-        planBillExtraService.save(planBill);
-    }
-
 
     /**
      * @param billCode

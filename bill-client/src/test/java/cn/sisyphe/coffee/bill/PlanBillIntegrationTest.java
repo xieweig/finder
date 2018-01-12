@@ -76,7 +76,7 @@ public class PlanBillIntegrationTest {
         planBillDetail.setInLocation(inLocation);
         Station outLocation = new Station("CQ01");
         planBillDetail.setOutLocation(outLocation);
-        planBillDetail.setAmount(2);
+        planBillDetail.setShippedAmount(2);
         planBill.setInLocation(inLocation);
         planBill.setOutLocation(outLocation);
         RawMaterial rawMaterial1 = new RawMaterial("YLCODE1");
@@ -87,7 +87,7 @@ public class PlanBillIntegrationTest {
         planBillDetail1.setInLocation(inLocation);
         planBillDetail1.setOutLocation(outLocation);
         planBillDetail1.setGoods(new RawMaterial("YLCODE2"));
-        planBillDetail1.setAmount(10);
+        planBillDetail1.setShippedAmount(10);
         Set<PlanBillDetail> planBillDetailSet = new HashSet<>();
         planBillDetailSet.add(planBillDetail);
         planBillDetailSet.add(planBillDetail1);

@@ -30,10 +30,6 @@ public class BillDetail {
     @Column
     private BigDecimal progress;
 
-    /**
-     * 实收最小单位数量
-     */
-    private int amount;
 
     /**
      * 包号
@@ -97,14 +93,6 @@ public class BillDetail {
         this.goods = goods;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public String getPackageCode() {
         return packageCode;
     }
@@ -150,9 +138,11 @@ public class BillDetail {
         return "BillDetail{" +
                 "billDetailId=" + billDetailId +
                 ", goods=" + goods +
-                ", amount=" + amount +
+                ", progress=" + progress +
                 ", packageCode='" + packageCode + '\'' +
                 ", dbGoods=" + dbGoods +
+                ", shippedAmount=" + shippedAmount +
+                ", actualAmount=" + actualAmount +
                 '}';
     }
 }

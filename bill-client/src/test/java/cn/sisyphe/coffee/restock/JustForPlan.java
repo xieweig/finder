@@ -48,7 +48,7 @@ public class JustForPlan {
 
     private PlanBillDetail createPlanBillDetail() {
         PlanBillDetail planBillDetail = new PlanBillDetail();
-        planBillDetail.setAmount(random.nextInt(100));
+        planBillDetail.setShippedAmount(random.nextInt(100));
         planBillDetail.setPackageCode("test:03" + random.nextInt(100));
         RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
         Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
