@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -50,7 +51,7 @@ public class InStorageBillManager {
     @SuppressWarnings("unchecked")
     public Bill convertInStorageBill(Bill outStorageBill) {
         Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
-        inBill.setBillState(BillStateEnum.UN_ALLOT);
+        inBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
         AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
         billManager.purpose(inBill);
         return inBill;
@@ -105,8 +106,8 @@ public class InStorageBillManager {
         bill.setTotalAmount(sourceBill.getTotalAmount());
         bill.setTotalVarietyAmount(sourceBill.getTotalVarietyAmount());
         bill.setBillProperty(sourceBill.getBillProperty());
-        bill.setBillState(BillStateEnum.UN_ALLOT);
         bill.setTotalPrice(sourceBill.getTotalPrice());
+        bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
         bill.setProgress(sourceBill.getProgress());
         bill.setOperatorCode(sourceBill.getOperatorCode());
         Set<BillDetail> details = new HashSet<>();

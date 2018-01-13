@@ -42,20 +42,5 @@ public enum BillStateEnum {
      */
     DONE,
 
-    /**
-     * 未调拨
-     */
-    UN_ALLOT,
-
-    /**
-     * 已调拨
-     */
-    ALLOT,
-
-    /**
-     * 调拨中
-     */
-    ALLOTING,
-
 
 }

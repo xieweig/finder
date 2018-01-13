@@ -3,7 +3,6 @@ package cn.sisyphe.coffee.bill.domain.base.purpose;
 
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.framework.message.core.MessagingHelper;
 import org.slf4j.Logger;
@@ -21,9 +20,8 @@ public class MoveStoragePurpose extends AbstractBillPurpose {
 
     @Override
     public void handle() {
-        AllotBill allotBill = (AllotBill) getBillService().getBill();
-        allotBill.setBillState(BillStateEnum.UN_ALLOT);
         LOGGER.info("调拨中");
+        AllotBill allotBill = (AllotBill) getBillService().getBill();
         //将调拨单和误差单发送到冲减
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(allotBill), allotBill);
 

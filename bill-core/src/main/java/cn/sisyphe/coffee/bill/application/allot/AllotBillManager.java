@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -117,7 +118,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
     private AllotBill mapAllotBill(AddAllotBillDTO addAllotBillDTO) {
         AllotBill allotBill = (AllotBill) new BillFactory().createBill(BillTypeEnum.ALLOT);
         allotBill.setBillPurpose(BillPurposeEnum.moveStorage);
-        allotBill.setBillState(BillStateEnum.UN_ALLOT);
+        allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
         allotBill.setBelongStationCode(addAllotBillDTO.getInStation().code());
         allotBill.setInLocation(addAllotBillDTO.getInStation());
         allotBill.setOutLocation(addAllotBillDTO.getOutStation());
@@ -168,6 +169,11 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         AllotBill allotBill = allotBillExtraService.findOneByBillCode(billCode);
         AllotBillDTO allotBillDTO = allotBillToAllotBillDTO(allotBill);
         return allotBillDTO;
+    }
+
+    @Override
+    public Bill findEntityByBillCode(String billCode) {
+        return allotBillExtraService.findOneByBillCode(billCode);
     }
 }
 

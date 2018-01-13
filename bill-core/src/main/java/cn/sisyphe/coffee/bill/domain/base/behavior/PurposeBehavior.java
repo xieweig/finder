@@ -21,7 +21,7 @@ public class PurposeBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillStateEnum[] allowableStates() {
-        return new BillStateEnum[]{BillStateEnum.AUDIT_SUCCESS, BillStateEnum.UN_ALLOT};
+        return new BillStateEnum[]{BillStateEnum.AUDIT_SUCCESS};
     }
 
     /**
