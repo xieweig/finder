@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.allot;
 
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 
 /**
  * @author heyong
@@ -17,7 +18,9 @@ public class AllotBillService extends AbstractBillService {
      */
     @Override
     public void beforeDispose() {
-        // TODO: 2017/12/27 在操作之前的一些事情
+
+        AllotBill allotBill = (AllotBill) getBill();
+        allotBill.setAllotStatus(BillAllotStatusEnum.ALLOTTING);
     }
 
     /**

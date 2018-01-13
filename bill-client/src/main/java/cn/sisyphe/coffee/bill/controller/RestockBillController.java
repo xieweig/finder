@@ -1,16 +1,17 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -40,6 +41,8 @@ public class RestockBillController {
     private PlanBillManager planBillManager;
     @Autowired
     private SharedManager sharedManager;
+    @Autowired
+    private AllotBillManager allotBillManager;
 
     /**
      * 计划单据多条件分页查询
@@ -314,23 +317,82 @@ public class RestockBillController {
     }
 
     /**
-     * 多条件退库调拨单查询
+     * 调拨单据多条件分页查询
      *
-     * @param billCode
-     * @return responseResult
+     * @return
      */
- /*   @ApiOperation(value = "多条件退库调拨单查询")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPackageInfoByBillCode(@RequestParam String billCode) {
+    @ApiOperation(value = "调拨单据多条件分页查询")
+    @RequestMapping(path = "/findAllotBillByConditions", method = RequestMethod.POST)
+    public ResponseResult findAllotBillByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
+        ResponseResult responseResult = new ResponseResult();
+        System.err.print("调拨单据多条件分页查询");
+        try {
+            Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.RESTOCK);
 
+            for (AllotBillDTO allotBillDTO : allotBillDTOS) {
+                //测试使用
+                allotBillDTO.setOperatorName("操作人：懒羊羊");
+            }
+            responseResult.put("content", allotBillDTOS);
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 调拨单查询
+     *
+     * @return
+     */
+    @ApiOperation(value = "根据单号查询调拨单")
+    @RequestMapping(path = "/findAllotBillByBillCode", method = RequestMethod.POST)
+    public ResponseResult findAllotBillByBillCode(@RequestBody String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            ScanFillBillDTO scanFillBillDTO = restockBillManager.findPackageInfoByBillCode(billCode);
-            responseResult.put("content", scanFillBillDTO);
+            responseResult.put("allotBill", allotBillManager.findAllotBillByBillCode(billCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 据入库单编号查找入库单详细信息
+     *
+     * @param restockBillCode
+     * @return
+     */
+    @ApiOperation(value = "据入库单编号查找入库单详细信息")
+    @RequestMapping(path = "/findRestockInStorageBillByRestockBillCode", method = RequestMethod.GET)
+    public ResponseResult findRestockInStorageBillByRestockBillCode(@RequestParam String restockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            RestockInStorageBillDTO restockInStorageBillDTO = restockBillManager.findRestockInStorageBillByRestockBillCode(restockBillCode);
+            responseResult.put("content", restockInStorageBillDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }
         return responseResult;
-    }*/
+    }
+
+    /**
+     * 据入库单编号查找入库调拨单详细信息
+     *
+     * @param restockBillCode
+     * @return
+     */
+    @ApiOperation(value = "据入库单编号查找入库调拨单详细信息")
+    @RequestMapping(path = "/findRestockAllotBillByRestockBillCode", method = RequestMethod.GET)
+    public ResponseResult findRestockAllotBillByRestockBillCode(@RequestParam String restockBillCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            RestockAllotBillDTO restockAllotBillDTO = restockBillManager.findRestockAllotBillByRestockBillCode(restockBillCode);
+            responseResult.put("content", restockAllotBillDTO);
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
 
 }

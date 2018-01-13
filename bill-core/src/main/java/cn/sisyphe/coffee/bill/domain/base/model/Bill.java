@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
@@ -232,6 +233,12 @@ public class Bill<T extends BillDetail> extends BaseEntity {
      * 单据来源类型
      */
     private SourcePlanTypeEnum billProperty;
+
+    /**
+     * 调拨状态
+     */
+    @Enumerated(value = EnumType.STRING)
+    private BillAllotStatusEnum allotStatus;
 
     /**
      * 单据编码前缀
@@ -497,6 +504,14 @@ public class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setTransferMistakeBill(TransferMistakeBill transferMistakeBill) {
         this.transferMistakeBill = transferMistakeBill;
+    }
+
+    public BillAllotStatusEnum getAllotStatus() {
+        return allotStatus;
+    }
+
+    public void setAllotStatus(BillAllotStatusEnum allotStatus) {
+        this.allotStatus = allotStatus;
     }
 
     @Override

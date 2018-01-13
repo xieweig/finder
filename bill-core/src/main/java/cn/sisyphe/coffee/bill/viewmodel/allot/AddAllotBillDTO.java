@@ -28,7 +28,8 @@ public class AddAllotBillDTO {
      */
     private Station outStation;
 
-    /**入库单编号
+    /**
+     * 入库单编号
      */
     private String inStorageBillCode;
 
@@ -37,8 +38,14 @@ public class AddAllotBillDTO {
      */
     private String memo;
 
+    /**
+     * 入库单类型，如果有
+     */
     private BillTypeEnum inStorageBillType;
 
+    /**
+     * 调拨单详情
+     */
     List<AllotBillDetailDTO> details;
 
 

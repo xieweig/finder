@@ -1,10 +1,12 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +40,9 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
 
     @Autowired
     SharedManager sharedManager;
+
+    @Autowired
+    private InStorageBillManager inStorageBillManager;
 
     @Autowired
     public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
@@ -82,7 +88,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         allotBillDTO.setTotalPrice(allotBill.getTotalPrice());
         allotBillDTO.setTotalVarietyAmount(allotBill.getTotalVarietyAmount());
         allotBillDTO.setBillDetails(billDetailToBillDetailDTO(allotBill.getBillDetails()));
-        return null;
+        return allotBillDTO;
     }
 
     /**
@@ -97,6 +103,9 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         //TODO 调用唐华玲的差错单生成接口生成差错单
         allotBill.setTransferMistakeBill(new TransferMistakeBill());
         purpose(allotBill);
+        if (!StringUtils.isEmpty(allotBillDTO.getInStorageBillCode())){
+            inStorageBillManager.commiting(allotBillDTO.getInStorageBillCode(), allotBillDTO.getInStorageBillType());
+        }
     }
 
     /**
@@ -109,11 +118,11 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
     private AllotBill mapAllotBill(AddAllotBillDTO addAllotBillDTO) {
         AllotBill allotBill = (AllotBill) new BillFactory().createBill(BillTypeEnum.ALLOT);
         allotBill.setBillPurpose(BillPurposeEnum.moveStorage);
-        allotBill.setBillState(BillStateEnum.UN_ALLOT);
+        allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
         allotBill.setBelongStationCode(addAllotBillDTO.getInStation().code());
         allotBill.setInLocation(addAllotBillDTO.getInStation());
         allotBill.setOutLocation(addAllotBillDTO.getOutStation());
-        allotBill.setPlanMemo(addAllotBillDTO.getMemo());
+        allotBill.setAllotMemo(addAllotBillDTO.getMemo());
         allotBill.setSourceCode(addAllotBillDTO.getInStorageBillCode());
         allotBill.setBasicEnum(addAllotBillDTO.getBasicEnum());
         allotBill.setSpecificBillType(addAllotBillDTO.getInStorageBillType());
@@ -160,6 +169,11 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         AllotBill allotBill = allotBillExtraService.findOneByBillCode(billCode);
         AllotBillDTO allotBillDTO = allotBillToAllotBillDTO(allotBill);
         return allotBillDTO;
+    }
+
+    @Override
+    public Bill findEntityByBillCode(String billCode) {
+        return allotBillExtraService.findOneByBillCode(billCode);
     }
 }
 

@@ -10,8 +10,8 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.PurposeBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SubmitBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -103,10 +103,24 @@ public class AbstractBillManager<T extends Bill> {
         if (!BillPurposeEnum.InStorage.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
-        bill.setBillState(BillStateEnum.ALLOT);
+        bill.setAllotStatus(BillAllotStatusEnum.ALLOT);
         bill.setInWareHouseTime(new Date());
         billRepository.save(bill);
     }
+
+    /**
+     * 调拨中
+     *
+     * @param bill
+     */
+    public void committing(T bill) {
+        if (!BillPurposeEnum.InStorage.equals(bill.getBillPurpose())) {
+            throw new UnsupportedOperationException("不支持此操作");
+        }
+        bill.setAllotStatus(BillAllotStatusEnum.ALLOTTING);
+        billRepository.save(bill);
+    }
+
 
     /**
      * 处理完成

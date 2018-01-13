@@ -25,13 +25,9 @@ public class RestockAllotBillDTO {
      */
     private AbstractLocation outLocation;
     /**
-     * 入库站点（调出库位）
+     * 入库站点
      */
-    private AbstractLocation inLocationOutStorage;
-    /**
-     * 入库站点（入库库位）
-     */
-    private AbstractLocation inLocationInStorage;
+    private AbstractLocation inLocation;
     /**
      * 入库时间
      */
@@ -65,20 +61,12 @@ public class RestockAllotBillDTO {
         this.outLocation = outLocation;
     }
 
-    public AbstractLocation getInLocationOutStorage() {
-        return inLocationOutStorage;
+    public AbstractLocation getInLocation() {
+        return inLocation;
     }
 
-    public void setInLocationOutStorage(AbstractLocation inLocationOutStorage) {
-        this.inLocationOutStorage = inLocationOutStorage;
-    }
-
-    public AbstractLocation getInLocationInStorage() {
-        return inLocationInStorage;
-    }
-
-    public void setInLocationInStorage(AbstractLocation inLocationInStorage) {
-        this.inLocationInStorage = inLocationInStorage;
+    public void setInLocation(AbstractLocation inLocation) {
+        this.inLocation = inLocation;
     }
 
     public Date getInWareHouseTime() {

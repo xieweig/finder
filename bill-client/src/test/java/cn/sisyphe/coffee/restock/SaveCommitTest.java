@@ -63,25 +63,8 @@ public class SaveCommitTest extends InstanceFactory{
     @Resource
     private RestockBillRepository restockBillRepository;
 
-    public static final  String PATH ="F:/own/test.txt";
-    //暂时先凑合用吧 应该从数据库中读取或者从文件读取
     public static final String[]  BILLCODES_SAVED={"90530302","43490302","63390302","13910302"};
     public static final String[]  BILLCODES_SUBMITTED={"34940302","55540302","98850302","4120302"};
-    private BufferedWriter writer ;
-    @Before
-    public  void setUp(){
-        File file = new File(PATH);
-        if (!file.exists()){
-            file.mkdirs();
-        }
-
-        try {
-            writer= new BufferedWriter(new FileWriter(file));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     //测试拣货界面保存
     @Test
@@ -249,12 +232,33 @@ public class SaveCommitTest extends InstanceFactory{
 
         }
     }
-    @Test
-    public void inStorage(){
-//        String[] billCodes = {"76040302"};
-//        OneRestockInStorageBillDTO queryOne =  this.restockBillManager.f(billCodes[0]);
-//        logger.info("InStorage======:"+ToStringBuilder.reflectionToString(queryOne,ToStringStyle.SHORT_PREFIX_STYLE));
 
+    public  static  final String[] codes = {  "TKCK88982018012036G000004", "TKCK88382018012036G000005", "TKCK88972018012036G000006"  };
+    //退库入库单
+    @Test
+    public void queryRestockInstorage(){
+        for (int i = 0; i <codes.length ; i++) {
+
+           RestockInStorageBillDTO restockInStorageBillDTO =  this.restockBillManager.findRestockInStorageBillByRestockBillCode(codes[i]);
+           logger.info(ToStringBuilder.reflectionToString(restockInStorageBillDTO,ToStringStyle.SHORT_PREFIX_STYLE));
+
+           logger.info(ToStringBuilder.reflectionToString(restockInStorageBillDTO.getBillDetailDTOList().get(0),ToStringStyle.SHORT_PREFIX_STYLE));
+        }
+    }
+    //查看调拨单
+    @Test
+    public void queryRestock(){
+        for (int i = 0; i <codes.length ; i++) {
+
+            RestockAllotBillDTO RestockAllotBillDTO =  this.restockBillManager.findRestockAllotBillByRestockBillCode(codes[i]);
+            logger.info(ToStringBuilder.reflectionToString(RestockAllotBillDTO,ToStringStyle.SHORT_PREFIX_STYLE));
+            //有billCode billProperty stationCode*2
+
+            logger.info(ToStringBuilder.reflectionToString(RestockAllotBillDTO.getRestockAllotDetailBillDTOList().get(0),ToStringStyle.SHORT_PREFIX_STYLE));
+
+
+
+        }
     }
 
 
