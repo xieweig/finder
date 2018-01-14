@@ -8,7 +8,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
-import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.StringUtils;
@@ -71,11 +70,7 @@ public class DeliveryPickingEditDTO implements Serializable {
      */
     private String operatorName;
 
-    /**
-     * 拣货方式
-     */
-    @Enumerated(value = EnumType.STRING)
-    private PickingTypeEnum pickingTypeEnum;
+
     /**
      * 计划单类型
      */
@@ -252,13 +247,6 @@ public class DeliveryPickingEditDTO implements Serializable {
         this.station = station;
     }
 
-    public PickingTypeEnum getPickingTypeEnum() {
-        return pickingTypeEnum;
-    }
-
-    public void setPickingTypeEnum(PickingTypeEnum pickingTypeEnum) {
-        this.pickingTypeEnum = pickingTypeEnum;
-    }
 
     public BillPurposeEnum getBillPurpose() {
         return billPurpose;

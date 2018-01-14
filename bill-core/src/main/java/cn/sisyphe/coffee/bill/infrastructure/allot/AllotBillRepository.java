@@ -15,13 +15,4 @@ import org.springframework.data.jpa.domain.Specification;
  **/
 public interface AllotBillRepository extends BillRepository<AllotBill> {
 
-
-    /**
-     * 条件筛选查询
-     *
-     * @param ta
-     * @param pageable
-     * @return
-     */
-    Page<AllotBill> findAll(Specification<AllotBill> ta, Pageable pageable);
 }

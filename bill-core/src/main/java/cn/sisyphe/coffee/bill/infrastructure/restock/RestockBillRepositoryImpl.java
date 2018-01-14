@@ -2,8 +2,10 @@ package cn.sisyphe.coffee.bill.infrastructure.restock;
 
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.restock.jpa.JPARestockBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.restock.jpa.JpaRestockBillRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,43 +14,15 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 /**
- *@date: 2018/1/2
- *@description:
- *@author：xieweiguang
+ * @date: 2018/1/2
+ * @description:
+ * @author：xieweiguang
  */
 @Repository
-public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBill> implements RestockBillRepository{
+public class RestockBillRepositoryImpl extends AbstractBillRepository<RestockBill> implements RestockBillRepository {
 
-    @Resource
-    private JPARestockBillRepository jpaRestockBillRepository;
-
-
-    /**
-     * 多条件查询
-     * @param ta
-     * @param pageable
-     * @return
-     */
-    @Override
-    public Page<RestockBill> findAll(Specification<RestockBill> ta, Pageable pageable) {
-        return jpaRestockBillRepository.findAll(ta, pageable);
+    @Autowired
+    public RestockBillRepositoryImpl(JpaBillRepository<RestockBill> jpaBillRepository) {
+        super(jpaBillRepository);
     }
-
-    @Override
-    public RestockBill findOneByBillCode(String billCode) {
-
-        return jpaRestockBillRepository.findOneByBillCode(billCode);
-    }
-
-    @Override
-    public RestockBill findOneBySourceCode(String sourceCode) {
-        return jpaRestockBillRepository.findOneBySourceCode(sourceCode);
-    }
-
-//    public Page<RestockBill> convert(String sourceCode, Pageable pageable){
-//        List<RestockBill> list= jpaRestockBillRepository.findAllByNothing(sourceCode);
-//        return  new PageImpl<RestockBill>(list, pageable, list.size());
-//    }
-
-
 }

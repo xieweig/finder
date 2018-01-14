@@ -15,14 +15,4 @@ import org.springframework.data.jpa.domain.Specification;
  **/
 public interface DeliveryBillRepository extends BillRepository<DeliveryBill> {
 
-
-    /**
-     * 条件筛选查询
-     *
-     * @param ta
-     * @param pageable
-     * @return
-     */
-    Page<DeliveryBill> findAll(Specification<DeliveryBill> ta, Pageable pageable);
-
 }

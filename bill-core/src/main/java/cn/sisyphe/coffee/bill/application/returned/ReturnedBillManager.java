@@ -477,8 +477,5 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         return returnedBill;
     }
 
-    @Override
-    public Bill findByBillCode(String billCode) {
-        return findByReturnedBillCode(billCode);
-    }
+
 }

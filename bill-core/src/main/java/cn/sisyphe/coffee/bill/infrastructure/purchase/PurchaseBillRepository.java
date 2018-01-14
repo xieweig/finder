@@ -13,5 +13,4 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public interface PurchaseBillRepository extends BillRepository<PurchaseBill> {
 
-    Page<PurchaseBill> findAll(Specification<PurchaseBill> ta, Pageable pageable);
 }

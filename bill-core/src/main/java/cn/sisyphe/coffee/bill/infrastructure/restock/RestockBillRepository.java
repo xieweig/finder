@@ -13,15 +13,5 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public interface RestockBillRepository extends BillRepository<RestockBill>{
 
-    /**
-     * 根据多条件查询
-     * @param ta
-     * @param pageable
-     * @return
-     */
-    Page<RestockBill> findAll(Specification<RestockBill> ta, Pageable pageable);
-    /**
-     * 根据单据来源单号查询
-     */
-    RestockBill findOneBySourceCode(String sourceCode);
+
 }

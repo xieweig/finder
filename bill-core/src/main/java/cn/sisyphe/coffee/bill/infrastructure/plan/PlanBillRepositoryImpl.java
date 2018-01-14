@@ -1,21 +1,12 @@
 package cn.sisyphe.coffee.bill.infrastructure.plan;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JPAPlanBillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.QueryPlanDetailBillDTO;
+import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.plan.jpa.JpaPlanBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.List;
 
 /**
  * @author ncmao
@@ -26,25 +17,12 @@ import java.util.List;
 public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> implements PlanBillRepository {
 
     @Autowired
-    private JPAPlanBillRepository jpaPlanBillRepository;
-
-    @PersistenceContext
-    private EntityManager em;
-
-
-
-    @Override
-    public PlanBill findOneByBillCode(String billCode) {
-        return jpaPlanBillRepository.findByBillCode(billCode);
-    }
-
-    @Override
-    public Page<PlanBill> findAll(Specification<PlanBill> ta, Pageable pageable) {
-        return jpaPlanBillRepository.findAll(ta, pageable);
+    public PlanBillRepositoryImpl(JpaBillRepository<PlanBill> jpaBillRepository) {
+        super(jpaBillRepository);
     }
 
     @Override
     public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
-        return jpaPlanBillRepository.findByBillCodeAndSpecificBillType(billCode, billType);
+        return ((JpaPlanBillRepository) getJpaBillRepository()).findByBillCodeAndBillType(billCode, billType);
     }
 }

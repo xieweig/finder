@@ -1,8 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;

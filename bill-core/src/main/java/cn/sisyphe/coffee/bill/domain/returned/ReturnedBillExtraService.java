@@ -10,12 +10,4 @@ import org.springframework.data.domain.Page;
  */
 public interface ReturnedBillExtraService extends BillExtraService<ReturnedBill> {
 
-    /**
-     * 多条件查询进货单数据
-     *
-     * @param conditionQueryReturnedBill
-     * @return
-     */
-    Page<ReturnedBill> findPageByCondition(ConditionQueryReturnedBill conditionQueryReturnedBill);
-
 }

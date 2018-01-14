@@ -10,11 +10,5 @@ import org.springframework.data.domain.Page;
  */
 public interface AllotBillExtraService extends BillExtraService<AllotBill> {
 
-    /**
-     * 多条件分页查询
-     * @param conditionQueryAllotBill
-     * @return
-     */
-    Page<AllotBill> findPageByCondition(ConditionQueryAllotBill conditionQueryAllotBill);
 
 }

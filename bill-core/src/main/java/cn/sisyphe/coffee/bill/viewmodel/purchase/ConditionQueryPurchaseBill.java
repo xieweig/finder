@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author XiongJing
  */
-public class ConditionQueryPurchaseBill extends BaseConditionQuery {
+public class ConditionQueryPurchaseBill extends ConditionQueryBill {
 
     /**
      * 录单人名称

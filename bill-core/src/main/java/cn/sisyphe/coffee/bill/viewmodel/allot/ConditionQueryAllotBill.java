@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.allot;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -16,7 +17,7 @@ import java.util.List;
  * @description: 多条件查询退库调拨单查询
  * @author：bifenglin
  */
-public class ConditionQueryAllotBill  extends BaseConditionQuery implements Serializable {
+public class ConditionQueryAllotBill  extends ConditionQueryBill implements Serializable {
 
     /**
      * 调拨单号

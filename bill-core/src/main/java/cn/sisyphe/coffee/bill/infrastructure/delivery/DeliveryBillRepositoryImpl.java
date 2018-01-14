@@ -2,11 +2,13 @@ package cn.sisyphe.coffee.bill.infrastructure.delivery;
 
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.delivery.jpa.JPADeliveryBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.delivery.jpa.JpaDeliveryBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
@@ -15,35 +17,11 @@ import org.springframework.stereotype.Service;
 *  @author yichuan
 *  @Date 2018/1/4 10:04
 **/
-@Service
+@Repository
 public class DeliveryBillRepositoryImpl extends AbstractBillRepository<DeliveryBill> implements DeliveryBillRepository {
 
     @Autowired
-    private JPADeliveryBillRepository jpaDeliveryBillRepository;
-
-    /**
-     * 按单号查询
-     *
-     * @param billCode
-     * @return
-     */
-    @Override
-    public DeliveryBill findOneByBillCode(String billCode) {
-        return jpaDeliveryBillRepository.findOneByBillCode(billCode);
+    public DeliveryBillRepositoryImpl(JpaBillRepository<DeliveryBill> jpaBillRepository) {
+        super(jpaBillRepository);
     }
-
-
-    /**
-     * 多条件查询配送单
-     *
-     * @param ta
-     * @param pageable
-     * @return
-     */
-    @Override
-    public Page<DeliveryBill> findAll(Specification<DeliveryBill> ta, Pageable pageable) {
-        return jpaDeliveryBillRepository.findAll(ta, pageable);
-    }
-
-
 }

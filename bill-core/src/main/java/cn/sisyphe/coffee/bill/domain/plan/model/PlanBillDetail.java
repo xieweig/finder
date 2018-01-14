@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.plan;
+package cn.sisyphe.coffee.bill.domain.plan.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;

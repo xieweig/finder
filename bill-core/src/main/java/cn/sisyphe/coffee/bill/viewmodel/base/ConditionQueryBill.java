@@ -1,12 +1,7 @@
-package cn.sisyphe.coffee.bill.viewmodel.adjust;
+package cn.sisyphe.coffee.bill.viewmodel.base;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
-import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,7 +17,7 @@ import java.util.List;
  *
  * @author XiongJing
  */
-public class ConditionQueryAdjustBill extends ConditionQueryBill {
+public class ConditionQueryBill extends BaseConditionQuery {
 
     /**
      * 录单人名称

@@ -43,9 +43,9 @@ public class InStorageBillManager {
      */
     @SuppressWarnings("unchecked")
     public Bill allotedForInStorageBill(Bill bill) {
-        AbstractBillManager abstractBillManager = BillManagerFactory.getManager(bill.getBillType());
-        Bill foundBill = abstractBillManager.findByBillCode(bill.getBillCode());
-        abstractBillManager.committed(foundBill);
+        AbstractBillManager billManager = BillManagerFactory.getManager(bill.getBillType());
+        Bill foundBill = billManager.findOneByBillCode(bill.getBillCode());
+        billManager.committed(foundBill);
         return foundBill;
     }
 
@@ -58,9 +58,9 @@ public class InStorageBillManager {
      */
     @SuppressWarnings("unchecked")
     public Bill committing(String billCode, BillTypeEnum inStorageBillType) {
-        AbstractBillManager abstractBillManager = BillManagerFactory.getManager(inStorageBillType);
-        Bill foundBill = abstractBillManager.findByBillCode(billCode);
-        abstractBillManager.committing(foundBill);
+        AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
+        Bill foundBill = billManager.findOneByBillCode(billCode);
+        billManager.committing(foundBill);
         return foundBill;
     }
     /**

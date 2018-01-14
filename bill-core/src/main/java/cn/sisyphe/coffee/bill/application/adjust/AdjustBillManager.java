@@ -1,12 +1,10 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
-import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -14,8 +12,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
@@ -114,7 +112,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         if (StringUtils.isEmpty(auditPersonCode)) {
             throw new DataException("404", "审核人编码为空");
         }
-        AdjustBill adjustBill = adjustBillExtraService.findOneByBillCode(billCode);
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
         adjustBill.setAuditPersonCode(auditPersonCode);
         audit(adjustBill, isSuccess);
     }
@@ -130,7 +128,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
         conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.OutStorage);
-        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
+        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findPageByCondition(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
 
@@ -145,7 +143,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
         conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.InStorage);
-        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findByConditions(conditionQueryAdjustBill);
+        Page<AdjustBill> adjustBillPage = adjustBillExtraService.findPageByCondition(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
 
@@ -159,7 +157,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
         }
-        AdjustBill adjustBill = adjustBillExtraService.findOneByBillCode(billCode);
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
         return commonFun(adjustBill);
     }
 
@@ -173,7 +171,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
         }
-        AdjustBill adjustBill = adjustBillExtraService.findOneByBillCode(billCode);
+        AdjustBill adjustBill = adjustBillExtraService.findByBillCode(billCode);
         // 如果单据是提交状态，则进行打开动作
         if (adjustBill.getBillState().equals(BillStateEnum.SUBMITTED)) {
             // 打开单据
@@ -267,7 +265,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         AdjustBill adjustBill;
         if (!StringUtils.isEmpty(addAdjustBillDTO.getBillCode())) {
             //计划编码有由后端生成，如果前端传递回来的时候有code，就做更新操作
-            adjustBill = adjustBillExtraService.findOneByBillCode(addAdjustBillDTO.getBillCode());
+            adjustBill = adjustBillExtraService.findByBillCode(addAdjustBillDTO.getBillCode());
             if (adjustBill == null) {
                 throw new DataException("432434", "没有找到该计划单");
             }

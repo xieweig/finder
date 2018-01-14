@@ -16,14 +16,4 @@ import org.springframework.data.domain.Page;
  **/
 public interface DeliveryBilExtraService extends BillExtraService<DeliveryBill> {
 
-
-    /**
-     * 分页查询配送出库单
-     *
-     * @param conditionQueryDeliveryBill
-     * @return
-     */
-    Page<DeliveryBill> findPageByCondition(ConditionQueryDeliveryBill conditionQueryDeliveryBill) throws DataException;
-
-
 }

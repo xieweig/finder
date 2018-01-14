@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.Set;
 /**
  * @author bifenglin
  */
-public class ConditionQueryPlanBill extends BaseConditionQuery implements Serializable {
+public class ConditionQueryPlanBill extends ConditionQueryBill implements Serializable {
 
 
     /**

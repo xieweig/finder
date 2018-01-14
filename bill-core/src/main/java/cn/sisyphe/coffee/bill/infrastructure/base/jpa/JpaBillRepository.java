@@ -1,39 +1,18 @@
-package cn.sisyphe.coffee.bill.infrastructure.base;
+package cn.sisyphe.coffee.bill.infrastructure.base.jpa;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.NoRepositoryBean;
 
-import java.util.List;
-
-
-/**
- * @author heyong
- * @date 2017/1/9
- * <p>
- * 单据基础数据库操作
- */
-
-public interface BillRepository<T extends Bill> {
+@NoRepositoryBean
+public interface JpaBillRepository<T extends Bill> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
 
     /**
-     * 保存
-     *
-     * @param bill
-     */
-    void save(T bill);
-
-    /**
-     * 保存
-     *
-     * @param bills
-     */
-    void save(List<T> bills);
-
-    /**
-     * 按单号查询
-     *
+     * 根据单号查询
      * @param billCode
      * @return
      */
@@ -61,4 +40,3 @@ public interface BillRepository<T extends Bill> {
      */
     Page<T> findAll(Specification<T> ta, Pageable pageable );
 }
-

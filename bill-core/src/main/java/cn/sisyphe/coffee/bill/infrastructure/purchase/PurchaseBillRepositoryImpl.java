@@ -2,11 +2,8 @@ package cn.sisyphe.coffee.bill.infrastructure.purchase;
 
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
-import cn.sisyphe.coffee.bill.infrastructure.purchase.jpa.JPAPurchaseBillRepository;
+import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 
@@ -20,15 +17,7 @@ import org.springframework.stereotype.Repository;
 public class PurchaseBillRepositoryImpl extends AbstractBillRepository<PurchaseBill> implements PurchaseBillRepository {
 
     @Autowired
-    private JPAPurchaseBillRepository jpaPurchaseBillRepository;
-
-    @Override
-    public PurchaseBill findOneByBillCode(String billCode) {
-        return jpaPurchaseBillRepository.findOneByBillCode(billCode);
-    }
-
-    @Override
-    public Page<PurchaseBill> findAll(Specification<PurchaseBill> ta, Pageable pageable) {
-        return jpaPurchaseBillRepository.findAll(ta, pageable);
+    public PurchaseBillRepositoryImpl(JpaBillRepository<PurchaseBill> jpaBillRepository) {
+        super(jpaBillRepository);
     }
 }

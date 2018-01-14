@@ -35,6 +35,9 @@ import java.util.*;
 public class RestockBillManager extends AbstractBillManager<RestockBill> {
 
     @Autowired
+    private RestockBillExtraService restockBillExtraService;
+
+    @Autowired
     private SharedManager sharedManager;
 
 
@@ -52,12 +55,9 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         return BillTypeEnum.RESTOCK;
     }
 
-    @Autowired
-    private RestockBillExtraService restockBillExtraService;
 
     public RestockBill findRestockBillBySourceCode(String sourceCode) {
-        RestockBill restockBill = restockBillExtraService.findBySourceCode(sourceCode);
-        return restockBill;
+        return restockBillExtraService.findBySourceCode(sourceCode);
     }
 
     /**
@@ -472,11 +472,6 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     public RestockBill findByRestockBillCode(String restockBillCode) {
         RestockBill restockBill = restockBillExtraService.findByBillCode(restockBillCode);
         return restockBill;
-    }
-
-    @Override
-    public Bill findByBillCode(String billCode) {
-        return findByRestockBillCode(billCode);
     }
 
     /**

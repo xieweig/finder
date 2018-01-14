@@ -15,12 +15,4 @@ import org.springframework.data.domain.Page;
  */
 public interface PurchaseBillExtraService extends BillExtraService<PurchaseBill> {
 
-    /**
-     * 多条件查询进货单数据
-     *
-     * @param conditionQueryPurchaseBill 查询条件
-     * @return
-     */
-    Page<PurchaseBill> findByConditions(ConditionQueryPurchaseBill conditionQueryPurchaseBill);
-
 }

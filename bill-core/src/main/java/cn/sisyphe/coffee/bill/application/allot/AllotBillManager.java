@@ -176,14 +176,10 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
     }
 
     public AllotBillDTO findAllotBillByBillCode(String billCode) {
-        AllotBill allotBill = allotBillExtraService.findOneByBillCode(billCode);
-        AllotBillDTO allotBillDTO = allotBillToAllotBillDTO(allotBill);
-        return allotBillDTO;
+        AllotBill allotBill = allotBillExtraService.findByBillCode(billCode);
+        return allotBillToAllotBillDTO(allotBill);
     }
 
-    @Override
-    public Bill findByBillCode(String billCode) {
-        return allotBillExtraService.findOneByBillCode(billCode);
-    }
+
 }
 

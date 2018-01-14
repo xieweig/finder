@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.restock;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * @description:
  * @author：bifenglin
  */
-public class ConditionQueryRestockBill extends BaseConditionQuery implements Serializable {
+public class ConditionQueryRestockBill extends ConditionQueryBill implements Serializable {
     /**
      * 录单人名称
      */
@@ -229,29 +230,7 @@ public class ConditionQueryRestockBill extends BaseConditionQuery implements Ser
         this.inEndTime = inEndTime;
     }
 
-    public List<String> getSubmitStateCode() {
-        return submitStateCode;
-    }
 
-    public void setSubmitStateCode(List<String> submitStateCode) {
-        this.submitStateCode = submitStateCode;
-    }
-
-    public List<String> getAuditStateCode() {
-        return auditStateCode;
-    }
-
-    public void setAuditStateCode(List<String> auditStateCode) {
-        this.auditStateCode = auditStateCode;
-    }
-
-    public List<String> getInOrOutStateCode() {
-        return inOrOutStateCode;
-    }
-
-    public void setInOrOutStateCode(List<String> inOrOutStateCode) {
-        this.inOrOutStateCode = inOrOutStateCode;
-    }
 
     public List<String> getOperatorCodeList() {
         return operatorCodeList;

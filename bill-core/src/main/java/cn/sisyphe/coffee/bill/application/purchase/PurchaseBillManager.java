@@ -443,7 +443,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryPurchaseBill.getOperatorName());
         conditionQueryPurchaseBill.setOperatorCodeList(userCodeList);
-        Page<PurchaseBill> purchaseBillPage = purchaseBillExtraService.findByConditions(conditionQueryPurchaseBill);
+        Page<PurchaseBill> purchaseBillPage = purchaseBillExtraService.findPageByCondition(conditionQueryPurchaseBill);
         return purchaseBillPage.map(source -> toMapDTO(source));
     }
 
@@ -562,8 +562,5 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         }
     }
 
-    @Override
-    public Bill findByBillCode(String billCode) {
-        return purchaseBillExtraService.findByBillCode(billCode);
-    }
+
 }

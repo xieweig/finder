@@ -2,9 +2,6 @@ package cn.sisyphe.coffee.bill.infrastructure.adjust;
 
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -13,10 +10,4 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public interface AdjustBillRepository extends BillRepository<AdjustBill> {
 
-    Page<AdjustBill> findAll(Specification<AdjustBill> ta, Pageable pageable);
-
-    /**
-     * 根据单据来源单号查询
-     */
-    AdjustBill findOneBySourceCode(String sourceCode);
 }

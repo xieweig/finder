@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -17,7 +18,7 @@ import java.util.List;
  * @company 西西弗文化传播
  * @Date 2018/1/5 10:37
  **/
-public class ConditionQueryDeliveryBill extends BaseConditionQuery implements Serializable {
+public class ConditionQueryDeliveryBill extends ConditionQueryBill implements Serializable {
 
 
     /**

@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.infrastructure.returned.jpa;
 
 import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
+import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -11,15 +12,6 @@ import org.springframework.stereotype.Repository;
  * @description
  */
 @Repository
-public interface JPAReturnedBillRepository extends JpaRepository<ReturnedBill, Long>, JpaSpecificationExecutor<ReturnedBill> {
+public interface JpaReturnedBillRepository extends JpaBillRepository<ReturnedBill> {
 
-    /**
-     * 根据单号查询
-     *
-     * @param billCode
-     * @return
-     */
-    ReturnedBill findOneByBillCode(String billCode);
-    
-    ReturnedBill findOneBySourceCode(String sourceCode);
 }
