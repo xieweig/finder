@@ -41,7 +41,7 @@ public class AbstractBillRepository<T extends Bill> implements BillRepository<T>
      * @param bill
      */
     @Override
-    public final void save(T bill) {
+    public void save(T bill) {
 
         // 更新单据的关系
         bill.update();
@@ -60,7 +60,7 @@ public class AbstractBillRepository<T extends Bill> implements BillRepository<T>
      * @param bills
      */
     @Override
-    public final void save(List<T> bills) {
+    public void save(List<T> bills) {
         for (Bill bill : bills) {
             // 更新单据的关系
             bill.update();

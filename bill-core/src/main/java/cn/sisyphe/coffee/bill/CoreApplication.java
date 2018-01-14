@@ -42,7 +42,7 @@ public class CoreApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) {
 
-        String billCode = "1231";
+        String billCode = "12312";
 
 
 
