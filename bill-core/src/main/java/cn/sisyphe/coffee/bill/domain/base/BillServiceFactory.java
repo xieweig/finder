@@ -1,8 +1,10 @@
 package cn.sisyphe.coffee.bill.domain.base;
 
+import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillService;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
@@ -27,35 +29,17 @@ public class BillServiceFactory {
      * @return
      */
     public AbstractBillService createBillService(Bill bill) {
-        AbstractBillService billService = null;
 
-        switch (bill.getBillType()) {
-            case PURCHASE:
-                billService = new PurchaseBillService(bill);
-                break;
-            case DELIVERY:
-                billService = new DeliveryBillService(bill);
-                break;
-            case PLAN:
-                billService = new PlanBillService(bill);
-                break;
-            case RETURNED:
-                billService = new ReturnedBillService(bill);
-                break;
-            case RESTOCK:
-                billService = new RestockBillService(bill);
-                break;
-            case ADJUST:
-                billService = new AdjustBillService(bill);
-                break;
-            case ALLOT:
-                billService = new AllotBillService(bill);
-                break;
-            default:
-                break;
-        }
+        return new Switcher<AbstractBillService>()
+                .addCase(BillTypeEnum.PLAN, new PlanBillService(bill))
+                .addCase(BillTypeEnum.PURCHASE, new PurchaseBillService(bill))
+                .addCase(BillTypeEnum.DELIVERY, new DeliveryBillService(bill))
+                .addCase(BillTypeEnum.ADJUST, new AdjustBillService(bill))
+                .addCase(BillTypeEnum.RETURNED, new ReturnedBillService(bill))
+                .addCase(BillTypeEnum.RESTOCK, new RestockBillService(bill))
+                .addCase(BillTypeEnum.ALLOT, new AllotBillService(bill))
+                .exec(bill.getBillType());
 
-        return billService;
     }
 
 }
