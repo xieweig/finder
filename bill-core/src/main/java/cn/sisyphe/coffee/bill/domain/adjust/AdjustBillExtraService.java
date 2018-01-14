@@ -1,5 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import org.springframework.data.domain.Page;
 
@@ -10,22 +12,8 @@ import org.springframework.data.domain.Page;
  *
  * @author XiongJing
  */
-public interface AdjustBillExtraService {
+public interface AdjustBillExtraService extends BillExtraService<AdjustBill> {
 
-    /**
-     * 根据单据编码查询单据信息
-     *
-     * @param billCode 单据编码
-     * @return
-     */
-    AdjustBill findByBillCode(String billCode);
-
-    /**
-     * 根据sourceCode查询调剂单据
-     * @param sourceCode
-     * @return
-     */
-    AdjustBill findBySourceCode(String sourceCode);
     /**
      * 多条件查询调拨单信息
      *

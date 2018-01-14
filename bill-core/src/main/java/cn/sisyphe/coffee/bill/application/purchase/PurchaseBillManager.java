@@ -11,8 +11,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillDetail;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.*;
@@ -563,7 +563,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
     }
 
     @Override
-    public Bill findEntityByBillCode(String billCode) {
+    public Bill findByBillCode(String billCode) {
         return purchaseBillExtraService.findByBillCode(billCode);
     }
 }

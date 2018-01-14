@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base.purpose;
 
 
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.framework.message.core.MessagingHelper;

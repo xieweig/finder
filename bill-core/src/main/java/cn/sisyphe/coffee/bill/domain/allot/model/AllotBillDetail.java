@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.allot;
+package cn.sisyphe.coffee.bill.domain.allot.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

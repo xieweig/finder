@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.delivery;
+package cn.sisyphe.coffee.bill.domain.restock.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,13 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * Created by yichuan on 2017/12/26 11:56
- * Description: 配送单明细
+ * @author ncmao
+ * @Date 2017/12/27 16:11
+ * 退库计划详情
  */
 @Entity
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class DeliveryBillDetail extends BillDetail {
-
+public class RestockBillDetail extends BillDetail {
 }

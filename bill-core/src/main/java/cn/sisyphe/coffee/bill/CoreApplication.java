@@ -1,16 +1,14 @@
 package cn.sisyphe.coffee.bill;
 
 import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
-import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

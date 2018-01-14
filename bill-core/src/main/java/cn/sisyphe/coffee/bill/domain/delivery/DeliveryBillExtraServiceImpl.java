@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.delivery;
 
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.delivery.DeliveryBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
 import cn.sisyphe.framework.web.exception.DataException;

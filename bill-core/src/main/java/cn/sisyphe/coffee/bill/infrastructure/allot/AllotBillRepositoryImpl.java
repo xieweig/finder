@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.allot;
 
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.infrastructure.allot.jpa.JPAAllotBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,8 +8,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
@@ -475,7 +475,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
     }
 
     @Override
-    public Bill findEntityByBillCode(String billCode) {
+    public Bill findByBillCode(String billCode) {
         return findByRestockBillCode(billCode);
     }
 

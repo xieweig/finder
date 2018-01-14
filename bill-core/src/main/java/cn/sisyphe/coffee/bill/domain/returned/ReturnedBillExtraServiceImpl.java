@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 import cn.sisyphe.coffee.bill.infrastructure.returned.ReturnedBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import org.springframework.beans.factory.annotation.Autowired;

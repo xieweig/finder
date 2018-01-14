@@ -2,7 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.allot;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 
 import java.util.List;
 

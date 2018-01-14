@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.restock;
 
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

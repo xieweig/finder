@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.allot;
 
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;

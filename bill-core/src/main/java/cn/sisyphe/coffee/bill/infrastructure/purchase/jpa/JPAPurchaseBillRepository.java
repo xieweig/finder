@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.purchase.jpa;
 
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

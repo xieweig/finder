@@ -4,13 +4,13 @@ import cn.sisyphe.coffee.bill.ClientApplication;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
@@ -57,7 +57,7 @@ public class AdjustBillIntegrationTest {
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
         Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801206TK000001");
         Bill inStorageBill = inStorageBillManager.convertInStorageBill(adjustBill);
-        inStorageBillManager.commiting(inStorageBill.getBillCode(), inStorageBill.getBillType());
+        inStorageBillManager.committing(inStorageBill.getBillCode(), inStorageBill.getBillType());
         inStorageBillManager.allotedForInStorageBill(inStorageBill);
     }
 

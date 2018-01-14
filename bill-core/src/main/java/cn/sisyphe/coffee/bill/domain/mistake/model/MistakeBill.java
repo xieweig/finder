@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.mistake;
+package cn.sisyphe.coffee.bill.domain.mistake.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -16,9 +16,9 @@ import javax.persistence.Table;
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class TransferMistakeBill extends Bill<TransferMistakeBillDetail> {
+public class MistakeBill extends Bill<MistakeBillDetail> {
     public static final String TRANSFER_MISTAKE_IN_STORAGE_PREFIX = "TMCK";
-    public TransferMistakeBill() {
+    public MistakeBill() {
         setBillCodePrefix(TRANSFER_MISTAKE_IN_STORAGE_PREFIX);
         setBillType(BillTypeEnum.TRANSFER_MISTAKE);
     }

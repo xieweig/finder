@@ -51,6 +51,7 @@ public abstract class AbstractBillManager<T extends Bill> {
 
     /**
      * 单据类型
+     *
      * @return
      */
     public abstract BillTypeEnum billType();
@@ -171,8 +172,13 @@ public abstract class AbstractBillManager<T extends Bill> {
         return bill;
     }
 
-    public Bill findEntityByBillCode(String billCode) {
-        throw new UnsupportedOperationException();
+    /**
+     * 查询
+     * @param billCode
+     * @return
+     */
+    public Bill findOneByBillCode(String billCode) {
+        return billRepository.findOneByBillCode(billCode);
     }
 
 }

@@ -1,15 +1,10 @@
 package cn.sisyphe.coffee.bill.infrastructure.restock.jpa;
 
 
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  *@date: 2018/1/2

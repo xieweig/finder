@@ -1,20 +1,16 @@
 package cn.sisyphe.coffee.allot;
 
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
-import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.util.BillCodeManager;
-import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
-import com.sun.javafx.binding.StringFormatter;
 
 import java.math.BigDecimal;
 import java.util.Date;

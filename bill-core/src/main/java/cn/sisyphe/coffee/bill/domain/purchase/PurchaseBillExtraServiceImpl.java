@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.purchase;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.framework.web.exception.DataException;

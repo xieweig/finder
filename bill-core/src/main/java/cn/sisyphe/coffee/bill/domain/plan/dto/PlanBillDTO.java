@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.plan.dto;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 
 import java.util.List;
 

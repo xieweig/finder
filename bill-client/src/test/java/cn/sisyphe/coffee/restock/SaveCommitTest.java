@@ -7,8 +7,8 @@ import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 
 import cn.sisyphe.coffee.bill.infrastructure.restock.RestockBillRepository;
@@ -17,7 +17,6 @@ import cn.sisyphe.coffee.bill.viewmodel.restock.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 
-import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 

@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.delivery;
 
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

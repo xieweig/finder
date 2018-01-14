@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.returned;
 
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.returned.jpa.JPAReturnedBillRepository;
 import org.springframework.data.domain.Page;

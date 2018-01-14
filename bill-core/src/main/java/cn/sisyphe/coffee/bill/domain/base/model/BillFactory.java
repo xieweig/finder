@@ -1,13 +1,13 @@
 package cn.sisyphe.coffee.bill.domain.base.model;
 
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 
 /**
  * Created by heyong on 2017/12/25 18:21

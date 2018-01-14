@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.adjust;
 
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.infrastructure.adjust.jpa.JPAAdjustBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;

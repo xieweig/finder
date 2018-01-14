@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.adjust;
 
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -34,8 +35,15 @@ public class AdjustBillExtraServiceImpl implements AdjustBillExtraService {
     @Autowired
     private AdjustBillRepository adjustBillRepository;
 
+
+    /**
+     * 根据单据编码查询单据信息
+     *
+     * @param billCode 单据编码
+     * @return
+     */
     @Override
-    public AdjustBill findByBillCode(String billCode) {
+    public AdjustBill findOneByBillCode(String billCode) {
         return adjustBillRepository.findOneByBillCode(billCode);
     }
 

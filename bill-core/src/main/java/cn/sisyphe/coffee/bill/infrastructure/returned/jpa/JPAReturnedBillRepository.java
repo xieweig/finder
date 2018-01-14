@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.returned.jpa;
 
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

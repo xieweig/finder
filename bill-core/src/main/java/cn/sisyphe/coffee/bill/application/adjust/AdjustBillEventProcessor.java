@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

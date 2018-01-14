@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.adjust.jpa;
 
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

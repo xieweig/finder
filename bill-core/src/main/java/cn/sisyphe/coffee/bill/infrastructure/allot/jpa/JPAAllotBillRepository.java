@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.allot.jpa;
 
-import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

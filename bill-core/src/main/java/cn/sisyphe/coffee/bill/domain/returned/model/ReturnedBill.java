@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.restock;
+package cn.sisyphe.coffee.bill.domain.returned.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -9,22 +9,20 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author ncmao
- * @Date 2017/12/27 16:10
- * @description 退库计划单
+ * @author mayupeng
+ * @Date 2018/01/07
+ * @description 退货计划单
  */
 @Entity
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class RestockBill extends Bill<RestockBillDetail> {
+public class ReturnedBill extends Bill<ReturnedBillDetail> {
+    public static final String RETURN_OUT_STORAGE_PREFIX = "THCK";
 
-    public static final String RESTOCK_OUT_STORAGE_PREFIX = "TKCK";
-
-    public RestockBill() {
-        setBillCodePrefix(RESTOCK_OUT_STORAGE_PREFIX);
-        setBillType(BillTypeEnum.RESTOCK);
+    public ReturnedBill() {
+        setBillCodePrefix(RETURN_OUT_STORAGE_PREFIX);
+        setBillType(BillTypeEnum.RETURNED);
     }
-
 
 }

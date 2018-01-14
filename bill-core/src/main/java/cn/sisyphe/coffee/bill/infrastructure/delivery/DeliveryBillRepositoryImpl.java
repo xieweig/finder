@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.infrastructure.delivery;
 
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.AbstractBillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.delivery.jpa.JPADeliveryBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;

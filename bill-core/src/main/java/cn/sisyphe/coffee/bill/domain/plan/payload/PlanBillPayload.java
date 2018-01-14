@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.domain.plan.payload;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
 
 import java.util.ArrayList;

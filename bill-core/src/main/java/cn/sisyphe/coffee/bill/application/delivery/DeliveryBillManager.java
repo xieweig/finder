@@ -7,8 +7,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBilExtraService;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.domain.delivery.enums.PickingTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.*;
@@ -405,7 +405,7 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     }
 
     @Override
-    public Bill findEntityByBillCode(String billCode) {
+    public Bill findByBillCode(String billCode) {
         return deliveryBilExtraService.findOneByBillCode(billCode);
     }
 }

@@ -2,8 +2,8 @@ package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBill;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

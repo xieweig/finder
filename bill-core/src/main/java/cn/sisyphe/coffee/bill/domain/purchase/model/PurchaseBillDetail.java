@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.purchase;
+package cn.sisyphe.coffee.bill.domain.purchase.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import com.fasterxml.jackson.annotation.JsonFormat;

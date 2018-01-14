@@ -1,13 +1,7 @@
 package cn.sisyphe.coffee.bill.application.base.purpose;
 
-import ch.lambdaj.function.closure.Switcher;
-import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
-import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
-import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
-import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
-import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
@@ -15,10 +9,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillDetail;
-import cn.sisyphe.coffee.bill.domain.restock.RestockBillDetail;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -30,19 +20,6 @@ import java.util.Set;
  */
 @Service
 public class InStorageBillManager {
-
-    @Autowired
-    private DeliveryBillManager deliveryBillManager;
-
-    @Autowired
-    private AdjustBillManager adjustBillManager;
-
-    @Autowired
-    private RestockBillManager restockBillManager;
-
-    @Autowired
-    private ReturnedBillManager returnedBillManager;
-
 
     /**
      * 出库单转换成入库单
@@ -67,7 +44,7 @@ public class InStorageBillManager {
     @SuppressWarnings("unchecked")
     public Bill allotedForInStorageBill(Bill bill) {
         AbstractBillManager abstractBillManager = BillManagerFactory.getManager(bill.getBillType());
-        Bill foundBill = abstractBillManager.findEntityByBillCode(bill.getBillCode());
+        Bill foundBill = abstractBillManager.findByBillCode(bill.getBillCode());
         abstractBillManager.committed(foundBill);
         return foundBill;
     }
@@ -80,9 +57,9 @@ public class InStorageBillManager {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill commiting(String billCode, BillTypeEnum inStorageBillType) {
+    public Bill committing(String billCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager abstractBillManager = BillManagerFactory.getManager(inStorageBillType);
-        Bill foundBill = abstractBillManager.findEntityByBillCode(billCode);
+        Bill foundBill = abstractBillManager.findByBillCode(billCode);
         abstractBillManager.committing(foundBill);
         return foundBill;
     }
@@ -113,7 +90,7 @@ public class InStorageBillManager {
         bill.setOperatorCode(sourceBill.getOperatorCode());
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
-            BillDetail desBillDetail = createBillDetail(sourceBill.getBillType());
+            BillDetail desBillDetail = new BillDetail();
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
@@ -123,22 +100,6 @@ public class InStorageBillManager {
         bill.setBillDetails(details);
 
         return bill;
-    }
-
-    private BillDetail createBillDetail(BillTypeEnum billType) {
-        if (BillTypeEnum.DELIVERY.equals(billType)) {
-            return new DeliveryBillDetail();
-        }
-        if (BillTypeEnum.ADJUST.equals(billType)) {
-            return new AdjustBillDetail();
-        }
-        if (BillTypeEnum.RESTOCK.equals(billType)) {
-            return new RestockBillDetail();
-        }
-        if (BillTypeEnum.RETURNED.equals(billType)) {
-            return new ReturnedBillDetail();
-        }
-        return null;
     }
 
 }

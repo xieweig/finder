@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.domain.delivery;
+package cn.sisyphe.coffee.bill.domain.delivery.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;

@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.application.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;

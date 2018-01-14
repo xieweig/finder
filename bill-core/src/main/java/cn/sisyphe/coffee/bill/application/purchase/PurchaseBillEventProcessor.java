@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.application.purchase;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
-import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;

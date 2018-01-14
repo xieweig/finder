@@ -8,8 +8,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBill;
-import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillDetail;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
@@ -478,7 +478,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
     }
 
     @Override
-    public Bill findEntityByBillCode(String billCode) {
+    public Bill findByBillCode(String billCode) {
         return findByReturnedBillCode(billCode);
     }
 }
