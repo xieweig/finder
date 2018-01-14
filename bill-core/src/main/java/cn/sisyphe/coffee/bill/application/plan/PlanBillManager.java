@@ -69,6 +69,16 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
     }
 
     /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.PLAN;
+    }
+
+    /**
      * 创建计划单
      *
      * @param operatorCode

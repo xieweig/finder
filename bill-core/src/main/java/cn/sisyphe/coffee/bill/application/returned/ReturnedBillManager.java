@@ -45,6 +45,16 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+    /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.RETURNED;
+    }
+
     @Autowired
     private ReturnedBillExtraService returnedBillExtraService;
 

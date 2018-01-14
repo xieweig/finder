@@ -1,11 +1,25 @@
 package cn.sisyphe.coffee.bill;
 
+import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.AllotBillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by heyong on 2017/12/19 13:57
@@ -30,35 +44,36 @@ public class CoreApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) {
 
-//        String billCode = new Date().toString();
-//
-//
-//
-//        // 1.创建进货单主表
-//        BillFactory billFactory = new BillFactory();
-//        PurchaseBill bill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
-//        bill.setBillCode(billCode);
-//        bill.setBillPurpose(BillPurposeEnum.InStorage);
-//
-//        // 设置站点
-//        Station station = new Station("CQ11");
-//        station.setStationName("三峡店");
-//        bill.setInLocation(station);
-//
-//
-//        // 2.进货单明细
-//        PurchaseBillDetail detail = new PurchaseBillDetail();
-//        Set<PurchaseBillDetail> billDetails = new HashSet<PurchaseBillDetail>();
-//
-//        // 2.1 设置原料和货物
-//        RawMaterial rawMaterial = new RawMaterial("R001");
-//        rawMaterial.setCargo(new Cargo("C002"));
-//        detail.setGoods(rawMaterial);
-//
-//        detail.setAmount(1111);
-//        detail.setPackageCode("000");
-//        billDetails.add(detail);
-//        bill.setBillDetails(billDetails);
+        String billCode = "1231";
+
+
+
+        // 1.创建进货单主表
+        BillFactory billFactory = new BillFactory();
+        AllotBill bill = (AllotBill) billFactory.createBill(BillTypeEnum.ALLOT);
+        bill.setBillCode(billCode);
+        bill.setBillPurpose(BillPurposeEnum.InStorage);
+
+        // 设置站点
+        Station station = new Station("CQ11");
+        station.setStationName("三峡店");
+        bill.setInLocation(station);
+
+
+        // 2.进货单明细
+        AllotBillDetail detail = new AllotBillDetail();
+        Set<AllotBillDetail> billDetails = new HashSet<AllotBillDetail>();
+
+        // 2.1 设置原料和货物
+        RawMaterial rawMaterial = new RawMaterial("R001");
+        rawMaterial.setCargo(new Cargo("C002"));
+        detail.setGoods(rawMaterial);
+
+        detail.setPackageCode("000");
+        billDetails.add(detail);
+        bill.setBillDetails(billDetails);
+
+        BillManagerFactory.getManager(bill.getBillType()).save(bill);
 //
 //
 //        // 3.创建单据服务

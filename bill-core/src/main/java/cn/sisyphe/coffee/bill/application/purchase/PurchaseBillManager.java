@@ -49,6 +49,16 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+    /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.PURCHASE;
+    }
+
 
     /**
      * 保存进货单

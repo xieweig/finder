@@ -44,6 +44,16 @@ public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
     }
 
     /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.DELIVERY;
+    }
+
+    /**
      * @param stationCode
      * @return
      */

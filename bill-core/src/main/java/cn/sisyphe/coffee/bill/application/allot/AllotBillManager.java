@@ -49,6 +49,16 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+    /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.ALLOT;
+    }
+
     public Page<AllotBillDTO> findAllotBillByCondition(ConditionQueryAllotBill conditionQueryAllotBill, BillTypeEnum specificBillType) {
         conditionQueryAllotBill.setSpecificBillType(specificBillType);
 //        conditionQueryAllotBill.setBillPurpose(billPurpose);

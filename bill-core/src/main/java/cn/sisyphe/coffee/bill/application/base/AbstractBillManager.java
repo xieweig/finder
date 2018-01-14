@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.SubmitBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -23,10 +24,16 @@ import java.util.Date;
  *
  * @author heyong
  */
-public class AbstractBillManager<T extends Bill> {
+public abstract class AbstractBillManager<T extends Bill> {
 
+    /**
+     * 持久化
+     */
     private BillRepository<T> billRepository;
 
+    /**
+     * 事件发布
+     */
     private ApplicationEventPublisher applicationEventPublisher;
 
     public BillRepository<T> getBillRepository() {
@@ -41,6 +48,12 @@ public class AbstractBillManager<T extends Bill> {
         this.billRepository = billRepository;
         this.applicationEventPublisher = applicationEventPublisher;
     }
+
+    /**
+     * 单据类型
+     * @return
+     */
+    public abstract BillTypeEnum billType();
 
     /**
      * 保存

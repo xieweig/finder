@@ -42,6 +42,16 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         super(billRepository, applicationEventPublisher);
     }
 
+    /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.RESTOCK;
+    }
+
     @Autowired
     private RestockBillExtraService restockBillExtraService;
 

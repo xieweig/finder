@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.application.base.purpose;
 import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
 import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
@@ -52,7 +53,7 @@ public class InStorageBillManager {
     public Bill convertInStorageBill(Bill outStorageBill) {
         Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
         inBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
-        AbstractBillManager billManager = getAbstractBillManager(inBill.getBillType());
+        AbstractBillManager billManager = BillManagerFactory.getManager(inBill.getBillType());
         billManager.purpose(inBill);
         return inBill;
     }
@@ -65,7 +66,7 @@ public class InStorageBillManager {
      */
     @SuppressWarnings("unchecked")
     public Bill allotedForInStorageBill(Bill bill) {
-        AbstractBillManager abstractBillManager = getAbstractBillManager(bill.getBillType());
+        AbstractBillManager abstractBillManager = BillManagerFactory.getManager(bill.getBillType());
         Bill foundBill = abstractBillManager.findEntityByBillCode(bill.getBillCode());
         abstractBillManager.committed(foundBill);
         return foundBill;
@@ -80,7 +81,7 @@ public class InStorageBillManager {
      */
     @SuppressWarnings("unchecked")
     public Bill commiting(String billCode, BillTypeEnum inStorageBillType) {
-        AbstractBillManager abstractBillManager = getAbstractBillManager(inStorageBillType);
+        AbstractBillManager abstractBillManager = BillManagerFactory.getManager(inStorageBillType);
         Bill foundBill = abstractBillManager.findEntityByBillCode(billCode);
         abstractBillManager.committing(foundBill);
         return foundBill;
@@ -138,16 +139,6 @@ public class InStorageBillManager {
             return new ReturnedBillDetail();
         }
         return null;
-    }
-
-
-    private AbstractBillManager getAbstractBillManager(BillTypeEnum billType) {
-        Switcher<AbstractBillManager> managerSwitcher = new Switcher<AbstractBillManager>()
-                .addCase(BillTypeEnum.DELIVERY, deliveryBillManager)
-                .addCase(BillTypeEnum.ADJUST, adjustBillManager)
-                .addCase(BillTypeEnum.RESTOCK, restockBillManager)
-                .addCase(BillTypeEnum.RETURNED, returnedBillManager);
-        return managerSwitcher.exec(billType);
     }
 
 }

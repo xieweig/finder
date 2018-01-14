@@ -69,6 +69,17 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
     }
 
     /**
+     * 单据类型
+     *
+     * @return
+     */
+    @Override
+    public BillTypeEnum billType() {
+        return BillTypeEnum.ADJUST;
+    }
+
+
+    /**
      * 暂存调剂计划
      *
      * @param addAdjustBillDTO 前端dto
