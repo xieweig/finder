@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,10 +14,8 @@ import org.springframework.stereotype.Service;
  *
  * @author XiongJing
  */
-@Service
+@Component
 public class AdjustBillEventProcessor {
-    @Autowired
-    private AdjustBillManager adjustBillManager;
 
     /**
      * 已创建事件
@@ -55,8 +54,7 @@ public class AdjustBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'ADJUST' and #event.billState.toString() == 'AUDIT_SUCCESS'")
     public void billSuccess(BehaviorEvent event) {
-        System.err.println("AUDIT_SUCCESS:" + event.getBill());
-        adjustBillManager.purpose((AdjustBill) event.getBill());
+
     }
 
     /**

@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,11 +12,8 @@ import org.springframework.stereotype.Service;
  *@description:
  *@author：xieweiguang
  */
-@Service
+@Component
 public class ReturnedBillEventProcessor  {
-
-    @Autowired
-    private ReturnedBillManager returnedBillManager;
 
     /**
      *
@@ -54,7 +52,6 @@ public class ReturnedBillEventProcessor  {
     @EventListener(condition = "#event.billType.toString() ==  'RETURNED' and #event.billState.toString() == 'AUDIT_SUCCESS'")
     public void billSuccess(BehaviorEvent event) {
         System.err.println("AUDIT_SUCCESS:" + event.getBill());
-        returnedBillManager.purpose((ReturnedBill) event.getBill());
     }
 
     /**

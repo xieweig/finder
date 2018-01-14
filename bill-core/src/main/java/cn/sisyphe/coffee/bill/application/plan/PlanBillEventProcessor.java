@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,12 +13,9 @@ import org.springframework.stereotype.Service;
  *
  * @author heyong
  */
-@Service
+@Component
 public class PlanBillEventProcessor {
 
-
-    @Autowired
-    private PlanBillManager planBillManager;
 
     /**
      * 已创建事件
@@ -56,8 +54,7 @@ public class PlanBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'PLAN' and #event.billState.toString() == 'AUDIT_SUCCESS'")
     public void billSuccess(BehaviorEvent event) {
-        PlanBill planBill = (PlanBill) event.getBill();
-        planBillManager.purpose(planBill);
+
     }
 
     /**

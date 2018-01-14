@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,11 +12,8 @@ import org.springframework.stereotype.Service;
  *@description: 
  *@author：xieweiguang
  */
-@Service
+@Component
 public class RestockBillEventProcessor  {
-
-    @Autowired
-    private RestockBillManager restockBillManager;
 
     /**
      *
@@ -53,8 +51,6 @@ public class RestockBillEventProcessor  {
      */
     @EventListener(condition = "#event.billType.toString() ==  'RESTOCK' and #event.billState.toString() == 'AUDIT_SUCCESS'")
     public void billSuccess(BehaviorEvent event) {
-        System.err.println("AUDIT_SUCCESS:" + event.getBill());
-        restockBillManager.purpose((RestockBill) event.getBill());
     }
 
     /**

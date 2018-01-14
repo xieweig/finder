@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.application.delivery;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
@@ -13,11 +14,8 @@ import org.springframework.stereotype.Service;
  * @company 西西弗文化传播
  * @Date 2018/1/5 9:40
  **/
-@Service
+@Component
 public class DeliveryBillEventProcessor {
-
-    @Autowired
-    private DeliveryBillManager deliveryBillManager;
 
     /**
      * 已创建事件

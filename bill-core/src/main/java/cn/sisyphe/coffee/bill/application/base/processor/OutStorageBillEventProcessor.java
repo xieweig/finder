@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.application.base;
+package cn.sisyphe.coffee.bill.application.base.processor;
 
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -13,7 +14,7 @@ import org.springframework.util.StringUtils;
  * 出库单监听事件
  * @author bifenglin
  */
-@Service
+@Component
 public class OutStorageBillEventProcessor {
 
     @Autowired

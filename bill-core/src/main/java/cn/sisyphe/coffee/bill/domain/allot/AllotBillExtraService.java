@@ -10,5 +10,4 @@ import org.springframework.data.domain.Page;
  */
 public interface AllotBillExtraService extends BillExtraService<AllotBill> {
 
-
 }
