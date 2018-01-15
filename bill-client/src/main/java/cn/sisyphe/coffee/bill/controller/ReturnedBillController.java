@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,12 +55,11 @@ public class ReturnedBillController {
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RETURNED, BillPurposeEnum.OutStorage);
 
-            List<String> returnedCodeList = new ArrayList<>();
-            for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
-                //测试使用
-                childPlanBillDTO.setOperatorName("操作人：懒羊羊");
-//                returnedCodeList.add(childPlanBillDTO.getBillCode());
-            }
+//            for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
+//                //测试使用
+//                childPlanBillDTO.setOperatorName("操作人：懒羊羊");
+////                returnedCodeList.add(childPlanBillDTO.getBillCode());
+//            }
 
             responseResult.put("content", planBillDTOS);
         } catch (DataException e) {
@@ -103,9 +102,9 @@ public class ReturnedBillController {
     @ApiOperation(value = "保存退库出库单（计划）")
     @RequestMapping(path = "/saveReturnedBill", method = RequestMethod.POST)
     public ResponseResult saveReturnedBill(HttpServletRequest request, @RequestBody AddReturnedBillDTO addReturnedBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addReturnedBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addReturnedBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.saveBill(addReturnedBillDTO);
         return responseResult;
@@ -114,9 +113,9 @@ public class ReturnedBillController {
     @ApiOperation(value = "保存退库出库单 (站点自主)")
     @RequestMapping(path = "/saveReturnedBillBySelf", method = RequestMethod.POST)
     public ResponseResult saveReturnedBillBySelf(HttpServletRequest request, @RequestBody AddReturnedBillDTO addReturnedBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addReturnedBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addReturnedBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.saveBill(addReturnedBillDTO);
         return responseResult;
@@ -131,9 +130,9 @@ public class ReturnedBillController {
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitReturnedBill", method = RequestMethod.POST)
     public ResponseResult submitReturnedBill(HttpServletRequest request, @RequestBody AddReturnedBillDTO addReturnedBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addReturnedBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addReturnedBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.submitBill(addReturnedBillDTO);
 
@@ -143,9 +142,9 @@ public class ReturnedBillController {
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitReturnedBillBySelf", method = RequestMethod.POST)
     public ResponseResult submitReturnedBillBySelf(HttpServletRequest request, @RequestBody AddReturnedBillDTO addReturnedBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addReturnedBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addReturnedBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addReturnedBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         returnedBillManager.submitBill(addReturnedBillDTO);
 
@@ -166,11 +165,11 @@ public class ReturnedBillController {
         Page<ReturnedBillDTO> billPage =  returnedBillManager.findByConditions(conditionQueryReturnedBill, BillTypeEnum.RETURNED, BillPurposeEnum.OutStorage);
         List<ReturnedBillDTO> list = billPage.getContent();
         //测试使用
-        for (ReturnedBillDTO returnedBillDTO :
-                list) {
-            returnedBillDTO.setAuditPersonName("审核人：海绵宝宝");
-            returnedBillDTO.setOperatorName("操作人：派大星");
-        }
+//        for (ReturnedBillDTO returnedBillDTO :
+//                list) {
+//            returnedBillDTO.setAuditPersonName("审核人：海绵宝宝");
+//            returnedBillDTO.setOperatorName("操作人：派大星");
+//        }
         responseResult.put("content", billPage);
         return responseResult;
     }
@@ -237,8 +236,8 @@ public class ReturnedBillController {
     @RequestMapping(path = "/updateReturnedBillToSave", method = RequestMethod.POST)
     public ResponseResult updateReturnedBillToSaved(HttpServletRequest request, @RequestBody AddReturnedBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        billDTO.setOperatorCode(loginInfo.getOperatorCode());
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        billDTO.setOperatorCode(loginInfo.getOperatorCode());
         try {
             returnedBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
@@ -274,9 +273,9 @@ public class ReturnedBillController {
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(@RequestParam String returnedBillCode, HttpServletRequest request) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        returnedBillManager.auditBill(returnedBillCode, "001", false);
+        returnedBillManager.auditBill(returnedBillCode, loginInfo.getOperatorCode(), false);
         return responseResult;
     }
 
@@ -291,9 +290,9 @@ public class ReturnedBillController {
     public ResponseResult auditSuccess(@RequestParam String returnedBillCode, HttpServletRequest request) {
 
         ResponseResult responseResult = new ResponseResult();
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 
-        returnedBillManager.auditBill(returnedBillCode, "001", true);
+        returnedBillManager.auditBill(returnedBillCode, loginInfo.getOperatorCode(), true);
         return responseResult;
     }
 

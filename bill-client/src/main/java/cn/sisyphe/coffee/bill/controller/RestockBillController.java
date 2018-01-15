@@ -7,6 +7,7 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
@@ -59,7 +60,7 @@ public class RestockBillController {
 
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 //测试使用
-                childPlanBillDTO.setOperatorName("操作人：懒羊羊");
+//                childPlanBillDTO.setOperatorName("操作人：懒羊羊");
             }
             responseResult.put("content", planBillDTOS);
         } catch (DataException e) {
@@ -102,9 +103,9 @@ public class RestockBillController {
     @ApiOperation(value = "保存退库出库单（计划）")
     @RequestMapping(path = "/saveRestockBill", method = RequestMethod.POST)
     public ResponseResult saveRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addRestockBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addRestockBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
@@ -113,9 +114,9 @@ public class RestockBillController {
     @ApiOperation(value = "保存退库出库单 (站点自主)")
     @RequestMapping(path = "/saveRestockBillBySelf", method = RequestMethod.POST)
     public ResponseResult saveRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addRestockBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addRestockBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.saveBill(addRestockBillDTO);
         return responseResult;
@@ -130,9 +131,9 @@ public class RestockBillController {
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBill", method = RequestMethod.POST)
     public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addRestockBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addRestockBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.submitBill(addRestockBillDTO);
 
@@ -142,9 +143,9 @@ public class RestockBillController {
     @ApiOperation(value = "提交退库出库单")
     @RequestMapping(path = "/submitRestockBillBySelf", method = RequestMethod.POST)
     public ResponseResult submitRestockBillBySelf(HttpServletRequest request, @RequestBody AddRestockBillDTO addRestockBillDTO) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
-        addRestockBillDTO.setOperatorCode("001");
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        addRestockBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+//        addRestockBillDTO.setOperatorCode("001");
         ResponseResult responseResult = new ResponseResult();
         restockBillManager.submitBill(addRestockBillDTO);
 
@@ -165,11 +166,11 @@ public class RestockBillController {
         Page<RestockBillDTO> billPage =  restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
         List<RestockBillDTO> list = billPage.getContent();
         //测试使用
-        for (RestockBillDTO restockBillDTO :
-                list) {
-            restockBillDTO.setAuditPersonName("审核人：海绵宝宝");
-            restockBillDTO.setOperatorName("操作人：派大星");
-        }
+//        for (RestockBillDTO restockBillDTO :
+//                list) {
+//            restockBillDTO.setAuditPersonName("审核人：海绵宝宝");
+//            restockBillDTO.setOperatorName("操作人：派大星");
+//        }
         responseResult.put("content", billPage);
         return responseResult;
     }
@@ -236,8 +237,8 @@ public class RestockBillController {
     @RequestMapping(path = "/updateRestockBillToSave", method = RequestMethod.POST)
     public ResponseResult updateRestockBillToSaved(HttpServletRequest request, @RequestBody AddRestockBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//        billDTO.setOperatorCode(loginInfo.getOperatorCode());
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        billDTO.setOperatorCode(loginInfo.getOperatorCode());
         try {
             restockBillManager.updateBillToSave(billDTO);
         } catch (DataException data) {
@@ -273,9 +274,10 @@ public class RestockBillController {
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(@RequestParam String restockBillCode, HttpServletRequest request) {
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+
         ResponseResult responseResult = new ResponseResult();
-        restockBillManager.auditBill(restockBillCode, "001", false);
+        restockBillManager.auditBill(restockBillCode, loginInfo.getOperatorCode(), false);
         return responseResult;
     }
 
@@ -290,9 +292,9 @@ public class RestockBillController {
     public ResponseResult auditSuccess(@RequestParam String restockBillCode, HttpServletRequest request) {
 
         ResponseResult responseResult = new ResponseResult();
-//        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 
-        restockBillManager.auditBill(restockBillCode, "001", true);
+        restockBillManager.auditBill(restockBillCode, loginInfo.getOperatorCode(), true);
         return responseResult;
     }
 
@@ -329,10 +331,10 @@ public class RestockBillController {
         try {
             Page<AllotBillDTO> allotBillDTOS = allotBillManager.findAllotBillByCondition(conditionQueryAllotBill, BillTypeEnum.RESTOCK);
 
-            for (AllotBillDTO allotBillDTO : allotBillDTOS) {
-                //测试使用
-                allotBillDTO.setOperatorName("操作人：懒羊羊");
-            }
+//            for (AllotBillDTO allotBillDTO : allotBillDTOS) {
+//                //测试使用
+//                allotBillDTO.setOperatorName("操作人：懒羊羊");
+//            }
             responseResult.put("content", allotBillDTOS);
         } catch (DataException e) {
             responseResult.putException(e);
