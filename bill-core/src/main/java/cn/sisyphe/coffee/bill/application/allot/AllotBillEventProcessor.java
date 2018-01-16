@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by heyong on 2018/1/16 13:52
  * Description: 调拨事件监听
+ *
  * @author heyong
  */
 @Component
@@ -60,9 +61,7 @@ public class AllotBillEventProcessor {
      */
     @EventListener(condition = "#event.billType.toString() ==  'ALLOT' and #event.billState.toString() == 'DONE'")
     public void billDone(BehaviorEvent event) {
-        //冲减完成之后需要生成调剂入库单
-        AdjustBill adjustBill = (AdjustBill) event.getBill();
-        System.out.println("DONE:" + adjustBill);
+
     }
 
 }
