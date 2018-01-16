@@ -44,8 +44,6 @@ public class BillDetail {
     /**
      * 更新前, 在数据库操作中调用
      */
-//    @PrePersist
-//    @PreUpdate
     public void update() {
         if (goods == null) {
          return;
