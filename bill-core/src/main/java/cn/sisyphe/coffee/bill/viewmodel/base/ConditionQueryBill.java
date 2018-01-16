@@ -37,12 +37,12 @@ public class ConditionQueryBill extends BaseConditionQuery {
     /**
      * 出库站点
      */
-    private String outStationCodeArray;
+    private List<String> outStationCodes;
 
     /**
      * 入库站点
      */
-    private String inStationCodeArray;
+    private List<String> inStationCodes;
 
     /**
      * 录单开始时间
@@ -58,37 +58,50 @@ public class ConditionQueryBill extends BaseConditionQuery {
     private Date createEndTime;
 
     /**
+     * 入库开始时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date inStorageStartTime;
+    /**
+     * 入库结束时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date inStorageEndTime;
+
+    /**
      * 出库开始时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date inOrOutStartTime;
+    private Date outStorageStartTime;
     /**
      * 出库结束时间
      */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date inOrOutEndTime;
+    private Date outStorageEndTime;
 
     /**
      * 提交状态
      */
-    private List<BillSubmitStateEnum> submitStateCode;
+    private List<BillSubmitStateEnum> submitStates;
 
     /**
      * 审核状态
      */
-    private List<BillAuditStateEnum> auditStateCode;
+    private List<BillAuditStateEnum> auditStates;
 
     /**
      * 出入库状态
      */
-    private List<BillInOrOutStateEnum> inOrOutStateCode;
+    private List<BillInOrOutStateEnum> inOrOutStates;
 
     /**
      * 单据属性
      */
-    private List<SourcePlanTypeEnum> billTypeCodeList;
+    private List<SourcePlanTypeEnum> billTypes;
 
     /**
      * 配送品种开始数量
@@ -134,22 +147,6 @@ public class ConditionQueryBill extends BaseConditionQuery {
         this.billCode = billCode;
     }
 
-    public String getOutStationCodeArray() {
-        return outStationCodeArray;
-    }
-
-    public void setOutStationCodeArray(String outStationCodeArray) {
-        this.outStationCodeArray = outStationCodeArray;
-    }
-
-    public String getInStationCodeArray() {
-        return inStationCodeArray;
-    }
-
-    public void setInStationCodeArray(String inStationCodeArray) {
-        this.inStationCodeArray = inStationCodeArray;
-    }
-
     public Date getCreateStartTime() {
         return createStartTime;
     }
@@ -166,28 +163,36 @@ public class ConditionQueryBill extends BaseConditionQuery {
         this.createEndTime = createEndTime;
     }
 
-    public Date getInOrOutStartTime() {
-        return inOrOutStartTime;
+    public Date getInStorageStartTime() {
+        return inStorageStartTime;
     }
 
-    public void setInOrOutStartTime(Date inOrOutStartTime) {
-        this.inOrOutStartTime = inOrOutStartTime;
+    public void setInStorageStartTime(Date inStorageStartTime) {
+        this.inStorageStartTime = inStorageStartTime;
     }
 
-    public Date getInOrOutEndTime() {
-        return inOrOutEndTime;
+    public Date getInStorageEndTime() {
+        return inStorageEndTime;
     }
 
-    public void setInOrOutEndTime(Date inOrOutEndTime) {
-        this.inOrOutEndTime = inOrOutEndTime;
+    public void setInStorageEndTime(Date inStorageEndTime) {
+        this.inStorageEndTime = inStorageEndTime;
     }
 
-    public List<BillSubmitStateEnum> getSubmitStateCode() {
-        return submitStateCode;
+    public Date getOutStorageStartTime() {
+        return outStorageStartTime;
     }
 
-    public void setSubmitStateCode(List<BillSubmitStateEnum> submitStateCode) {
-        this.submitStateCode = submitStateCode;
+    public void setOutStorageStartTime(Date outStorageStartTime) {
+        this.outStorageStartTime = outStorageStartTime;
+    }
+
+    public Date getOutStorageEndTime() {
+        return outStorageEndTime;
+    }
+
+    public void setOutStorageEndTime(Date outStorageEndTime) {
+        this.outStorageEndTime = outStorageEndTime;
     }
 
     public Integer getVarietyStart() {
@@ -206,30 +211,6 @@ public class ConditionQueryBill extends BaseConditionQuery {
         this.varietyEnd = varietyEnd;
     }
 
-    public List<BillAuditStateEnum> getAuditStateCode() {
-        return auditStateCode;
-    }
-
-    public void setAuditStateCode(List<BillAuditStateEnum> auditStateCode) {
-        this.auditStateCode = auditStateCode;
-    }
-
-    public List<BillInOrOutStateEnum> getInOrOutStateCode() {
-        return inOrOutStateCode;
-    }
-
-    public void setInOrOutStateCode(List<BillInOrOutStateEnum> inOrOutStateCode) {
-        this.inOrOutStateCode = inOrOutStateCode;
-    }
-
-    public List<SourcePlanTypeEnum> getBillTypeCodeList() {
-        return billTypeCodeList;
-    }
-
-    public void setBillTypeCodeList(List<SourcePlanTypeEnum> billTypeCodeList) {
-        this.billTypeCodeList = billTypeCodeList;
-    }
-
     public BillPurposeEnum getPurposeEnum() {
         return purposeEnum;
     }
@@ -246,26 +227,51 @@ public class ConditionQueryBill extends BaseConditionQuery {
         this.billStateEnum = billStateEnum;
     }
 
-    @Override
-    public String toString() {
-        return "ConditionQueryAdjustBill{" +
-                "operatorName='" + operatorName + '\'' +
-                ", operatorCodeList=" + operatorCodeList +
-                ", billCode='" + billCode + '\'' +
-                ", outStationCodeArray='" + outStationCodeArray + '\'' +
-                ", inStationCodeArray='" + inStationCodeArray + '\'' +
-                ", createStartTime=" + createStartTime +
-                ", createEndTime=" + createEndTime +
-                ", inOrOutStartTime=" + inOrOutStartTime +
-                ", inOrOutEndTime=" + inOrOutEndTime +
-                ", submitStateCode=" + submitStateCode +
-                ", auditStateCode=" + auditStateCode +
-                ", inOrOutStateCode=" + inOrOutStateCode +
-                ", billTypeCodeList=" + billTypeCodeList +
-                ", varietyStart=" + varietyStart +
-                ", varietyEnd=" + varietyEnd +
-                ", purposeEnum=" + purposeEnum +
-                ", billStateEnum=" + billStateEnum +
-                "} " + super.toString();
+    public List<String> getOutStationCodes() {
+        return outStationCodes;
+    }
+
+    public void setOutStationCodes(List<String> outStationCodes) {
+        this.outStationCodes = outStationCodes;
+    }
+
+    public List<String> getInStationCodes() {
+        return inStationCodes;
+    }
+
+    public void setInStationCodes(List<String> inStationCodes) {
+        this.inStationCodes = inStationCodes;
+    }
+
+    public List<BillSubmitStateEnum> getSubmitStates() {
+        return submitStates;
+    }
+
+    public void setSubmitStates(List<BillSubmitStateEnum> submitStates) {
+        this.submitStates = submitStates;
+    }
+
+    public List<BillAuditStateEnum> getAuditStates() {
+        return auditStates;
+    }
+
+    public void setAuditStates(List<BillAuditStateEnum> auditStates) {
+        this.auditStates = auditStates;
+    }
+
+    public List<BillInOrOutStateEnum> getInOrOutStates() {
+        return inOrOutStates;
+    }
+
+    public void setInOrOutStates(List<BillInOrOutStateEnum> inOrOutStates) {
+        this.inOrOutStates = inOrOutStates;
+    }
+
+    public List<SourcePlanTypeEnum> getBillTypes() {
+        return billTypes;
+    }
+
+    public void setBillTypes(List<SourcePlanTypeEnum> billTypes) {
+        this.billTypes = billTypes;
     }
 }

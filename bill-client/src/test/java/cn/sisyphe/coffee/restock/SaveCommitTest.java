@@ -195,9 +195,9 @@ public class SaveCommitTest extends InstanceFactory{
         calendar.setTime(basicDate);
 
         calendar.add(Calendar.HOUR, -20);
-        queryRestockBill.setInStartTime(calendar.getTime());
+        queryRestockBill.setInStorageStartTime(calendar.getTime());
         calendar.add(Calendar.HOUR, random.nextInt(10)+30);
-        queryRestockBill.setInEndTime(calendar.getTime());
+        queryRestockBill.setInStorageEndTime(calendar.getTime());
         calendar.add(Calendar.HOUR,-35 );
         queryRestockBill.setCreateStartTime(calendar.getTime());
         calendar.add(Calendar.HOUR,random.nextInt(20)+15);

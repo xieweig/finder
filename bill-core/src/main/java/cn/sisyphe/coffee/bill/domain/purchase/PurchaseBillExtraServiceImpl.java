@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.purchase;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillExtraService;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @author XiongJing
  */
 @Service
-public class PurchaseBillExtraServiceImpl extends AbstractBillExtraService<PurchaseBill> implements PurchaseBillExtraService {
+public class PurchaseBillExtraServiceImpl extends AbstractBillExtraService<PurchaseBill, ConditionQueryPurchaseBill> implements PurchaseBillExtraService {
 
     @Autowired
     public PurchaseBillExtraServiceImpl(BillRepository<PurchaseBill> billRepository) {
