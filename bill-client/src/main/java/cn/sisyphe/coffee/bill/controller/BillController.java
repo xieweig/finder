@@ -1,7 +1,10 @@
 package cn.sisyphe.coffee.bill.controller;
 
 import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
@@ -35,12 +38,15 @@ import java.util.List;
  *
  * @author XiongJing
  */
-public class BillController {
+public abstract class BillController<T extends Bill> {
 
-    @Autowired
     private PlanBillManager planBillManager;
-    @Autowired
-    private AdjustBillManager adjustBillManager;
+    private AbstractBillManager<T> abstractBillManager;
+
+    public BillController(PlanBillManager planBillManager, AbstractBillManager<T> abstractBillManager) {
+        this.planBillManager = planBillManager;
+        this.abstractBillManager = abstractBillManager;
+    }
 
     /**
      * 计划单据多条件分页查询
@@ -77,7 +83,7 @@ public class BillController {
     public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("restockBill", adjustBillManager.findAdjustBillBySourceCode(sourceCode));
+            responseResult.put("restockBill", abstractBillManager.findOneByBillCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -113,8 +119,8 @@ public class BillController {
     @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findOutStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
-        Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToOut(conditionQueryAdjustBill);
-        responseResult.put("content", dtoPage);
+//        Page<AdjustBillDTO> dtoPage = BillManagerFactory.getManager(billTypeEnum).(conditionQueryAdjustBill);
+//        responseResult.put("content", dtoPage);
         return responseResult;
     }
 
@@ -129,8 +135,8 @@ public class BillController {
     @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findInStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
-        Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToIn(conditionQueryAdjustBill);
-        responseResult.put("content", dtoPage);
+//        Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToIn(conditionQueryAdjustBill);
+//        responseResult.put("content", dtoPage);
         return responseResult;
     }
 
@@ -145,7 +151,7 @@ public class BillController {
     public ResponseResult findByBillCode(@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
+//            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -164,7 +170,7 @@ public class BillController {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         try {
-            responseResult.put("adjustBill", adjustBillManager.openBill(billCode, loginInfo.getOperatorCode()));
+//            responseResult.put("adjustBill", adjustBillManager.openBill(billCode, loginInfo.getOperatorCode()));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -186,7 +192,7 @@ public class BillController {
 //            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 //            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
             addAdjustBillDTO.setOperatorCode("test0001");
-            responseResult.put("billCode", adjustBillManager.create(addAdjustBillDTO));
+//            responseResult.put("billCode", adjustBillManager.create(addAdjustBillDTO));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -207,7 +213,7 @@ public class BillController {
 //            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
 //            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
             addAdjustBillDTO.setOperatorCode("test0001");
-            responseResult.put("billCode", adjustBillManager.submit(addAdjustBillDTO));
+//            responseResult.put("billCode", adjustBillManager.submit(addAdjustBillDTO));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -225,7 +231,7 @@ public class BillController {
     public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        adjustBillManager.audit(adjustBillCode, "auditPerson001", false);
+//        adjustBillManager.audit(adjustBillCode, "auditPerson001", false);
         return responseResult;
     }
 
@@ -240,7 +246,7 @@ public class BillController {
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "adjustBillCode") String adjustBillCode) {
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         ResponseResult responseResult = new ResponseResult();
-        adjustBillManager.audit(adjustBillCode, "auditPerson001", true);
+//        adjustBillManager.audit(adjustBillCode, "auditPerson001", true);
         return responseResult;
     }
 
