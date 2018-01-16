@@ -26,7 +26,7 @@ import java.util.Date;
  *
  * @author heyong
  */
-public abstract class AbstractBillManager<T extends Bill, K extends ConditionQueryBill> {
+public abstract class AbstractBillManager<T extends Bill> {
 
     /**
      * 持久化
@@ -183,24 +183,24 @@ public abstract class AbstractBillManager<T extends Bill, K extends ConditionQue
         return billRepository.findOneByBillCode(billCode);
     }
 
-    /**
-     * 入库单查询
-      *@param conditionQuery 条件查询参数
-     * @return 查询结果带分页信息
-      */
-
-    public  Page<T> findInStorageBillByCondition(K conditionQuery) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 出库单查询
-     *@param conditionQuery 条件查询参数
-     * @return 查询结果带分页信息
-      */
-
-    public  Page<T> findOutStorageBillByCondition(K conditionQuery) {
-        throw new UnsupportedOperationException();
-    }
+//    /**
+//     * 入库单查询
+//      *@param conditionQuery 条件查询参数
+//     * @return 查询结果带分页信息
+//      */
+//
+//    public  Page<T> findInStorageBillByCondition(K conditionQuery) {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    /**
+//     * 出库单查询
+//     *@param conditionQuery 条件查询参数
+//     * @return 查询结果带分页信息
+//      */
+//
+//    public  Page<T> findOutStorageBillByCondition(K conditionQuery) {
+//        throw new UnsupportedOperationException();
+//    }
 
 }
