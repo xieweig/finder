@@ -32,7 +32,7 @@ import java.util.Set;
  * @author ncmao
  */
 @Service
-public class AllotBillManager extends AbstractBillManager<AllotBill> {
+public class AllotBillManager extends AbstractBillManager<AllotBill, ConditionQueryAllotBill> {
 
     @Autowired
     AllotBillExtraService allotBillExtraService;

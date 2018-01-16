@@ -48,7 +48,7 @@ import static ch.lambdaj.Lambda.sum;
  */
 
 @Service
-public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
+public class AdjustBillManager extends AbstractBillManager<AdjustBill, ConditionQueryAdjustBill> {
 
     @Autowired
     private PlanBillExtraService planBillExtraService;

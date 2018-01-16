@@ -31,7 +31,7 @@ import java.util.*;
  * @author：xieweiguang
  */
 @Service
-public class RestockBillManager extends AbstractBillManager<RestockBill> {
+public class RestockBillManager extends AbstractBillManager<RestockBill, ConditionQueryRestockBill> {
 
     @Autowired
     private RestockBillExtraService restockBillExtraService;

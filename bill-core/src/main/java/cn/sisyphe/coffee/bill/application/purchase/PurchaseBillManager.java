@@ -35,7 +35,7 @@ import java.util.*;
  * @author XiongJing
  */
 @Service
-public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
+public class PurchaseBillManager extends AbstractBillManager<PurchaseBill, ConditionQueryPurchaseBill> {
 
     @Autowired
     private PurchaseBillExtraService purchaseBillExtraService;

@@ -34,7 +34,7 @@ import java.util.*;
  * @author：xieweiguang
  */
 @Service
-public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
+public class ReturnedBillManager extends AbstractBillManager<ReturnedBill, ConditionQueryReturnedBill> {
 
     @Autowired
     private SharedManager sharedManager;

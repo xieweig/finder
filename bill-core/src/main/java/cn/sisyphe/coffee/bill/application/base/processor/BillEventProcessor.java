@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class BillEventProcessor {
 
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
-            AbstractBillManager<Bill> manager = BillManagerFactory.getManager(bill.getBillType());
+            AbstractBillManager<Bill, ConditionQueryBill> manager = BillManagerFactory.getManager(bill.getBillType());
             manager.purpose(bill);
         }
     }

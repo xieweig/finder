@@ -9,7 +9,11 @@ import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBilExtraService;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.*;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.AuditDeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.DeliveryPickingEditDTO;
+import cn.sisyphe.coffee.bill.viewmodel.deliverybill.QueryDeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +24,17 @@ import org.springframework.util.StringUtils;
 
 import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2018/1/4.
  */
 @Service
-public class DeliveryBillManager extends AbstractBillManager<DeliveryBill> {
+public class DeliveryBillManager extends AbstractBillManager<DeliveryBill, ConditionQueryDeliveryBill> {
 
 
     //公共信息
