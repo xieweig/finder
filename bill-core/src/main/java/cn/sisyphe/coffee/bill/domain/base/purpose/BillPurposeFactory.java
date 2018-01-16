@@ -3,10 +3,10 @@ package cn.sisyphe.coffee.bill.domain.base.purpose;
 import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.InStorage;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.OutStorage;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.Plan;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.moveStorage;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.IN_STORAGE;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.OUT_STORAGE;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.PLAN;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.MOVE_STORAGE;
 
 
 /**
@@ -19,10 +19,10 @@ public class BillPurposeFactory {
 
     public static BillPurpose createPurpose(BillPurposeEnum billPurposeEnum) {
         return new Switcher<BillPurpose>()
-                .addCase(Plan, new PlanPurpose())
-                .addCase(OutStorage, new OutStoragePurpose())
-                .addCase(InStorage, new InStoragePurpose())
-                .addCase(moveStorage, new MoveStoragePurpose())
+                .addCase(PLAN, new PlanPurpose())
+                .addCase(OUT_STORAGE, new OutStoragePurpose())
+                .addCase(IN_STORAGE, new InStoragePurpose())
+                .addCase(MOVE_STORAGE, new MoveStoragePurpose())
                 .exec(billPurposeEnum);
     }
 }

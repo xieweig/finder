@@ -53,7 +53,7 @@ public class ClientApplication implements CommandLineRunner {
 //		BillFactory billFactory = new BillFactory();
 //		PurchaseBill bill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
 //		bill.setBillCode(billCode);
-//		bill.setBillPurpose(BillPurposeEnum.InStorage);
+//		bill.setBillPurpose(BillPurposeEnum.IN_STORAGE);
 //
 //		// 设置站点
 //		Station station = new Station("CQ11");

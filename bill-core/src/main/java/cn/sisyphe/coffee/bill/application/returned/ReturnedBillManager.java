@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.application.returned;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -16,7 +15,7 @@ import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -241,7 +240,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         BillFactory billFactory = new BillFactory();
         ReturnedBill returnedBill = (ReturnedBill) billFactory.createBill(BillTypeEnum.RETURNED);
         // 设置单据的作用
-        returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        returnedBill.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         //设置根单号
         if (addReturnedBillDTO.getRootCode() == null){
             returnedBill.setRootCode(returnedBill.getBillCode());

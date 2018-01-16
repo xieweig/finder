@@ -13,7 +13,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.CascadeType;

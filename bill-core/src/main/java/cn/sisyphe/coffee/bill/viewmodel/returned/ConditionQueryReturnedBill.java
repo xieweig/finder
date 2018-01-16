@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.viewmodel.returned;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

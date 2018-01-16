@@ -17,7 +17,7 @@ import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

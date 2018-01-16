@@ -63,9 +63,9 @@ public class OpenBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillInOrOutStateEnum inOrOutState() {
-        if (BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+        if (BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return NOT_IN;
-        } else if (BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+        } else if (BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return NOT_OUT;
         }
         return null;

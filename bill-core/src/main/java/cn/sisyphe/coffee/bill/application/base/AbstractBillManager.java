@@ -114,7 +114,7 @@ public abstract class AbstractBillManager<T extends Bill> {
      * @param bill
      */
     public void committed(T bill) {
-        if (!BillPurposeEnum.InStorage.equals(bill.getBillPurpose())) {
+        if (!BillPurposeEnum.IN_STORAGE.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setAllotStatus(BillAllotStatusEnum.ALLOT);
@@ -128,7 +128,7 @@ public abstract class AbstractBillManager<T extends Bill> {
      * @param bill
      */
     public void committing(T bill) {
-        if (!BillPurposeEnum.InStorage.equals(bill.getBillPurpose())) {
+        if (!BillPurposeEnum.IN_STORAGE.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setAllotStatus(BillAllotStatusEnum.ALLOTTING);

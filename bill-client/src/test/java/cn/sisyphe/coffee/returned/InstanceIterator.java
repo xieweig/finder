@@ -9,7 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.viewmodel.returned.AddReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;

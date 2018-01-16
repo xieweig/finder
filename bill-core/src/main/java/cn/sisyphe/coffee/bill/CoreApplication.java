@@ -9,12 +9,9 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.infrastructure.purchase.PurchaseBillRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +36,7 @@ public class CoreApplication implements CommandLineRunner {
         // 1.创建进货单主表
         BillFactory billFactory = new BillFactory();
         AllotBill bill = (AllotBill) billFactory.createBill(BillTypeEnum.ALLOT);
-        bill.setBillPurpose(BillPurposeEnum.InStorage);
+        bill.setBillPurpose(BillPurposeEnum.IN_STORAGE);
 
         // 设置站点
         Station station = new Station("CQ11");

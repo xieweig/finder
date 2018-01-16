@@ -71,19 +71,19 @@ public class AuditBehavior extends AbstractBillBehavior {
     @Override
     public BillInOrOutStateEnum inOrOutState() {
         // 审核成功并且是入库单据，那么就是入库中
-        if (isSuccess && BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+        if (isSuccess && BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return IN_ING;
         }
         // 审核失败并且是入库单，那么就是入库失败
-        else if (!isSuccess && BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+        else if (!isSuccess && BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return IN_FAILURE;
         }
         // 审核成功并且是出库单，那么就是出库中
-        else if (isSuccess && BillPurposeEnum.OutStorage.equals(getBillService().getBill().getBillPurpose())) {
+        else if (isSuccess && BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return OUT_ING;
         }
         // 审核失败并且是出库单，那么就是出库失败
-        else if (!isSuccess && BillPurposeEnum.OutStorage.equals(getBillService().getBill().getBillPurpose())) {
+        else if (!isSuccess && BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return OUT_FAILURE;
         }
         return null;

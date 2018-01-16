@@ -56,7 +56,7 @@ public class RestockBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
         try {
-            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
 
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
                 //测试使用
@@ -163,7 +163,7 @@ public class RestockBillController {
     public ResponseResult findByConditions(@RequestBody ConditionQueryRestockBill conditionQueryRestockBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        Page<RestockBillDTO> billPage =  restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+        Page<RestockBillDTO> billPage =  restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
         List<RestockBillDTO> list = billPage.getContent();
         //测试使用
 //        for (RestockBillDTO restockBillDTO :

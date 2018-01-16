@@ -53,7 +53,7 @@ public class ReturnedBillController {
         ResponseResult responseResult = new ResponseResult();
         System.err.print("子计划多条件查询开始");
         try {
-            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RETURNED, BillPurposeEnum.OutStorage);
+            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, BillTypeEnum.RETURNED, BillPurposeEnum.OUT_STORAGE);
 
 //            for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {
 //                //测试使用
@@ -162,7 +162,7 @@ public class ReturnedBillController {
     public ResponseResult findByConditions(@RequestBody ConditionQueryReturnedBill conditionQueryReturnedBill) {
         ResponseResult responseResult = new ResponseResult();
 
-        Page<ReturnedBillDTO> billPage =  returnedBillManager.findByConditions(conditionQueryReturnedBill, BillTypeEnum.RETURNED, BillPurposeEnum.OutStorage);
+        Page<ReturnedBillDTO> billPage =  returnedBillManager.findByConditions(conditionQueryReturnedBill, BillTypeEnum.RETURNED, BillPurposeEnum.OUT_STORAGE);
         List<ReturnedBillDTO> list = billPage.getContent();
         //测试使用
 //        for (ReturnedBillDTO returnedBillDTO :

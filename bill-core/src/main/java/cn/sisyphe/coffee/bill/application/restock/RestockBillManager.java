@@ -12,7 +12,7 @@ import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -237,7 +237,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         BillFactory billFactory = new BillFactory();
         RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
         // 设置单据的作用
-        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        restockBill.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         //设置根单号
         if (addRestockBillDTO.getRootCode() == null){
             restockBill.setRootCode(restockBill.getBillCode());

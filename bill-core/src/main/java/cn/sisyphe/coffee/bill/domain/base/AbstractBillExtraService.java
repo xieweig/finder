@@ -6,7 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
