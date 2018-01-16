@@ -1,37 +1,26 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
-import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
-import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
-import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -60,26 +49,7 @@ public abstract class BillController<T extends Bill> {
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill,
-                    BillTypeEnum.ADJUST, BillPurposeEnum.OUT_STORAGE);
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
-
-    /**
-     * 根据源单号查询单据详细信息
-     *
-     * @param sourceCode
-     * @return
-     */
-    @ApiOperation(value = "根据源单号查询单据详细信息")
-    @RequestMapping(path = "/findBySourceCode", method = RequestMethod.GET)
-    public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("restockBill", abstractBillManager.findOneByBillCode(sourceCode));
+            //responseResult.put("bill", abstractBillManager.findByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -124,6 +94,23 @@ public abstract class BillController<T extends Bill> {
     }
 
     /**
+     * 根据单据号查询出库单据详细信息
+     *
+     * @param billCode 单据号
+     * @return
+     */
+    @ApiOperation(value = "根据单据号查询出库单据详细信息")
+    @RequestMapping(path = "/findOutStorageByBillCode", method = RequestMethod.GET)
+    public ResponseResult findOutStorageByBillCode(@RequestParam String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
      * 多条件分页查询入库单据
      *
      * @param conditionQueryAdjustBill 查询条件DTO
@@ -138,6 +125,41 @@ public abstract class BillController<T extends Bill> {
 //            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 根据单据号查询入库单据详细信息
+     *
+     * @param billCode 单据号
+     * @return
+     */
+    @ApiOperation(value = "根据单据号查询入库单据详细信息")
+    @RequestMapping(path = "/findInStorageByBillCode", method = RequestMethod.GET)
+    public ResponseResult findInStorageByBillCode(@RequestParam String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 根据源单号查询单据详细信息
+     *
+     * @param sourceCode
+     * @return
+     */
+    @ApiOperation(value = "根据源单号查询单据详细信息")
+    @RequestMapping(path = "/findBySourceCode", method = RequestMethod.GET)
+    public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("restockBill", abstractBillManager.findOneByBillCode(sourceCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
         }
         return responseResult;
     }
