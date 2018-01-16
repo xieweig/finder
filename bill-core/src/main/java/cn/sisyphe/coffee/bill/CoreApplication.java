@@ -28,12 +28,6 @@ import java.util.Set;
 @SpringBootApplication
 public class CoreApplication implements CommandLineRunner {
 
-    @Autowired
-    private PurchaseBillRepository purchaseBillRepository;
-
-    @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
-
     public static void main(String[] args) {
         SpringApplication.run(CoreApplication.class, args);
 
@@ -42,14 +36,9 @@ public class CoreApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) {
 
-        String billCode = "12312";
-
-
-
         // 1.创建进货单主表
         BillFactory billFactory = new BillFactory();
         AllotBill bill = (AllotBill) billFactory.createBill(BillTypeEnum.ALLOT);
-        bill.setBillCode(billCode);
         bill.setBillPurpose(BillPurposeEnum.InStorage);
 
         // 设置站点
