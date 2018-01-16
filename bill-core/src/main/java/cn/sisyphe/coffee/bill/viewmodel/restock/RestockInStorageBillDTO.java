@@ -2,7 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.restock;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 
 import java.util.Date;
 import java.util.List;

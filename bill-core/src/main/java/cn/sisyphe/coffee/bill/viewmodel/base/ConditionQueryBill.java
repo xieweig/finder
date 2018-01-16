@@ -2,7 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;

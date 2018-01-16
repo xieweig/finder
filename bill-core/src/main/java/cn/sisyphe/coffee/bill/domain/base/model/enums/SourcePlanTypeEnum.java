@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.viewmodel.shared;
+package cn.sisyphe.coffee.bill.domain.base.model.enums;
 
 /**
  * @Date 2018/1/8 17:34

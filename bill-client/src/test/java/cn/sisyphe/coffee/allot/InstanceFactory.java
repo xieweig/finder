@@ -10,7 +10,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.util.BillCodeManager;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 
 import java.math.BigDecimal;
 import java.util.Date;

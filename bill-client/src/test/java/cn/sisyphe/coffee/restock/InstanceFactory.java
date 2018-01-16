@@ -14,7 +14,7 @@ import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;

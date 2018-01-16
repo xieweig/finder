@@ -12,7 +12,7 @@ import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
-import cn.sisyphe.coffee.bill.viewmodel.shared.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.waybill.ScanFillBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
