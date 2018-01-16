@@ -1,13 +1,20 @@
 package cn.sisyphe.coffee.bill.domain.base.model;
 
+import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
+import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
 import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBillDetail;
 
 /**
  * Created by heyong on 2017/12/25 18:21
@@ -24,34 +31,30 @@ public class BillFactory {
      * @return
      */
     public Bill createBill(BillTypeEnum billType) {
-        Bill bill = null;
+        Switcher<Bill> switcher = new Switcher<Bill>()
+                .addCase(BillTypeEnum.PLAN, new PlanBill())
+                .addCase(BillTypeEnum.PURCHASE, new PurchaseBill())
+                .addCase(BillTypeEnum.DELIVERY, new DeliveryBill())
+                .addCase(BillTypeEnum.RETURNED, new ReturnedBill())
+                .addCase(BillTypeEnum.RESTOCK, new RestockBill())
+                .addCase(BillTypeEnum.ADJUST, new AdjustBill())
+                .addCase(BillTypeEnum.ALLOT, new AdjustBill());
 
-        switch (billType) {
-            case PURCHASE:
-                bill = new PurchaseBill();
-                break;
-            case DELIVERY:
-                bill = new DeliveryBill();
-                break;
-            case PLAN:
-                bill = new PlanBill();
-                break;
-            case RETURNED:
-                bill = new ReturnedBill();
-                break;
-            case RESTOCK:
-                bill = new RestockBill();
-                break;
-            case ADJUST:
-                bill = new AdjustBill();
-                break;
-            case ALLOT:
-                bill = new AllotBill();
-                break;
-            default:
-                break;
-        }
-
-        return bill;
+        return switcher.exec(billType);
     }
+
+    public BillDetail createBillDetail(BillTypeEnum billType) {
+
+        Switcher<BillDetail> switcher = new Switcher<BillDetail>()
+                .addCase(BillTypeEnum.PLAN, new PlanBillDetail())
+                .addCase(BillTypeEnum.PURCHASE, new PurchaseBillDetail())
+                .addCase(BillTypeEnum.DELIVERY, new DeliveryBillDetail())
+                .addCase(BillTypeEnum.RETURNED, new ReturnedBillDetail())
+                .addCase(BillTypeEnum.RESTOCK, new RestockBillDetail())
+                .addCase(BillTypeEnum.ADJUST, new AdjustBillDetail())
+                .addCase(BillTypeEnum.ALLOT, new AdjustBillDetail());
+
+        return switcher.exec(billType);
+    }
+
 }

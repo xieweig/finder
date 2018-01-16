@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
  * @author heyong
  */
 @MappedSuperclass
-public class BillDetail {
+public abstract class BillDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +40,7 @@ public class BillDetail {
     /**
      * 数据库物品
      */
+    @JsonIgnore
     private DbGoods dbGoods = new DbGoods();
 
     /**

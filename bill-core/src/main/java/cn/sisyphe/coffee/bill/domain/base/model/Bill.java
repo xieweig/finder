@@ -15,6 +15,7 @@ import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,7 +44,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
  * @author heyong
  */
 @MappedSuperclass
-public class Bill<T extends BillDetail> extends BaseEntity {
+public abstract class Bill<T extends BillDetail> extends BaseEntity {
 
 
     @Id
@@ -87,6 +88,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 数据库位置储存
      */
+    @JsonIgnore
     private DbStation dbStation = new DbStation();
 
     /**
@@ -250,6 +252,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 差错单
      */
+    @JsonIgnore
     @Transient
     private MistakeBill mistakeBill;
 

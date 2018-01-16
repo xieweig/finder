@@ -9,6 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -88,9 +89,10 @@ public class InStorageBillManager {
         bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
         bill.setProgress(sourceBill.getProgress());
         bill.setOperatorCode(sourceBill.getOperatorCode());
+
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
-            BillDetail desBillDetail = new BillDetail();
+            BillDetail desBillDetail = new BillFactory().createBillDetail(sourceBill.getBillType());
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
