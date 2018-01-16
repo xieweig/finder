@@ -3,7 +3,6 @@ package cn.sisyphe.coffee.bill.domain.adjust;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
-import org.springframework.data.domain.Page;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -12,7 +11,7 @@ import org.springframework.data.domain.Page;
  *
  * @author XiongJing
  */
-public interface AdjustBillExtraService extends BillExtraService<AdjustBill> {
+public interface AdjustBillExtraService extends BillExtraService<AdjustBill, ConditionQueryAdjustBill> {
 
 
 }

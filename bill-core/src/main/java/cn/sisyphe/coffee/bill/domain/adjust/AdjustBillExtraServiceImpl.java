@@ -3,10 +3,8 @@ package cn.sisyphe.coffee.bill.domain.adjust;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class AdjustBillExtraServiceImpl extends AbstractBillExtraService<AdjustBill> implements AdjustBillExtraService {
+public class AdjustBillExtraServiceImpl extends AbstractBillExtraService<AdjustBill, ConditionQueryAdjustBill> implements AdjustBillExtraService {
 
     @Autowired
     public AdjustBillExtraServiceImpl(BillRepository<AdjustBill> billRepository) {

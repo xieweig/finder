@@ -4,7 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import org.springframework.data.domain.Page;
 
-public interface BillExtraService<T extends Bill> {
+public interface BillExtraService<T extends Bill, Q extends ConditionQueryBill> {
 
     /**
      * 根据单据编码查询单据信息
@@ -34,8 +34,7 @@ public interface BillExtraService<T extends Bill> {
      * 多条件查询
      *
      * @param conditionQueryBill
-     * @param <Q>
      * @return
      */
-    <Q extends ConditionQueryBill> Page<T> findPageByCondition(Q conditionQueryBill);
+    Page<T> findPageByCondition(Q conditionQueryBill);
 }

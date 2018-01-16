@@ -36,7 +36,7 @@ import java.util.List;
  * @author XiongJing
  */
 @RestController
-@RequestMapping("/api/bill/adjustBill")
+@RequestMapping("/api/bill/adjust")
 @Api(description = "调剂计划相关接口")
 @CrossOrigin(origins = "*")
 public class AdjustBillController {
@@ -52,8 +52,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "子计划多条件查询")
-    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
-    public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+    @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
+    public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill,
@@ -77,8 +77,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "子计划直接查看已保存的拣货单")
-    @RequestMapping(path = "/findAdjustBillBySourceCode", method = RequestMethod.GET)
-    public ResponseResult findAdjustBillBySourceCode(@RequestParam("sourceCode") String sourceCode) {
+    @RequestMapping(path = "/findBySourceCode", method = RequestMethod.GET)
+    public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("restockBill", adjustBillManager.findAdjustBillBySourceCode(sourceCode));
@@ -95,8 +95,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "查询子计划单个查询")
-    @RequestMapping(path = "/findPlanBillByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPlanBillByBillCode(@RequestParam("billCode") String billCode) {
+    @RequestMapping(path = "/findPlanByBillCode", method = RequestMethod.GET)
+    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.ADJUST));
@@ -113,9 +113,9 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "多条件查询调剂出库单据")
-    @RequestMapping(path = "/findByConditionsToOut", method = RequestMethod.POST)
+    @RequestMapping(path = "/findOutStorageByConditions", method = RequestMethod.POST)
     @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
-    public ResponseResult findByConditionsToOut(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
+    public ResponseResult findOutStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToOut(conditionQueryAdjustBill);
         responseResult.put("content", dtoPage);
@@ -129,9 +129,9 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "多条件查询调剂入库单据")
-    @RequestMapping(path = "/findByConditionsToIn", method = RequestMethod.POST)
+    @RequestMapping(path = "/findInStorageByConditions", method = RequestMethod.POST)
     @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
-    public ResponseResult findByConditionsToIn(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
+    public ResponseResult findInStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         Page<AdjustBillDTO> dtoPage = adjustBillManager.findByConditionsToIn(conditionQueryAdjustBill);
         responseResult.put("content", dtoPage);
@@ -145,8 +145,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
-    @RequestMapping(path = "/findByAdjustBillCode", method = RequestMethod.GET)
-    public ResponseResult findByAdjustBillCode(@RequestParam(value = "billCode") String billCode) {
+    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
+    public ResponseResult findByBillCode(@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
@@ -163,8 +163,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "根据调剂单号查询详细信息")
-    @RequestMapping(path = "/openBill", method = RequestMethod.GET)
-    public ResponseResult openBill(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
+    @RequestMapping(path = "/open", method = RequestMethod.GET)
+    public ResponseResult open(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         try {
@@ -182,8 +182,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "保存调剂单据信息  ")
-    @RequestMapping(path = "/saveAdjustBill", method = RequestMethod.POST)
-    public ResponseResult saveAdjustBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+    @RequestMapping(path = "/save", method = RequestMethod.POST)
+    public ResponseResult save(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
 
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -204,8 +204,8 @@ public class AdjustBillController {
      * @return
      */
     @ApiOperation(value = "提交调剂单据信息")
-    @RequestMapping(path = "/submitAdjustBill", method = RequestMethod.POST)
-    public ResponseResult submitRestockBill(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+    @RequestMapping(path = "/submit", method = RequestMethod.POST)
+    public ResponseResult submit(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
 //            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);

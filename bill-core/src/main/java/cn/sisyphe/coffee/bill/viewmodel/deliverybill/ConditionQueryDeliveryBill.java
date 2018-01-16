@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.deliverybill;
 
-import cn.sisyphe.coffee.bill.viewmodel.BaseConditionQuery;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -19,12 +18,6 @@ import java.util.List;
  * @Date 2018/1/5 10:37
  **/
 public class ConditionQueryDeliveryBill extends ConditionQueryBill implements Serializable {
-
-
-    /**
-     * 入库单号
-     */
-    private String billCode;
 
     /**
      * 总数量下限
@@ -45,22 +38,6 @@ public class ConditionQueryDeliveryBill extends ConditionQueryBill implements Se
      * 总品种上限
      */
     private Integer maxTotalCount;
-    /**
-     * 录单人名称
-     */
-    private String operatorName;
-    /**
-     * 录单开始时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createStartTime;
-    /**
-     * 录单结束时间
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createEndTime;
 
 
     /**
@@ -119,38 +96,6 @@ public class ConditionQueryDeliveryBill extends ConditionQueryBill implements Se
         this.maxTotalCount = maxTotalCount;
     }
 
-    public String getBillCode() {
-        return billCode;
-    }
-
-    public void setBillCode(String billCode) {
-        this.billCode = billCode;
-    }
-
-    public String getOperatorName() {
-        return operatorName;
-    }
-
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
-    }
-
-    public Date getCreateStartTime() {
-        return createStartTime;
-    }
-
-    public void setCreateStartTime(Date createStartTime) {
-        this.createStartTime = createStartTime;
-    }
-
-    public Date getCreateEndTime() {
-        return createEndTime;
-    }
-
-    public void setCreateEndTime(Date createEndTime) {
-        this.createEndTime = createEndTime;
-    }
-
     public Date getOutStockStartTime() {
         return outStockStartTime;
     }
@@ -175,25 +120,4 @@ public class ConditionQueryDeliveryBill extends ConditionQueryBill implements Se
         this.statusCode = statusCode;
     }
 
-    public List<String> getOperatorCodeList() {
-        return operatorCodeList;
-    }
-
-    public void setOperatorCodeList(List<String> operatorCodeList) {
-        this.operatorCodeList = operatorCodeList;
-    }
-
-    @Override
-    public String toString() {
-        return "ConditionQueryDeliveryBill{" +
-                "billCode='" + billCode + '\'' +
-                ", operatorName='" + operatorName + '\'' +
-                ", createStartTime=" + createStartTime +
-                ", createEndTime=" + createEndTime +
-                ", outStockStartTime=" + outStockStartTime +
-                ", outStockEndTime=" + outStockEndTime +
-                ", statusCode='" + statusCode + '\'' +
-                ", operatorCodeList=" + operatorCodeList +
-                '}';
-    }
 }
