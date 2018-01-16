@@ -8,6 +8,11 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author heyong
+ *
+ * 基础事件监听
+ */
 @Component
 public class BillEventProcessor {
 
