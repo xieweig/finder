@@ -3,10 +3,11 @@ package cn.sisyphe.coffee.bill.domain.base;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -113,6 +114,12 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             }
 
             /*
+             * 单据作用查询条件
+             */
+            if (conditionQuery.getPurposeEnum() != null) {
+                expressions.add(criteriaBuilder.equal(root.get("billPurpose").as(BillPurposeEnum.class), conditionQuery.getPurposeEnum()));
+            }
+            /*
              * 单号查询条件
              */
             if (!StringUtils.isEmpty(conditionQuery.getBillCode())) {
@@ -204,7 +211,7 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
              * 配送品种结束数量
              */
             if (conditionQuery.getVarietyEnd() != null && conditionQuery.getVarietyEnd() > 0) {
-                expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("totalVarietyAmount").as(Integer.class), conditionQuery.getVarietyStart()));
+                expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("totalVarietyAmount").as(Integer.class), conditionQuery.getVarietyEnd()));
             }
 
             addExtraExpression(conditionQuery, expressions, root, criteriaBuilder);

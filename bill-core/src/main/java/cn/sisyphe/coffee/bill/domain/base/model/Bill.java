@@ -232,6 +232,7 @@ public class Bill<T extends BillDetail> extends BaseEntity {
     /**
      * 单据来源类型
      */
+    @Enumerated(value = EnumType.STRING)
     private SourcePlanTypeEnum billProperty;
 
     /**
