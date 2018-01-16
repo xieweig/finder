@@ -127,7 +127,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
-        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.OutStorage);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.OUT_STORAGE);
         Page<AdjustBill> adjustBillPage = adjustBillExtraService.findPageByCondition(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
@@ -142,7 +142,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         // SpringCloud调用查询用户编码
         List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryAdjustBill.getOperatorName());
         conditionQueryAdjustBill.setOperatorCodeList(userCodeList);
-        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.InStorage);
+        conditionQueryAdjustBill.setPurposeEnum(BillPurposeEnum.IN_STORAGE);
         Page<AdjustBill> adjustBillPage = adjustBillExtraService.findPageByCondition(conditionQueryAdjustBill);
         return adjustBillPage.map(source -> toMapConditionsDTO(source));
     }
@@ -220,7 +220,7 @@ public class AdjustBillManager extends AbstractBillManager<AdjustBill> {
         //审核人编码
         adjustBill.setAuditPersonCode(addAdjustBillDTO.getAuditPersonCode());
         //设置单据作用
-        adjustBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        adjustBill.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         //设置出库站点
         Station outLocation = new Station(addAdjustBillDTO.getOutStationCode());
         //设置出库库位

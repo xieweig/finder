@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.application.purchase;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -210,7 +209,7 @@ public class PurchaseBillManager extends AbstractBillManager<PurchaseBill> {
         BillFactory billFactory = new BillFactory();
         PurchaseBill purchaseBill = (PurchaseBill) billFactory.createBill(BillTypeEnum.PURCHASE);
         // 设置单据的作用
-        purchaseBill.setBillPurpose(BillPurposeEnum.InStorage);
+        purchaseBill.setBillPurpose(BillPurposeEnum.IN_STORAGE);
         // 设置单据类型
         purchaseBill.setBillType(BillTypeEnum.PURCHASE);
         // 货运单号

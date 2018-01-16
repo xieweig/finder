@@ -4,7 +4,6 @@ import cn.sisyphe.coffee.bill.CoreApplication;
 import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -47,7 +46,7 @@ public class RestockQueryTest extends InstanceFactory {
 //
 //            conditionQueryRestockBill.setBillCode(codes[i]);
 //
-//            Page<RestockBillDTO> page = restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+//            Page<RestockBillDTO> page = restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
 //
 //            logger.info(ToStringBuilder.reflectionToString(page.getContent().get(0)), ToStringStyle.SHORT_PREFIX_STYLE);
 //
@@ -58,7 +57,7 @@ public class RestockQueryTest extends InstanceFactory {
 //
 //            conditionQueryRestockBill.setOperatorName(operateName[i]);
 //
-//            Page<RestockBillDTO> page = restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+//            Page<RestockBillDTO> page = restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
 //
 //            logger.info(ToStringBuilder.reflectionToString(page.getContent().get(0)), ToStringStyle.SHORT_PREFIX_STYLE);
 //        }
@@ -69,7 +68,7 @@ public class RestockQueryTest extends InstanceFactory {
             calendar.setTime(date);
             calendar.add(Calendar.DATE, -1);
             conditionQueryRestockBill.setCreateStartTime(calendar.getTime());
-            Page<RestockBillDTO> page = restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+            Page<RestockBillDTO> page = restockBillManager.findByConditions(conditionQueryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
 
             logger.info(ToStringBuilder.reflectionToString(page.getContent().get(0)), ToStringStyle.SHORT_PREFIX_STYLE);
                // 测试审核状态

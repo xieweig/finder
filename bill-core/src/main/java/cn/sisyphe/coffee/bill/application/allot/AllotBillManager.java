@@ -6,7 +6,6 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -127,7 +126,7 @@ public class AllotBillManager extends AbstractBillManager<AllotBill> {
 
     private AllotBill mapAllotBill(AddAllotBillDTO addAllotBillDTO) {
         AllotBill allotBill = (AllotBill) new BillFactory().createBill(BillTypeEnum.ALLOT);
-        allotBill.setBillPurpose(BillPurposeEnum.moveStorage);
+        allotBill.setBillPurpose(BillPurposeEnum.MOVE_STORAGE);
         allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
         allotBill.setBelongStationCode(addAllotBillDTO.getInStation().code());
         allotBill.setInLocation(addAllotBillDTO.getInStation());

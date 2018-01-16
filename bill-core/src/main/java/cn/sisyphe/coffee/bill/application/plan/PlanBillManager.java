@@ -232,7 +232,7 @@ public class PlanBillManager extends AbstractBillManager<PlanBill> {
                 planBill.getBillDetails().add(planBillDetail);
             }
         }
-        planBill.setBillPurpose(BillPurposeEnum.Plan);
+        planBill.setBillPurpose(BillPurposeEnum.PLAN);
 
     }
 

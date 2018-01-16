@@ -57,7 +57,7 @@ public class AdjustBillController {
         ResponseResult responseResult = new ResponseResult();
         try {
             Page<ChildPlanBillDTO> planBillDTOS = planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill,
-                    BillTypeEnum.ADJUST, BillPurposeEnum.OutStorage);
+                    BillTypeEnum.ADJUST, BillPurposeEnum.OUT_STORAGE);
 
             List<String> restockCodeList = new ArrayList<>();
             for (ChildPlanBillDTO childPlanBillDTO : planBillDTOS) {

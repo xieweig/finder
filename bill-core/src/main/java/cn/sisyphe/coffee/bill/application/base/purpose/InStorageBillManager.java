@@ -28,7 +28,7 @@ public class InStorageBillManager {
      */
     @SuppressWarnings("unchecked")
     public Bill convertInStorageBill(Bill outStorageBill) {
-        Bill inBill = generateBill(outStorageBill, BillPurposeEnum.InStorage);
+        Bill inBill = generateBill(outStorageBill, BillPurposeEnum.IN_STORAGE);
         inBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
         AbstractBillManager billManager = BillManagerFactory.getManager(inBill.getBillType());
         billManager.purpose(inBill);

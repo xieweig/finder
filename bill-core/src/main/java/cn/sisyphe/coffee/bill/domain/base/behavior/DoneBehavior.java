@@ -62,9 +62,9 @@ public class DoneBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillInOrOutStateEnum inOrOutState() {
-        if (BillPurposeEnum.InStorage.equals(getBillService().getBill().getBillPurpose())) {
+        if (BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return IN_SUCCESS;
-        } else if (BillPurposeEnum.OutStorage.equals(getBillService().getBill().getBillPurpose())) {
+        } else if (BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return OUT_SUCCESS;
         }
         return null;

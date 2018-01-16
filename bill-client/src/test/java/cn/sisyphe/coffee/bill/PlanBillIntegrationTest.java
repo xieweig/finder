@@ -66,7 +66,7 @@ public class PlanBillIntegrationTest {
         PlanBill planBill = new PlanBill();
         planBill.setBillType(BillTypeEnum.PLAN);
         planBill.setSpecificBillType(BillTypeEnum.DELIVERY);
-        planBill.setBillPurpose(BillPurposeEnum.Plan);
+        planBill.setBillPurpose(BillPurposeEnum.PLAN);
         planBill.setHqBill(true);
         planBill.setBillCode("testcode3");
 

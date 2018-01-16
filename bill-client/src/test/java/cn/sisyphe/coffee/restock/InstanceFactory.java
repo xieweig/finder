@@ -117,7 +117,7 @@ public class InstanceFactory {
         BillFactory factory = new BillFactory();
         RestockBill restockBill = (RestockBill) factory.createBill(BillTypeEnum.RESTOCK);
         restockBill.setBillCode(this.nextBillCode());
-        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        restockBill.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         restockBill.setProgress(new BigDecimal(random.nextInt(100) + 1));
         restockBill.setTotalPrice(new BigDecimal(random.nextInt(600) + 100));
         restockBill.setTotalAmount(random.nextInt(100));

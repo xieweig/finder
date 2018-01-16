@@ -11,20 +11,20 @@ public enum BillPurposeEnum {
     /**
      * 出库
      */
-    OutStorage,
+    OUT_STORAGE,
     /**
      * 入库
      */
-    InStorage,
+    IN_STORAGE,
     /**
      * 计划
      */
-    Plan,
+    PLAN,
 
     /**
      * 调拨
      */
-    moveStorage
+    MOVE_STORAGE
 
 
 }

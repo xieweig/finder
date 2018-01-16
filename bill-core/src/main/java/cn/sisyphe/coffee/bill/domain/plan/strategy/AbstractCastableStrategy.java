@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum.UN_REVIEWED;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.Plan;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum.PLAN;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.UNCOMMITTED;
 
 /**
@@ -34,7 +34,7 @@ public abstract class AbstractCastableStrategy {
         planBill.setSpecificBillType(billTypeEnum);
         planBill.setInLocation(planBillPayload.getInLocation());
         planBill.setOutLocation(planBillPayload.getOutLocation());
-        planBill.setBillPurpose(Plan);
+        planBill.setBillPurpose(PLAN);
         planBill.setOperatorCode(planBillPayload.getOperatorCode());
         planBill.setBasicEnum(planBillPayload.getBasicEnum());
         planBill.setRootCode(planBillPayload.getParentBillCode());

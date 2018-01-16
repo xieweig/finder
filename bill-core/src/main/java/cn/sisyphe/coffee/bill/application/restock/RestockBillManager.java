@@ -237,7 +237,7 @@ public class RestockBillManager extends AbstractBillManager<RestockBill> {
         BillFactory billFactory = new BillFactory();
         RestockBill restockBill = (RestockBill) billFactory.createBill(BillTypeEnum.RESTOCK);
         // 设置单据的作用
-        restockBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        restockBill.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         //设置根单号
         if (addRestockBillDTO.getRootCode() == null){
             restockBill.setRootCode(restockBill.getBillCode());

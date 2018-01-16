@@ -129,7 +129,7 @@ public class DeliveryBillTest {
         editDTO.setStation(station);
 
         billDetails.add(itemDTO);
-        editDTO.setBillPurpose(BillPurposeEnum.OutStorage);//出库
+        editDTO.setBillPurpose(BillPurposeEnum.OUT_STORAGE);//出库
         editDTO.setBillDetails(billDetails);
         // 拣货方式
 //        editDTO.setPickingTypeEnum(PickingTypeEnum.PICKING_BY_CARGO);
@@ -195,7 +195,7 @@ public class DeliveryBillTest {
         editDTO.setStation(station);
 
         billDetails.add(itemDTO);
-        editDTO.setBillPurpose(BillPurposeEnum.OutStorage);//出库
+        editDTO.setBillPurpose(BillPurposeEnum.OUT_STORAGE);//出库
         editDTO.setBillDetails(billDetails);
         // 添加前是为保存状态
         deliveryBillManager.submitWhenDone(editDTO);

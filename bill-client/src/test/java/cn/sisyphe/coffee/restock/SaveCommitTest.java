@@ -209,7 +209,7 @@ public class SaveCommitTest extends InstanceFactory{
         queryRestockBill.setPage(1);
         queryRestockBill.setPageSize(5);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
-        Page<RestockBillDTO> restockBillDTO = this.restockBillManager.findByConditions(queryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+        Page<RestockBillDTO> restockBillDTO = this.restockBillManager.findByConditions(queryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
         logger.info(restockBillDTO.getContent().toString());
     }
     @Test
@@ -219,7 +219,7 @@ public class SaveCommitTest extends InstanceFactory{
         queryRestockBill.setPageSize(10);
         queryRestockBill.setPage(1);
         queryRestockBill.setBillType(BillTypeEnum.RESTOCK);
-        Page<RestockBillDTO> restockBillDTO  = this.restockBillManager.findByConditions(queryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OutStorage);
+        Page<RestockBillDTO> restockBillDTO  = this.restockBillManager.findByConditions(queryRestockBill, BillTypeEnum.RESTOCK, BillPurposeEnum.OUT_STORAGE);
         logger.info(ToStringBuilder.reflectionToString(queryRestockBill,ToStringStyle.SHORT_PREFIX_STYLE));
         logger.info(restockBillDTO.getTotalPages()+restockBillDTO.getContent().toString());
     }

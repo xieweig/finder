@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.application.returned;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -241,7 +240,7 @@ public class ReturnedBillManager extends AbstractBillManager<ReturnedBill> {
         BillFactory billFactory = new BillFactory();
         ReturnedBill returnedBill = (ReturnedBill) billFactory.createBill(BillTypeEnum.RETURNED);
         // 设置单据的作用
-        returnedBill.setBillPurpose(BillPurposeEnum.OutStorage);
+        returnedBill.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         //设置根单号
         if (addReturnedBillDTO.getRootCode() == null){
             returnedBill.setRootCode(returnedBill.getBillCode());

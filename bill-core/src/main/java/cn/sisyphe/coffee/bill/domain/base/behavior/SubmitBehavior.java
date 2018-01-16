@@ -62,9 +62,9 @@ public class SubmitBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillInOrOutStateEnum inOrOutState() {
-        if (BillPurposeEnum.InStorage.equals(super.getBillService().getBill().getBillPurpose())) {
+        if (BillPurposeEnum.IN_STORAGE.equals(super.getBillService().getBill().getBillPurpose())) {
             return NOT_IN;
-        } else if (BillPurposeEnum.OutStorage.equals(super.getBillService().getBill().getBillPurpose())) {
+        } else if (BillPurposeEnum.OUT_STORAGE.equals(super.getBillService().getBill().getBillPurpose())) {
             return NOT_OUT;
         } else {
             return null;
