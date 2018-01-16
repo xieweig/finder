@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.returned;
 
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
@@ -34,7 +35,7 @@ import java.util.*;
  * @author：xieweiguang
  */
 @Service
-public class ReturnedBillManager extends AbstractBillManager<ReturnedBill, ConditionQueryReturnedBill> {
+public class ReturnedBillManager extends AbstractBillExtraManager<ReturnedBill, ConditionQueryReturnedBill> {
 
     @Autowired
     private SharedManager sharedManager;

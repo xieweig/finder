@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.application.delivery;
 
-import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
@@ -34,10 +34,9 @@ import java.util.Set;
  * Created by Administrator on 2018/1/4.
  */
 @Service
-public class DeliveryBillManager extends AbstractBillManager<DeliveryBill, ConditionQueryDeliveryBill> {
+public class DeliveryBillManager extends AbstractBillExtraManager<DeliveryBill, ConditionQueryDeliveryBill> {
 
 
-    //公共信息
     @Autowired
     private SharedManager sharedManager;
 

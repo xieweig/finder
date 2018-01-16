@@ -29,7 +29,7 @@ public class BillEventProcessor {
 
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
-            AbstractBillManager<Bill, ConditionQueryBill> manager = BillManagerFactory.getManager(bill.getBillType());
+            AbstractBillManager<Bill> manager = BillManagerFactory.getManager(bill.getBillType());
             manager.purpose(bill);
         }
     }

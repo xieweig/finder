@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.restock;
 
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
@@ -31,7 +32,7 @@ import java.util.*;
  * @author：xieweiguang
  */
 @Service
-public class RestockBillManager extends AbstractBillManager<RestockBill, ConditionQueryRestockBill> {
+public class RestockBillManager extends AbstractBillExtraManager<RestockBill, ConditionQueryRestockBill> {
 
     @Autowired
     private RestockBillExtraService restockBillExtraService;

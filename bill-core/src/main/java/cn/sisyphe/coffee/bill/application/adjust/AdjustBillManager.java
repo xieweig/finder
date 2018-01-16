@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.adjust;
 
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
@@ -48,7 +49,7 @@ import static ch.lambdaj.Lambda.sum;
  */
 
 @Service
-public class AdjustBillManager extends AbstractBillManager<AdjustBill, ConditionQueryAdjustBill> {
+public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, ConditionQueryAdjustBill> {
 
     @Autowired
     private PlanBillExtraService planBillExtraService;

@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.plan;
 
 import ch.lambdaj.group.Group;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
@@ -55,7 +56,7 @@ import static ch.lambdaj.Lambda.sum;
  * @author ncmao
  */
 @Service
-public class PlanBillManager extends AbstractBillManager<PlanBill, ConditionQueryPlanBill> {
+public class PlanBillManager extends AbstractBillExtraManager<PlanBill, ConditionQueryPlanBill> {
 
     @Autowired
     private PlanBillExtraService planBillExtraService;

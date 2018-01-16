@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.purchase;
 
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
@@ -35,7 +36,7 @@ import java.util.*;
  * @author XiongJing
  */
 @Service
-public class PurchaseBillManager extends AbstractBillManager<PurchaseBill, ConditionQueryPurchaseBill> {
+public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, ConditionQueryPurchaseBill> {
 
     @Autowired
     private PurchaseBillExtraService purchaseBillExtraService;

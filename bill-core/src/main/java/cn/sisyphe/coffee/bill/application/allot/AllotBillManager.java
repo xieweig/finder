@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
@@ -32,7 +33,7 @@ import java.util.Set;
  * @author ncmao
  */
 @Service
-public class AllotBillManager extends AbstractBillManager<AllotBill, ConditionQueryAllotBill> {
+public class AllotBillManager extends AbstractBillExtraManager<AllotBill, ConditionQueryAllotBill> {
 
     @Autowired
     AllotBillExtraService allotBillExtraService;
