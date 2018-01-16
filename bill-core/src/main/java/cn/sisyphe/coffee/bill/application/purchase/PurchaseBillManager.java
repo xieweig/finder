@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.application.purchase;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
@@ -11,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillExtraService;
@@ -43,11 +45,10 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
     @Autowired
     private SharedManager sharedManager;
 
-    @Autowired
-    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository,
-                               ApplicationEventPublisher applicationEventPublisher) {
-        super(billRepository, applicationEventPublisher);
+    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<PurchaseBill, ConditionQueryPurchaseBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
     }
+
 
     /**
      * 单据类型
@@ -167,6 +168,7 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
      *
      * @param purchaseBillCode
      */
+    @Override
     public void auditBill(String purchaseBillCode, String auditPersonCode, boolean isSuccess) {
         if (StringUtils.isEmpty(purchaseBillCode)) {
             throw new DataException("404", "单据编码为空");

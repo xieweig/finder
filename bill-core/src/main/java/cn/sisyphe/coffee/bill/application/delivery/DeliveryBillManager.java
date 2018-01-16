@@ -2,12 +2,14 @@ package cn.sisyphe.coffee.bill.application.delivery;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBilExtraService;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.AuditDeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
@@ -43,10 +45,10 @@ public class DeliveryBillManager extends AbstractBillExtraManager<DeliveryBill, 
     @Autowired
     private DeliveryBilExtraService deliveryBilExtraService;
 
-    @Autowired
-    public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
-        super(billRepository, applicationEventPublisher);
+    public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<DeliveryBill, ConditionQueryDeliveryBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
     }
+
 
     /**
      * 单据类型

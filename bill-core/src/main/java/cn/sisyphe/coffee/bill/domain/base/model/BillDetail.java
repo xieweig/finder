@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author heyong
  */
 @MappedSuperclass
-public abstract class BillDetail {
+public class BillDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

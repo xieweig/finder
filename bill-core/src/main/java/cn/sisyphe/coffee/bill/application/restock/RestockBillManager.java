@@ -3,11 +3,13 @@ package cn.sisyphe.coffee.bill.application.restock;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
+import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
@@ -40,10 +42,10 @@ public class RestockBillManager extends AbstractBillExtraManager<RestockBill, Co
     @Autowired
     private SharedManager sharedManager;
 
-
-    public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
-        super(billRepository, applicationEventPublisher);
+    public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<RestockBill, ConditionQueryRestockBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
     }
+
 
     /**
      * 单据类型
@@ -144,6 +146,7 @@ public class RestockBillManager extends AbstractBillExtraManager<RestockBill, Co
      *
      * @param restockBillCode
      */
+    @Override
     public void auditBill(String restockBillCode, String auditPersonCode, boolean isSuccess) {
         if (StringUtils.isEmpty(restockBillCode)) {
             throw new DataException("404", "单据编码为空");

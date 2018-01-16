@@ -7,12 +7,14 @@ import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
+import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AddAllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
@@ -44,10 +46,10 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, Condit
     @Autowired
     private InStorageBillManager inStorageBillManager;
 
-    @Autowired
-    public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher) {
-        super(billRepository, applicationEventPublisher);
+    public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
     }
+
 
     /**
      * 单据类型

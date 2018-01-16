@@ -44,7 +44,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
  * @author heyong
  */
 @MappedSuperclass
-public abstract class Bill<T extends BillDetail> extends BaseEntity {
+public class Bill<T extends BillDetail> extends BaseEntity {
 
 
     @Id

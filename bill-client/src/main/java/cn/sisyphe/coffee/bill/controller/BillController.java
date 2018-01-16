@@ -1,20 +1,16 @@
 package cn.sisyphe.coffee.bill.controller;
 
-import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
-import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
-import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,14 +25,12 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author XiongJing
  */
-public abstract class BillController<T extends Bill> {
+public abstract class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
-    private PlanBillManager planBillManager;
-    private AbstractBillManager<T> abstractBillManager;
+    private AbstractBillExtraManager<T, Q> abstractBillExtraManager;
 
-    public BillController(PlanBillManager planBillManager, AbstractBillManager<T> abstractBillManager) {
-        this.planBillManager = planBillManager;
-        this.abstractBillManager = abstractBillManager;
+    public BillController(AbstractBillExtraManager<T, Q> abstractBillExtraManager) {
+        this.abstractBillExtraManager = abstractBillExtraManager;
     }
 
     /**
@@ -67,7 +61,7 @@ public abstract class BillController<T extends Bill> {
     public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.ADJUST));
+            //responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.ADJUST));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -86,7 +80,7 @@ public abstract class BillController<T extends Bill> {
     public ResponseResult findOutStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-//            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
+            //responseResult.put("adjustBill", abstractBillExtraManager.findOneByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -157,7 +151,7 @@ public abstract class BillController<T extends Bill> {
     public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("restockBill", abstractBillManager.findOneByBillCode(sourceCode));
+            //responseResult.put("restockBill", abstractBillManager.findOneByBillCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -175,7 +169,7 @@ public abstract class BillController<T extends Bill> {
     public ResponseResult findByBillCode(@RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-//            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
+            responseResult.put("adjustBill", abstractBillExtraManager.findOneByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -194,7 +188,7 @@ public abstract class BillController<T extends Bill> {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-//            responseResult.put("adjustBill", adjustBillManager.openBill(billCode, loginInfo.getOperatorCode()));
+            responseResult.put("adjustBill", abstractBillExtraManager.openBill(billCode, loginInfo.getOperatorCode()));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -204,19 +198,19 @@ public abstract class BillController<T extends Bill> {
     /**
      * 保存单据信息
      *
-     * @param addAdjustBillDTO 单据DTO
+     * @param billDTO 单据DTO
      * @return
      */
     @ApiOperation(value = "保存单据信息")
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ResponseResult save(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+    public ResponseResult save(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            billDTO.setOperatorCode(loginInfo.getOperatorCode());
             //测试使用
-            addAdjustBillDTO.setOperatorCode("test0001");
-//            responseResult.put("billCode", adjustBillManager.create(addAdjustBillDTO));
+            //billDTO.setOperatorCode("test0001");
+            responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -226,18 +220,18 @@ public abstract class BillController<T extends Bill> {
     /**
      * 提交单据信息
      *
-     * @param addAdjustBillDTO 单据DTO
+     * @param billDTO 单据DTO
      * @return
      */
     @ApiOperation(value = "提交单据信息")
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
-    public ResponseResult submit(HttpServletRequest request, @RequestBody AddAdjustBillDTO addAdjustBillDTO) {
+    public ResponseResult submit(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            addAdjustBillDTO.setOperatorCode(loginInfo.getOperatorCode());
+            billDTO.setOperatorCode(loginInfo.getOperatorCode());
             //addAdjustBillDTO.setOperatorCode("test0001");
-            //responseResult.put("billCode", abstractBillManager.submit(addAdjustBillDTO));
+            responseResult.put("billCode", abstractBillExtraManager.submitBill(billDTO));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -256,7 +250,7 @@ public abstract class BillController<T extends Bill> {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            //abstractBillManager.audit(billCode,false);
+            abstractBillExtraManager.auditBill(billCode, loginInfo.getOperatorCode(), false);
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -275,7 +269,7 @@ public abstract class BillController<T extends Bill> {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            //abstractBillManager.audit(billCode,true);
+            abstractBillExtraManager.auditBill(billCode, loginInfo.getOperatorCode(), true);
         } catch (DataException data) {
             responseResult.putException(data);
         }
