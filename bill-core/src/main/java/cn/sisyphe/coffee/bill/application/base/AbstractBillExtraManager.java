@@ -138,7 +138,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     private T prepareBill(D billDTO) {
 
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
-            return (T) new BillFactory().createBill(BillTypeEnum.ADJUST);
+            return (T) new BillFactory().createBill(billDTO.getBillType());
         }
 
         T bill = billExtraService.findByBillCode(billDTO.getBillCode());
@@ -195,7 +195,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     protected D billToListDto(T source) {
         BillDTO billDTO = new BillDTO();
         // 清空明细
-        source.setBillDetails(null);
+        source.getBillDetails().clear();
 
         BeanUtils.copyProperties(source, billDTO);
 
@@ -211,7 +211,8 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      */
     protected void dtoToBill(T bill, D billDTO) {
 
-        BeanUtils.copyProperties(billDTO, bill);
+        billDTO.getBillDetails().clear();
+        BeanUtils.copyProperties(billDTO, bill, "createTime");
     }
 
     /**
@@ -222,7 +223,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      */
     protected D billToDto(T bill) {
         BillDTO billDTO = new BillDTO();
-
+        bill.getBillDetails().clear();
         BeanUtils.copyProperties(bill, billDTO);
 
         return (D) billDTO;

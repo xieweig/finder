@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.restock;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDetailDTO;
 
@@ -8,4 +9,8 @@ import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDetailDTO;
  * Description:
  */
 public class RestockBillDTO extends BillDTO<RestockBillDetailDTO> {
+
+    public RestockBillDTO() {
+        setBillType(BillTypeEnum.RESTOCK);
+    }
 }

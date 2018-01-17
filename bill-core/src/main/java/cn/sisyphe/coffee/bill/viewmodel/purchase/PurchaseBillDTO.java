@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 
 /**
@@ -7,4 +8,8 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
  * Description:
  */
 public class PurchaseBillDTO extends BillDTO<PurchaseBillDetailDTO> {
+
+    public PurchaseBillDTO() {
+        setBillType(BillTypeEnum.PURCHASE);
+    }
 }

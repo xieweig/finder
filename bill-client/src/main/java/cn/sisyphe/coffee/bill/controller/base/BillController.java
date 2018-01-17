@@ -121,7 +121,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     }
 
     /**
-     *
      * 拣货明细
      *
      * @param sourceCode
@@ -142,8 +141,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     // --------------- 出库单 end -----------------------
 
 
-
     // --------------- 入库单 begin -----------------------
+
     /**
      * 入库单列表
      *
@@ -185,6 +184,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 
 
     // --------------- 调拨单 begin -----------------------
+
     /**
      * 调拨单列表
      *
@@ -226,6 +226,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 
 
     // --------------- 业务操作 begin -----------------------
+
     /**
      * 根据单据号打开单据
      *
@@ -255,15 +256,13 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     @RequestMapping(path = "/save", method = RequestMethod.POST)
     public ResponseResult save(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            billDTO.setOperatorCode(loginInfo.getOperatorCode());
-            //测试使用
-            //billDTO.setOperatorCode("test0001");
-            responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO));
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
+
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+//            billDTO.setOperatorCode(loginInfo.getOperatorCode());
+        //测试使用
+        //billDTO.setOperatorCode("test0001");
+        responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO));
+
         return responseResult;
     }
 
