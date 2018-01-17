@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author XiongJing
  */
-public class ConditionQueryBill extends BaseConditionQuery {
+public class ConditionQueryBill extends BaseConditionQuery implements Serializable {
 
     /**
      * 录单人名称

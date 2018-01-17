@@ -20,8 +20,6 @@ import org.springframework.util.StringUtils;
 @Component
 public class ReceiverService {
 
-    @Autowired
-    private PurchaseBillManager purchaseBillManager;
 
     @Autowired
     private InStorageBillManager inStorageBillManager;
@@ -41,7 +39,7 @@ public class ReceiverService {
 
         if (Constant.COMMON_NAME.equals(responseResult.getCommandName())) {
             log.info("接收到库存系统冲减后的单据消息：", responseResult.getResult());
-            purchaseBillManager.doneBill(responseResult);
+            //purchaseBillManager.doneBill(responseResult);
             return;
         }
 

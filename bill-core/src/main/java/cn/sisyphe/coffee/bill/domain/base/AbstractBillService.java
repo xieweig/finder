@@ -52,7 +52,7 @@ public abstract class AbstractBillService {
 
         this.bill = bill;
         if(StringUtils.isEmpty(this.bill.getBillCode())){
-            this.bill.setBillCode(BillCodeManager.getBillCodeFun(bill.getBillCodePrefix(), bill.getBelongStationCode()));
+            this.bill.setBillCode(BillCodeManager.getBillCodeFun(bill.billCodePrefix(), bill.getBelongStationCode()));
         }
         this.billPurpose = BillPurposeFactory.createPurpose(bill.getBillPurpose());
         this.billPurpose.setBillService(this);

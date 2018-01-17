@@ -1,77 +1,12 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
- * @date: 2018/1/2
- * @description:
+ * @date: 2018/1/12
+ * @description: 多条件查询退库调拨单查询
  * @author：bifenglin
  */
-
-public class ConditionQueryReturnedBill extends ConditionQueryBill implements Serializable {
-
-    private BillTypeEnum billType;
-
-    private BillPurposeEnum billPurpose;
-    /*
-     * 单据属性
-     */
-    private SourcePlanTypeEnum billProperty;
-
-    /**
-     * 开始配送总价
-     */
-    private BigDecimal startTotalPrice;
-    /**
-     * 结束配送总价
-     */
-    private BigDecimal endTotalPrice;
-
-    public BillTypeEnum getBillType() {
-        return billType;
-    }
-
-    public void setBillType(BillTypeEnum billType) {
-        this.billType = billType;
-    }
-
-    public BillPurposeEnum getBillPurpose() {
-        return billPurpose;
-    }
-
-    public void setBillPurpose(BillPurposeEnum billPurpose) {
-        this.billPurpose = billPurpose;
-    }
-
-    public SourcePlanTypeEnum getBillProperty() {
-        return billProperty;
-    }
-
-    public void setBillProperty(SourcePlanTypeEnum billProperty) {
-        this.billProperty = billProperty;
-    }
-
-
-    public BigDecimal getStartTotalPrice() {
-        return startTotalPrice;
-    }
-
-    public void setStartTotalPrice(BigDecimal startTotalPrice) {
-        this.startTotalPrice = startTotalPrice;
-    }
-
-    public BigDecimal getEndTotalPrice() {
-        return endTotalPrice;
-    }
-
-    public void setEndTotalPrice(BigDecimal endTotalPrice) {
-        this.endTotalPrice = endTotalPrice;
-    }
+public class ConditionQueryReturnedBill extends ConditionQueryBill  {
 
 }

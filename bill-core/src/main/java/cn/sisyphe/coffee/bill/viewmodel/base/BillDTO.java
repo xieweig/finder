@@ -2,24 +2,31 @@ package cn.sisyphe.coffee.bill.viewmodel.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
  * 单据DTO基类
- * @author bifenglin
+ *
  * @param
+ * @author bifenglin
  */
-public abstract class BillDTO {
+public class BillDTO<T extends BillDetailDTO> {
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
     /**
      * 单据号
@@ -45,12 +52,12 @@ public abstract class BillDTO {
     /**
      * 出库位置
      */
-    private AbstractLocation outLocation;
+    private Station outLocation;
 
     /**
      * 入库位置
      */
-    private AbstractLocation inLocation;
+    private Station inLocation;
 
     /**
      * 数据库位置储存(不确定需不需要)
@@ -90,7 +97,7 @@ public abstract class BillDTO {
     /**
      * 物品明细
      */
-    private Set<BillDetailDTO> billDetails;
+    private Set<T> billDetails;
 
     /**
      * 单据状态
@@ -119,12 +126,14 @@ public abstract class BillDTO {
     /**
      * 出库时间
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
 
     /**
      * 入库时间
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
 
@@ -172,11 +181,6 @@ public abstract class BillDTO {
     private BigDecimal progress;
 
     /**
-     * 总价
-     */
-    private BigDecimal totalPrice;
-
-    /**
      * 单据来源类型
      */
     @Enumerated(EnumType.STRING)
@@ -198,6 +202,14 @@ public abstract class BillDTO {
      * 差错单
      */
     private MistakeBill mistakeBill;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getOperatorName() {
         return operatorName;
@@ -247,19 +259,19 @@ public abstract class BillDTO {
         this.belongStationCode = belongStationCode;
     }
 
-    public AbstractLocation getOutLocation() {
+    public Station getOutLocation() {
         return outLocation;
     }
 
-    public void setOutLocation(AbstractLocation outLocation) {
+    public void setOutLocation(Station outLocation) {
         this.outLocation = outLocation;
     }
 
-    public AbstractLocation getInLocation() {
+    public Station getInLocation() {
         return inLocation;
     }
 
-    public void setInLocation(AbstractLocation inLocation) {
+    public void setInLocation(Station inLocation) {
         this.inLocation = inLocation;
     }
 
@@ -295,11 +307,11 @@ public abstract class BillDTO {
         this.auditPersonCode = auditPersonCode;
     }
 
-    public Set<BillDetailDTO> getBillDetails() {
+    public Set<T> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<BillDetailDTO> billDetails) {
+    public void setBillDetails(Set<T> billDetails) {
         this.billDetails = billDetails;
     }
 
@@ -413,14 +425,6 @@ public abstract class BillDTO {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     public SourcePlanTypeEnum getBillProperty() {

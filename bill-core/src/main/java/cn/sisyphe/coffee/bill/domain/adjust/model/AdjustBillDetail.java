@@ -25,12 +25,19 @@ public class AdjustBillDetail extends BillDetail {
      */
     private String belongMaterialCode;
 
-    @Override
-    public String toString() {
-        return "AdjustBillDetail{" +
-                "belongMaterialCode='" + belongMaterialCode + '\'' +
-                '}';
-    }
+
+//    @Override
+//    protected void unbuildExtend(AbstractBillDetailDTO abstractBillDetailDTO) {
+//        AdjustBillDetailDTO adjustBillDetailDTO = (AdjustBillDetailDTO) abstractBillDetailDTO;
+//        this.setBelongMaterialCode(adjustBillDetailDTO.getBelongMaterialCode());
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "AdjustBillDetail{" +
+//                "belongMaterialCode='" + belongMaterialCode + '\'' +
+//                '}';
+//    }
 
     public String getBelongMaterialCode() {
         return belongMaterialCode;

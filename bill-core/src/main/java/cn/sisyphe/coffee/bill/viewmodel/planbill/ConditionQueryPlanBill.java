@@ -1,21 +1,16 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author bifenglin
  */
 public class ConditionQueryPlanBill extends ConditionQueryBill implements Serializable {
 
-    /**
-     * 单据作用
-     */
-    private BillPurposeEnum billPurpose;
     /**
      * 单据种类
      */
@@ -29,26 +24,22 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
     /**
      * 是否为总部计划单据
      */
-    private String hqBill;
+    private Boolean hqBill;
+
+    /**
+     * 货物名称
+     */
+    private String cargoName;
 
     /**
      * 货物编号集合
      */
-    private Set<String> cargoCodeArray;
+    private List<String> cargoCodes;
 
     /**
      * 货物编号
      */
     private String cargoCode;
-
-
-    public BillPurposeEnum getBillPurpose() {
-        return billPurpose;
-    }
-
-    public void setBillPurpose(BillPurposeEnum billPurpose) {
-        this.billPurpose = billPurpose;
-    }
 
     public BillTypeEnum getSpecificBillType() {
         return specificBillType;
@@ -67,20 +58,20 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
         this.billName = billName;
     }
 
-    public String getHqBill() {
+    public Boolean getHqBill() {
         return hqBill;
     }
 
-    public void setHqBill(String hqBill) {
+    public void setHqBill(Boolean hqBill) {
         this.hqBill = hqBill;
     }
 
-    public Set<String> getCargoCodeArray() {
-        return cargoCodeArray;
+    public String getCargoName() {
+        return cargoName;
     }
 
-    public void setCargoCodeArray(Set<String> cargoCodeArray) {
-        this.cargoCodeArray = cargoCodeArray;
+    public void setCargoName(String cargoName) {
+        this.cargoName = cargoName;
     }
 
     public String getCargoCode() {
@@ -91,4 +82,11 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
         this.cargoCode = cargoCode;
     }
 
+    public List<String> getCargoCodes() {
+        return cargoCodes;
+    }
+
+    public void setCargoCodes(List<String> cargoCodes) {
+        this.cargoCodes = cargoCodes;
+    }
 }

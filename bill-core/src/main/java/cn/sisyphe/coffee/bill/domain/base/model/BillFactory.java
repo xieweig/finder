@@ -4,6 +4,7 @@ import ch.lambdaj.function.closure.Switcher;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
@@ -38,7 +39,7 @@ public class BillFactory {
                 .addCase(BillTypeEnum.RETURNED, new ReturnedBill())
                 .addCase(BillTypeEnum.RESTOCK, new RestockBill())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBill())
-                .addCase(BillTypeEnum.ALLOT, new AdjustBill());
+                .addCase(BillTypeEnum.ALLOT, new AllotBill());
 
         return switcher.exec(billType);
     }
@@ -52,7 +53,7 @@ public class BillFactory {
                 .addCase(BillTypeEnum.RETURNED, new ReturnedBillDetail())
                 .addCase(BillTypeEnum.RESTOCK, new RestockBillDetail())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillDetail())
-                .addCase(BillTypeEnum.ALLOT, new AdjustBillDetail());
+                .addCase(BillTypeEnum.ALLOT, new AllotBillDetail());
 
         return switcher.exec(billType);
     }

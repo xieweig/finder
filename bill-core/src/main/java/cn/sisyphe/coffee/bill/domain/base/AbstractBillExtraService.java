@@ -51,7 +51,7 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
     }
 
     /**
-     * 根据sourceCode查询调剂单据
+     * 根据sourceCode查询单据
      *
      * @param sourceCode
      * @return
@@ -91,7 +91,7 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
         return configurePage;
     }
 
-    protected void addExtraExpression(ConditionQueryBill conditionQuery, List<Expression<Boolean>> expressions, Root<T> root, CriteriaBuilder criteriaBuilder) {
+    protected void addExtraExpression(Q conditionQuery, List<Expression<Boolean>> expressions, Root<T> root, CriteriaBuilder criteriaBuilder) {
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
      * @param pageable
      * @return
      */
-    private Page<T> pageCondition(Q conditionQuery, Pageable pageable) {
+    protected Page<T> pageCondition(Q conditionQuery, Pageable pageable) {
         return billRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
             criteriaQuery.distinct(true);
             Predicate predicate = criteriaBuilder.conjunction();
