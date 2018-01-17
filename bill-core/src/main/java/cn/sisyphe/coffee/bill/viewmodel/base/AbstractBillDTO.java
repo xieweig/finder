@@ -9,7 +9,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
@@ -19,7 +18,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
  * @author bifenglin
  * @param
  */
-public abstract class BillDTO {
+public abstract class AbstractBillDTO {
 
     /**
      * 单据号
@@ -90,7 +89,7 @@ public abstract class BillDTO {
     /**
      * 物品明细
      */
-    private Set<BillDetailDTO> billDetails;
+    private Set<AbstractBillDetailDTO> billDetails;
 
     /**
      * 单据状态
@@ -295,11 +294,11 @@ public abstract class BillDTO {
         this.auditPersonCode = auditPersonCode;
     }
 
-    public Set<BillDetailDTO> getBillDetails() {
+    public Set<AbstractBillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<BillDetailDTO> billDetails) {
+    public void setBillDetails(Set<AbstractBillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 
