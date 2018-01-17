@@ -41,6 +41,7 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
      */
     private String cargoCode;
 
+
     public BillTypeEnum getSpecificBillType() {
         return specificBillType;
     }
@@ -48,7 +49,6 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
     public void setSpecificBillType(BillTypeEnum specificBillType) {
         this.specificBillType = specificBillType;
     }
-
 
     public String getBillName() {
         return billName;

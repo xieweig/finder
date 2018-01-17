@@ -52,4 +52,5 @@ public class RestockBillManager extends AbstractBillExtraManager<RestockBill, Re
     public BillTypeEnum billType() {
         return BillTypeEnum.RESTOCK;
     }
+
 }
