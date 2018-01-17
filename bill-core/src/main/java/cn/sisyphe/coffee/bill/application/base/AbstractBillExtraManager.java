@@ -88,7 +88,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
      */
-    public T auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
+    public T auditBill(String billCode, String auditPersonCode,String auditMemo, boolean isSuccess) {
 
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
@@ -98,6 +98,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
         T bill = billExtraService.findByBillCode(billCode);
         bill.setAuditPersonCode(auditPersonCode);
+        bill.setAuditMemo(auditMemo);
         audit(bill, isSuccess);
 
         return bill;
