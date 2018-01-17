@@ -161,7 +161,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billPurposeEnum
      * @return
      */
-    public Page<D> findInOrOutBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
+    public Page<D> findBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
 
         if (!StringUtils.isEmpty(conditionQuery.getOperatorName())) {
             // SpringCloud调用查询用户编码

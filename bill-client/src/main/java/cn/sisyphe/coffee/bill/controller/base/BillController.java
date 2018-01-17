@@ -7,7 +7,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
@@ -95,7 +95,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findInOrOutBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
+            responseResult.put("bill", abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -156,7 +156,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findInStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            abstractBillExtraManager.findInOrOutBillByCondition(conditionQueryBill, BillPurposeEnum.IN_STORAGE);
+            responseResult.put("bill", abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.IN_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -184,7 +184,45 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     // --------------- 入库单 end -----------------------
 
 
+    // --------------- 调拨单 begin -----------------------
+    /**
+     * 调拨单列表
+     *
+     * @param conditionQueryAllotBill 查询条件DTO
+     * @return
+     */
+    @ApiOperation(value = "多条件分页查询调拨单据")
+    @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
+    public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", allotBillManager.findBillByCondition(conditionQueryAllotBill, BillPurposeEnum.MOVE_STORAGE));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
 
+    /**
+     * 调拨单明细
+     *
+     * @param billCode 单据号
+     * @return
+     */
+    @ApiOperation(value = "根据单据号查询调拨单据详细信息")
+    @RequestMapping(path = "/findAllotByBillCode", method = RequestMethod.GET)
+    public ResponseResult findAllotByBillCode(@RequestParam String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", allotBillManager.findOneByBillCode(billCode));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    // --------------- 调拨单 end -----------------------
 
 
     // --------------- 业务操作 begin -----------------------
