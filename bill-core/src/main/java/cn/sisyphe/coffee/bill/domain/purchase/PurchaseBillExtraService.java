@@ -14,4 +14,12 @@ import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
  */
 public interface PurchaseBillExtraService extends BillExtraService<PurchaseBill, ConditionQueryPurchaseBill> {
 
+    /**
+     * 根据货运单号查询进货单据信息
+     *
+     * @param freightCode 货运单号
+     * @return
+     */
+    PurchaseBill findByFreightCode(String freightCode);
+
 }
