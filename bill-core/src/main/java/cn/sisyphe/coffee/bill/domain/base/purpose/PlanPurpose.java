@@ -56,6 +56,7 @@ public class PlanPurpose extends AbstractBillPurpose {
             planBillPayload.setMemo(bill.getPlanMemo());
             planBillPayload.setParentBillCode(bill.getBillCode());
             planBillPayload.setBillCode(bill.getBillCode() + "_" + index);
+            planBillPayload.setBillName(bill.getBillName());
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 PlanBillPayloadDetail planBillPayloadDetail = new PlanBillPayloadDetail();
                 planBillPayloadDetail.setAmount(planBillDetail.getShippedAmount());

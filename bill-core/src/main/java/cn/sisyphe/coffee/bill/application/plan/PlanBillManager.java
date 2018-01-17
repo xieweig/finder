@@ -4,12 +4,14 @@ import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
+import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
@@ -19,6 +21,7 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -66,7 +69,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @return
      */
     public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
-        return ((PlanBillExtraService)getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
+        return ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
     }
 
     /**
@@ -107,7 +110,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @param isSuccess
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public PlanBill auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
+    @Override
+    public PlanBill auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
         PlanBill planBill = (PlanBill) findOneByBillCode(billCode);
         planBill.setAuditPersonCode(auditPersonCode);
         if (isSuccess) {
@@ -116,6 +120,49 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
         audit(planBill, isSuccess);
         return planBill;
+    }
+
+    /**
+     * 将前端传过来的数据进行转换
+     *
+     * @param
+     * @return
+     */
+    private void map(PlanBill planBill, PlanBillDTO planBillDTO) {
+        planBill.getBillDetails().clear();
+        planBill.setSpecificBillType(planBillDTO.getSpecificBillType());
+        planBill.setBillName(planBillDTO.getBillName());
+        planBill.setPlanMemo(planBillDTO.getPlanMemo());
+        planBill.setHqBill(true);
+        planBill.setBillType(BillTypeEnum.PLAN);
+        planBill.setBasicEnum(planBillDTO.getBasicEnum());
+        for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getBillDetails()) {
+            for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
+                PlanBillDetail planBillDetail = new PlanBillDetail();
+                planBillDetail.setShippedAmount(planBillStationDTO.getAmount());
+                planBillDetail.setInLocation(getLocation(planBillStationDTO.getInStation()));
+                planBillDetail.setOutLocation(getLocation(planBillStationDTO.getOutStation()));
+                planBillDetail.setGoods(planBillDetailDTO.getRawMaterial());
+                planBill.getBillDetails().add(planBillDetail);
+            }
+        }
+        planBill.setBillPurpose(BillPurposeEnum.PLAN);
+
+    }
+
+    /**
+     * 如果前端传递过来类型是供应商，则new供应商对象
+     *
+     * @param station
+     * @return
+     */
+    private AbstractLocation getLocation(Station station) {
+        if (StationType.SUPPLIER.equals(station.getStationType())) {
+            Supplier supplier = new Supplier(station.getStationCode());
+            supplier.setSupplierName(station.getStationName());
+            return supplier;
+        }
+        return new Station(station.getStationCode());
     }
 
     /**

@@ -30,6 +30,7 @@ import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.Transient;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -145,7 +146,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @org.hibernate.annotations.ForeignKey(name = "none")
     // 设置子类的 billCode
     @JoinColumn(name = "billCode", referencedColumnName = "billCode")
-    private Set<T> billDetails;
+    private Set<T> billDetails = new HashSet<>();
 
     /**
      * 单据状态
