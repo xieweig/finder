@@ -18,7 +18,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
  * @author bifenglin
  * @param
  */
-public abstract class AbstractBillDTO {
+public class BillDTO {
 
     /**
      * 单据号
@@ -89,7 +89,7 @@ public abstract class AbstractBillDTO {
     /**
      * 物品明细
      */
-    private Set<AbstractBillDetailDTO> billDetails;
+    private Set<BillDetailDTO> billDetails;
 
     /**
      * 单据状态
@@ -294,11 +294,11 @@ public abstract class AbstractBillDTO {
         this.auditPersonCode = auditPersonCode;
     }
 
-    public Set<AbstractBillDetailDTO> getBillDetails() {
+    public Set<BillDetailDTO> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<AbstractBillDetailDTO> billDetails) {
+    public void setBillDetails(Set<BillDetailDTO> billDetails) {
         this.billDetails = billDetails;
     }
 

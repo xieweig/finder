@@ -9,7 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
  * 需要为单据明细增加数据时必须继承本类来实现，在使用中必须使用子类来逻辑操作
  * @author bifenglin
  */
-public abstract class AbstractBillDetailDTO {
+public class BillDetailDTO {
     /**
      * 应拣数量
      */
