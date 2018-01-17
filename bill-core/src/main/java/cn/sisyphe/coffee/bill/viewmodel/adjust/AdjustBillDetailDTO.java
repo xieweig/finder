@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
-import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -9,7 +9,7 @@ import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
  *
  * @author XiongJing
  */
-public class AdjustBillDetailDTO  extends AbstractBillDetailDTO {
+public class AdjustBillDetailDTO  extends BillDetailDTO {
     /**
      * 所属原料编码
      */
