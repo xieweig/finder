@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author XiongJing
  */
-public abstract class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
+public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
     private AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
     private PlanBillManager planBillManager;
@@ -129,7 +129,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findOneByBillCode(sourceCode));
+            responseResult.put("bill", abstractBillExtraManager.findBySourceCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
