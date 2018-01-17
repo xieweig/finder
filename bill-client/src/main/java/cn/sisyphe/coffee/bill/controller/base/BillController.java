@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.controller.base;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
@@ -32,11 +33,13 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 
     private AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
     private PlanBillManager planBillManager;
+    private AllotBillManager allotBillManager;
 
-    public BillController(AbstractBillExtraManager<T, D, Q> abstractBillExtraManager) {
+    public BillController(AbstractBillExtraManager<T, D, Q> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         this.abstractBillExtraManager = abstractBillExtraManager;
+        this.planBillManager = planBillManager;
+        this.allotBillManager = allotBillManager;
     }
-
 
     // --------------- 子计划单 begin -----------------------
 

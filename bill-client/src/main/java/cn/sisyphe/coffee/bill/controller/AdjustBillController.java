@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
@@ -26,7 +28,7 @@ public class AdjustBillController extends BillController<AdjustBill, AdjustBillD
 
 
     @Autowired
-    public AdjustBillController(AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill> abstractBillExtraManager) {
-        super(abstractBillExtraManager);
+    public AdjustBillController(AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+        super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }

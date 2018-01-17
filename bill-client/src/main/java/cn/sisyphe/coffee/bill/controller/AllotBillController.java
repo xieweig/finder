@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
@@ -22,9 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class AllotBillController extends BillController<AllotBill, AllotBillDTO, ConditionQueryAllotBill> {
 
-
     @Autowired
-    public AllotBillController(AbstractBillExtraManager<AllotBill, AllotBillDTO, ConditionQueryAllotBill> abstractBillExtraManager) {
-        super(abstractBillExtraManager);
+    public AllotBillController(AbstractBillExtraManager<AllotBill, AllotBillDTO, ConditionQueryAllotBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+        super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }

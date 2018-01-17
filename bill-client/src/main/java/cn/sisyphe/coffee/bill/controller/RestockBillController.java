@@ -1,6 +1,8 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
@@ -22,9 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "退库相关操作")
 public class RestockBillController extends BillController<RestockBill, RestockBillDTO, ConditionQueryRestockBill> {
 
-
     @Autowired
-    public RestockBillController(AbstractBillExtraManager<RestockBill, RestockBillDTO, ConditionQueryRestockBill> abstractBillExtraManager) {
-        super(abstractBillExtraManager);
+    public RestockBillController(AbstractBillExtraManager<RestockBill, RestockBillDTO, ConditionQueryRestockBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+        super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }

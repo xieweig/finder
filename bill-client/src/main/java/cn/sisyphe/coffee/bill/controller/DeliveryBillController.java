@@ -1,7 +1,9 @@
 package cn.sisyphe.coffee.bill.controller;
 
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.ConditionQueryDeliveryBill;
@@ -23,11 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/bill/delivery")
 @Api(description = "配送计划相关接口")
 @CrossOrigin(origins = "*")
-public class DeliveryBillController extends BillController<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill>{
-
+public class DeliveryBillController extends BillController<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> {
 
     @Autowired
-    public DeliveryBillController(AbstractBillExtraManager<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> abstractBillExtraManager) {
-        super(abstractBillExtraManager);
+    public DeliveryBillController(AbstractBillExtraManager<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+        super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }
