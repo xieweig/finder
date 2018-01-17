@@ -70,19 +70,6 @@ public abstract class BillDetail {
      */
     private int actualAmount;
 
-    /**
-     * 原料
-     */
-    private RawMaterial rawMaterial;
-
-    public RawMaterial getRawMaterial() {
-        return rawMaterial;
-    }
-
-    public void setRawMaterial(RawMaterial rawMaterial) {
-        this.rawMaterial = rawMaterial;
-    }
-
 
 //    public void unbuild(AbstractBillDetailDTO abstractBillDetailDTO){
 //        this.setShippedAmount(abstractBillDetailDTO.getShippedAmount());

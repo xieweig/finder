@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name = "adjust_bill")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class AdjustBill extends Bill<BillDetail> {
+public class AdjustBill extends Bill<AdjustBillDetail> {
     public static final String ADJUST_OUT_STORAGE_PREFIX = "TJCK";
 
     public AdjustBill() {
