@@ -3,32 +3,23 @@ package cn.sisyphe.coffee.bill.application.base;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by heyong on 2018/1/16 16:01
@@ -81,7 +72,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return billCode 单据编码
      */
     public String saveBill(D billDTO) {
-        T bill = prepareAdjustBill(billDTO);
+        T bill = prepareBill(billDTO);
         dtoToBill(bill, billDTO);
         return save(bill).getBillCode();
     }
@@ -94,7 +85,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return billCode 单据编码
      */
     public String submitBill(D billDTO) {
-        T bill = prepareAdjustBill(billDTO);
+        T bill = prepareBill(billDTO);
         dtoToBill(bill, billDTO);
         return submit(bill).getBillCode();
     }
@@ -147,12 +138,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
 
     /**
-     * 初始化adjustBill
+     * 初始化bill
      *
      * @param billDTO 前端dto
      * @return AdjustBill 调剂计划实体
      */
-    private T prepareAdjustBill(D billDTO) {
+    private T prepareBill(D billDTO) {
 
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
             return (T) new BillFactory().createBill(BillTypeEnum.ADJUST);
@@ -168,6 +159,14 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
+    /**
+     * 查询子计划单
+     * @param billCode
+     * @return
+     */
+    public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum){
+        return planBillExtraService.findByBillCodeAndType(billCode, billTypeEnum);
+    }
 
     /**
      * 多条件查询子计划查询
@@ -184,6 +183,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         }
 
         if (specificBillType != null){
+            // TODO: 2018/1/17 增加特别类型
             //conditionQueryPlanBill
         }
 
@@ -222,6 +222,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
         return billPage.map(source -> billToListDto(source));
     }
+
+
+
 
     /**
      * dto 转换 bill - 条件查询 dto list

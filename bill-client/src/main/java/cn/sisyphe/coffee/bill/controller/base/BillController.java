@@ -4,7 +4,6 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
@@ -64,7 +63,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode, BillTypeEnum billTypeEnum) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            //responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.ADJUST));
+            responseResult.put("bill", abstractBillExtraManager.findChildPlanBillByBillCode(billCode, billTypeEnum));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -74,16 +73,16 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     /**
      * 多条件分页查询出库单据
      *
-     * @param conditionQueryAdjustBill 查询条件DTO
+     * @param conditionQueryBill 查询条件DTO
      * @return
      */
     @ApiOperation(value = "多条件分页查询出库单据")
     @RequestMapping(path = "/findOutStorageByConditions", method = RequestMethod.POST)
     @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
-    public ResponseResult findOutStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
+    public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            //responseResult.put("adjustBill", abstractBillExtraManager.findOneByBillCode(billCode));
+            responseResult.put("bill", abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -101,6 +100,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findOutStorageByBillCode(@RequestParam String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
+            responseResult.put("bill", abstractBillExtraManager.findOneByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -110,16 +110,16 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     /**
      * 多条件分页查询入库单据
      *
-     * @param conditionQueryAdjustBill 查询条件DTO
+     * @param conditionQueryBill 查询条件DTO
      * @return
      */
     @ApiOperation(value = "多条件分页查询入库单据")
     @RequestMapping(path = "/findInStorageByConditions", method = RequestMethod.POST)
     @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
-    public ResponseResult findInStorageByConditions(@RequestBody ConditionQueryAdjustBill conditionQueryAdjustBill) {
+    public ResponseResult findInStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-//            responseResult.put("adjustBill", adjustBillManager.findByBillCode(billCode));
+            abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.IN_STORAGE);
         } catch (DataException data) {
             responseResult.putException(data);
         }
