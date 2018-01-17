@@ -39,8 +39,8 @@ public class RestockBillManager extends AbstractBillExtraManager<RestockBill, Re
 
 
     @Autowired
-    public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<RestockBill, ConditionQueryRestockBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
+    public RestockBillManager(BillRepository<RestockBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<RestockBill, ConditionQueryRestockBill> billExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
     /**

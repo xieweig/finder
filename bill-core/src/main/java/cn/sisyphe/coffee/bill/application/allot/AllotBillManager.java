@@ -23,8 +23,8 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
 
 
     @Autowired
-    public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
+    public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
     /**

@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.controller.base;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
     private AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
+    private PlanBillManager planBillManager;
 
     public BillController(AbstractBillExtraManager<T, D, Q> abstractBillExtraManager) {
         this.abstractBillExtraManager = abstractBillExtraManager;
@@ -45,10 +47,10 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
      */
     @ApiOperation(value = "多条件分页查询计划单据")
     @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
-    public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+    public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billTypeEnum) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findBillPlanByCondition(conditionQueryPlanBill));
+            responseResult.put("bill", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, billTypeEnum));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -66,7 +68,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode, BillTypeEnum billTypeEnum) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findChildPlanBillByBillCode(billCode, billTypeEnum));
+            responseResult.put("bill", planBillManager.findChildPlanBillByBillCode(billCode, billTypeEnum));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -90,7 +92,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
+            responseResult.put("bill", abstractBillExtraManager.findInOrOutBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -151,7 +153,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findInStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.IN_STORAGE);
+            abstractBillExtraManager.findInOrOutBillByCondition(conditionQueryBill, BillPurposeEnum.IN_STORAGE);
         } catch (DataException data) {
             responseResult.putException(data);
         }

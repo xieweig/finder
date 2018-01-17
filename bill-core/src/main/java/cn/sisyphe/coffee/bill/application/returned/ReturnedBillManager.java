@@ -24,8 +24,8 @@ public class ReturnedBillManager extends AbstractBillExtraManager<ReturnedBill, 
 
 
     @Autowired
-    public ReturnedBillManager(BillRepository<ReturnedBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<ReturnedBill, ConditionQueryReturnedBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
+    public ReturnedBillManager(BillRepository<ReturnedBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<ReturnedBill, ConditionQueryReturnedBill> billExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
     /**

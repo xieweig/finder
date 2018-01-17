@@ -22,8 +22,10 @@ import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -43,8 +45,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
 
     @Autowired
-    public PlanBillManager(BillRepository<PlanBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<PlanBill, ConditionQueryPlanBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
+    public PlanBillManager(BillRepository<PlanBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<PlanBill, ConditionQueryPlanBill> billExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
     /**
@@ -56,6 +58,44 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     public BillTypeEnum billType() {
         return BillTypeEnum.PLAN;
     }
+
+    /**
+     * 查询子计划单
+     *
+     * @param billCode
+     * @return
+     */
+    public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
+        return ((PlanBillExtraService)getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
+    }
+
+    /**
+     * 多条件查询子计划查询
+     *
+     * @param conditionQueryPlanBill
+     * @return
+     */
+
+    public Page<PlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
+
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
+            // SpringCloud调用查询用户编码
+            List<String> userCodeList = getSharedManager().findByLikeUserName(conditionQueryPlanBill.getOperatorName());
+            conditionQueryPlanBill.setOperatorCodeList(userCodeList);
+        }
+
+        if (specificBillType != null) {
+            // TODO: 2018/1/17 增加特别类型
+            //conditionQueryPlanBill
+        }
+
+        Page<PlanBill> billPage = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
+
+        return billPage.map(source -> billToListDto(source));
+    }
+
+
+
 
     /**
      * 审核通过否

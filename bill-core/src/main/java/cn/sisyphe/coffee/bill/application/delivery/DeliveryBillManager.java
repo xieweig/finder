@@ -23,8 +23,8 @@ public class DeliveryBillManager extends AbstractBillExtraManager<DeliveryBill, 
 
 
     @Autowired
-    public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<DeliveryBill, ConditionQueryDeliveryBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
+    public DeliveryBillManager(BillRepository<DeliveryBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<DeliveryBill, ConditionQueryDeliveryBill> billExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
     /**

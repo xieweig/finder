@@ -30,7 +30,6 @@ import java.util.List;
 public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> extends AbstractBillManager<T> {
 
     private BillExtraService<T, Q> billExtraService;
-    private PlanBillExtraService planBillExtraService;
     private SharedManager sharedManager;
 
     public BillExtraService<T, Q> getBillExtraService() {
@@ -41,13 +40,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         this.billExtraService = billExtraService;
     }
 
-    public PlanBillExtraService getPlanBillExtraService() {
-        return planBillExtraService;
-    }
 
-    public void setPlanBillExtraService(PlanBillExtraService planBillExtraService) {
-        this.planBillExtraService = planBillExtraService;
-    }
 
     public SharedManager getSharedManager() {
         return sharedManager;
@@ -57,10 +50,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         this.sharedManager = sharedManager;
     }
 
-    public AbstractBillExtraManager(BillRepository<T> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<T, Q> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
+    public AbstractBillExtraManager(BillRepository<T> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<T, Q> billExtraService, SharedManager sharedManager) {
         super(billRepository, applicationEventPublisher);
         this.billExtraService = billExtraService;
-        this.planBillExtraService = planBillExtraService;
         this.sharedManager = sharedManager;
     }
 
@@ -159,51 +151,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
-    /**
-     * 查询子计划单
-     *
-     * @param billCode
-     * @return
-     */
-    public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
-        return planBillExtraService.findByBillCodeAndType(billCode, billTypeEnum);
-    }
 
-    /**
-     * 多条件查询子计划查询
-     *
-     * @param conditionQueryPlanBill
-     * @return
-     */
-
-    public Page<D> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
-
-        if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
-            // SpringCloud调用查询用户编码
-            List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryPlanBill.getOperatorName());
-            conditionQueryPlanBill.setOperatorCodeList(userCodeList);
-        }
-
-        if (specificBillType != null) {
-            // TODO: 2018/1/17 增加特别类型
-            //conditionQueryPlanBill
-        }
-
-        Page<T> billPage = (Page<T>) planBillExtraService.findPageByCondition(conditionQueryPlanBill);
-
-        return billPage.map(source -> billToListDto(source));
-    }
-
-    /**
-     * 多条件查询
-     *
-     * @param conditionQueryPlanBill
-     * @return
-     */
-    public Page<D> findBillPlanByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
-
-        return findChildPlanBillByCondition(conditionQueryPlanBill, null);
-    }
 
 
     /**
@@ -213,7 +161,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billPurposeEnum
      * @return
      */
-    public Page<D> findBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
+    public Page<D> findInOrOutBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
 
         if (!StringUtils.isEmpty(conditionQuery.getOperatorName())) {
             // SpringCloud调用查询用户编码

@@ -38,12 +38,11 @@ import java.util.*;
  * @author XiongJing
  */
 @Service
-public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill,PurchaseBillDTO, ConditionQueryPurchaseBill> {
-
+public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, PurchaseBillDTO, ConditionQueryPurchaseBill> {
 
     @Autowired
-    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<PurchaseBill, ConditionQueryPurchaseBill> billExtraService, PlanBillExtraService planBillExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, planBillExtraService, sharedManager);
+    public PurchaseBillManager(BillRepository<PurchaseBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<PurchaseBill, ConditionQueryPurchaseBill> billExtraService, SharedManager sharedManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
     /**
