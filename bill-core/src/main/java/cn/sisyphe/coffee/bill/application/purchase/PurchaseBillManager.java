@@ -38,7 +38,7 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
      * @return
      */
     @Override
-    public String submitBill(PurchaseBillDTO billDTO) {
+    public PurchaseBillDTO submitBill(PurchaseBillDTO billDTO) {
         // 根据货运单号查询是否存在
         verificationFreightCode(billDTO.getFreightCode());
         // 验证字段信息
@@ -53,7 +53,7 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
      * @return
      */
     @Override
-    public String saveBill(PurchaseBillDTO billDTO) {
+    public PurchaseBillDTO saveBill(PurchaseBillDTO billDTO) {
         // 根据货运单号查询是否存在
         verificationFreightCode(billDTO.getFreightCode());
         return super.saveBill(billDTO);

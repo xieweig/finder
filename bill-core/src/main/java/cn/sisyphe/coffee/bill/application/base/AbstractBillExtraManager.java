@@ -59,10 +59,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO 前端dto
      * @return billCode 单据编码
      */
-    public String saveBill(D billDTO) {
+    public D saveBill(D billDTO) {
         T bill = prepareBill(billDTO);
         bill = dtoToBill(bill, billDTO);
-        return save(bill).getBillCode();
+        save(bill);
+
+        return billToDto(bill);
     }
 
 
@@ -72,10 +74,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO 前端dto
      * @return billCode 单据编码
      */
-    public String submitBill(D billDTO) {
+    public D submitBill(D billDTO) {
         T bill = prepareBill(billDTO);
         bill = dtoToBill(bill, billDTO);
-        return submit(bill).getBillCode();
+        submit(bill);
+
+        return billToDto(bill);
     }
 
     /**
@@ -84,7 +88,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
      */
-    public T auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
+    public D auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
 
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
@@ -97,7 +101,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         bill.setAuditMemo(auditMemo);
         audit(bill, isSuccess);
 
-        return bill;
+        return billToDto(bill);
     }
 
 
@@ -120,7 +124,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
             // 打开单据
             open(bill);
         }
-
 
         return billToDto(bill);
     }
@@ -154,12 +157,22 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billCode
      * @return
      */
-    public D findBillByBillCode(String billCode) {
+    public D findBillDtoByBillCode(String billCode) {
         T bill = billExtraService.findByBillCode(billCode);
 
         return billToDto(bill);
     }
 
+    /**
+     * 根据sourceCode查询单据
+     *
+     * @param sourceCode
+     * @return
+     */
+    public D findBillDtoBySourceCode(String sourceCode) {
+        T bill = billExtraService.findBySourceCode(sourceCode);
+        return billToDto(bill);
+    }
 
     /**
      * 多条件查询
@@ -183,34 +196,17 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
-    /**
-     * 根据sourceCode查询单据
-     *
-     * @param sourceCode
-     * @return
-     */
-    public T findBySourceCode(String sourceCode) {
-        return billExtraService.findBySourceCode(sourceCode);
-    }
-
 
     /**
-     * dto 转换 bill - 条件查询 dto list
+     * bill 转换 dto - 条件查询 dto list
      *
-     * @param source
+     * @param bill
      * @return
      */
-    protected D billToListDto(T source) {
-//        BillDTO billDTO = new BillDTO();
+    protected D billToListDto(T bill) {
         // 清空明细
-        source.getBillDetails().clear();
-//
-//        BeanUtils.copyProperties(source, billDTO);
-//
-//
-//        return (D) billDTO;
-
-        return JSON.parseObject(JSON.toJSONString(source), (Type) (new BillDTO().getClass()));
+        bill.getBillDetails().clear();
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
     }
 
     /**
@@ -220,12 +216,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO
      */
     protected T dtoToBill(T bill, D billDTO) {
-
-        //billDTO.getBillDetails().clear();
-        //BeanUtils.copyProperties(billDTO, bill, "createTime");
-
         return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
-
     }
 
     /**
@@ -235,11 +226,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-//        BillDTO billDTO = new BillDTO();
-//        bill.getBillDetails().clear();
-//        BeanUtils.copyProperties(bill, billDTO);
-//
-//        return (D) billDTO;
         return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
     }
 

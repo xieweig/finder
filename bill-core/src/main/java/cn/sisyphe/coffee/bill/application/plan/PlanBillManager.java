@@ -68,8 +68,9 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @param billCode
      * @return
      */
-    public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
-        return ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
+    public PlanBillDTO findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
+        PlanBill planBill = ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
+        return billToDto(planBill);
     }
 
     /**
@@ -104,14 +105,13 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 审核通过否
-     *
-     * @param billCode        单据编码
+     *  @param billCode        单据编码
      * @param auditPersonCode 审核人编码
      * @param isSuccess
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public PlanBill auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
+    public PlanBillDTO auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
         PlanBill planBill = (PlanBill) findOneByBillCode(billCode);
         planBill.setAuditPersonCode(auditPersonCode);
         if (isSuccess) {
@@ -119,7 +119,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         }
 
         audit(planBill, isSuccess);
-        return planBill;
+        return super.billToDto(planBill);
     }
 
     /**

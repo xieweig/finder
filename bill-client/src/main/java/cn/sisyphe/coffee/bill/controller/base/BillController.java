@@ -11,7 +11,6 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +39,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         this.planBillManager = planBillManager;
         this.allotBillManager = allotBillManager;
     }
-    
+
 
     //region --------------- 子计划单 ------------
 
@@ -54,7 +53,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billTypeEnum) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, billTypeEnum));
+            responseResult.put("billList", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, billTypeEnum));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -92,11 +91,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "出库单列表")
     @RequestMapping(path = "/findOutStorageByConditions", method = RequestMethod.POST)
-//    @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
+            responseResult.put("billList", abstractBillExtraManager.findBillByCondition(conditionQueryBill, BillPurposeEnum.OUT_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -114,7 +112,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findOutStorageByBillCode(@RequestParam String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findBillByBillCode(billCode));
+            responseResult.put("bill", abstractBillExtraManager.findBillDtoByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -132,7 +130,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findBySourceCode(sourceCode));
+            responseResult.put("bill", abstractBillExtraManager.findBillDtoBySourceCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -174,7 +172,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findInStorageByBillCode(@RequestParam String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findOneByBillCode(billCode));
+            responseResult.put("bill", abstractBillExtraManager.findBillDtoByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -216,7 +214,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findAllotByBillCode(@RequestParam String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", allotBillManager.findOneByBillCode(billCode));
+            responseResult.put("bill", allotBillManager.findBillDtoByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -227,7 +225,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 
 
     //region --------------- 业务操作 ------------
-
 
 
     /**
@@ -245,7 +242,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 //            billDTO.setOperatorCode(loginInfo.getOperatorCode());
         //测试使用
         //billDTO.setOperatorCode("test0001");
-        responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO));
+        responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO).getBillCode());
 
         return responseResult;
     }
@@ -263,24 +260,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         return save(request, billDTO);
     }
 
-    /**
-     * 根据单据号打开单据
-     *
-     * @param billCode 单据号
-     * @return
-     */
-    @ApiOperation(value = "打开单据")
-    @RequestMapping(path = "/open", method = RequestMethod.GET)
-    public ResponseResult open(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            responseResult.put("adjustBill", abstractBillExtraManager.openBill(billCode, loginInfo.getOperatorCode()));
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }
 
     /**
      * 提交单据信息
@@ -296,7 +275,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
             //addAdjustBillDTO.setOperatorCode("test0001");
-            responseResult.put("billCode", abstractBillExtraManager.submitBill(billDTO));
+            responseResult.put("billCode", abstractBillExtraManager.submitBill(billDTO).getBillCode());
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -317,6 +296,25 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     }
 
     /**
+     * 根据单据号打开单据
+     *
+     * @param billCode 单据号
+     * @return
+     */
+    @ApiOperation(value = "打开单据")
+    @RequestMapping(path = "/open", method = RequestMethod.GET)
+    public ResponseResult open(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            responseResult.put("bill", abstractBillExtraManager.openBill(billCode, loginInfo.getOperatorCode()));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
+
+    /**
      * 审核不通过
      *
      * @param billDTO 单据号
@@ -328,7 +326,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), false);
+            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), false));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -347,7 +345,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), true);
+            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), true));
         } catch (DataException data) {
             responseResult.putException(data);
         }
