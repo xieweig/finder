@@ -2,18 +2,16 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,16 +29,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.Transient;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
-
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
  * 单据基础类
  * 封装了单据公共的属性，和dto序列化和反序列化方法。
  * 系统中的单据实体都必须继承本类，同时实现子类中自定义的扩展属性序列化和反序列化方法
+ *
  * @author heyong
  */
 @MappedSuperclass
@@ -158,8 +154,6 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     private BillStateEnum billState = BillStateEnum.SAVED;
 
 
-
-
     // 显示数据 ----------------------------------
 
     /**
@@ -197,7 +191,6 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
-
 
 
     /**

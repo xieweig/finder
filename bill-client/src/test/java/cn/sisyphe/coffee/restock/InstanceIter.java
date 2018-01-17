@@ -1,12 +1,12 @@
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.util.BillCodeManager;
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
@@ -40,15 +40,17 @@ public class InstanceIter {
         RestockBillDTO dto = new RestockBillDTO();
         //可能有误
         dto.setBillCode(BillCodeManager.getBillCodeFun("ABCD","10P"));
-        dto.setRootCode(ROOT_CODES[random.nextInt()]);
-        dto.setSourceCode(SOURCE_CODES[random.nextInt()]);
 
-        dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
-        dto.setBillProperty(SourcePlanTypeEnum.RESTOCK);
-        dto.setOperatorCode(OPERATIONCODE[random.nextInt(OPERATIONCODE.length)]);
+        dto.setBillType(BillTypeEnum.RESTOCK);
+        dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
+
 
         dto.setInLocation(this.nextRandomStation());
         dto.setOutLocation(this.nextRandomStation());
+        dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
+
+        dto.setBillProperty(SourcePlanTypeEnum.values()[random.nextInt(SourcePlanTypeEnum.values().length)]);
+
         Set<RestockBillDetailDTO> details = new HashSet();
         for (int i = 0; i < detailsNumber; i++) {
             details.add(this.nextRandomRestockBillDetailDTO());
@@ -56,10 +58,12 @@ public class InstanceIter {
 
         dto.setBillDetails(details);
 
+        dto.setOutStorageMemo("出库库位备注："+random.nextInt(100));
 
-        dto.setProgress(new BigDecimal(random.nextInt(100)));
 
-        dto.setPlanMemo("plan memo:"+random.nextInt(100));
+
+        dto.setOperatorCode(OPERATIONCODE[random.nextInt(OPERATIONCODE.length)]);
+
 
         return dto;
     }
@@ -76,8 +80,13 @@ public class InstanceIter {
         Integer amount = random.nextInt(100)+20;
         restockBillDetailDTO.setActualAmount(amount);
         restockBillDetailDTO.setShippedAmount(amount+random.nextInt(10)-5);
-        restockBillDetailDTO.setRawMaterial(new RawMaterial(""+random.nextInt(100)));
-
+        String codePair= detailList.get(random.nextInt(detailList.size()));
+        String[] strings = codePair.split("=");
+        RawMaterial rawMaterial = new RawMaterial(strings[0]);
+        Cargo cargo = new Cargo(strings[1]);
+        rawMaterial.setCargo(cargo);
+        restockBillDetailDTO.setRawMaterial(rawMaterial);
         return restockBillDetailDTO;
     }
+
 }
