@@ -20,6 +20,9 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
  */
 public class BillDTO {
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
+
     /**
      * 单据号
      */
@@ -197,6 +200,14 @@ public class BillDTO {
      * 差错单
      */
     private MistakeBill mistakeBill;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getOperatorName() {
         return operatorName;
