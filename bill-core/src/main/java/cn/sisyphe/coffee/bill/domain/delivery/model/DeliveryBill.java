@@ -18,25 +18,13 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class DeliveryBill extends Bill<DeliveryBillDetail> {
-    public static final String DELIVERY_OUT_STORAGE_PREFIX = "PSCK";
+
     public DeliveryBill() {
-        setBillCodePrefix(DELIVERY_OUT_STORAGE_PREFIX);
         setBillType(BillTypeEnum.DELIVERY);
     }
 
-
-    /**
-     * 操作人姓名
-     */
-    @Column
-    private String operatorName;
-
-    public String getOperatorName() {
-        return operatorName;
+    @Override
+    public String billCodePrefix() {
+        return "PSCK";
     }
-
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
-    }
-
 }

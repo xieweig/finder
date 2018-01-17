@@ -17,9 +17,12 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class MistakeBill extends Bill<MistakeBillDetail> {
-    public static final String TRANSFER_MISTAKE_IN_STORAGE_PREFIX = "TMCK";
     public MistakeBill() {
-        setBillCodePrefix(TRANSFER_MISTAKE_IN_STORAGE_PREFIX);
         setBillType(BillTypeEnum.TRANSFER_MISTAKE);
+    }
+
+    @Override
+    public String billCodePrefix() {
+        return "TMCK";
     }
 }

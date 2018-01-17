@@ -62,6 +62,13 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private BillTypeEnum billType;
+
+    /**
+     * 具体的单据类型，子计划转换的单据类型
+     */
+    @Enumerated(value = EnumType.STRING)
+    private BillTypeEnum specificBillType;
+
     /**
      * 单据作用
      */
@@ -109,6 +116,31 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      * 审核人编码
      */
     private String auditPersonCode;
+
+
+    /**
+     * 数量
+     */
+    private Integer totalAmount;
+
+    /**
+     * 品种数
+     */
+    private Integer totalVarietyAmount;
+
+    /**
+     * 按货物还是按原料
+     */
+    @Enumerated(EnumType.STRING)
+    private BasicEnum basicEnum;
+
+
+    /**
+     * 备注
+     */
+    private String memo;
+
+
     /**
      * 物品明细
      */
@@ -125,6 +157,11 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BillStateEnum billState = BillStateEnum.SAVED;
 
+
+
+
+    // 显示数据 ----------------------------------
+
     /**
      * 提交状态
      */
@@ -138,38 +175,16 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     private BillAuditStateEnum auditState;
 
     /**
-     * 出入库状态
+     * 出入库状态 -- 出/入库单
      */
     @Enumerated(EnumType.STRING)
     private BillInOrOutStateEnum inOrOutState;
 
-
     /**
-     * 更新前, 在数据库操作中调用
+     * 调拨状态 -- 入库单
      */
-    public void update() {
-        if (inLocation != null) {
-            dbStation.setInLocation(inLocation);
-        }
-
-        if (outLocation != null) {
-            dbStation.setOutLocation(outLocation);
-        }
-    }
-
-    /**
-     * 载入
-     */
-    @PostLoad
-    @PostPersist
-    public void load() {
-        if (dbStation == null) {
-            return;
-        }
-
-        inLocation = dbStation.getInLocation();
-        outLocation = dbStation.getOutLocation();
-    }
+    @Enumerated(value = EnumType.STRING)
+    private BillAllotStatusEnum allotStatus;
 
     /**
      * 出库时间
@@ -184,21 +199,6 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     private Date inWareHouseTime;
 
 
-    /**
-     * 出库状态编码
-     */
-    @Enumerated(EnumType.STRING)
-    private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
-
-    /**
-     * 数量
-     */
-    private Integer totalAmount;
-
-    /**
-     * 品种数
-     */
-    private Integer totalVarietyAmount;
 
     /**
      * 计划备注
@@ -214,40 +214,6 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      * 审核意见
      */
     private String auditMemo;
-
-    /**
-     * 按货物还是按原料
-     */
-    @Enumerated(EnumType.STRING)
-    private BasicEnum basicEnum;
-
-    /**
-     * 完成度
-     */
-    private BigDecimal progress;
-
-    /**
-     * 总价
-     */
-    private BigDecimal totalPrice;
-
-    /**
-     * 单据来源类型
-     */
-    @Enumerated(value = EnumType.STRING)
-    private SourcePlanTypeEnum billProperty;
-
-    /**
-     * 调拨状态
-     */
-    @Enumerated(value = EnumType.STRING)
-    private BillAllotStatusEnum allotStatus;
-
-    /**
-     * 单据编码前缀
-     */
-    @Transient
-    private String billCodePrefix;
 
 
     /**
@@ -282,6 +248,37 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
 //     * @param abstractBillDTO
 //     */
 //    protected abstract void unbuildExcend(AbstractBillDTO abstractBillDTO);
+
+
+    /**
+     * 更新前, 在数据库操作中调用
+     */
+    public void update() {
+        if (inLocation != null) {
+            dbStation.setInLocation(inLocation);
+        }
+
+        if (outLocation != null) {
+            dbStation.setOutLocation(outLocation);
+        }
+    }
+
+    /**
+     * 载入
+     */
+    @PostLoad
+    @PostPersist
+    public void load() {
+        if (dbStation == null) {
+            return;
+        }
+
+        inLocation = dbStation.getInLocation();
+        outLocation = dbStation.getOutLocation();
+    }
+
+
+    public abstract String billCodePrefix();
 
     public AbstractLocation getOutLocation() {
         return outLocation;
@@ -439,21 +436,14 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
         this.inWareHouseTime = inWareHouseTime;
     }
 
-    public SourcePlanTypeEnum getBillProperty() {
-        return billProperty;
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
     }
 
-    public void setBillProperty(SourcePlanTypeEnum billProperty) {
-        this.billProperty = billProperty;
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
     }
 
-    public BillOutStateEnum getOutStateEnum() {
-        return outStateEnum;
-    }
-
-    public void setOutStateEnum(BillOutStateEnum outStateEnum) {
-        this.outStateEnum = outStateEnum;
-    }
 
     public Integer getTotalAmount() {
         return totalAmount;
@@ -503,28 +493,12 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
         this.basicEnum = basicEnum;
     }
 
-    public BigDecimal getProgress() {
-        return progress;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setProgress(BigDecimal progress) {
-        this.progress = progress;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getBillCodePrefix() {
-        return billCodePrefix;
-    }
-
-    public void setBillCodePrefix(String billCodePrefix) {
-        this.billCodePrefix = billCodePrefix;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
     public MistakeBill getMistakeBill() {
@@ -545,10 +519,11 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
 
     @Override
     public String toString() {
-        return "AbstractBill{" +
+        return "Bill{" +
                 "billId=" + billId +
                 ", billCode='" + billCode + '\'' +
                 ", billType=" + billType +
+                ", specificBillType=" + specificBillType +
                 ", billPurpose=" + billPurpose +
                 ", belongStationCode='" + belongStationCode + '\'' +
                 ", outLocation=" + outLocation +
@@ -565,17 +540,14 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
                 ", inOrOutState=" + inOrOutState +
                 ", outWareHouseTime=" + outWareHouseTime +
                 ", inWareHouseTime=" + inWareHouseTime +
-                ", outStateEnum=" + outStateEnum +
                 ", totalAmount=" + totalAmount +
                 ", totalVarietyAmount=" + totalVarietyAmount +
                 ", planMemo='" + planMemo + '\'' +
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
                 ", basicEnum=" + basicEnum +
-                ", progress=" + progress +
-                ", totalPrice=" + totalPrice +
-                ", billProperty=" + billProperty +
-                ", billCodePrefix='" + billCodePrefix + '\'' +
+                ", allotStatus=" + allotStatus +
+                ", mistakeBill=" + mistakeBill +
                 "} " + super.toString();
     }
 }

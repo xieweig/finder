@@ -14,7 +14,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Administrator on 2018/1/4.
+ *
+ * @author Administrator
+ * @date 2018/1/4
  */
 @Service
 public class DeliveryBillManager extends AbstractBillExtraManager<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> {
