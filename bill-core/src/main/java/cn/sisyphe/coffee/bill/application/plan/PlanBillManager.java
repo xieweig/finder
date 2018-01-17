@@ -105,7 +105,6 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @param isSuccess
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    @Override
     public PlanBill auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
         PlanBill planBill = (PlanBill) findOneByBillCode(billCode);
         planBill.setAuditPersonCode(auditPersonCode);
