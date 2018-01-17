@@ -14,6 +14,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,18 +35,18 @@ import javax.persistence.PostPersist;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
  * 单据基础类
- *
+ * 封装了单据公共的属性，和dto序列化和反序列化方法。
+ * 系统中的单据实体都必须继承本类，同时实现子类中自定义的扩展属性序列化和反序列化方法
  * @author heyong
  */
 @MappedSuperclass
-public abstract class Bill<T extends BillDetail> extends BaseEntity {
+public abstract class AbstractBill<T extends AbstractBillDetail> extends BaseEntity {
 
 
     @Id
@@ -117,7 +119,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @org.hibernate.annotations.ForeignKey(name = "none")
     // 设置子类的 billCode
     @JoinColumn(name = "billCode", referencedColumnName = "billCode")
-    private Set<T> billDetails = new HashSet<>();
+    private Set<T> billDetails;
 
     /**
      * 单据状态
@@ -257,6 +259,31 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @Transient
     private MistakeBill mistakeBill;
 
+
+    /**
+     * 反序列化，DTO转换成实体
+     * @param abstractBillDTO
+     * @param billDetails
+     */
+    public void unbuild(AbstractBillDTO abstractBillDTO, Set<AbstractBillDetailDTO> billDetails){
+            this.setBillCode(abstractBillDTO.getBillCode());
+
+            //解析子类的订单详情信息
+            unbuildDetails(billDetails);
+    }
+
+    /**
+     * 子类扩展的反序列化方法
+     * 子类必须实现
+     * @param abstractBillDetailDtos
+     */
+    public abstract void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos);
+
+    /**
+     * 具体单据传输自定义但序列化扩展
+     * @param abstractBillDTO
+     */
+    protected abstract void unbuildExcend(AbstractBillDTO abstractBillDTO);
 
     public AbstractLocation getOutLocation() {
         return outLocation;
@@ -520,7 +547,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Bill{" +
+        return "AbstractBill{" +
                 "billId=" + billId +
                 ", billCode='" + billCode + '\'' +
                 ", billType=" + billType +

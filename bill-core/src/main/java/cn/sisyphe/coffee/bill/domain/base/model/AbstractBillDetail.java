@@ -2,10 +2,11 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * 单据明细
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  * @author heyong
  */
 @MappedSuperclass
-public abstract class BillDetail {
+public abstract class AbstractBillDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,13 +25,6 @@ public abstract class BillDetail {
      */
     @Transient
     private AbstractGoods goods;
-
-    /**
-     * 完成度
-     */
-    @Column
-    private BigDecimal progress;
-
 
     /**
      * 包号
@@ -77,6 +71,30 @@ public abstract class BillDetail {
      */
     private int actualAmount;
 
+    /**
+     * 原料
+     */
+    private RawMaterial rawMaterial;
+
+    public RawMaterial getRawMaterial() {
+        return rawMaterial;
+    }
+
+    public void setRawMaterial(RawMaterial rawMaterial) {
+        this.rawMaterial = rawMaterial;
+    }
+
+
+    public void unbuild(AbstractBillDetailDTO abstractBillDetailDTO){
+        this.setShippedAmount(abstractBillDetailDTO.getShippedAmount());
+        this.setActualAmount(abstractBillDetailDTO.getActualAmount());
+
+
+        unbuildExtend(abstractBillDetailDTO);
+    }
+
+    protected abstract void unbuildExtend(AbstractBillDetailDTO abstractBillDetailDTO);
+
     public Long getBillDetailId() {
         return billDetailId;
     }
@@ -99,14 +117,6 @@ public abstract class BillDetail {
 
     public void setPackageCode(String packageCode) {
         this.packageCode = packageCode;
-    }
-
-    public BigDecimal getProgress() {
-        return progress;
-    }
-
-    public void setProgress(BigDecimal progress) {
-        this.progress = progress;
     }
 
     public int getShippedAmount() {
@@ -135,10 +145,9 @@ public abstract class BillDetail {
 
     @Override
     public String toString() {
-        return "BillDetail{" +
+        return "AbstractBillDetail{" +
                 "billDetailId=" + billDetailId +
                 ", goods=" + goods +
-                ", progress=" + progress +
                 ", packageCode='" + packageCode + '\'' +
                 ", dbGoods=" + dbGoods +
                 ", shippedAmount=" + shippedAmount +
