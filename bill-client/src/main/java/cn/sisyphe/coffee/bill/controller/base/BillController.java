@@ -2,6 +2,9 @@ package cn.sisyphe.coffee.bill.controller.base;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
@@ -27,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
-    private AbstractBillExtraManager<T,D, Q> abstractBillExtraManager;
+    private AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
 
     public BillController(AbstractBillExtraManager<T, D, Q> abstractBillExtraManager) {
         this.abstractBillExtraManager = abstractBillExtraManager;
@@ -43,7 +46,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            //responseResult.put("bill", abstractBillExtraManager.findChildPlanBillByCondition(conditionQueryPlanBill));
+            responseResult.put("bill", abstractBillExtraManager.findBillPlanByCondition(conditionQueryPlanBill));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -218,6 +221,19 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     }
 
     /**
+     * 保存单据信息
+     *
+     * @param billDTO 单据DTO
+     * @return
+     */
+    @ApiOperation(value = "保存单据信息--自主拣货保存")
+    @RequestMapping(path = "/saveBySelf", method = RequestMethod.POST)
+    public ResponseResult saveBySelf(HttpServletRequest request, @RequestBody D billDTO) {
+
+        return save(request, billDTO);
+    }
+
+    /**
      * 提交单据信息
      *
      * @param billDTO 单据DTO
@@ -236,6 +252,19 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
             responseResult.putException(data);
         }
         return responseResult;
+    }
+
+    /**
+     * 提交单据信息
+     *
+     * @param billDTO 单据DTO
+     * @return
+     */
+    @ApiOperation(value = "提交单据信息--自主拣货保存")
+    @RequestMapping(path = "/submitBySelf", method = RequestMethod.POST)
+    public ResponseResult submitBySelf(HttpServletRequest request, @RequestBody D billDTO) {
+
+        return submit(request, billDTO);
     }
 
     /**

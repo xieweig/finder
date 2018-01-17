@@ -18,9 +18,11 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 
@@ -103,7 +105,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
      */
-    public void auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
+    public T auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
 
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
@@ -114,6 +116,8 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         T bill = billExtraService.findByBillCode(billCode);
         bill.setAuditPersonCode(auditPersonCode);
         audit(bill, isSuccess);
+
+        return bill;
     }
 
 
@@ -142,25 +146,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
-//    /**
-//     * 公共方法
-//     *
-//     * @param bill
-//     * @return
-//     */
-//    private D commonFun(T bill) {
-//
-//        // 如果是根据原料拣货，则需要去查询一下总部计划单里面的数据
-//        if (BasicEnum.BY_MATERIAL.equals(bill.getBasicEnum())) {
-//            PlanBill planBill = planBillExtraService.findByBillCode(bill.getRootCode());
-//            Set<PlanBillDetail> billDetails = planBill.getBillDetails();
-//            return billToDto(bill, billDetails);
-//        } else {
-//            return billToDto(bill, null);
-//        }
-//    }
-
-
     /**
      * 初始化adjustBill
      *
@@ -182,26 +167,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         return bill;
     }
 
-    /**
-     * 入库单查询
-     *
-     * @param conditionQuery 条件查询参数
-     * @return 查询结果带分页信息
-     */
-    public Page<D> findInStorageBillByCondition(Q conditionQuery) {
-        return findBillByCondition(conditionQuery, BillPurposeEnum.IN_STORAGE);
-    }
-
-
-    /**
-     * 出库单查询
-     *
-     * @param conditionQuery 条件查询参数
-     * @return 查询结果带分页信息
-     */
-    public Page<D> findOutStorageBillByCondition(Q conditionQuery) {
-        return findBillByCondition(conditionQuery, BillPurposeEnum.OUT_STORAGE);
-    }
 
 
     /**
@@ -210,19 +175,52 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
 
-    public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billType, BillPurposeEnum billPurpose) {
-       return null;
+    public Page<D> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
+
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
+            // SpringCloud调用查询用户编码
+            List<String> userCodeList = sharedManager.findByLikeUserName(conditionQueryPlanBill.getOperatorName());
+            conditionQueryPlanBill.setOperatorCodeList(userCodeList);
+        }
+
+        if (specificBillType != null){
+            //conditionQueryPlanBill
+        }
+
+        Page<T> billPage = (Page<T>) planBillExtraService.findPageByCondition(conditionQueryPlanBill);
+
+        return billPage.map(source -> billToListDto(source));
     }
 
-    private Page<D> findBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
-        // SpringCloud调用查询用户编码
-        List<String> userCodeList = sharedManager.findByLikeUserName(conditionQuery.getOperatorName());
+    /**
+     * 多条件查询
+     * @param conditionQueryPlanBill
+     * @return
+     */
+    public Page<D> findBillPlanByCondition(ConditionQueryPlanBill conditionQueryPlanBill) {
 
-        conditionQuery.setOperatorCodeList(userCodeList);
+        return findChildPlanBillByCondition(conditionQueryPlanBill, null);
+    }
+
+
+    /**
+     * 多条件查询
+     * @param conditionQuery
+     * @param billPurposeEnum
+     * @return
+     */
+    public Page<D> findBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
+
+        if (!StringUtils.isEmpty(conditionQuery.getOperatorName())) {
+            // SpringCloud调用查询用户编码
+            List<String> userCodeList = sharedManager.findByLikeUserName(conditionQuery.getOperatorName());
+            conditionQuery.setOperatorCodeList(userCodeList);
+        }
+
         conditionQuery.setPurposeEnum(billPurposeEnum);
-        Page<T> adjustBillPage = billExtraService.findPageByCondition(conditionQuery);
+        Page<T> billPage = billExtraService.findPageByCondition(conditionQuery);
 
-        return adjustBillPage.map(source -> billToListDto(source));
+        return billPage.map(source -> billToListDto(source));
     }
 
     /**
