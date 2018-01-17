@@ -61,7 +61,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
      */
     @ApiOperation(value = "根据单据号查询计划单据详细信息")
     @RequestMapping(path = "/findPlanByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
+    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode, BillTypeEnum billTypeEnum) {
         ResponseResult responseResult = new ResponseResult();
         try {
             //responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, BillTypeEnum.ADJUST));
