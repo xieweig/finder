@@ -94,8 +94,10 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         return billPage.map(source -> billToListDto(source));
     }
 
-
-
+    @Override
+    protected void dtoToBill(PlanBill bill, PlanBillDTO billDTO) {
+        super.dtoToBill(bill, billDTO);
+    }
 
     /**
      * 审核通过否
