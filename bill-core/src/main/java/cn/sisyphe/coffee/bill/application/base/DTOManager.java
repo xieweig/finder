@@ -67,7 +67,7 @@ public class DTOManager {
         bill.setSourceCode(billDTO.getSourceCode());
         bill.setSubmitState(billDTO.getSubmitState());
         bill.setTotalAmount(billDTO.getTotalAmount());
-        bill.setTotalPrice(billDTO.getTotalPrice());
+//        bill.setTotalPrice(billDTO.getTotalPrice());
         bill.setTotalVarietyAmount(billDTO.getTotalVarietyAmount());
         if (billDTO.getBillDetails() != null) {
             bill.setBillDetails(billDetailDTOToBillDetail(billDTO.getBillDetails(), bill.getBillType()));
