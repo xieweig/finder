@@ -8,7 +8,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.util.BillCodeManager;
-import cn.sisyphe.coffee.bill.viewmodel.restock.AddRestockBillDTO;
+
+import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
 import java.math.BigDecimal;
@@ -35,8 +36,8 @@ public class InstanceIter {
         detailList.add("AS=SDS");
     }
 
-    public AddRestockBillDTO nextRandomAddRestockBillDTO(Integer detailsNumber){
-        AddRestockBillDTO dto = new AddRestockBillDTO();
+    public RestockBillDTO nextRandomAddRestockBillDTO(Integer detailsNumber){
+        RestockBillDTO dto = new RestockBillDTO();
         //可能有误
         dto.setBillCode(BillCodeManager.getBillCodeFun("ABCD","10P"));
         dto.setRootCode(ROOT_CODES[random.nextInt()]);
@@ -46,8 +47,8 @@ public class InstanceIter {
         dto.setBillProperty(SourcePlanTypeEnum.RESTOCK);
         dto.setOperatorCode(OPERATIONCODE[random.nextInt(OPERATIONCODE.length)]);
 
-        dto.setOutStation(this.nextRandomStation());
-        dto.setInStation(this.nextRandomStation());
+        dto.setInLocation(this.nextRandomStation());
+        dto.setOutLocation(this.nextRandomStation());
         Set<RestockBillDetailDTO> details = new HashSet();
         for (int i = 0; i < detailsNumber; i++) {
             details.add(this.nextRandomRestockBillDetailDTO());
@@ -57,9 +58,9 @@ public class InstanceIter {
 
 
         dto.setProgress(new BigDecimal(random.nextInt(100)));
-        dto.setTotalPrice(new BigDecimal(random.nextInt(100)));
+
         dto.setPlanMemo("plan memo:"+random.nextInt(100));
-        dto.setOutMemo("plan memo:"+random.nextInt(100));
+
         return dto;
     }
     private Station nextRandomStation() {

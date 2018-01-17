@@ -21,6 +21,7 @@ public class NewRestockTest extends InstanceIter{
     @Test
     public void saveDTO(){
         for (int i = 0; i < 3; i++) {
+
             restockBillManager.saveBill(this.nextRandomAddRestockBillDTO(2));
         }
 
