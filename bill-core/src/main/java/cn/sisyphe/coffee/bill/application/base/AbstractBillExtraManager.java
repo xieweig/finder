@@ -213,7 +213,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, Q extends Conditi
     }
 
     /**
-     * dto 转换
+     * dto 转换 bill - 条件查询 dto list
      *
      * @param source
      * @param <S>
@@ -223,9 +223,20 @@ public abstract class AbstractBillExtraManager<T extends Bill, Q extends Conditi
         return null;
     }
 
+    /**
+     * dto - bill
+     * @param bill
+     * @param billDTO
+     */
     protected void mapBill(T bill, BillDTO billDTO) {
     }
 
+    /**
+     * bill - dto 详细
+     * @param bill
+     * @param billDetails
+     * @return
+     */
     protected BillDTO toMapOneDTO(T bill, Set<PlanBillDetail> billDetails) {
         return null;
     }
