@@ -40,8 +40,9 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         this.planBillManager = planBillManager;
         this.allotBillManager = allotBillManager;
     }
+    
 
-    // --------------- 子计划单 begin -----------------------
+    //region --------------- 子计划单 ------------
 
     /**
      * 子计划列表
@@ -78,10 +79,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         return responseResult;
     }
 
-    // --------------- 子计划单 end-----------------------
+    //endregion
 
 
-    // --------------- 出库单 begin -----------------------
+    //region --------------- 出库单 ------------
 
     /**
      * 出库单列表
@@ -138,10 +139,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         return responseResult;
     }
 
-    // --------------- 出库单 end -----------------------
+    //endregion
 
 
-    // --------------- 入库单 begin -----------------------
+    //region --------------- 入库单 ------------
 
     /**
      * 入库单列表
@@ -180,10 +181,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         return responseResult;
     }
 
-    // --------------- 入库单 end -----------------------
+    //endregion
 
 
-    // --------------- 调拨单 begin -----------------------
+    //region --------------- 调拨单 ------------
 
     /**
      * 调拨单列表
@@ -193,7 +194,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "调拨单列表")
     @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
+    //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -222,10 +223,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         return responseResult;
     }
 
-    // --------------- 调拨单 end -----------------------
+    //endregion
 
 
-    // --------------- 业务操作 begin -----------------------
+    //region --------------- 业务操作 ------------
 
 
 
@@ -353,5 +354,5 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         return responseResult;
     }
 
-    // --------------- 业务操作 begin -----------------------
+    //endregion
 }

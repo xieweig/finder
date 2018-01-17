@@ -30,15 +30,13 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     private BillExtraService<T, Q> billExtraService;
     private SharedManager sharedManager;
 
-    public BillExtraService<T, Q> getBillExtraService() {
+    protected BillExtraService<T, Q> getBillExtraService() {
         return billExtraService;
     }
 
     public void setBillExtraService(BillExtraService<T, Q> billExtraService) {
         this.billExtraService = billExtraService;
     }
-
-
 
     public SharedManager getSharedManager() {
         return sharedManager;
@@ -76,7 +74,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      */
     public String submitBill(D billDTO) {
         T bill = prepareBill(billDTO);
-        dtoToBill(bill, billDTO);
+        bill = dtoToBill(bill, billDTO);
         return submit(bill).getBillCode();
     }
 
@@ -86,7 +84,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
      */
-    public T auditBill(String billCode, String auditPersonCode,String auditMemo, boolean isSuccess) {
+    public T auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
 
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
@@ -152,10 +150,11 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
     /**
      * 查询单据
+     *
      * @param billCode
      * @return
      */
-    public D findBillByBillCode(String billCode){
+    public D findBillByBillCode(String billCode) {
         T bill = billExtraService.findByBillCode(billCode);
 
         return billToDto(bill);
@@ -186,6 +185,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
     /**
      * 根据sourceCode查询单据
+     *
      * @param sourceCode
      * @return
      */
@@ -224,7 +224,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         //billDTO.getBillDetails().clear();
         //BeanUtils.copyProperties(billDTO, bill, "createTime");
 
-       return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+        return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
 
     }
 
