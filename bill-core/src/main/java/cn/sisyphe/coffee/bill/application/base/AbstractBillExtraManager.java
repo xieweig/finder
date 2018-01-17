@@ -16,6 +16,8 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -201,6 +203,16 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         return findBillByCondition(conditionQuery, BillPurposeEnum.OUT_STORAGE);
     }
 
+
+    /**
+     * 多条件查询子计划查询
+     *@param conditionQueryPlanBill
+     * @return
+     */
+
+    public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billType, BillPurposeEnum billPurpose) {
+       return null;
+    }
 
     private Page<D> findBillByCondition(Q conditionQuery, BillPurposeEnum billPurposeEnum) {
         // SpringCloud调用查询用户编码
