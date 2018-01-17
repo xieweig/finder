@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.viewmodel.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -47,12 +48,12 @@ public class BillDTO {
     /**
      * 出库位置
      */
-    private AbstractLocation outLocation;
+    private Station outLocation;
 
     /**
      * 入库位置
      */
-    private AbstractLocation inLocation;
+    private Station inLocation;
 
     /**
      * 数据库位置储存(不确定需不需要)
@@ -257,19 +258,19 @@ public class BillDTO {
         this.belongStationCode = belongStationCode;
     }
 
-    public AbstractLocation getOutLocation() {
+    public Station getOutLocation() {
         return outLocation;
     }
 
-    public void setOutLocation(AbstractLocation outLocation) {
+    public void setOutLocation(Station outLocation) {
         this.outLocation = outLocation;
     }
 
-    public AbstractLocation getInLocation() {
+    public Station getInLocation() {
         return inLocation;
     }
 
-    public void setInLocation(AbstractLocation inLocation) {
+    public void setInLocation(Station inLocation) {
         this.inLocation = inLocation;
     }
 
