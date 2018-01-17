@@ -230,7 +230,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      * 总价
      */
     private BigDecimal totalPrice;
-    
+
     /**
      * 单据来源类型
      */

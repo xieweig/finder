@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.viewmodel.purchase;
+package cn.sisyphe.coffee.bill.viewmodel.delivery;
 
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 
@@ -7,6 +7,6 @@ import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
  * @description: 多条件查询退库调拨单查询
  * @author：bifenglin
  */
-public class ConditionQueryPurchaseBill extends ConditionQueryBill  {
+public class ConditionQueryDeliveryBill extends ConditionQueryBill  {
 
 }

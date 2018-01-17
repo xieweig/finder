@@ -16,10 +16,11 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
 
 /**
  * 单据DTO基类
- * @author bifenglin
+ *
  * @param
+ * @author bifenglin
  */
-public class BillDTO {
+public class BillDTO<T extends BillDetailDTO> {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
@@ -93,7 +94,7 @@ public class BillDTO {
     /**
      * 物品明细
      */
-    private Set<BillDetailDTO> billDetails;
+    private Set<T> billDetails;
 
     /**
      * 单据状态
@@ -306,11 +307,11 @@ public class BillDTO {
         this.auditPersonCode = auditPersonCode;
     }
 
-    public Set<BillDetailDTO> getBillDetails() {
+    public Set<T> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<BillDetailDTO> billDetails) {
+    public void setBillDetails(Set<T> billDetails) {
         this.billDetails = billDetails;
     }
 

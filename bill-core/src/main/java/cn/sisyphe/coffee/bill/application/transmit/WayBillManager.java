@@ -65,28 +65,28 @@ public class WayBillManager {
 //        退库出库单 ：TKCK+CKG001+20180110+P10+6位流水 -> TKCKCKG00120180110P10000001
 //        退货出库单 ：THCK+CKG001+20180110+P10+6位流水 -> THCKCKG00120180110P10000001
 
-        // TODO: 2018/1/11  匹配新的规则
-        if (StringUtils.isEmpty(billCode)) {
-            return null;
-        }
-        //配送出库
-        if (billCode.toUpperCase().startsWith("PSCK")) {
-
-            return deliveryBillManager.scanQueryBill(billCode);
-        }
-        //调剂出库单
-        if (billCode.toUpperCase().startsWith("TJCK")) {
-            //
-        }
-        //退库出库单
-        if (billCode.toUpperCase().startsWith("TKCK")) {
-            //退库出库单
-            return restockBillManager.findPackageInfoByBillCode(billCode);
-        }
-        //退货出库单
-        if (billCode.toUpperCase().startsWith("THCK")) {
-            //
-        }
+//        // TODO: 2018/1/11  匹配新的规则
+//        if (StringUtils.isEmpty(billCode)) {
+//            return null;
+//        }
+//        //配送出库
+//        if (billCode.toUpperCase().startsWith("PSCK")) {
+//
+//            return deliveryBillManager.scanQueryBill(billCode);
+//        }
+//        //调剂出库单
+//        if (billCode.toUpperCase().startsWith("TJCK")) {
+//            //
+//        }
+//        //退库出库单
+//        if (billCode.toUpperCase().startsWith("TKCK")) {
+//            //退库出库单
+//            return restockBillManager.findPackageInfoByBillCode(billCode);
+//        }
+//        //退货出库单
+//        if (billCode.toUpperCase().startsWith("THCK")) {
+//            //
+//        }
         return null;
     }
 

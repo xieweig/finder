@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.viewmodel.purchase;
+package cn.sisyphe.coffee.bill.viewmodel.delivery;
 
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 
@@ -6,5 +6,5 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
  * Created by heyong on 2018/1/17 11:41
  * Description:
  */
-public class PurchaseBillDTO extends BillDTO<PurchaseBillDetailDTO> {
+public class DeliveryBillDTO extends BillDTO<DeliveryBillDetailDTO> {
 }

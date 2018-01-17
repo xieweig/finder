@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.domain.delivery;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillExtraService;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
+import cn.sisyphe.coffee.bill.viewmodel.delivery.ConditionQueryDeliveryBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

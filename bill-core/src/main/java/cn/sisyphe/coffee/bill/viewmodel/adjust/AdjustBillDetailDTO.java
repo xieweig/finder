@@ -10,16 +10,5 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
  * @author XiongJing
  */
 public class AdjustBillDetailDTO  extends BillDetailDTO {
-    /**
-     * 所属原料编码
-     */
-    private String belongMaterialCode;
 
-    public String getBelongMaterialCode() {
-        return belongMaterialCode;
-    }
-
-    public void setBelongMaterialCode(String belongMaterialCode) {
-        this.belongMaterialCode = belongMaterialCode;
-    }
 }
