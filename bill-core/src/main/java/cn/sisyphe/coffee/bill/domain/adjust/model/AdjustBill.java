@@ -1,13 +1,17 @@
 package cn.sisyphe.coffee.bill.domain.adjust.model;
 
-import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.AbstractBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -20,7 +24,7 @@ import javax.persistence.Table;
 @Table(name = "adjust_bill")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class AdjustBill extends Bill<AdjustBillDetail> {
+public class AdjustBill extends AbstractBill<AdjustBillDetail> {
     public static final String ADJUST_OUT_STORAGE_PREFIX = "TJCK";
 
     public AdjustBill() {
@@ -36,4 +40,28 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
         return StringUtils.isEmpty(getRootCode());
     }
 
+    /**
+     * 反序列化单据详情
+     * @param abstractBillDetailDtos
+     */
+    @Override
+    public void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos) {
+            Set<AdjustBillDetail> adjustBillDetails = new HashSet<AdjustBillDetail>(16);
+            for (AbstractBillDetailDTO abstractBillDetailDTO : abstractBillDetailDtos){
+                if (abstractBillDetailDTO != null){
+                    AdjustBillDetail adjustBillDetail = new AdjustBillDetail();
+                    adjustBillDetail.unbuild(abstractBillDetailDTO);
+                    adjustBillDetails.add(adjustBillDetail);
+                }
+            }
+    }
+
+    /**
+     * 反序列化扩展
+     * @param abstractBillDTO
+     */
+    @Override
+    protected void unbuildExcend(AbstractBillDTO abstractBillDTO) {
+
+    }
 }
