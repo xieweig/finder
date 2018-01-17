@@ -3,7 +3,6 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -85,15 +84,15 @@ public abstract class BillDetail {
     }
 
 
-    public void unbuild(AbstractBillDetailDTO abstractBillDetailDTO){
-        this.setShippedAmount(abstractBillDetailDTO.getShippedAmount());
-        this.setActualAmount(abstractBillDetailDTO.getActualAmount());
-
-
-        unbuildExtend(abstractBillDetailDTO);
-    }
-
-    protected abstract void unbuildExtend(AbstractBillDetailDTO abstractBillDetailDTO);
+//    public void unbuild(AbstractBillDetailDTO abstractBillDetailDTO){
+//        this.setShippedAmount(abstractBillDetailDTO.getShippedAmount());
+//        this.setActualAmount(abstractBillDetailDTO.getActualAmount());
+//
+//
+//        unbuildExtend(abstractBillDetailDTO);
+//    }
+//
+//    protected abstract void unbuildExtend(AbstractBillDetailDTO abstractBillDetailDTO);
 
     public Long getBillDetailId() {
         return billDetailId;

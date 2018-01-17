@@ -14,8 +14,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
-import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -260,30 +258,30 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     private MistakeBill mistakeBill;
 
 
-    /**
-     * 反序列化，DTO转换成实体
-     * @param abstractBillDTO
-     * @param billDetails
-     */
-    public void unbuild(AbstractBillDTO abstractBillDTO, Set<AbstractBillDetailDTO> billDetails){
-            this.setBillCode(abstractBillDTO.getBillCode());
-
-            //解析子类的订单详情信息
-            unbuildDetails(billDetails);
-    }
-
-    /**
-     * 子类扩展的反序列化方法
-     * 子类必须实现
-     * @param abstractBillDetailDtos
-     */
-    public abstract void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos);
-
-    /**
-     * 具体单据传输自定义但序列化扩展
-     * @param abstractBillDTO
-     */
-    protected abstract void unbuildExcend(AbstractBillDTO abstractBillDTO);
+//    /**
+//     * 反序列化，DTO转换成实体
+//     * @param abstractBillDTO
+//     * @param billDetails
+//     */
+//    public void unbuild(AbstractBillDTO abstractBillDTO, Set<AbstractBillDetailDTO> billDetails){
+//            this.setBillCode(abstractBillDTO.getBillCode());
+//
+//            //解析子类的订单详情信息
+//            unbuildDetails(billDetails);
+//    }
+//
+//    /**
+//     * 子类扩展的反序列化方法
+//     * 子类必须实现
+//     * @param abstractBillDetailDtos
+//     */
+//    public abstract void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos);
+//
+//    /**
+//     * 具体单据传输自定义但序列化扩展
+//     * @param abstractBillDTO
+//     */
+//    protected abstract void unbuildExcend(AbstractBillDTO abstractBillDTO);
 
     public AbstractLocation getOutLocation() {
         return outLocation;
