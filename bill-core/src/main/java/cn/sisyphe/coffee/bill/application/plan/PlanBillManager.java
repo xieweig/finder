@@ -77,7 +77,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      */
 
     public Page<PlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
-
+        conditionQueryPlanBill.setHqBill(false);
         if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
             // SpringCloud调用查询用户编码
             List<String> userCodeList = getSharedManager().findByLikeUserName(conditionQueryPlanBill.getOperatorName());
@@ -94,8 +94,10 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         return billPage.map(source -> billToListDto(source));
     }
 
-
-
+    @Override
+    protected void dtoToBill(PlanBill bill, PlanBillDTO billDTO) {
+        super.dtoToBill(bill, billDTO);
+    }
 
     /**
      * 审核通过否
@@ -105,19 +107,20 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @param isSuccess
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    @Override
     public PlanBill auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
-        PlanBill planBill = super.auditBill(billCode, auditPersonCode, isSuccess);
-
-        if (isSuccess){
+        PlanBill planBill = (PlanBill) findOneByBillCode(billCode);
+        planBill.setAuditPersonCode(auditPersonCode);
+        if (isSuccess) {
             mapForSplit(planBill);
         }
 
+        audit(planBill, isSuccess);
         return planBill;
     }
 
     /**
      * 查询站点信息
+     *
      * @param planBill
      */
     private void mapForSplit(PlanBill planBill) {
@@ -130,6 +133,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 获取真实站点
+     *
      * @param abstractLocation
      * @return
      */
@@ -145,6 +149,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 获取中转的物流站点
+     *
      * @param planBillDetail
      * @return
      */
@@ -160,6 +165,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 拣货操作
+     *
      * @param billCode
      * @param operationState
      */
@@ -182,8 +188,22 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @return
      */
     public ResultPlanBillDTO findHqPlanBillByBillCode(String billCode) throws DataException {
-        return planBillToResultPlanBillDTO(getBillExtraService().findByBillCode(billCode));
+        PlanBill planBill = getBillExtraService().findByBillCode(billCode);
+        return planBillToResultPlanBillDTO(planBill);
     }
+
+    /**
+     * 根据条件查询
+     *
+     * @param conditionQueryPlanBill 条件查询参数
+     * @return
+     */
+    public Page<ResultPlanBillDTO> findHqPlanBillByConditions(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
+        conditionQueryPlanBill.setHqBill(true);
+        Page<PlanBill> planBills = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
+        return planBills.map(planBill -> planBillToResultPlanBillDTO(planBill));
+    }
+
 
     /**
      * 将总部计划PlanBill 转为 ResultPlanBillDTO
@@ -192,10 +212,10 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @return
      */
     private ResultPlanBillDTO planBillToResultPlanBillDTO(PlanBill planBill) {
-        ResultPlanBillDTO resultPlanBillDTO = new ResultPlanBillDTO();
         if (planBill == null) {
-            return resultPlanBillDTO;
+            return null;
         }
+        ResultPlanBillDTO resultPlanBillDTO = new ResultPlanBillDTO();
         resultPlanBillDTO.setBillCode(planBill.getBillCode());
         resultPlanBillDTO.setBillName(planBill.getBillName());
         resultPlanBillDTO.setBillType(planBill.getSpecificBillType());

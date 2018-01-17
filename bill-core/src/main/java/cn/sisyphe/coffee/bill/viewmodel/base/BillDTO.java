@@ -1,10 +1,19 @@
 package cn.sisyphe.coffee.bill.viewmodel.base;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
-import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -58,12 +67,6 @@ public class BillDTO<T extends BillDetailDTO> {
      * 入库位置
      */
     private Station inLocation;
-
-    /**
-     * 数据库位置储存(不确定需不需要)
-     */
-//    private DbStation dbStation = new DbStation();
-
     /**
      * 源单号
      */
@@ -201,6 +204,7 @@ public class BillDTO<T extends BillDetailDTO> {
     /**
      * 差错单
      */
+    @JsonIgnore
     private MistakeBill mistakeBill;
 
     public Date getCreateTime() {

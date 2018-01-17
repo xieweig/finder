@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
-    private AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
+    protected AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
     private PlanBillManager planBillManager;
     private AllotBillManager allotBillManager;
 
@@ -91,7 +91,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "多条件分页查询出库单据")
     @RequestMapping(path = "/findOutStorageByConditions", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
+//    @ScopeAuth(scopes = {"#conditionQueryAdjustBill.outStationCodeArray", "#conditionQueryAdjustBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -151,7 +151,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "多条件分页查询入库单据")
     @RequestMapping(path = "/findInStorageByConditions", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
+//    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findInStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -322,11 +322,11 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "审核不通过")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
-    public ResponseResult auditFailure(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
+    public ResponseResult auditFailure(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            abstractBillExtraManager.auditBill(billCode, loginInfo.getOperatorCode(), false);
+            abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), false);
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -341,11 +341,11 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
+    public ResponseResult auditSuccess(HttpServletRequest request,@RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            abstractBillExtraManager.auditBill(billCode, loginInfo.getOperatorCode(), true);
+            abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), true);
         } catch (DataException data) {
             responseResult.putException(data);
         }
