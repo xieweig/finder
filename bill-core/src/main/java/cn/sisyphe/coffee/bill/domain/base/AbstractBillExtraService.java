@@ -51,7 +51,7 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
     }
 
     /**
-     * 根据sourceCode查询调剂单据
+     * 根据sourceCode查询单据
      *
      * @param sourceCode
      * @return

@@ -161,16 +161,18 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
     /**
      * 查询子计划单
+     *
      * @param billCode
      * @return
      */
-    public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum){
+    public PlanBill findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
         return planBillExtraService.findByBillCodeAndType(billCode, billTypeEnum);
     }
 
     /**
      * 多条件查询子计划查询
-     *@param conditionQueryPlanBill
+     *
+     * @param conditionQueryPlanBill
      * @return
      */
 
@@ -182,7 +184,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
             conditionQueryPlanBill.setOperatorCodeList(userCodeList);
         }
 
-        if (specificBillType != null){
+        if (specificBillType != null) {
             // TODO: 2018/1/17 增加特别类型
             //conditionQueryPlanBill
         }
@@ -194,6 +196,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
     /**
      * 多条件查询
+     *
      * @param conditionQueryPlanBill
      * @return
      */
@@ -205,6 +208,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
     /**
      * 多条件查询
+     *
      * @param conditionQuery
      * @param billPurposeEnum
      * @return
@@ -224,6 +228,14 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
+    /**
+     * 根据sourceCode查询单据
+     * @param sourceCode
+     * @return
+     */
+    public T findBySourceCode(String sourceCode) {
+        return billExtraService.findBySourceCode(sourceCode);
+    }
 
 
     /**

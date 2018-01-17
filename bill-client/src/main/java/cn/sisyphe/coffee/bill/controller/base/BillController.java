@@ -35,8 +35,11 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
         this.abstractBillExtraManager = abstractBillExtraManager;
     }
 
+
+    // --------------- 子计划单 begin -----------------------
+
     /**
-     * 多条件分页查询计划单据
+     * 子计划列表
      *
      * @return
      */
@@ -53,7 +56,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     }
 
     /**
-     * 根据单据号查询计划单据详细信息
+     * 子计划明细
      *
      * @param billCode 单据号
      * @return
@@ -70,8 +73,13 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
         return responseResult;
     }
 
+    // --------------- 子计划单 end-----------------------
+
+
+    // --------------- 出库单 begin -----------------------
+
     /**
-     * 多条件分页查询出库单据
+     * 出库单列表
      *
      * @param conditionQueryBill 查询条件DTO
      * @return
@@ -90,7 +98,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     }
 
     /**
-     * 根据单据号查询出库单据详细信息
+     * 出库单明细
      *
      * @param billCode 单据号
      * @return
@@ -108,7 +116,31 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     }
 
     /**
-     * 多条件分页查询入库单据
+     *
+     * 拣货明细
+     *
+     * @param sourceCode
+     * @return
+     */
+    @ApiOperation(value = "根据源单号查询单据详细信息")
+    @RequestMapping(path = "/findBySourceCode", method = RequestMethod.GET)
+    public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", abstractBillExtraManager.findOneByBillCode(sourceCode));
+        } catch (DataException e) {
+            responseResult.putException(e);
+        }
+        return responseResult;
+    }
+
+    // --------------- 出库单 end -----------------------
+
+
+
+    // --------------- 入库单 begin -----------------------
+    /**
+     * 入库单列表
      *
      * @param conditionQueryBill 查询条件DTO
      * @return
@@ -127,7 +159,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     }
 
     /**
-     * 根据单据号查询入库单据详细信息
+     * 入库单明细
      *
      * @param billCode 单据号
      * @return
@@ -137,48 +169,20 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
     public ResponseResult findInStorageByBillCode(@RequestParam String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
+            responseResult.put("bill", abstractBillExtraManager.findOneByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
         return responseResult;
     }
 
-    /**
-     * 根据源单号查询单据详细信息
-     *
-     * @param sourceCode
-     * @return
-     */
-    @ApiOperation(value = "根据源单号查询单据详细信息")
-    @RequestMapping(path = "/findBySourceCode", method = RequestMethod.GET)
-    public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            //responseResult.put("restockBill", abstractBillManager.findOneByBillCode(sourceCode));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
+    // --------------- 入库单 end -----------------------
 
-    /**
-     * 根据单据号查询单据详细信息
-     *
-     * @param billCode 单据号
-     * @return
-     */
-    @ApiOperation(value = "根据单据号查询详细信息")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.GET)
-    public ResponseResult findByBillCode(@RequestParam(value = "billCode") String billCode) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("adjustBill", abstractBillExtraManager.findOneByBillCode(billCode));
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
-    }
 
+
+
+
+    // --------------- 业务操作 begin -----------------------
     /**
      * 根据单据号打开单据
      *
@@ -232,6 +236,7 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
 
         return save(request, billDTO);
     }
+
 
     /**
      * 提交单据信息
@@ -305,4 +310,5 @@ public abstract class BillController<T extends Bill, D extends BillDTO, Q extend
         return responseResult;
     }
 
+    // --------------- 业务操作 begin -----------------------
 }
