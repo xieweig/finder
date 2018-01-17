@@ -7,4 +7,5 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
  * Description:
  */
 public class RestockBillDetailDTO extends BillDetailDTO {
+
 }

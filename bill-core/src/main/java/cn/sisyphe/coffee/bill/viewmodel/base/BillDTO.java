@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -22,6 +24,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
  */
 public class BillDTO<T extends BillDetailDTO> {
 
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
@@ -123,12 +126,14 @@ public class BillDTO<T extends BillDetailDTO> {
     /**
      * 出库时间
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
 
     /**
      * 入库时间
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
 
@@ -174,11 +179,6 @@ public class BillDTO<T extends BillDetailDTO> {
      * 完成度
      */
     private BigDecimal progress;
-
-    /**
-     * 总价
-     */
-    private BigDecimal totalPrice;
 
     /**
      * 单据来源类型
@@ -425,14 +425,6 @@ public class BillDTO<T extends BillDetailDTO> {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     public SourcePlanTypeEnum getBillProperty() {
