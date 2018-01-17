@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.*;
@@ -370,8 +371,8 @@ public class RestockBillController {
     public ResponseResult findRestockInStorageBillByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            RestockInStorageBillDTO restockInStorageBillDTO = restockBillManager.findRestockInStorageBillByRestockBillCode(restockBillCode);
-            responseResult.put("content", restockInStorageBillDTO);
+            BillDTO billDTO = restockBillManager.findRestockInStorageBillByRestockBillCode(restockBillCode);
+            responseResult.put("content", billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -389,8 +390,8 @@ public class RestockBillController {
     public ResponseResult findRestockAllotBillByRestockBillCode(@RequestParam String restockBillCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            RestockAllotBillDTO restockAllotBillDTO = restockBillManager.findRestockAllotBillByRestockBillCode(restockBillCode);
-            responseResult.put("content", restockAllotBillDTO);
+            BillDTO billDTO = restockBillManager.findRestockInStorageBillByRestockBillCode(restockBillCode);
+            responseResult.put("content", billDTO);
         } catch (DataException data) {
             responseResult.putException(data);
         }
