@@ -6,13 +6,9 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -136,10 +132,10 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO 前端dto
      * @return AdjustBill 调剂计划实体
      */
-    private T prepareBill(D billDTO) {
+    protected T prepareBill(D billDTO) {
 
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
-            return (T) new BillFactory().createBill(BillTypeEnum.ADJUST);
+            return (T) new BillFactory().createBill(billDTO.getBillType());
         }
 
         T bill = billExtraService.findByBillCode(billDTO.getBillCode());

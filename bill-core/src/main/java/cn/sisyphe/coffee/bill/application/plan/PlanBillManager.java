@@ -77,7 +77,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      */
 
     public Page<PlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
-
+        conditionQueryPlanBill.setHqBill(false);
         if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
             // SpringCloud调用查询用户编码
             List<String> userCodeList = getSharedManager().findByLikeUserName(conditionQueryPlanBill.getOperatorName());
@@ -94,8 +94,10 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         return billPage.map(source -> billToListDto(source));
     }
 
-
-
+    @Override
+    protected void dtoToBill(PlanBill bill, PlanBillDTO billDTO) {
+        super.dtoToBill(bill, billDTO);
+    }
 
     /**
      * 审核通过否
