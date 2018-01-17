@@ -40,7 +40,9 @@ public abstract class AbstractCastableStrategy {
         planBill.setRootCode(planBillPayload.getParentBillCode());
         planBill.setSourceCode(planBillPayload.getParentBillCode());
         planBill.setBillCode(planBillPayload.getBillCode());
+        planBill.setBillName(planBillPayload.getBillName());
         planBill.setPlanMemo(planBillPayload.getMemo());
+        planBill.setBillType(planBillPayload.getBillType());
         Set<PlanBillDetail> planBillDetails = new HashSet<>();
         for (PlanBillPayloadDetail planBillPayloadDetail : planBillPayload.getGoodDetails()) {
             PlanBillDetail planBillDetail = new PlanBillDetail();
