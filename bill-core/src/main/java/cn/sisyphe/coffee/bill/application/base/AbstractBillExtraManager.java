@@ -10,11 +10,13 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.framework.web.exception.DataException;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -61,7 +63,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      */
     public String saveBill(D billDTO) {
         T bill = prepareBill(billDTO);
-        dtoToBill(bill, billDTO);
+        bill = dtoToBill(bill, billDTO);
         return save(bill).getBillCode();
     }
 
@@ -148,7 +150,16 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
+    /**
+     * 查询单据
+     * @param billCode
+     * @return
+     */
+    public D findBillByBillCode(String billCode){
+        T bill = billExtraService.findByBillCode(billCode);
 
+        return billToDto(bill);
+    }
 
 
     /**
@@ -190,14 +201,16 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToListDto(T source) {
-        BillDTO billDTO = new BillDTO();
+//        BillDTO billDTO = new BillDTO();
         // 清空明细
         source.getBillDetails().clear();
+//
+//        BeanUtils.copyProperties(source, billDTO);
+//
+//
+//        return (D) billDTO;
 
-        BeanUtils.copyProperties(source, billDTO);
-
-
-        return (D) billDTO;
+        return JSON.parseObject(JSON.toJSONString(source), (Type) (new BillDTO().getClass()));
     }
 
     /**
@@ -206,10 +219,13 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param bill
      * @param billDTO
      */
-    protected void dtoToBill(T bill, D billDTO) {
+    protected T dtoToBill(T bill, D billDTO) {
 
-        billDTO.getBillDetails().clear();
-        BeanUtils.copyProperties(billDTO, bill, "createTime");
+        //billDTO.getBillDetails().clear();
+        //BeanUtils.copyProperties(billDTO, bill, "createTime");
+
+       return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+
     }
 
     /**
@@ -219,11 +235,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-        BillDTO billDTO = new BillDTO();
-        bill.getBillDetails().clear();
-        BeanUtils.copyProperties(bill, billDTO);
-
-        return (D) billDTO;
+//        BillDTO billDTO = new BillDTO();
+//        bill.getBillDetails().clear();
+//        BeanUtils.copyProperties(bill, billDTO);
+//
+//        return (D) billDTO;
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
     }
 
 

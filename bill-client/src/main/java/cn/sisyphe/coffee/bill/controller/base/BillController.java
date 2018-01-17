@@ -113,7 +113,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findOutStorageByBillCode(@RequestParam String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findOneByBillCode(billCode));
+            responseResult.put("bill", abstractBillExtraManager.findBillByBillCode(billCode));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -336,12 +336,12 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     /**
      * 审核通过
      *
-     * @param billCode 单据号
+     * @param billDTO 单据号
      * @return
      */
     @ApiOperation(value = "审核通过")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
-    public ResponseResult auditSuccess(HttpServletRequest request,@RequestBody D billDTO) {
+    public ResponseResult auditSuccess(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
