@@ -96,7 +96,7 @@ public class InStorageBillManager {
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
-            desBillDetail.setProgress(billDetail.getProgress());
+            //desBillDetail.setProgress(billDetail.getProgress());
             details.add(desBillDetail);
         }
         bill.setBillDetails(details);

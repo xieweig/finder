@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
-    private AbstractBillExtraManager<T, Q> abstractBillExtraManager;
+    private AbstractBillExtraManager<T,D, Q> abstractBillExtraManager;
 
-    public BillController(AbstractBillExtraManager<T, Q> abstractBillExtraManager) {
+    public BillController(AbstractBillExtraManager<T, D, Q> abstractBillExtraManager) {
         this.abstractBillExtraManager = abstractBillExtraManager;
     }
 

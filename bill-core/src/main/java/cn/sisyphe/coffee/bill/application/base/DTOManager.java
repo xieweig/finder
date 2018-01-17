@@ -17,23 +17,20 @@ import java.util.Set;
 
 /**
  * dto与实体类互转
+ *
  * @author bifenglin
  */
 @Service
 public class DTOManager {
 
-    @Autowired
-    SharedManager sharedManager;
-
     /**
-     *
      * @param bill
      * @param billDTO
      * @return
      */
-    public Bill billDTOToBill(Bill bill, BillDTO billDTO) throws DataException{
+    public Bill billDTOToBill(Bill bill, BillDTO billDTO) throws DataException {
         // 如果bill为空则实例化一个bill实例对象
-        if (bill == null){
+        if (bill == null) {
             throw new DataException("432435", "单据实例对象为空，无法操作！");
         } else {
 
