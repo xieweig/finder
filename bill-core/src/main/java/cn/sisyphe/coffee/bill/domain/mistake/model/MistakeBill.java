@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class MistakeBill extends Bill<MistakeBillDetail> {
     public MistakeBill() {
-        setBillType(BillTypeEnum.TRANSFER_MISTAKE);
+        setBillType(BillTypeEnum.MISTAKE);
     }
 
     @Override

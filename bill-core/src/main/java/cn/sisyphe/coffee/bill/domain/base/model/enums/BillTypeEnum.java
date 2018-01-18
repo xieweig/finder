@@ -47,5 +47,5 @@ public enum BillTypeEnum {
     /**
      * 流转误差
      */
-    TRANSFER_MISTAKE;
+    MISTAKE;
 }

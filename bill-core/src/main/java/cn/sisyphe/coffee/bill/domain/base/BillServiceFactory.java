@@ -1,22 +1,16 @@
 package cn.sisyphe.coffee.bill.domain.base;
 
 import ch.lambdaj.function.closure.Switcher;
-import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillService;
-import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
-import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.mistake.MistakeBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
-import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillService;
-import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.returned.ReturnedBillService;
-import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,7 +38,8 @@ public class BillServiceFactory {
                 .addCase(BillTypeEnum.RETURNED, new ReturnedBillService(bill))
                 .addCase(BillTypeEnum.RESTOCK, new RestockBillService(bill))
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillService(bill))
-                .addCase(BillTypeEnum.ALLOT, new AllotBillService(bill));
+                .addCase(BillTypeEnum.ALLOT, new AllotBillService(bill))
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBillService(bill));
 
         return switcher.exec(bill.getBillType());
 

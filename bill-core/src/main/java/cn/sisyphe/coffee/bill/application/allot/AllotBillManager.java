@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
@@ -27,6 +28,8 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
     public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, SharedManager sharedManager) {
         super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
+    @Autowired
+    private MistakeBillManager mistakeBillManager;
 
     /**
      * 单据类型
@@ -43,8 +46,8 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
     public AllotBillDTO saveBill(AllotBillDTO billDTO) {
         AllotBill allotBill = prepareBill(billDTO);
         allotBill = dtoToBill(allotBill, billDTO);
-        //TODO 生成误差单 唐华玲
-        MistakeBill mistakeBill = new MistakeBill();
+        //生成误差单
+        MistakeBill mistakeBill = mistakeBillManager.submitByAllotBill(allotBill);
         allotBill.setMistakeBill(mistakeBill);
 
         allotBill.setMistakeBillCode(mistakeBill.getBillCode());
