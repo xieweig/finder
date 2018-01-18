@@ -53,6 +53,10 @@ public abstract class AbstractBillService {
         this.bill = bill;
         if(StringUtils.isEmpty(this.bill.getBillCode())){
             this.bill.setBillCode(BillCodeManager.getBillCodeFun(bill.billCodePrefix(), bill.getBelongStationCode()));
+            //若没有rootCode则本身的billCode就是rootCode
+            if (StringUtils.isEmpty(this.bill.getRootCode())){
+                this.bill.setRootCode(bill.getBillCode());
+            }
         }
         this.billPurpose = BillPurposeFactory.createPurpose(bill.getBillPurpose());
         this.billPurpose.setBillService(this);

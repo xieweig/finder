@@ -11,7 +11,7 @@ public enum BillTypeEnum {
      * 无计划
      */
     NOPLAN,
-     /**
+    /**
      * 计划
      */
     PLAN,
@@ -42,7 +42,7 @@ public enum BillTypeEnum {
 
     /**
      * 调拨
-      */
+     */
     ALLOT,
     /**
      * 流转误差

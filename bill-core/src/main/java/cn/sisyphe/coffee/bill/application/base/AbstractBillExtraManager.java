@@ -220,9 +220,17 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO
      */
     protected T dtoToBill(T bill, D billDTO) {
-        bill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass(), new DtoToBillExtraProcessor());
-        BeanUtils.copyProperties(billDTO, bill, "createTime", "billDetails");
-        return bill;
+        T newBill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass(), new DtoToBillExtraProcessor());
+
+        // 重复提交
+        if (bill.getBillId() != null){
+            newBill.setBillId(bill.getBillId());
+            newBill.setVersion(bill.getVersion());
+        }
+
+        // 解决 inLocation / outLocation 问题
+        BeanUtils.copyProperties(billDTO, newBill, "createTime", "billDetails");
+        return newBill;
     }
 
     /**

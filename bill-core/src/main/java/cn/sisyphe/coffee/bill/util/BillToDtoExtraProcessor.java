@@ -19,12 +19,13 @@ public class BillToDtoExtraProcessor implements ExtraProcessor {
             BillDetailDTO billDetailDTO = (BillDetailDTO) target;
             billDetailDTO.setRawMaterial(getRawMaterial((JSONObject) source));
 
-            System.err.println(name + "-" + target + "-" + source);
+            //System.err.println(name + "-" + target + "-" + source);
         }
 
         //System.err.println(name + "-" + target + "-" + source);
     }
 
+    @SuppressWarnings("Duplicates")
     private RawMaterial getRawMaterial(JSONObject source) {
         if (source.containsKey("rawMaterialCode")) {
             return JSONObject.parseObject(source.toJSONString(), RawMaterial.class);

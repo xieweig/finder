@@ -49,12 +49,13 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
         return BillTypeEnum.ADJUST;
     }
 
-    @Override
-    protected AdjustBill dtoToBill(AdjustBill bill, AdjustBillDTO billDTO) {
-        mapBill(bill, billDTO);
-        return bill;
-    }
+//    @Override
+//    protected AdjustBill dtoToBill(AdjustBill bill, AdjustBillDTO billDTO) {
+//        mapBill(bill, billDTO);
+//        return bill;
+//    }
 
+    //***************************以防万一，千万不要删除该文件的任何代码***********************************
     /**
      * map数据
      *

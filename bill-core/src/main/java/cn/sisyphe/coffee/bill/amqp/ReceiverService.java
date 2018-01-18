@@ -11,7 +11,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 
 /**
@@ -59,9 +58,9 @@ public class ReceiverService {
         //接收到入库冲减完成，更新入库单和差错单的状态的状态
         if (Constant.IN_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
             Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
-            if (!StringUtils.isEmpty(bill.getSourceCode())) {
-                inStorageBillManager.allotedForInStorageBill(bill);
-            }
+            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
+            //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
+            applicationEventPublisher.publishEvent(behaviorEvent);
             //TODO 还需要将结果发给唐华玲，她要更改误差单状态
         }
     }

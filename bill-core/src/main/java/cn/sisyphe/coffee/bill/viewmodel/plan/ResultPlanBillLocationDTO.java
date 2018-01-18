@@ -46,15 +46,19 @@ public class ResultPlanBillLocationDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ResultPlanBillLocationDTO)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ResultPlanBillLocationDTO)) {
+            return false;
+        }
 
         ResultPlanBillLocationDTO that = (ResultPlanBillLocationDTO) o;
 
-        if (getAmount() != that.getAmount()) return false;
-        if (getOutLocation() != null ? !getOutLocation().equals(that.getOutLocation()) : that.getOutLocation() != null)
+        if (getAmount() != that.getAmount()) {
             return false;
-        return getInLocation() != null ? getInLocation().equals(that.getInLocation()) : that.getInLocation() == null;
+        }
+        return (getOutLocation() != null ? getOutLocation().equals(that.getOutLocation()) : that.getOutLocation() == null) && (getInLocation() != null ? getInLocation().equals(that.getInLocation()) : that.getInLocation() == null);
     }
 
     @Override

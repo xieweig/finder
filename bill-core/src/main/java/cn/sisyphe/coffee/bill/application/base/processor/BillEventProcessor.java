@@ -9,6 +9,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * @author heyong
@@ -44,7 +45,7 @@ public class BillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'OUT_SUCCESS'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'OUT_SUCCESS'")
     public void billOutSuccess(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
@@ -63,7 +64,7 @@ public class BillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'OUT_FAILURE'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'OUT_FAILURE'")
     public void billOutFail(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
@@ -75,27 +76,30 @@ public class BillEventProcessor {
 
     /**
      * 入库成功事件
-     * 冲减完成之后，收到出库成功事件
+     * 冲减完成之后，收到入库成功事件
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'IN_SUCCESS'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'IN_SUCCESS'")
     public void billInSuccess(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
-            //更改入库状态为已调拨
-            inStorageBillManager.allotedForInStorageBill(bill);
+            if (!StringUtils.isEmpty(bill.getSourceCode())) {
+                //更改入库状态为已调拨
+                inStorageBillManager.allotedForInStorageBill(bill);
+
+            }
 
         }
     }
 
     /**
      * 入库失败事件
-     * 冲减完成之后，收到出库失败事件
+     * 冲减完成之后，入库失败事件
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'IN_FAILURE'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'IN_FAILURE'")
     public void billInFail(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
     }
