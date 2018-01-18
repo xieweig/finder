@@ -107,7 +107,7 @@ public class ConditionQueryBill extends BaseConditionQuery implements Serializab
     /**
      * 具体的单据类型
      */
-    private BillTypeEnum specificBillType;
+    private List<BillTypeEnum> specificBillType;
 
     /**
      * 配送品种开始数量
@@ -273,11 +273,11 @@ public class ConditionQueryBill extends BaseConditionQuery implements Serializab
         this.inOrOutStates = inOrOutStates;
     }
 
-    public BillTypeEnum getSpecificBillType() {
+    public List<BillTypeEnum> getSpecificBillType() {
         return specificBillType;
     }
 
-    public void setSpecificBillType(BillTypeEnum specificBillType) {
+    public void setSpecificBillType(List<BillTypeEnum> specificBillType) {
         this.specificBillType = specificBillType;
     }
 

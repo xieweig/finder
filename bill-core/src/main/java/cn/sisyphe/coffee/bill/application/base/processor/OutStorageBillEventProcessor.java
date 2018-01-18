@@ -23,7 +23,7 @@ public class OutStorageBillEventProcessor {
      *notes :
      *  出库单的保存行为的回调函数
      */
-    @EventListener(condition = "#event.billState.toString() == 'SAVED' and #event.bill.billPurpose.OUT_STORAGE.toString() == 'OutStorage'")
+    @EventListener(condition = "#event.billState.toString() == 'SAVED' and #event.bill.billPurpose.OUT_STORAGE.toString() == 'OUT_STORAGE'")
     public void billSave(BehaviorEvent event) {
         //修改子计划重捡状态
         Bill bill = event.getBill();
@@ -39,7 +39,7 @@ public class OutStorageBillEventProcessor {
      *  出库单的提交行为的回调函数
      * @param event
      */
-    @EventListener(condition = "#event.billState.toString() == 'SUBMITTED' and #event.bill.billPurpose.OUT_STORAGE.toString() == 'OutStorage'")
+    @EventListener(condition = "#event.billState.toString() == 'SUBMITTED' and #event.bill.billPurpose.OUT_STORAGE.toString() == 'OUT_STORAGE'")
     public void billSubmit(BehaviorEvent event) {
         //修改子计划重捡状态
         Bill bill = event.getBill();
