@@ -115,6 +115,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     public PlanBillDTO auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
         PlanBill planBill = (PlanBill) findOneByBillCode(billCode);
         planBill.setAuditPersonCode(auditPersonCode);
+        planBill.setAuditMemo(auditMemo);
         if (isSuccess) {
             mapForSplit(planBill);
         }
@@ -276,6 +277,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
         resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
         resultPlanBillDTO.setMemo(planBill.getPlanMemo());
+        resultPlanBillDTO.setAuditMemo(planBill.getAuditMemo());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
