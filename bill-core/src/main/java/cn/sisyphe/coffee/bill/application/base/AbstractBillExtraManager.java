@@ -12,7 +12,6 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
@@ -29,7 +28,7 @@ import java.util.List;
 public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> extends AbstractBillManager<T> {
 
     private BillExtraService<T, Q> billExtraService;
-    private SharedManager sharedManager;
+    protected SharedManager sharedManager;
 
     protected BillExtraService<T, Q> getBillExtraService() {
         return billExtraService;

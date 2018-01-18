@@ -4,9 +4,12 @@ import ch.lambdaj.group.Group;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
@@ -19,6 +22,8 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDetailDTO;
@@ -30,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +43,7 @@ import java.util.Set;
 import static ch.lambdaj.Lambda.by;
 import static ch.lambdaj.Lambda.group;
 import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -68,9 +75,9 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @param billCode
      * @return
      */
-    public PlanBillDTO findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
+    public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
         PlanBill planBill = ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
-        return billToDto(planBill);
+        return mapChildPlanBillToDTO(planBill);
     }
 
     /**
@@ -80,7 +87,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @return
      */
 
-    public Page<PlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
+    public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
         conditionQueryPlanBill.setHqBill(false);
         if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
             // SpringCloud调用查询用户编码
@@ -95,7 +102,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
         Page<PlanBill> billPage = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
 
-        return billPage.map(source -> billToListDto(source));
+        return billPage.map(planBill -> mapChildPlanBillToDTO(planBill));
     }
 
     @Override
@@ -251,6 +258,58 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         conditionQueryPlanBill.setHqBill(true);
         Page<PlanBill> planBills = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
         return planBills.map(planBill -> planBillToResultPlanBillDTO(planBill));
+    }
+
+
+    /**
+     * 转换成子计划单DTO
+     *
+     * @param childPlanBill 子计划单
+     * @return 子计划单DTO
+     */
+    private ChildPlanBillDTO mapChildPlanBillToDTO(PlanBill childPlanBill) {
+        ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
+        //拣货状态
+        childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
+
+        childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
+        childPlanBillDTO.setMemo(childPlanBill.getPlanMemo());
+        childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
+        childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
+        /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
+        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
+        //通过springCloud设置operatorName
+        String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());
+        childPlanBillDTO.setOperatorName(userName);
+        childPlanBillDTO.setTypeAmount(childPlanBill.getBillDetails().size());
+        childPlanBillDTO.setTotalAmount(sum(childPlanBill.getBillDetails(), on(BillDetail.class).getShippedAmount()));
+        childPlanBillDTO.setBillState(childPlanBill.getBillState());
+        childPlanBillDTO.setSubmitState(childPlanBill.getSubmitState());
+        childPlanBillDTO.setAuditState(childPlanBill.getAuditState());
+        childPlanBillDTO.setRootCode(childPlanBill.getRootCode());
+
+        childPlanBillDTO.setChildPlanBillDetails(mapChildPlanBillDetails(childPlanBill));
+        return childPlanBillDTO;
+    }
+
+    private List<ChildPlanBillDetailDTO> mapChildPlanBillDetails(PlanBill childPlanBill) {
+        List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS = new ArrayList<>();
+        for (PlanBillDetail planBillDetail : childPlanBill.getBillDetails()) {
+            ChildPlanBillDetailDTO childPlanBillDetailDTO = new ChildPlanBillDetailDTO();
+            childPlanBillDetailDTO.setAmount(planBillDetail.getShippedAmount());
+            RawMaterial rawMaterial = new RawMaterial();
+            if (planBillDetail.getGoods() instanceof Cargo) {
+                rawMaterial.setCargo((Cargo) planBillDetail.getGoods());
+            } else {
+                rawMaterial = (RawMaterial) planBillDetail.getGoods();
+            }
+            childPlanBillDetailDTO.setRawMaterial(rawMaterial);
+            childPlanBillDetailDTOS.add(childPlanBillDetailDTO);
+
+        }
+        return childPlanBillDetailDTOS;
     }
 
 
