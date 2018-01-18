@@ -20,6 +20,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -51,6 +54,13 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
     @Override
     public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
         return ((PlanBillRepository) getBillRepository()).findByBillCodeAndType(billCode, billType);
+    }
+
+    @Override
+    protected void addExtraExpression(ConditionQueryPlanBill conditionQuery, List<Expression<Boolean>> expressions, Root<PlanBill> root, CriteriaBuilder criteriaBuilder) {
+        if (!conditionQuery.getHqBill()) {
+            expressions.add(criteriaBuilder.equal(root.get("hqBill").as(Boolean.class), false));
+        }
     }
 
     @Override
@@ -221,7 +231,7 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
                 planBill.setBillState(BillStateEnum.valueOf(resultSet.getString("p.bill_state")));
                 return planBill;
             }
-        });;
+        });
         return new PageImpl<>(planBills, pageable, planBills.size());
 
     }
