@@ -100,7 +100,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     @Override
     protected PlanBill dtoToBill(PlanBill bill, PlanBillDTO billDTO) {
-        return super.dtoToBill(bill, billDTO);
+        map(bill, billDTO);
+        return bill;
     }
 
     /**
