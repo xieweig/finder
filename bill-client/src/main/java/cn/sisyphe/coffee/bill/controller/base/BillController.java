@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.controller.base;
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
+import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -50,10 +51,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "子计划单列表")
     @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
-    public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum billTypeEnum) {
+    public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("billList", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, billTypeEnum));
+            responseResult.put("billList", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, abstractBillExtraManager.billType()));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -68,10 +69,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "子计划明细")
     @RequestMapping(path = "/findPlanByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode,@RequestParam("billTypeEnum") BillTypeEnum billTypeEnum) {
+    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", planBillManager.findChildPlanBillByBillCode(billCode, billTypeEnum));
+            responseResult.put("bill", planBillManager.findChildPlanBillByBillCode(billCode, abstractBillExtraManager.billType()));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -130,7 +131,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", planBillManager.findBillDtoBySourceCode(sourceCode));
+            responseResult.put("bill", abstractBillExtraManager.findBillDtoBySourceCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
