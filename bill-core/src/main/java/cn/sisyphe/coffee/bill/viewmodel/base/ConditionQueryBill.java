@@ -30,7 +30,7 @@ public class ConditionQueryBill extends BaseConditionQuery implements Serializab
     private List<String> operatorCodeList;
 
     /**
-     * 出库单号
+     * 单号
      */
     private String billCode;
 

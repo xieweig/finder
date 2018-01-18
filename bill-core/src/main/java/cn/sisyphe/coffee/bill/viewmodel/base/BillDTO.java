@@ -36,6 +36,9 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BillDTO<T extends BillDetailDTO> {
 
+    /**
+     * 录单时间
+     */
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
@@ -142,7 +145,6 @@ public class BillDTO<T extends BillDetailDTO> {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
-
 
     /**
      * 出库状态编码

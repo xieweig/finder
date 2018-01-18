@@ -87,7 +87,16 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
         return configurePage;
     }
 
+    /**
+     * 增加通用方法不满足的查询条件
+     *
+     * @param conditionQuery
+     * @param expressions
+     * @param root
+     * @param criteriaBuilder
+     */
     protected void addExtraExpression(Q conditionQuery, List<Expression<Boolean>> expressions, Root<T> root, CriteriaBuilder criteriaBuilder) {
+
     }
 
     /**
@@ -102,97 +111,97 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             criteriaQuery.distinct(true);
             Predicate predicate = criteriaBuilder.conjunction();
             List<Expression<Boolean>> expressions = predicate.getExpressions();
-            /*
+            /**
              * 增加操作人条件查询
              */
             if (conditionQuery.getOperatorCodeList() != null && conditionQuery.getOperatorCodeList().size() > 0) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQuery.getOperatorCodeList()));
             }
 
-            /*
+            /**
              * 单据作用查询条件
              */
             if (conditionQuery.getPurposeEnum() != null) {
                 expressions.add(criteriaBuilder.equal(root.get("billPurpose").as(BillPurposeEnum.class), conditionQuery.getPurposeEnum()));
             }
-            /*
+            /**
              * 单号查询条件
              */
             if (!StringUtils.isEmpty(conditionQuery.getBillCode())) {
                 expressions.add(criteriaBuilder.like(root.get("billCode").as(String.class), "%" + conditionQuery.getBillCode() + "%"));
             }
-            /*
+            /**
              * 入库站点条件
              */
             if (conditionQuery.getInStationCodes() != null && conditionQuery.getInStationCodes().size() > 0) {
                 expressions.add(root.get("dbStation").get("inStationCode").as(String.class).in(conditionQuery.getInStationCodes()));
             }
 
-            /*
+            /**
              * 出库站点查询条件
              */
             if (conditionQuery.getOutStationCodes() != null && conditionQuery.getOutStationCodes().size() > 0) {
                 expressions.add(root.get("dbStation").get("outStationCode").as(String.class).in(conditionQuery.getOutStationCodes()));
             }
-            /*
+            /**
              * 录单开始时间
              */
             if (!StringUtils.isEmpty(conditionQuery.getCreateStartTime())) {
                 expressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class), conditionQuery.getCreateStartTime()));
             }
-            /*
+            /**
              * 录单结束时间
              */
             if (!StringUtils.isEmpty(conditionQuery.getCreateEndTime())) {
                 expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQuery.getCreateEndTime()));
             }
-            /*
+            /**
              * 出库开始时间
              */
             if (!StringUtils.isEmpty(conditionQuery.getOutStorageStartTime())) {
                 expressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("outWareHouseTime").as(Date.class), conditionQuery.getOutStorageStartTime()));
             }
-            /*
+            /**
              * 出库结束时间
              */
             if (!StringUtils.isEmpty(conditionQuery.getOutStorageEndTime())) {
                 expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("outWareHouseTime").as(Date.class), conditionQuery.getOutStorageEndTime()));
             }
 
-            /*
+            /**
              * 入库开始时间
              */
             if (!StringUtils.isEmpty(conditionQuery.getInStorageStartTime())) {
                 expressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQuery.getInStorageStartTime()));
             }
-            /*
+            /**
              * 入库结束时间
              */
             if (!StringUtils.isEmpty(conditionQuery.getInStorageEndTime())) {
                 expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("inWareHouseTime").as(Date.class), conditionQuery.getInStorageEndTime()));
             }
 
-            /*
+            /**
              * 提交状态
              */
             if (conditionQuery.getSubmitStates() != null && conditionQuery.getSubmitStates().size() > 0) {
                 expressions.add(root.get("submitState").as(BillSubmitStateEnum.class).in(conditionQuery.getSubmitStates()));
             }
 
-            /*
+            /**
              * 审核状态
              */
             if (conditionQuery.getAuditStates() != null && conditionQuery.getAuditStates().size() > 0) {
                 expressions.add(root.get("auditState").as(BillAuditStateEnum.class).in(conditionQuery.getAuditStates()));
             }
-            /*
+            /**
              * 出入库状态
              */
             if (conditionQuery.getInOrOutStates() != null && conditionQuery.getInOrOutStates().size() > 0) {
                 expressions.add(root.get("inOrOutState").as(BillInOrOutStateEnum.class).in(conditionQuery.getInOrOutStates()));
             }
 
-            /*
+            /**
              * 调拨状态
              */
             if (conditionQuery.getBillAllotState() != null) {
@@ -205,13 +214,13 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
                 expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQuery.getSpecificBillType()));
             }
 
-            /*
+            /**
              * 配送品种开始数量
              */
             if (conditionQuery.getVarietyStart() != null && conditionQuery.getVarietyStart() > 0) {
                 expressions.add(criteriaBuilder.greaterThanOrEqualTo(root.get("totalVarietyAmount").as(Integer.class), conditionQuery.getVarietyStart()));
             }
-            /*
+            /**
              * 配送品种结束数量
              */
             if (conditionQuery.getVarietyEnd() != null && conditionQuery.getVarietyEnd() > 0) {
