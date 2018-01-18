@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.util.BillCodeManager;
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -46,14 +47,22 @@ public class InstanceIter {
 
         dto.setBillType(BillTypeEnum.RESTOCK);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
+        Integer sign = random.nextInt(10);
         dto.setRootCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
-        dto.setSourceCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
+        if (sign>4){
+            dto.setBillProperty(SourcePlanTypeEnum.RESTOCK);
+            dto.setSourceCode(SOURCE_CODES[random.nextInt(ROOT_CODES.length)]);
+        }
+
+        else{
+            dto.setBillProperty(SourcePlanTypeEnum.NOPLAN);
+        }
+
 
         dto.setInLocation(this.nextRandomStation());
         dto.setOutLocation(this.nextRandomStation());
         dto.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
 
-        dto.setBillProperty(SourcePlanTypeEnum.values()[random.nextInt(SourcePlanTypeEnum.values().length)]);
 
         Set<RestockBillDetailDTO> details = new HashSet();
         for (int i = 0; i < detailsNumber; i++) {
@@ -76,7 +85,7 @@ public class InstanceIter {
         Storage storage = new Storage(STORAGES[random.nextInt(STORAGES.length)]);
         station.setStationType(StationType.values()[random.nextInt(StationType.values().length)]);
         station.setStorage(storage);
-
+        System.err.println(ToStringBuilder.reflectionToString(station));
         return station;
     }
     private RestockBillDetailDTO nextRandomRestockBillDetailDTO(){
@@ -90,6 +99,7 @@ public class InstanceIter {
         Cargo cargo = new Cargo(strings[1]);
         rawMaterial.setCargo(cargo);
         restockBillDetailDTO.setRawMaterial(rawMaterial);
+        System.err.println(ToStringBuilder.reflectionToString(restockBillDetailDTO));
         return restockBillDetailDTO;
     }
 

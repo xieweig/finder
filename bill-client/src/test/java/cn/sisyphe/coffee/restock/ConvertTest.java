@@ -126,6 +126,8 @@ public class ConvertTest {
         BeanUtils.copyProperties(entityTest,dtoTest);
         logger.info(ToStringBuilder.reflectionToString(dtoTest));
     }
+    //需要测试的是 子类父类的转换 like  private Son bind；private Father bind
+    // 和list 等容器类 hashcode(list_source) == hashcode(list_target）？；
 
 
 }
