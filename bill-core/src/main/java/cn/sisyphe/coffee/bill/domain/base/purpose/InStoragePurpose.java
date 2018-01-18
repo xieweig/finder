@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base.purpose;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 
 /**
  * Created by heyong on 2017/12/19 14:07
@@ -18,5 +19,6 @@ public class InStoragePurpose extends AbstractBillPurpose {
     public void handle() {
         Bill bill = getBillService().getBill();
         bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
+        bill.setInOrOutState(BillInOrOutStateEnum.NOT_IN);
     }
 }

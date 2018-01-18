@@ -191,6 +191,13 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             if (conditionQuery.getInOrOutStates() != null && conditionQuery.getInOrOutStates().size() > 0) {
                 expressions.add(root.get("inOrOutState").as(BillInOrOutStateEnum.class).in(conditionQuery.getInOrOutStates()));
             }
+
+            /*
+             * 调拨状态
+             */
+            if (conditionQuery.getBillAllotState() != null) {
+                expressions.add(criteriaBuilder.equal(root.get("allotStatus").as(BillAllotStatusEnum.class), conditionQuery.getBillAllotState()));
+            }
             /*
              * 单据属性
              */

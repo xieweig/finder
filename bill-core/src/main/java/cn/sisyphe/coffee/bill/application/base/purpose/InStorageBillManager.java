@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -73,7 +74,9 @@ public class InStorageBillManager {
     @SuppressWarnings("unchecked")
     private Bill generateBill(Bill<BillDetail> sourceBill, BillPurposeEnum billPurpose) {
         Bill<BillDetail> bill = new BillFactory().createBill(sourceBill.getBillType());
+        bill.setInOrOutState(BillInOrOutStateEnum.NOT_IN);
         bill.setBillPurpose(billPurpose);
+        bill.setSpecificBillType(sourceBill.getBillType());
         bill.setSourceCode(sourceBill.getBillCode());
         bill.setRootCode(sourceBill.getRootCode());
         bill.setBelongStationCode(sourceBill.getInLocation().code());
