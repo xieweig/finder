@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
@@ -206,7 +207,8 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     protected D billToListDto(T bill) {
         // 清空明细
         bill.getBillDetails().clear();
-        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
+
+        return billToDto(bill);
     }
 
     /**
@@ -228,7 +230,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass());
     }
 
 
