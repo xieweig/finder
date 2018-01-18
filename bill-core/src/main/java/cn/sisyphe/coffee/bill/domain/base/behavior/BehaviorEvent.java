@@ -33,7 +33,10 @@ public class BehaviorEvent<T extends Bill> extends BaseDomainEvent<T> {
         this.bill = bill;
         this.billState = bill.getBillState();
         this.billType = bill.getBillType();
+        this.billInOrOutState = bill.getInOrOutState();
     }
+
+
 
     public T getBill() {
         return bill;
@@ -72,6 +75,7 @@ public class BehaviorEvent<T extends Bill> extends BaseDomainEvent<T> {
         return "BehaviorEvent{" +
                 "bill=" + bill +
                 ", billState=" + billState +
+                ", billInOrOutState=" + billInOrOutState +
                 ", billType=" + billType +
                 "} " + super.toString();
     }
