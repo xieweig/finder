@@ -70,8 +70,8 @@ public class AllotBillEventProcessor {
 
         AllotBill allotBill = (AllotBill) event.getBill();
 
-        if (!StringUtils.isEmpty(allotBill.getInStorageBillCode())) {
-            inStorageBillManager.committing(allotBill.getInStorageBillCode(), allotBill.getInStorageBillType());
+        if (!StringUtils.isEmpty(allotBill.getSourceCode())) {
+            inStorageBillManager.committing(allotBill.getSourceCode(), allotBill.getSpecificBillType());
         }
     }
 

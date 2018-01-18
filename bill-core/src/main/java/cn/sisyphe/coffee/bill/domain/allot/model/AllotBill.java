@@ -46,12 +46,6 @@ public class AllotBill extends Bill<AllotBillDetail> {
      */
     private String inStorageBillOutStationCode;
 
-    /**
-     * 入库单编号
-     */
-    private String inStorageBillCode;
-
-    private BillTypeEnum inStorageBillType;
 
     /**
      * 差错单单号
@@ -102,21 +96,5 @@ public class AllotBill extends Bill<AllotBillDetail> {
 
     public void setMistakeBillCode(String mistakeBillCode) {
         this.mistakeBillCode = mistakeBillCode;
-    }
-
-    public String getInStorageBillCode() {
-        return inStorageBillCode;
-    }
-
-    public void setInStorageBillCode(String inStorageBillCode) {
-        this.inStorageBillCode = inStorageBillCode;
-    }
-
-    public BillTypeEnum getInStorageBillType() {
-        return inStorageBillType;
-    }
-
-    public void setInStorageBillType(BillTypeEnum inStorageBillType) {
-        this.inStorageBillType = inStorageBillType;
     }
 }

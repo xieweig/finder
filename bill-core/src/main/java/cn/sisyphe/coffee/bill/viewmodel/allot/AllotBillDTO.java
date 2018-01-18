@@ -14,14 +14,7 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
         setBillType(BillTypeEnum.ALLOT);
     }
 
-    private String inStorageBillCode;
-
     private String allotMemo;
-
-    /**
-     * 入库单类型，如果有
-     */
-    private BillTypeEnum inStorageBillType;
 
     /**
      * 入库单入库时间
@@ -40,15 +33,6 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
      */
     private String inStorageBillOutStationCode;
 
-
-    public String getInStorageBillCode() {
-        return inStorageBillCode;
-    }
-
-    public void setInStorageBillCode(String inStorageBillCode) {
-        this.inStorageBillCode = inStorageBillCode;
-    }
-
     public String getAllotMemo() {
         return allotMemo;
     }
@@ -57,13 +41,6 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
         this.allotMemo = allotMemo;
     }
 
-    public BillTypeEnum getInStorageBillType() {
-        return inStorageBillType;
-    }
-
-    public void setInStorageBillType(BillTypeEnum inStorageBillType) {
-        this.inStorageBillType = inStorageBillType;
-    }
 
     public Date getInStorageBillInStorageDate() {
         return inStorageBillInStorageDate;
