@@ -9,7 +9,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -64,6 +63,7 @@ public class InStorageBillManager {
         billManager.committing(foundBill);
         return foundBill;
     }
+
     /**
      * 生成入库单
      *
@@ -84,10 +84,7 @@ public class InStorageBillManager {
         bill.setBasicEnum(sourceBill.getBasicEnum());
         bill.setTotalAmount(sourceBill.getTotalAmount());
         bill.setTotalVarietyAmount(sourceBill.getTotalVarietyAmount());
-        //bill.setBillProperty(sourceBill.getBillProperty());
-        //bill.setTotalPrice(sourceBill.getTotalPrice());
         bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
-        //bill.setProgress(sourceBill.getProgress());
         bill.setOperatorCode(sourceBill.getOperatorCode());
 
         Set<BillDetail> details = new HashSet<>();
@@ -96,7 +93,6 @@ public class InStorageBillManager {
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
-            //desBillDetail.setProgress(billDetail.getProgress());
             details.add(desBillDetail);
         }
         bill.setBillDetails(details);
