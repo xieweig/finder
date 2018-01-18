@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.SaveBehavior;
 import cn.sisyphe.coffee.bill.domain.base.behavior.SubmitBehavior;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
@@ -106,6 +107,30 @@ public abstract class AbstractBillManager<T extends Bill> {
      */
     public T purpose(T bill) {
         return dispose(bill, new PurposeBehavior());
+    }
+
+    /**
+     * 出库成功
+     */
+    public void outStorageSuccess(T bill) {
+        if (!BillPurposeEnum.OUT_STORAGE.equals(bill.getBillPurpose())) {
+            throw new UnsupportedOperationException("不支持此操作");
+        }
+        bill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
+        bill.setOutWareHouseTime(new Date());
+        billRepository.save(bill);
+    }
+
+    /**
+     * 出库失败
+     */
+    public void outStorageFail(T bill) {
+        if (!BillPurposeEnum.OUT_STORAGE.equals(bill.getBillPurpose())) {
+            throw new UnsupportedOperationException("不支持此操作");
+        }
+        bill.setInOrOutState(BillInOrOutStateEnum.OUT_FAILURE);
+        bill.setOutWareHouseTime(new Date());
+        billRepository.save(bill);
     }
 
     /**
