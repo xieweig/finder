@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * 单据明细DTO基类
@@ -9,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
  * 需要为单据明细增加数据时必须继承本类来实现，在使用中必须使用子类来逻辑操作
  * @author bifenglin
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BillDetailDTO {
     /**
      * 应拣数量

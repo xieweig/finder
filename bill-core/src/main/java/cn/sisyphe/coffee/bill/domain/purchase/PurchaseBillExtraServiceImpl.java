@@ -21,4 +21,15 @@ public class PurchaseBillExtraServiceImpl extends AbstractBillExtraService<Purch
     public PurchaseBillExtraServiceImpl(BillRepository<PurchaseBill> billRepository) {
         super(billRepository);
     }
+
+    /**
+     * 根据货运单号查询进货单号信息
+     *
+     * @param freightCode 货运单号
+     * @return
+     */
+    @Override
+    public PurchaseBill findByFreightCode(String freightCode) {
+        return ((PurchaseBillExtraService) getBillRepository()).findByFreightCode(freightCode);
+    }
 }

@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 
 /**
@@ -12,5 +13,7 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
  */
 public class AdjustBillDTO extends BillDTO<AdjustBillDetailDTO> {
 
-
+    public AdjustBillDTO() {
+        setBillType(BillTypeEnum.ADJUST);
+    }
 }

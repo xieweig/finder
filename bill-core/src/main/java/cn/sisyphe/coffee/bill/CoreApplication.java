@@ -1,20 +1,8 @@
 package cn.sisyphe.coffee.bill;
 
-import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
-import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
-import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by heyong on 2017/12/19 13:57
@@ -33,31 +21,31 @@ public class CoreApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) {
 
-        // 1.创建进货单主表
-        BillFactory billFactory = new BillFactory();
-        AllotBill bill = (AllotBill) billFactory.createBill(BillTypeEnum.ALLOT);
-        bill.setBillPurpose(BillPurposeEnum.IN_STORAGE);
+//        // 1.创建进货单主表
+//        BillFactory billFactory = new BillFactory();
+//        AllotBill bill = (AllotBill) billFactory.createBill(BillTypeEnum.ALLOT);
+//        bill.setBillPurpose(BillPurposeEnum.IN_STORAGE);
+//
+//        // 设置站点
+//        Station station = new Station("CQ11");
+//        station.setStationName("三峡店");
+//        bill.setInLocation(station);
+//
+//
+//        // 2.进货单明细
+//        AllotBillDetail detail = new AllotBillDetail();
+//        Set<AllotBillDetail> billDetails = new HashSet<AllotBillDetail>();
+//
+//        // 2.1 设置原料和货物
+//        RawMaterial rawMaterial = new RawMaterial("R001");
+//        rawMaterial.setCargo(new Cargo("C002"));
+//        detail.setGoods(rawMaterial);
+//
+//        detail.setPackageCode("000");
+//        billDetails.add(detail);
+//        bill.setBillDetails(billDetails);
 
-        // 设置站点
-        Station station = new Station("CQ11");
-        station.setStationName("三峡店");
-        bill.setInLocation(station);
-
-
-        // 2.进货单明细
-        AllotBillDetail detail = new AllotBillDetail();
-        Set<AllotBillDetail> billDetails = new HashSet<AllotBillDetail>();
-
-        // 2.1 设置原料和货物
-        RawMaterial rawMaterial = new RawMaterial("R001");
-        rawMaterial.setCargo(new Cargo("C002"));
-        detail.setGoods(rawMaterial);
-
-        detail.setPackageCode("000");
-        billDetails.add(detail);
-        bill.setBillDetails(billDetails);
-
-        BillManagerFactory.getManager(bill.getBillType()).save(bill);
+//        BillManagerFactory.getManager(bill.getBillType()).save(bill);
 //
 //
 //        // 3.创建单据服务

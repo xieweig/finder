@@ -6,19 +6,17 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.exception.DataException;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -32,15 +30,13 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     private BillExtraService<T, Q> billExtraService;
     private SharedManager sharedManager;
 
-    public BillExtraService<T, Q> getBillExtraService() {
+    protected BillExtraService<T, Q> getBillExtraService() {
         return billExtraService;
     }
 
     public void setBillExtraService(BillExtraService<T, Q> billExtraService) {
         this.billExtraService = billExtraService;
     }
-
-
 
     public SharedManager getSharedManager() {
         return sharedManager;
@@ -63,10 +59,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO 前端dto
      * @return billCode 单据编码
      */
-    public String saveBill(D billDTO) {
+    public D saveBill(D billDTO) {
         T bill = prepareBill(billDTO);
-        dtoToBill(bill, billDTO);
-        return save(bill).getBillCode();
+        bill = dtoToBill(bill, billDTO);
+        save(bill);
+
+        return billToDto(bill);
     }
 
 
@@ -76,10 +74,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO 前端dto
      * @return billCode 单据编码
      */
-    public String submitBill(D billDTO) {
+    public D submitBill(D billDTO) {
         T bill = prepareBill(billDTO);
-        dtoToBill(bill, billDTO);
-        return submit(bill).getBillCode();
+        bill = dtoToBill(bill, billDTO);
+        submit(bill);
+
+        return billToDto(bill);
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
      */
-    public T auditBill(String billCode, String auditPersonCode, boolean isSuccess) {
+    public D auditBill(String billCode, String auditPersonCode, String auditMemo, boolean isSuccess) {
 
         if (StringUtils.isEmpty(billCode)) {
             throw new DataException("404", "单据编码为空");
@@ -98,9 +98,10 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
         T bill = billExtraService.findByBillCode(billCode);
         bill.setAuditPersonCode(auditPersonCode);
+        bill.setAuditMemo(auditMemo);
         audit(bill, isSuccess);
 
-        return bill;
+        return billToDto(bill);
     }
 
 
@@ -124,7 +125,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
             open(bill);
         }
 
-
         return billToDto(bill);
     }
 
@@ -135,10 +135,10 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO 前端dto
      * @return AdjustBill 调剂计划实体
      */
-    private T prepareBill(D billDTO) {
+    protected T prepareBill(D billDTO) {
 
         if (StringUtils.isEmpty(billDTO.getBillCode())) {
-            return (T) new BillFactory().createBill(BillTypeEnum.ADJUST);
+            return (T) new BillFactory().createBill(billDTO.getBillType());
         }
 
         T bill = billExtraService.findByBillCode(billDTO.getBillCode());
@@ -151,8 +151,28 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
+    /**
+     * 查询单据
+     *
+     * @param billCode
+     * @return
+     */
+    public D findBillDtoByBillCode(String billCode) {
+        T bill = billExtraService.findByBillCode(billCode);
 
+        return billToDto(bill);
+    }
 
+    /**
+     * 根据sourceCode查询单据
+     *
+     * @param sourceCode
+     * @return
+     */
+    public D findBillDtoBySourceCode(String sourceCode) {
+        T bill = billExtraService.findBySourceCode(sourceCode);
+        return billToDto(bill);
+    }
 
     /**
      * 多条件查询
@@ -176,31 +196,17 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
-    /**
-     * 根据sourceCode查询单据
-     * @param sourceCode
-     * @return
-     */
-    public T findBySourceCode(String sourceCode) {
-        return billExtraService.findBySourceCode(sourceCode);
-    }
-
 
     /**
-     * dto 转换 bill - 条件查询 dto list
+     * bill 转换 dto - 条件查询 dto list
      *
-     * @param source
+     * @param bill
      * @return
      */
-    protected D billToListDto(T source) {
-        BillDTO billDTO = new BillDTO();
+    protected D billToListDto(T bill) {
         // 清空明细
-        source.setBillDetails(null);
-
-        BeanUtils.copyProperties(source, billDTO);
-
-
-        return (D) billDTO;
+        bill.getBillDetails().clear();
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
     }
 
     /**
@@ -209,9 +215,8 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param bill
      * @param billDTO
      */
-    protected void dtoToBill(T bill, D billDTO) {
-
-        BeanUtils.copyProperties(billDTO, bill);
+    protected T dtoToBill(T bill, D billDTO) {
+        return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
     }
 
     /**
@@ -221,11 +226,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-        BillDTO billDTO = new BillDTO();
-
-        BeanUtils.copyProperties(bill, billDTO);
-
-        return (D) billDTO;
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
     }
 
 

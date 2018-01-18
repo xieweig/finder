@@ -34,9 +34,10 @@ public class AllotBill extends Bill<AllotBillDetail> {
     @Enumerated(value = EnumType.STRING)
     private BillTypeEnum specificBillType;
 
+
     @Override
     public String billCodePrefix() {
-        return null;
+        return "ALLO";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
@@ -10,6 +11,10 @@ import java.math.BigDecimal;
  * Description:
  */
 public class ReturnedBillDTO extends BillDTO<ReturnedBillDetailDTO> {
+
+    public ReturnedBillDTO() {
+        setBillType(BillTypeEnum.RETURNED);
+    }
 
     /**
      * 总价

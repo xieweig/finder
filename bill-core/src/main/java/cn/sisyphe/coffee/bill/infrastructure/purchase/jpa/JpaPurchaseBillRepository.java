@@ -2,11 +2,6 @@ package cn.sisyphe.coffee.bill.infrastructure.purchase.jpa;
 
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * Created by heyong on 2017/12/22 10:02
@@ -15,4 +10,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @author heyong
  */
 public interface JpaPurchaseBillRepository extends JpaBillRepository<PurchaseBill> {
+
+    /**
+     * 根据货运单号查询进货单据信息
+     *
+     * @param freightCode 货运单号
+     * @return
+     */
+    PurchaseBill findOneByFreightCode(String freightCode);
+
 }
