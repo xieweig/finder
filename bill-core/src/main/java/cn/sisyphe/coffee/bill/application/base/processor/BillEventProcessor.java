@@ -45,7 +45,7 @@ public class BillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'OUT_SUCCESS'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'OUT_SUCCESS'")
     public void billOutSuccess(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
@@ -64,7 +64,7 @@ public class BillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'OUT_FAILURE'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'OUT_FAILURE'")
     public void billOutFail(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
@@ -80,7 +80,7 @@ public class BillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'IN_SUCCESS'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'IN_SUCCESS'")
     public void billInSuccess(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
@@ -99,7 +99,7 @@ public class BillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billInOrOutState.toString() == 'IN_FAILURE'")
+    @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'IN_FAILURE'")
     public void billInFail(BehaviorEvent<Bill<BillDetail>> event) {
         Bill<BillDetail> bill = event.getBill();
     }
