@@ -383,7 +383,7 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public void setTotalAmount(Integer totalAmount) {
-        this.totalAmount = sum(billDetails, on(BillDetailDTO.class).getActualAmount());
+        this.totalAmount = sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
     }
 
     public Integer getTotalVarietyAmount() {
