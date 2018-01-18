@@ -123,9 +123,11 @@ public class JustForPlan {
     }
     @Test
     public void insertTest(){
-        for (int i = 0; i <3 ; i++) {
+        for (int i = 0; i <6 ; i++) {
             this.planBillRepository.save(this.createPlanBill());
-
+//            if (i < InstanceIter.ROOT_CODES.length){
+//                InstanceIter.ROOT_CODES[i]=
+//            }
         }
     }
 }
