@@ -1,233 +1,69 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-
-import java.math.BigDecimal;
-import java.util.Date;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 
 /**
- * Created by XiongJing on 2017/12/28.
- * remark：进货单据DTO
- * version: 1.0
- *
- * @author XiongJing
+ * Created by heyong on 2018/1/17 11:41
+ * Description:
  */
-public class PurchaseBillDTO {
+public class PurchaseBillDTO extends BillDTO<PurchaseBillDetailDTO> {
 
     /**
-     * 进货单号-主表
+     * 货运单号
      */
-    private String billCode;
+    private String freightCode;
 
     /**
-     * 入库时间-主表
+     * 发货件数
      */
-    private Date inWareHouseTime;
+    private Integer shippedAmount;
 
     /**
-     * 录单时间-主表
+     * 实收件数
      */
-    private Date createTime;
+    private Integer actualAmount;
 
     /**
-     * 录单人-主表
+     * 供应商
      */
-    private String operatorCode;
 
-    /**
-     * 审核人-主表
-     */
-    private String auditPersonCode;
+    private Supplier supplier;
 
-    /**
-     * 入库站点-主表
-     */
-    private String inStationCode;
-
-    /**
-     * 入库库房-主表
-     */
-    private String inStorageCode;
-
-    /**
-     * 实收数量--明细表
-     */
-    private Integer amount;
-
-    /**
-     * 数量差值--明细表
-     */
-    private Integer differenceNumber;
-
-    /**
-     * 进货实洋--明细表
-     */
-    private BigDecimal inTotalPrice;
-
-    /**
-     * 总价差值--明细表
-     */
-    private BigDecimal differencePrice;
-
-    /**
-     * 供应商编码--主表
-     */
-    private String supplierCode;
-
-    /**
-     * 单据审核状态--主表
-     */
-    private BillAuditStateEnum auditState;
-
-    /**
-     * 单据提交状态--主表
-     */
-    private BillSubmitStateEnum submitState;
-
-    /**
-     * 备注--主表
-     */
-    private String memo;
-
-    public String getBillCode() {
-        return billCode;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setBillCode(String billCode) {
-        this.billCode = billCode;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
-    public Date getInWareHouseTime() {
-        return inWareHouseTime;
+    public String getFreightCode() {
+        return freightCode;
     }
 
-    public void setInWareHouseTime(Date inWareHouseTime) {
-        this.inWareHouseTime = inWareHouseTime;
+    public void setFreightCode(String freightCode) {
+        this.freightCode = freightCode;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Integer getShippedAmount() {
+        return shippedAmount;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setShippedAmount(Integer shippedAmount) {
+        this.shippedAmount = shippedAmount;
     }
 
-    public String getOperatorCode() {
-        return operatorCode;
+    public Integer getActualAmount() {
+        return actualAmount;
     }
 
-    public void setOperatorCode(String operatorCode) {
-        this.operatorCode = operatorCode;
+    public void setActualAmount(Integer actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
-    public String getAuditPersonCode() {
-        return auditPersonCode;
-    }
-
-    public void setAuditPersonCode(String auditPersonCode) {
-        this.auditPersonCode = auditPersonCode;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
-    }
-
-    public String getInStationCode() {
-        return inStationCode;
-    }
-
-    public void setInStationCode(String inStationCode) {
-        this.inStationCode = inStationCode;
-    }
-
-    public String getInStorageCode() {
-        return inStorageCode;
-    }
-
-    public void setInStorageCode(String inStorageCode) {
-        this.inStorageCode = inStorageCode;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Integer getDifferenceNumber() {
-        return differenceNumber;
-    }
-
-    public void setDifferenceNumber(Integer differenceNumber) {
-        this.differenceNumber = differenceNumber;
-    }
-
-    public BigDecimal getDifferencePrice() {
-        return differencePrice;
-    }
-
-    public void setDifferencePrice(BigDecimal differencePrice) {
-        this.differencePrice = differencePrice;
-    }
-
-    public BillAuditStateEnum getAuditState() {
-        return auditState;
-    }
-
-    public void setAuditState(BillAuditStateEnum auditState) {
-        this.auditState = auditState;
-    }
-
-    public BillSubmitStateEnum getSubmitState() {
-        return submitState;
-    }
-
-    public void setSubmitState(BillSubmitStateEnum submitState) {
-        this.submitState = submitState;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
-    public BigDecimal getInTotalPrice() {
-        return inTotalPrice;
-    }
-
-    public void setInTotalPrice(BigDecimal inTotalPrice) {
-        this.inTotalPrice = inTotalPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "PurchaseBillDTO{" +
-                "billCode='" + billCode + '\'' +
-                ", inWareHouseTime=" + inWareHouseTime +
-                ", createTime=" + createTime +
-                ", operatorCode='" + operatorCode + '\'' +
-                ", auditPersonCode='" + auditPersonCode + '\'' +
-                ", inStationCode='" + inStationCode + '\'' +
-                ", inStorageCode='" + inStorageCode + '\'' +
-                ", amount=" + amount +
-                ", differenceNumber=" + differenceNumber +
-                ", inTotalPrice=" + inTotalPrice +
-                ", differencePrice=" + differencePrice +
-                ", supplierCode='" + supplierCode + '\'' +
-                ", auditState='" + auditState + '\'' +
-                ", submitState='" + submitState + '\'' +
-                ", memo='" + memo + '\'' +
-                '}';
+    public PurchaseBillDTO() {
+        setBillType(BillTypeEnum.PURCHASE);
     }
 }

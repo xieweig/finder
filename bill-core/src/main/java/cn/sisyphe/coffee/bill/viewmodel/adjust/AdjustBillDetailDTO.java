@@ -1,6 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
-import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -9,17 +9,6 @@ import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
  *
  * @author XiongJing
  */
-public class AdjustBillDetailDTO  extends AbstractBillDetailDTO {
-    /**
-     * 所属原料编码
-     */
-    private String belongMaterialCode;
+public class AdjustBillDetailDTO  extends BillDetailDTO {
 
-    public String getBelongMaterialCode() {
-        return belongMaterialCode;
-    }
-
-    public void setBelongMaterialCode(String belongMaterialCode) {
-        this.belongMaterialCode = belongMaterialCode;
-    }
 }

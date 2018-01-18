@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.plan.model;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -42,6 +43,7 @@ public class PlanBillDetail extends BillDetail {
     /**
      * 数据库位置储存
      */
+    @JsonIgnore
     private DbStation dbStation = new DbStation();
 
     /**

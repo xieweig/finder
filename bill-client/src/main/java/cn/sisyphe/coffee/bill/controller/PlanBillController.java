@@ -1,19 +1,23 @@
 package cn.sisyphe.coffee.bill.controller;
 
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
+import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
-import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillDTO;
-import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
-import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
+import cn.sisyphe.coffee.bill.controller.base.BillController;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
+import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ncmao
@@ -21,105 +25,28 @@ import javax.servlet.http.HttpServletRequest;
  * @description
  */
 @RestController
-@RequestMapping("/api/bill/planBill")
+@RequestMapping("/api/bill/plan")
 @Api(description = "总部计划中心")
 @CrossOrigin(origins = "*")
-public class PlanBillController {
-
+public class PlanBillController extends BillController<PlanBill, PlanBillDTO, ConditionQueryPlanBill> {
 
     @Autowired
-    private PlanBillManager planBillManager;
-
-
-    @ApiOperation(value = "新建总部计划，暂存")
-    @RequestMapping(path = "/create", method = RequestMethod.POST)
-    public ResponseResult createPlanBill(@RequestBody PlanBillDTO planBillDTO, HttpServletRequest httpServletRequest) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
-            responseResult.put("billCode", planBillManager.create(planBillDTO, loginInfo.getOperatorCode()));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
+    public PlanBillController(AbstractBillExtraManager<PlanBill, PlanBillDTO, ConditionQueryPlanBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+        super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 
-    @ApiOperation(value = "提交总部计划")
-    @RequestMapping(path = "/submit", method = RequestMethod.POST)
-    public ResponseResult submitPlanBill(@RequestBody PlanBillDTO planBillDTO, HttpServletRequest httpServletRequest) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
-            responseResult.put("billCode", planBillManager.submit(planBillDTO, loginInfo.getOperatorCode()));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
-
-    @ApiOperation(value = "打开总部计划")
-    @RequestMapping(path = "/open", method = RequestMethod.POST)
-    public ResponseResult openPlanBill(@RequestParam("billCode") String billCode, HttpServletRequest httpServletRequest) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
-            responseResult.put("planBill", planBillManager.open(billCode, loginInfo.getOperatorCode()));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
-
-    @ApiOperation(value = "审核不通过")
-    @RequestMapping(path = "/unpass", method = RequestMethod.POST)
-    public ResponseResult unpass(@RequestBody AuditPlanBillDTO auditPlanBillDTO, HttpServletRequest httpServletRequest) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
-            planBillManager.unPass(auditPlanBillDTO, loginInfo.getOperatorCode());
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
-
-    @ApiOperation(value = "审核通过")
-    @RequestMapping(path = "/pass", method = RequestMethod.POST)
-    public ResponseResult pass(@RequestBody AuditPlanBillDTO auditPlanBillDTO, HttpServletRequest httpServletRequest) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(httpServletRequest);
-            planBillManager.pass(auditPlanBillDTO, loginInfo.getOperatorCode());
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
 
     /**
-     * 计划单据多条件分页查询
+     * 单个查询总部计划
      *
      * @return
      */
-    @ApiOperation(value = "总部计划多条件查询")
-    @RequestMapping(path = "/hq/findPlanBillByConditions", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"},  token = "userCode")
-    public ResponseResult findPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("content", planBillManager.findPageByCondition(conditionQueryPlanBill));
-        }catch (DataException e){
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }
-
-    @ApiOperation(value = "总部计划单个查询")
+    @ApiOperation(value = "单个查询总部计划")
     @RequestMapping(path = "/hq/findByBillCode", method = RequestMethod.GET)
-    public ResponseResult findHqPlanBillByBillCode(@RequestParam("billCode") String billCode) {
+    public ResponseResult findHqPlanByBillCode(@RequestParam("billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("planBill", planBillManager.findHqPlanBillByBillCode(billCode));
+            responseResult.put("bill", ((PlanBillManager) abstractBillExtraManager).findHqPlanBillByBillCode(billCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
@@ -128,34 +55,21 @@ public class PlanBillController {
 
 
     /**
-     * 计划单据多条件分页查询
+     * 多条件分页查询计划单据
      *
      * @return
      */
-   /* @ApiOperation(value = "子计划多条件查询")
-    @RequestMapping(path = "/findPlanBillByConditions", method = RequestMethod.POST)
-    public ResponseResult findChildPlanBillByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
+    @ApiOperation(value = "多条件分页查询计划单据")
+    @RequestMapping(path = "/hq/findByConditions", method = RequestMethod.POST)
+    public ResponseResult findHqPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
-        System.err.print("子计划多条件查询开始");
         try {
-            responseResult.put("content", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill));
-
+            responseResult.put("bill", ((PlanBillManager) abstractBillExtraManager).findHqPlanBillByConditions(conditionQueryPlanBill));
         } catch (DataException e) {
             responseResult.putException(e);
         }
         return responseResult;
     }
-*/
 
-  /*  @ApiOperation(value = "子计划单个查询")
-    @RequestMapping(path = "/findByBillCode", method = RequestMethod.POST)
-    public ResponseResult findByBillCode(@RequestParam("billCode") String billCode, @RequestParam(value = "billType", required = false)BillTypeEnum billType) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            responseResult.put("planBill", planBillManager.findChildPlanBillByBillCodeAndType(billCode, billType));
-        } catch (DataException e) {
-            responseResult.putException(e);
-        }
-        return responseResult;
-    }*/
+
 }

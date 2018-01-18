@@ -1,8 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.adjust.model;
 
-import cn.sisyphe.coffee.bill.domain.base.model.AbstractBillDetail;
-import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.base.AbstractBillDetailDTO;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -20,7 +18,7 @@ import javax.persistence.Table;
 @Table
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class AdjustBillDetail extends AbstractBillDetail {
+public class AdjustBillDetail extends BillDetail {
 
     /**
      * 所属原料编码
@@ -28,18 +26,18 @@ public class AdjustBillDetail extends AbstractBillDetail {
     private String belongMaterialCode;
 
 
-    @Override
-    protected void unbuildExtend(AbstractBillDetailDTO abstractBillDetailDTO) {
-        AdjustBillDetailDTO adjustBillDetailDTO = (AdjustBillDetailDTO) abstractBillDetailDTO;
-        this.setBelongMaterialCode(adjustBillDetailDTO.getBelongMaterialCode());
-    }
-
-    @Override
-    public String toString() {
-        return "AdjustBillDetail{" +
-                "belongMaterialCode='" + belongMaterialCode + '\'' +
-                '}';
-    }
+//    @Override
+//    protected void unbuildExtend(AbstractBillDetailDTO abstractBillDetailDTO) {
+//        AdjustBillDetailDTO adjustBillDetailDTO = (AdjustBillDetailDTO) abstractBillDetailDTO;
+//        this.setBelongMaterialCode(adjustBillDetailDTO.getBelongMaterialCode());
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "AdjustBillDetail{" +
+//                "belongMaterialCode='" + belongMaterialCode + '\'' +
+//                '}';
+//    }
 
     public String getBelongMaterialCode() {
         return belongMaterialCode;

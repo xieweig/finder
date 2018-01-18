@@ -23,22 +23,20 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class PlanBill extends Bill<PlanBillDetail> {
-    public static final String PLAN_STORAGE_PREFIX = "ZBJH";
-    @Column
+
+    @Override
+    public String billCodePrefix() {
+        return "ZBJH";
+    }
+
     @Enumerated(value = EnumType.STRING)
     private OperationStateEnum operationState;
 
-    @Column
     private String billName;
 
     /**
-     * 具体的单据类型
+     * 是否是总部计划
      */
-    @Column
-    @Enumerated(value = EnumType.STRING)
-    private BillTypeEnum specificBillType;
-
-    //是否是总部计划
     @Column
     private Boolean hqBill;
 
@@ -51,25 +49,12 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.operationState = operationState;
     }
 
-    public PlanBill() {
-        setBillCodePrefix(PLAN_STORAGE_PREFIX);
-        setBillType(BillTypeEnum.PLAN);
-    }
-
     public String getBillName() {
         return billName;
     }
 
     public void setBillName(String billName) {
         this.billName = billName;
-    }
-
-    public BillTypeEnum getSpecificBillType() {
-        return specificBillType;
-    }
-
-    public void setSpecificBillType(BillTypeEnum specificBillType) {
-        this.specificBillType = specificBillType;
     }
 
     public Boolean getHqBill() {
@@ -79,5 +64,4 @@ public class PlanBill extends Bill<PlanBillDetail> {
     public void setHqBill(Boolean hqBill) {
         this.hqBill = hqBill;
     }
-
 }

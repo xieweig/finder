@@ -1,12 +1,25 @@
 package cn.sisyphe.coffee.bill.viewmodel.base;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
-import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -15,10 +28,16 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NO
 
 /**
  * 单据DTO基类
- * @author bifenglin
+ *
  * @param
+ * @author bifenglin
  */
-public abstract class AbstractBillDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BillDTO<T extends BillDetailDTO> {
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
     /**
      * 单据号
@@ -44,18 +63,12 @@ public abstract class AbstractBillDTO {
     /**
      * 出库位置
      */
-    private AbstractLocation outLocation;
+    private Station outLocation;
 
     /**
      * 入库位置
      */
-    private AbstractLocation inLocation;
-
-    /**
-     * 数据库位置储存(不确定需不需要)
-     */
-//    private DbStation dbStation = new DbStation();
-
+    private Station inLocation;
     /**
      * 源单号
      */
@@ -89,7 +102,7 @@ public abstract class AbstractBillDTO {
     /**
      * 物品明细
      */
-    private Set<AbstractBillDetailDTO> billDetails;
+    private Set<T> billDetails;
 
     /**
      * 单据状态
@@ -118,12 +131,14 @@ public abstract class AbstractBillDTO {
     /**
      * 出库时间
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date outWareHouseTime;
 
     /**
      * 入库时间
      */
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inWareHouseTime;
 
@@ -171,11 +186,6 @@ public abstract class AbstractBillDTO {
     private BigDecimal progress;
 
     /**
-     * 总价
-     */
-    private BigDecimal totalPrice;
-
-    /**
      * 单据来源类型
      */
     @Enumerated(EnumType.STRING)
@@ -196,7 +206,16 @@ public abstract class AbstractBillDTO {
     /**
      * 差错单
      */
+    @JsonIgnore
     private MistakeBill mistakeBill;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getOperatorName() {
         return operatorName;
@@ -246,19 +265,19 @@ public abstract class AbstractBillDTO {
         this.belongStationCode = belongStationCode;
     }
 
-    public AbstractLocation getOutLocation() {
+    public Station getOutLocation() {
         return outLocation;
     }
 
-    public void setOutLocation(AbstractLocation outLocation) {
+    public void setOutLocation(Station outLocation) {
         this.outLocation = outLocation;
     }
 
-    public AbstractLocation getInLocation() {
+    public Station getInLocation() {
         return inLocation;
     }
 
-    public void setInLocation(AbstractLocation inLocation) {
+    public void setInLocation(Station inLocation) {
         this.inLocation = inLocation;
     }
 
@@ -294,11 +313,11 @@ public abstract class AbstractBillDTO {
         this.auditPersonCode = auditPersonCode;
     }
 
-    public Set<AbstractBillDetailDTO> getBillDetails() {
+    public Set<T> getBillDetails() {
         return billDetails;
     }
 
-    public void setBillDetails(Set<AbstractBillDetailDTO> billDetails) {
+    public void setBillDetails(Set<T> billDetails) {
         this.billDetails = billDetails;
     }
 
@@ -412,14 +431,6 @@ public abstract class AbstractBillDTO {
 
     public void setProgress(BigDecimal progress) {
         this.progress = progress;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     public SourcePlanTypeEnum getBillProperty() {

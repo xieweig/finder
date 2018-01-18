@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.controller;
+package cn.sisyphe.coffee.bill.controller.base;
 
 import cn.sisyphe.framework.auth.logic.AuthenticationSupplier;
 import cn.sisyphe.framework.cache.core.CacheHelper;

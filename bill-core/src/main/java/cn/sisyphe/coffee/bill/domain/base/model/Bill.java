@@ -2,18 +2,16 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbStation;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,15 +29,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.Transient;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
-
 /**
  * 单据基础类
+ * 封装了单据公共的属性，和dto序列化和反序列化方法。
+ * 系统中的单据实体都必须继承本类，同时实现子类中自定义的扩展属性序列化和反序列化方法
  *
  * @author heyong
  */
@@ -62,6 +59,13 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private BillTypeEnum billType;
+
+    /**
+     * 具体的单据类型，子计划转换的单据类型
+     */
+    @Enumerated(value = EnumType.STRING)
+    private BillTypeEnum specificBillType;
+
     /**
      * 单据作用
      */
@@ -109,6 +113,31 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
      * 审核人编码
      */
     private String auditPersonCode;
+
+
+    /**
+     * 数量
+     */
+    private Integer totalAmount;
+
+    /**
+     * 品种数
+     */
+    private Integer totalVarietyAmount;
+
+    /**
+     * 按货物还是按原料
+     */
+    @Enumerated(EnumType.STRING)
+    private BasicEnum basicEnum;
+
+
+    /**
+     * 备注
+     */
+    private String memo;
+
+
     /**
      * 物品明细
      */
@@ -125,6 +154,9 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BillStateEnum billState = BillStateEnum.SAVED;
 
+
+    // 显示数据 ----------------------------------
+
     /**
      * 提交状态
      */
@@ -138,10 +170,78 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     private BillAuditStateEnum auditState;
 
     /**
-     * 出入库状态
+     * 出入库状态 -- 出/入库单
      */
     @Enumerated(EnumType.STRING)
     private BillInOrOutStateEnum inOrOutState;
+
+    /**
+     * 调拨状态 -- 入库单
+     */
+    @Enumerated(value = EnumType.STRING)
+    private BillAllotStatusEnum allotStatus;
+
+    /**
+     * 出库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date outWareHouseTime;
+
+    /**
+     * 入库时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date inWareHouseTime;
+
+
+    /**
+     * 计划备注
+     */
+    private String planMemo;
+
+    /**
+     * 出库备注
+     */
+    private String outStorageMemo;
+
+    /**
+     * 审核意见
+     */
+    private String auditMemo;
+
+
+    /**
+     * 差错单
+     */
+    @JsonIgnore
+    @Transient
+    private MistakeBill mistakeBill;
+
+
+//    /**
+//     * 反序列化，DTO转换成实体
+//     * @param abstractBillDTO
+//     * @param billDetails
+//     */
+//    public void unbuild(AbstractBillDTO abstractBillDTO, Set<AbstractBillDetailDTO> billDetails){
+//            this.setBillCode(abstractBillDTO.getBillCode());
+//
+//            //解析子类的订单详情信息
+//            unbuildDetails(billDetails);
+//    }
+//
+//    /**
+//     * 子类扩展的反序列化方法
+//     * 子类必须实现
+//     * @param abstractBillDetailDtos
+//     */
+//    public abstract void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos);
+//
+//    /**
+//     * 具体单据传输自定义但序列化扩展
+//     * @param abstractBillDTO
+//     */
+//    protected abstract void unbuildExcend(AbstractBillDTO abstractBillDTO);
 
 
     /**
@@ -171,92 +271,8 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
         outLocation = dbStation.getOutLocation();
     }
 
-    /**
-     * 出库时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date outWareHouseTime;
 
-    /**
-     * 入库时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date inWareHouseTime;
-
-
-    /**
-     * 出库状态编码
-     */
-    @Enumerated(EnumType.STRING)
-    private BillOutStateEnum outStateEnum = NOT_OUTBOUND;
-
-    /**
-     * 数量
-     */
-    private Integer totalAmount;
-
-    /**
-     * 品种数
-     */
-    private Integer totalVarietyAmount;
-
-    /**
-     * 计划备注
-     */
-    private String planMemo;
-
-    /**
-     * 出库备注
-     */
-    private String outStorageMemo;
-
-    /**
-     * 审核意见
-     */
-    private String auditMemo;
-
-    /**
-     * 按货物还是按原料
-     */
-    @Enumerated(EnumType.STRING)
-    private BasicEnum basicEnum;
-
-    /**
-     * 完成度
-     */
-    private BigDecimal progress;
-
-    /**
-     * 总价
-     */
-    private BigDecimal totalPrice;
-    
-    /**
-     * 单据来源类型
-     */
-    @Enumerated(value = EnumType.STRING)
-    private SourcePlanTypeEnum billProperty;
-
-    /**
-     * 调拨状态
-     */
-    @Enumerated(value = EnumType.STRING)
-    private BillAllotStatusEnum allotStatus;
-
-    /**
-     * 单据编码前缀
-     */
-    @Transient
-    private String billCodePrefix;
-
-
-    /**
-     * 差错单
-     */
-    @JsonIgnore
-    @Transient
-    private MistakeBill mistakeBill;
-
+    public abstract String billCodePrefix();
 
     public AbstractLocation getOutLocation() {
         return outLocation;
@@ -414,21 +430,14 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
         this.inWareHouseTime = inWareHouseTime;
     }
 
-    public SourcePlanTypeEnum getBillProperty() {
-        return billProperty;
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
     }
 
-    public void setBillProperty(SourcePlanTypeEnum billProperty) {
-        this.billProperty = billProperty;
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
     }
 
-    public BillOutStateEnum getOutStateEnum() {
-        return outStateEnum;
-    }
-
-    public void setOutStateEnum(BillOutStateEnum outStateEnum) {
-        this.outStateEnum = outStateEnum;
-    }
 
     public Integer getTotalAmount() {
         return totalAmount;
@@ -478,28 +487,12 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
         this.basicEnum = basicEnum;
     }
 
-    public BigDecimal getProgress() {
-        return progress;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setProgress(BigDecimal progress) {
-        this.progress = progress;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getBillCodePrefix() {
-        return billCodePrefix;
-    }
-
-    public void setBillCodePrefix(String billCodePrefix) {
-        this.billCodePrefix = billCodePrefix;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
     public MistakeBill getMistakeBill() {
@@ -524,6 +517,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
                 "billId=" + billId +
                 ", billCode='" + billCode + '\'' +
                 ", billType=" + billType +
+                ", specificBillType=" + specificBillType +
                 ", billPurpose=" + billPurpose +
                 ", belongStationCode='" + belongStationCode + '\'' +
                 ", outLocation=" + outLocation +
@@ -540,17 +534,14 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
                 ", inOrOutState=" + inOrOutState +
                 ", outWareHouseTime=" + outWareHouseTime +
                 ", inWareHouseTime=" + inWareHouseTime +
-                ", outStateEnum=" + outStateEnum +
                 ", totalAmount=" + totalAmount +
                 ", totalVarietyAmount=" + totalVarietyAmount +
                 ", planMemo='" + planMemo + '\'' +
                 ", outStorageMemo='" + outStorageMemo + '\'' +
                 ", auditMemo='" + auditMemo + '\'' +
                 ", basicEnum=" + basicEnum +
-                ", progress=" + progress +
-                ", totalPrice=" + totalPrice +
-                ", billProperty=" + billProperty +
-                ", billCodePrefix='" + billCodePrefix + '\'' +
+                ", allotStatus=" + allotStatus +
+                ", mistakeBill=" + mistakeBill +
                 "} " + super.toString();
     }
 }

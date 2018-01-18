@@ -84,10 +84,10 @@ public class InStorageBillManager {
         bill.setBasicEnum(sourceBill.getBasicEnum());
         bill.setTotalAmount(sourceBill.getTotalAmount());
         bill.setTotalVarietyAmount(sourceBill.getTotalVarietyAmount());
-        bill.setBillProperty(sourceBill.getBillProperty());
-        bill.setTotalPrice(sourceBill.getTotalPrice());
+        //bill.setBillProperty(sourceBill.getBillProperty());
+        //bill.setTotalPrice(sourceBill.getTotalPrice());
         bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
-        bill.setProgress(sourceBill.getProgress());
+        //bill.setProgress(sourceBill.getProgress());
         bill.setOperatorCode(sourceBill.getOperatorCode());
 
         Set<BillDetail> details = new HashSet<>();
@@ -96,7 +96,7 @@ public class InStorageBillManager {
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
             desBillDetail.setGoods(billDetail.getGoods());
-            desBillDetail.setProgress(billDetail.getProgress());
+            //desBillDetail.setProgress(billDetail.getProgress());
             details.add(desBillDetail);
         }
         bill.setBillDetails(details);

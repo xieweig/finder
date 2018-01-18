@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author XiongJing
  */
-public class ConditionQueryBill extends BaseConditionQuery {
+public class ConditionQueryBill extends BaseConditionQuery implements Serializable {
 
     /**
      * 录单人名称
@@ -99,9 +100,9 @@ public class ConditionQueryBill extends BaseConditionQuery {
     private List<BillInOrOutStateEnum> inOrOutStates;
 
     /**
-     * 单据属性
+     * 具体的单据类型
      */
-    private List<SourcePlanTypeEnum> billTypes;
+    private SourcePlanTypeEnum billProperty;
 
     /**
      * 配送品种开始数量
@@ -267,11 +268,11 @@ public class ConditionQueryBill extends BaseConditionQuery {
         this.inOrOutStates = inOrOutStates;
     }
 
-    public List<SourcePlanTypeEnum> getBillTypes() {
-        return billTypes;
+    public SourcePlanTypeEnum getBillProperty() {
+        return billProperty;
     }
 
-    public void setBillTypes(List<SourcePlanTypeEnum> billTypes) {
-        this.billTypes = billTypes;
+    public void setBillProperty(SourcePlanTypeEnum billProperty) {
+        this.billProperty = billProperty;
     }
 }

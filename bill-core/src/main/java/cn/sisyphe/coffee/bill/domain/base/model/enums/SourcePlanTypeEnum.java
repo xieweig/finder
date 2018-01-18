@@ -20,7 +20,6 @@ public enum SourcePlanTypeEnum {
     //无计划转
     NOPLAN("");
 
-
     private String description;
 
 

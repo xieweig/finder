@@ -3,7 +3,7 @@ package cn.sisyphe.coffee.bill.domain.delivery;
 
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
-import cn.sisyphe.coffee.bill.viewmodel.deliverybill.ConditionQueryDeliveryBill;
+import cn.sisyphe.coffee.bill.viewmodel.delivery.ConditionQueryDeliveryBill;
 
 /**
  * 配送单查询服务类

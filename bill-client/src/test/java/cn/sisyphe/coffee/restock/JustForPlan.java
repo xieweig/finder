@@ -1,4 +1,4 @@
-/*
+
 package cn.sisyphe.coffee.restock;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
@@ -22,66 +23,90 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-*/
+
 /**
  * @Author: xie_wei_guang
  * @Date: 2018/1/8
  * @Description:仅仅服务于restock测试用，数据做的字段不全
- *//*
+ */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoreApplication.class)
 public class JustForPlan {
 
-    private Random random = new Random();
+     private Random random = new Random();
     private Calendar calendar = Calendar.getInstance();
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    public static final String[] CARGOCODE = {"AD","SSA","SDS","WEA"};
-    public static final String[] RAWMATERIALCODE = {"2","7","8","9"};
+
+    public static final String[] STATIONS = {"WNZA01","HDQA00","HRBA01","HGHB04"};
+    //用来添加货物和原料对应名称 请如下添加 “原料=货物”
+    public static final List<String> detailList = new ArrayList();
+    static {
+        detailList.add("AS=AD");
+        detailList.add("HSH=SSA");
+        detailList.add("WEA=WEA");
+        detailList.add("AS=SDS");
+    }
+    //测试账号 目前只有一个
+    public static  final String[] OPERATIONCODE={"YGADMIN"};
     @Resource
     private PlanBillRepository planBillRepository;
 
-    private PlanBillDetail createPlanBillDetail() {
+    protected PlanBillDetail createPlanBillDetail() {
         PlanBillDetail planBillDetail = new PlanBillDetail();
         planBillDetail.setShippedAmount(random.nextInt(100));
         planBillDetail.setPackageCode("test:03" + random.nextInt(100));
-        RawMaterial rawMaterial = new RawMaterial(RAWMATERIALCODE[random.nextInt(RAWMATERIALCODE.length)]);
-        Cargo cargo = new Cargo(CARGOCODE[random.nextInt(CARGOCODE.length)]);
+
+        String codePair= detailList.get(random.nextInt(detailList.size()));
+        String[] strings = codePair.split("=");
+        RawMaterial rawMaterial = new RawMaterial(strings[0]);
+        Cargo cargo = new Cargo(strings[1]);
         rawMaterial.setCargo(cargo);
         rawMaterial.setRawMaterialName("测试原料名称" + random.nextInt(1000));
         planBillDetail.setGoods(rawMaterial);
-        planBillDetail.setOutLocation(new Storage("03021" + random.nextInt(100)));
+
+        planBillDetail.setTransferLocation(this.nextRandomStation());
+        planBillDetail.setInLocation(this.nextRandomStation());
+        planBillDetail.setOutLocation(this.nextRandomStation());
         return planBillDetail;
     }
 //为restock生成plan测试用
+    private BillTypeEnum billType = BillTypeEnum.RESTOCK;
     private BillFactory billFactory = new BillFactory();
-    private PlanBill createPlanBill() {
+    protected PlanBill createPlanBill() {
 
 
         PlanBill planBill = (PlanBill)billFactory.createBill(BillTypeEnum.PLAN);
         planBill.setHqBill(false);
-        */
-/*
-        * bill plan 生成对应的restock*//*
+       //plan_bill 的code生成 可能是远程接口调用
+        planBill.setBillCode(String.valueOf(System.currentTimeMillis()));
 
-        planBill.setSpecificBillType(BillTypeEnum.RESTOCK);
-        planBill.setAuditMemo("remarks: " + random.nextInt(1000));
+        planBill.setBillState(BillStateEnum.SAVED);
+        planBill.setBillType(BillTypeEnum.PLAN);
+        planBill.setSpecificBillType(this.billType);
+        planBill.setBillPurpose(BillPurposeEnum.values()[random.nextInt(BasicEnum.values().length)]);
+        planBill.setInLocation(this.nextRandomStation());
+        planBill.setOutLocation(this.nextRandomStation());
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
 
-        planBill.setBillName("all" + random.nextInt(100));
-        planBill.setProgress(new BigDecimal(random.nextInt(1200)));
-        planBill.setBillState(BillStateEnum.SAVED);
+        planBill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
+
+        planBill.setAuditMemo("audit remarks: " + random.nextInt(1000));
+        planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
+        planBill.setOperationState(OperationStateEnum.NOOPERATION);
+        planBill.setBillName("all name" + random.nextInt(100));
+
         planBill.setAuditState(BillAuditStateEnum.AUDIT_SUCCESS);
         planBill.setSubmitState(BillSubmitStateEnum.SUBMITTED);
-        planBill.setAuditPersonCode(random.nextInt(100) + "0302");
-        planBill.setBillCode("010" + random.nextInt(1000));
-        planBill.setBillType(BillTypeEnum.PLAN);
-        planBill.setOperationState(OperationStateEnum.values()[random.nextInt(OperationStateEnum.values().length)]);
+
+        planBill.setOperatorCode(OPERATIONCODE[random.nextInt(OPERATIONCODE.length)]);
+        planBill.setPlanMemo("plan memo:"+random.nextInt(100));
+
+
+        planBill.setOutWareHouseTime(new Date());
+       // planBill.setOperationState(OperationStateEnum.values()[random.nextInt(OperationStateEnum.values().length)]);
         Set<PlanBillDetail> details = new HashSet<>();
         for (int i = 0; i < 3; i++) {
 
@@ -90,11 +115,23 @@ public class JustForPlan {
         planBill.setBillDetails(details);
         return  planBill;
     }
+    private Station nextRandomStation() {
+        Station station = new Station(STATIONS[random.nextInt(STATIONS.length)]);
+        //normal
+        Storage storage = new Storage("Noraml001");
+        station.setStationName("重庆" + random.nextInt(100) + "站");
+        station.setStationType(StationType.values()[random.nextInt(StationType.values().length)]);
+        storage.setStorageName("normal"+random.nextInt(100));
+        station.setStorage(storage);
+
+        return station;
+    }
     @Test
     public void insertTest(){
-        for (int i = 0; i <6 ; i++) {
+        for (int i = 0; i <3 ; i++) {
             this.planBillRepository.save(this.createPlanBill());
+
         }
     }
 }
-*/
+
