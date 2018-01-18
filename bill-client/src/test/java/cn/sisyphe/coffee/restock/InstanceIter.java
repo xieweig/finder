@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.util.BillCodeManager;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
+import javax.swing.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -21,12 +22,14 @@ import java.util.*;
  * @Description:
  */
 public class InstanceIter {
-    private Random random = new Random();
+    protected Random random = new Random();
     public static final String[] STATIONS = {"WNZA01","HDQA00","HRBA01","HGHB04"};
-    public static final String[] STORAGES = {"normal001","mormal002","normal003","normal004"};
-    public static final String[] ROOT_CODES = {"0302120","0302122","0302121","0302124"};
-    public static final String[] SOURCE_CODES = {"s0302120","s0302122","s0302121","s0302124"};
-    public static  final String[] OPERATIONCODE={"YGADMIN"};
+
+    public static final String[] STORAGES = {"NORMAL","STORAGE","IN_STORAGE","OUT_STORAGE",
+            "ON_STORAGE","RESERVE_STORAGE","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL"};
+    public static final String[] ROOT_CODES = {"1516188564164","1516188564180","1516188564195"};
+    public static final String[] SOURCE_CODES = {"1516188564164","1516188564180","1516188564195"};
+    public static final String[] OPERATIONCODE={"YGADMIN"};
     //用来添加货物和原料对应名称 请如下添加 “原料=货物”
     public static final List<String> detailList = new ArrayList();
     static {
@@ -39,11 +42,12 @@ public class InstanceIter {
     public RestockBillDTO nextRandomAddRestockBillDTO(Integer detailsNumber){
         RestockBillDTO dto = new RestockBillDTO();
         //可能有误
-        dto.setBillCode(BillCodeManager.getBillCodeFun("ABCD","10P"));
+
 
         dto.setBillType(BillTypeEnum.RESTOCK);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
-
+        dto.setRootCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
+        dto.setSourceCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
 
         dto.setInLocation(this.nextRandomStation());
         dto.setOutLocation(this.nextRandomStation());

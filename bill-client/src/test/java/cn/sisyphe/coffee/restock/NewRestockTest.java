@@ -18,11 +18,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class NewRestockTest extends InstanceIter{
     @Autowired
     private RestockBillManager restockBillManager;
+
     @Test
     public void saveDTO(){
         for (int i = 0; i < 3; i++) {
 
-            restockBillManager.saveBill(this.nextRandomAddRestockBillDTO(2));
+            restockBillManager.saveBill(this.nextRandomAddRestockBillDTO(random.nextInt(3)+1));
         }
 
     }
