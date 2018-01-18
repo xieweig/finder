@@ -41,6 +41,9 @@ public class JustForPlan {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static final String[] STATIONS = {"WNZA01","HDQA00","HRBA01","HGHB04"};
+    public static final String[] STORAGES = {"NORMAL","STORAGE","IN_STORAGE","OUT_STORAGE",
+            "ON_STORAGE","RESERVE_STORAGE","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL"};
+    public static final String[] OPERATIONCODE={"YGADMIN"};
     //用来添加货物和原料对应名称 请如下添加 “原料=货物”
     public static final List<String> detailList = new ArrayList();
     static {
@@ -49,8 +52,6 @@ public class JustForPlan {
         detailList.add("WEA=WEA");
         detailList.add("AS=SDS");
     }
-    //测试账号 目前只有一个
-    public static  final String[] OPERATIONCODE={"YGADMIN"};
     @Resource
     private PlanBillRepository planBillRepository;
 
@@ -64,9 +65,7 @@ public class JustForPlan {
         RawMaterial rawMaterial = new RawMaterial(strings[0]);
         Cargo cargo = new Cargo(strings[1]);
         rawMaterial.setCargo(cargo);
-        rawMaterial.setRawMaterialName("测试原料名称" + random.nextInt(1000));
         planBillDetail.setGoods(rawMaterial);
-
         planBillDetail.setTransferLocation(this.nextRandomStation());
         planBillDetail.setInLocation(this.nextRandomStation());
         planBillDetail.setOutLocation(this.nextRandomStation());
@@ -83,20 +82,19 @@ public class JustForPlan {
        //plan_bill 的code生成 可能是远程接口调用
         planBill.setBillCode(String.valueOf(System.currentTimeMillis()));
 
+        planBill.setSpecificBillType(this.billType);
         planBill.setBillState(BillStateEnum.SAVED);
         planBill.setBillType(BillTypeEnum.PLAN);
-        planBill.setSpecificBillType(this.billType);
         planBill.setBillPurpose(BillPurposeEnum.values()[random.nextInt(BasicEnum.values().length)]);
         planBill.setInLocation(this.nextRandomStation());
         planBill.setOutLocation(this.nextRandomStation());
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
-
         planBill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
 
         planBill.setAuditMemo("audit remarks: " + random.nextInt(1000));
         planBill.setBasicEnum(BasicEnum.values()[random.nextInt(BasicEnum.values().length)]);
         planBill.setOperationState(OperationStateEnum.NOOPERATION);
-        planBill.setBillName("all name" + random.nextInt(100));
+        planBill.setBillName("bill name" + random.nextInt(100));
 
         planBill.setAuditState(BillAuditStateEnum.AUDIT_SUCCESS);
         planBill.setSubmitState(BillSubmitStateEnum.SUBMITTED);
@@ -106,9 +104,9 @@ public class JustForPlan {
 
 
         planBill.setOutWareHouseTime(new Date());
-       // planBill.setOperationState(OperationStateEnum.values()[random.nextInt(OperationStateEnum.values().length)]);
+
         Set<PlanBillDetail> details = new HashSet<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < random.nextInt(3); i++) {
 
             details.add(this.createPlanBillDetail());
         }
@@ -117,11 +115,8 @@ public class JustForPlan {
     }
     private Station nextRandomStation() {
         Station station = new Station(STATIONS[random.nextInt(STATIONS.length)]);
-        //normal
-        Storage storage = new Storage("Noraml001");
-        station.setStationName("重庆" + random.nextInt(100) + "站");
+        Storage storage = new Storage(STORAGES[random.nextInt(STORAGES.length)]);
         station.setStationType(StationType.values()[random.nextInt(StationType.values().length)]);
-        storage.setStorageName("normal"+random.nextInt(100));
         station.setStorage(storage);
 
         return station;

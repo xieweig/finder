@@ -12,6 +12,8 @@ import cn.sisyphe.coffee.bill.util.BillCodeManager;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -24,6 +26,7 @@ import java.util.*;
  */
 public class InstanceIter {
     protected Random random = new Random();
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     public static final String[] STATIONS = {"WNZA01","HDQA00","HRBA01","HGHB04"};
 
     public static final String[] STORAGES = {"NORMAL","STORAGE","IN_STORAGE","OUT_STORAGE",
@@ -48,7 +51,9 @@ public class InstanceIter {
         dto.setBillType(BillTypeEnum.RESTOCK);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         Integer sign = random.nextInt(10);
+        logger.info("====:"+sign);
         dto.setRootCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
+
         if (sign>4){
             dto.setBillProperty(SourcePlanTypeEnum.RESTOCK);
             dto.setSourceCode(SOURCE_CODES[random.nextInt(ROOT_CODES.length)]);
@@ -76,7 +81,8 @@ public class InstanceIter {
 
 
         dto.setOperatorCode(OPERATIONCODE[random.nextInt(OPERATIONCODE.length)]);
-
+        dto.setTotalAmount(random.nextInt(10));
+        dto.setTotalVarietyAmount(random.nextInt(500)+100);
 
         return dto;
     }
@@ -90,9 +96,11 @@ public class InstanceIter {
     }
     private RestockBillDetailDTO nextRandomRestockBillDetailDTO(){
         RestockBillDetailDTO restockBillDetailDTO = new RestockBillDetailDTO();
+
         Integer amount = random.nextInt(100)+20;
         restockBillDetailDTO.setActualAmount(amount);
         restockBillDetailDTO.setShippedAmount(amount+random.nextInt(10)-5);
+
         String codePair= detailList.get(random.nextInt(detailList.size()));
         String[] strings = codePair.split("=");
         RawMaterial rawMaterial = new RawMaterial(strings[0]);
