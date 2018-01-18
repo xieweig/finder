@@ -7,7 +7,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
-import cn.sisyphe.coffee.bill.util.DtoExtraProcessor;
+import cn.sisyphe.coffee.bill.util.BillToDtoExtraProcessor;
+import cn.sisyphe.coffee.bill.util.DtoToBillExtraProcessor;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
@@ -219,7 +220,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO
      */
     protected T dtoToBill(T bill, D billDTO) {
-        bill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+        bill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass(), new DtoToBillExtraProcessor());
         BeanUtils.copyProperties(billDTO, bill, "createTime", "billDetails");
         return bill;
     }
@@ -231,7 +232,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-        return JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass(), new DtoExtraProcessor());
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass(), new BillToDtoExtraProcessor());
     }
 
 

@@ -11,7 +11,7 @@ import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
  * Description:
  * @author heyong
  */
-public class DtoExtraProcessor implements ExtraProcessor {
+public class BillToDtoExtraProcessor implements ExtraProcessor {
 
     @Override
     public void processExtra(Object target, String name, Object source) {
