@@ -1,11 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import org.springframework.data.domain.Page;
@@ -198,8 +194,8 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             /*
              * 单据属性
              */
-            if (!StringUtils.isEmpty(conditionQuery.getBillProperty())) {
-                expressions.add(root.get("billProperty").as(SourcePlanTypeEnum.class).in(conditionQuery.getBillProperty()));
+            if (!StringUtils.isEmpty(conditionQuery.getSpecificBillType())) {
+                expressions.add(root.get("specificBillType").as(BillTypeEnum.class).in(conditionQuery.getSpecificBillType()));
             }
 
             /*

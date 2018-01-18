@@ -13,17 +13,7 @@ public class PlanBillDTO extends BillDTO<PlanBillDetailDTO> {
         setBillType(BillTypeEnum.PLAN);
     }
 
-    private BillTypeEnum specificBillType;
-
     private String billName;
-
-    public BillTypeEnum getSpecificBillType() {
-        return specificBillType;
-    }
-
-    public void setSpecificBillType(BillTypeEnum specificBillType) {
-        this.specificBillType = specificBillType;
-    }
 
     public String getBillName() {
         return billName;

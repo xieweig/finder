@@ -1,7 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base.purpose;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.framework.message.core.MessagingHelper;
 
@@ -24,7 +24,7 @@ public class OutStoragePurpose extends AbstractBillPurpose {
         System.err.println("out Storage");
 
         Bill bill = getBillService().getBill();
-        bill.setBillState(BillStateEnum.OUT_STORAGING);
+        bill.setInOrOutState(BillInOrOutStateEnum.OUT_ING);
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
 
     }

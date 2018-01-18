@@ -68,7 +68,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "子计划明细")
     @RequestMapping(path = "/findPlanByBillCode", method = RequestMethod.GET)
-    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode, BillTypeEnum billTypeEnum) {
+    public ResponseResult findPlanByBillCode(@RequestParam("billCode") String billCode,@RequestParam("billTypeEnum") BillTypeEnum billTypeEnum) {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("bill", planBillManager.findChildPlanBillByBillCode(billCode, billTypeEnum));
@@ -130,7 +130,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findBySourceCode(@RequestParam("sourceCode") String sourceCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            responseResult.put("bill", abstractBillExtraManager.findBillDtoBySourceCode(sourceCode));
+            responseResult.put("bill", planBillManager.findBillDtoBySourceCode(sourceCode));
         } catch (DataException e) {
             responseResult.putException(e);
         }
