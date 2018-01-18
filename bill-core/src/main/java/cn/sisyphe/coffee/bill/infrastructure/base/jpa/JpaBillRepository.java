@@ -38,5 +38,6 @@ public interface JpaBillRepository<T extends Bill> extends JpaRepository<T, Long
      * @param pageable
      * @return
      */
+    @Override
     Page<T> findAll(Specification<T> ta, Pageable pageable );
 }

@@ -216,7 +216,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO
      */
     protected T dtoToBill(T bill, D billDTO) {
-        return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+        bill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+        BeanUtils.copyProperties(billDTO, bill, "createTime", "billDetails");
+        return bill;
     }
 
     /**
