@@ -22,7 +22,7 @@ public class NewRestockTest extends InstanceIter{
 
     @Test
     public void saveDTO(){
-        for (int i = 0; i <3; i++) {
+        for (int i = 0; i <6; i++) {
             restockBillManager.saveBill(this.nextRandomAddRestockBillDTO(random.nextInt(3)+1));
 
         }

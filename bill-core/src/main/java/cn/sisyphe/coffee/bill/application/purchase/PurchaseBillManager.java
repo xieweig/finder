@@ -4,16 +4,21 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillExtraService;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.math.BigDecimal;
+import java.util.Set;
 
 
 /**
@@ -31,6 +36,60 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
         super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
 
+
+    /**
+     * 重写转换方法
+     *
+     * @param bill
+     * @return
+     */
+    @Override
+    protected PurchaseBillDTO billToListDto(PurchaseBill bill) {
+
+        PurchaseBillDTO purchaseBillDTO = super.billToListDto(bill);
+        Set<PurchaseBillDetailDTO> billDetails = purchaseBillDTO.getBillDetails();
+        // 实收数量
+        Integer totalAmount = 0;
+        // 数量差值
+        Integer differenceAmount = 0;
+        // 进货实洋
+        BigDecimal totalPriceAmount = BigDecimal.ZERO;
+        // 总价差值
+        BigDecimal totalPriceDifferenceAmount = BigDecimal.ZERO;
+
+        if (billDetails != null && billDetails.size() > 0) {
+            for (PurchaseBillDetailDTO detailDTO : billDetails) {
+                // 累加实收数量
+                if (detailDTO.getActualAmount() != null && detailDTO.getActualAmount() > 0) {
+                    totalAmount += detailDTO.getActualAmount();
+                }
+                // 累加数量差值
+                if (detailDTO.getDifferenceNumber() != null && detailDTO.getDifferenceNumber() > 0) {
+                    differenceAmount += detailDTO.getDifferenceNumber();
+                }
+                // 累加进货实洋
+                if (detailDTO.getUnitPrice() != null && detailDTO.getUnitPrice().compareTo(BigDecimal.ZERO) > 0
+                        && detailDTO.getShippedAmount() != null && detailDTO.getShippedAmount() > 0) {
+                    totalPriceAmount = totalPriceAmount.add(detailDTO.getUnitPrice().multiply(BigDecimal.valueOf(detailDTO.getShippedAmount())));
+                }
+                // 累加总价差值
+                if (detailDTO.getTotalDifferencePrice() != null && detailDTO.getTotalDifferencePrice().compareTo(BigDecimal.ZERO) > 0) {
+                    totalPriceDifferenceAmount = totalPriceDifferenceAmount.add(detailDTO.getTotalDifferencePrice());
+                }
+            }
+            // 设置实收数量
+            purchaseBillDTO.setTotalAmount(totalAmount);
+            // 设置数量差值
+            purchaseBillDTO.setDifferenceAmount(differenceAmount);
+            // 设置进货实洋
+            purchaseBillDTO.setTotalPriceAmount(totalPriceAmount);
+            // 设置总价差值
+            purchaseBillDTO.setTotalPriceDifferenceAmount(totalPriceDifferenceAmount);
+
+        }
+        return purchaseBillDTO;
+    }
+
     /**
      * 重写提交方法
      *
@@ -40,7 +99,7 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
     @Override
     public PurchaseBillDTO submitBill(PurchaseBillDTO billDTO) {
         // 根据货运单号查询是否存在
-        verificationFreightCode(billDTO.getFreightCode());
+        verificationFreightCode(billDTO);
         // 验证字段信息
         verificationPurchase(billDTO);
         return super.submitBill(billDTO);
@@ -55,23 +114,56 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
     @Override
     public PurchaseBillDTO saveBill(PurchaseBillDTO billDTO) {
         // 根据货运单号查询是否存在
-        verificationFreightCode(billDTO.getFreightCode());
+        verificationFreightCode(billDTO);
         return super.saveBill(billDTO);
+    }
+
+    /**
+     * 重写DTO转换单据方法
+     *
+     * @param bill
+     * @param billDTO
+     * @return
+     */
+    @Override
+    protected PurchaseBill dtoToBill(PurchaseBill bill, PurchaseBillDTO billDTO) {
+        PurchaseBill purchaseBill = super.dtoToBill(bill, billDTO);
+        Supplier supplier = billDTO.getSupplier();
+        purchaseBill.setOutLocation(supplier);
+        return purchaseBill;
+    }
+
+    /**
+     * 重写bill转换DTO
+     * @param bill
+     * @return
+     */
+    @Override
+    protected PurchaseBillDTO billToDto(PurchaseBill bill) {
+        PurchaseBillDTO purchaseBillDTO = super.billToDto(bill);
+        Supplier supplier = (Supplier) bill.getOutLocation();
+        purchaseBillDTO.setSupplier(supplier);
+        return purchaseBillDTO;
     }
 
     /**
      * 根据货运单号查询是否存在
      *
-     * @param freightCode 货运单号
+     * @param billDTO
      * @return
      */
-    private PurchaseBill verificationFreightCode(String freightCode) {
+    private void verificationFreightCode(PurchaseBillDTO billDTO) {
         // 根据货运单号查询是否存在
-        PurchaseBill purchaseBill = ((PurchaseBillExtraService) getBillExtraService()).findByFreightCode(freightCode);
-        if (purchaseBill != null) {
-            throw new DataException("500", "货运单号重复！");
+        PurchaseBill purchaseBill = ((PurchaseBillExtraService) getBillExtraService()).findByFreightCode(billDTO.getFreightCode());
+        if (StringUtils.isEmpty(billDTO.getBillCode())) {
+            if (purchaseBill != null) {
+                throw new DataException("500", "货运单号重复！");
+            }
+        } else {
+            if (purchaseBill != null && !purchaseBill.getBillCode().equals(billDTO.getBillCode())) {
+                throw new DataException("500", "货运单号重复！");
+            }
         }
-        return purchaseBill;
     }
 
     /**

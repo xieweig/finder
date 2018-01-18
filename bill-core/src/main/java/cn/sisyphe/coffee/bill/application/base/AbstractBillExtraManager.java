@@ -161,8 +161,11 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     public D findBillDtoByBillCode(String billCode) {
-        T bill = billExtraService.findByBillCode(billCode);
 
+        T bill = billExtraService.findByBillCode(billCode);
+        if(bill == null){
+            return null;
+        }
         return billToDto(bill);
     }
 
@@ -208,7 +211,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      */
     protected D billToListDto(T bill) {
         // 清空明细
-        bill.getBillDetails().clear();
+//        bill.getBillDetails().clear();
 
         return billToDto(bill);
     }

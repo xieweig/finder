@@ -1,32 +1,33 @@
-package cn.sisyphe.coffee.returned;
+package cn.sisyphe.coffee.delivery;
 
 import cn.sisyphe.coffee.bill.CoreApplication;
-
-import cn.sisyphe.coffee.bill.application.returned.ReturnedBillManager;
-
+import cn.sisyphe.coffee.bill.application.delivery.DeliveryBillManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
+
 /**
  * @Author: xie_wei_guang
- * @Date: 2018/1/17
+ * @Date: 2018/1/18
  * @Description:
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {CoreApplication.class})
-public class OracleRunner extends InstanceIterator{
-    @Autowired
-    private ReturnedBillManager returnedBillManager;
+public class NewDeliveryTest extends  InstanceIterat{
+
+    @Resource
+    private DeliveryBillManager deliveryBillManager;
 
     @Test
     public void saveDTO(){
         for (int i = 0; i <6; i++) {
-            returnedBillManager.saveBill(this.nextRandomAddReturnedBillDTO(random.nextInt(3)+1));
+            deliveryBillManager.saveBill(this.nextRandomAddDeliveryBillDTO(random.nextInt(3)+1));
 
         }
 
     }
+
 }

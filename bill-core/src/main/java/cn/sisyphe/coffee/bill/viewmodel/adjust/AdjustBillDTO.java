@@ -3,6 +3,9 @@ package cn.sisyphe.coffee.bill.viewmodel.adjust;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
+
+import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -15,5 +18,17 @@ public class AdjustBillDTO extends BillDTO<AdjustBillDetailDTO> {
 
     public AdjustBillDTO() {
         setBillType(BillTypeEnum.ADJUST);
+    }
+
+
+    public List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS;
+
+
+    public List<ChildPlanBillDetailDTO> getChildPlanBillDetailDTOS() {
+        return childPlanBillDetailDTOS;
+    }
+
+    public void setChildPlanBillDetailDTOS(List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS) {
+        this.childPlanBillDetailDTOS = childPlanBillDetailDTOS;
     }
 }

@@ -45,7 +45,8 @@ public class InStorageBillManager {
     @SuppressWarnings("unchecked")
     public Bill allotedForInStorageBill(Bill bill) {
         AbstractBillManager billManager = BillManagerFactory.getManager(bill.getBillType());
-        Bill foundBill = billManager.findOneByBillCode(bill.getBillCode());
+        //调拨单的sourceCode为入库单
+        Bill foundBill = billManager.findOneByBillCode(bill.getSourceCode());
         billManager.committed(foundBill);
         return foundBill;
     }
