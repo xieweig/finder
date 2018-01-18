@@ -96,6 +96,8 @@ public class JustForPlan {
         planBill.setOperationState(OperationStateEnum.NOOPERATION);
         planBill.setBillName("bill name" + random.nextInt(100));
 
+        planBill.setTotalAmount(random.nextInt(20));
+        planBill.setTotalVarietyAmount(random.nextInt(200)+100);
         planBill.setAuditState(BillAuditStateEnum.AUDIT_SUCCESS);
         planBill.setSubmitState(BillSubmitStateEnum.SUBMITTED);
 

@@ -33,7 +33,7 @@ public class InstanceIter {
             "ON_STORAGE","RESERVE_STORAGE","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL"};
     public static  String[] ROOT_CODES = {"1516245948146","1516245948236","1516246340102"};
 
-    public static final String[] SOURCE_CODES = {"1516245948146","1516245948236","1516246340102"};
+    public static final String[] SOURCE_CODES_FOR_RESTOCK = {"1516245948146","1516245948236","1516246340102"};
     public static final String[] OPERATIONCODE={"YGADMIN"};
     //用来添加货物和原料对应名称 请如下添加 “原料=货物”
     public static final List<String> detailList = new ArrayList();
@@ -52,12 +52,11 @@ public class InstanceIter {
         dto.setBillType(BillTypeEnum.RESTOCK);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         Integer sign = random.nextInt(10);
-        logger.info("====:"+sign);
         dto.setRootCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
 
         if (sign>4){
             dto.setSpecificBillType(BillTypeEnum.RESTOCK);
-            dto.setSourceCode(SOURCE_CODES[random.nextInt(ROOT_CODES.length)]);
+            dto.setSourceCode(SOURCE_CODES_FOR_RESTOCK[random.nextInt(SOURCE_CODES_FOR_RESTOCK.length)].trim());
         }
 
         else{
@@ -87,7 +86,7 @@ public class InstanceIter {
 
         return dto;
     }
-    private Station nextRandomStation() {
+    protected Station nextRandomStation() {
         Station station = new Station(STATIONS[random.nextInt(STATIONS.length)]);
         Storage storage = new Storage(STORAGES[random.nextInt(STORAGES.length)]);
         station.setStationType(StationType.values()[random.nextInt(StationType.values().length)]);
@@ -95,7 +94,7 @@ public class InstanceIter {
         System.err.println(ToStringBuilder.reflectionToString(station));
         return station;
     }
-    private RestockBillDetailDTO nextRandomRestockBillDetailDTO(){
+    protected RestockBillDetailDTO nextRandomRestockBillDetailDTO(){
         RestockBillDetailDTO restockBillDetailDTO = new RestockBillDetailDTO();
 
         Integer amount = random.nextInt(100)+20;
