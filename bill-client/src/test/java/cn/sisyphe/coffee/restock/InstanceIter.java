@@ -55,12 +55,12 @@ public class InstanceIter {
         dto.setRootCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);
 
         if (sign>4){
-            dto.setBillProperty(SourcePlanTypeEnum.RESTOCK);
+            dto.setSpecificBillType(BillTypeEnum.RESTOCK);
             dto.setSourceCode(SOURCE_CODES[random.nextInt(ROOT_CODES.length)]);
         }
 
         else{
-            dto.setBillProperty(SourcePlanTypeEnum.NOPLAN);
+            dto.setSpecificBillType(BillTypeEnum.NOPLAN);
         }
 
 
