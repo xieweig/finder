@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,6 +33,9 @@ import javax.persistence.Transient;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 单据基础类
@@ -440,7 +444,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
 
 
     public Integer getTotalAmount() {
-        return totalAmount;
+        return  totalAmount;
     }
 
     public void setTotalAmount(Integer totalAmount) {
@@ -448,7 +452,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     }
 
     public Integer getTotalVarietyAmount() {
-        return totalVarietyAmount;
+        return  totalVarietyAmount;
     }
 
     public void setTotalVarietyAmount(Integer totalVarietyAmount) {

@@ -2,12 +2,15 @@ package cn.sisyphe.coffee.bill.domain.base.model.enums;
 
 /**
  * Created by heyong on 2017/12/19 17:22
- * Description: 单据种类
+ * Description: 单据种类(与单据属性合并)
  *
  * @author heyong
  */
 public enum BillTypeEnum {
-
+    /**
+     * 无计划
+     */
+    NOPLAN,
      /**
      * 计划
      */
