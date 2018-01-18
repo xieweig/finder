@@ -1,5 +1,6 @@
 package cn.sisyphe.coffee.bill.viewmodel.base;
 
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
@@ -379,19 +380,19 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalAmount() {
-        return totalAmount;
+        return  sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
     }
 
     public void setTotalAmount(Integer totalAmount) {
-        this.totalAmount = sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
+        this.totalAmount = totalAmount;
     }
 
     public Integer getTotalVarietyAmount() {
-        return totalVarietyAmount;
+        return  billDetails.size();
     }
 
     public void setTotalVarietyAmount(Integer totalVarietyAmount) {
-        this.totalVarietyAmount = billDetails.size();
+        this.totalVarietyAmount = totalVarietyAmount;
     }
 
     public String getPlanMemo() {

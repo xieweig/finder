@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
