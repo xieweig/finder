@@ -10,7 +10,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -191,7 +190,7 @@ public class BillDTO<T extends BillDetailDTO> {
      * 单据来源类型
      */
     @Enumerated(EnumType.STRING)
-    private SourcePlanTypeEnum billProperty;
+    private BillTypeEnum specificBillType;
 
     /**
      * 调拨状态
@@ -435,12 +434,12 @@ public class BillDTO<T extends BillDetailDTO> {
         this.progress = progress;
     }
 
-    public SourcePlanTypeEnum getBillProperty() {
-        return billProperty;
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
     }
 
-    public void setBillProperty(SourcePlanTypeEnum billProperty) {
-        this.billProperty = billProperty;
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
     }
 
     public BillAllotStatusEnum getAllotStatus() {

@@ -198,8 +198,8 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             /*
              * 单据属性
              */
-            if (!StringUtils.isEmpty(conditionQuery.getBillProperty())) {
-                expressions.add(root.get("billProperty").as(SourcePlanTypeEnum.class).in(conditionQuery.getBillProperty()));
+            if (!StringUtils.isEmpty(conditionQuery.getSpecificBillType())) {
+                expressions.add(root.get("specificBillType").as(SourcePlanTypeEnum.class).in(conditionQuery.getSpecificBillType()));
             }
 
             /*
