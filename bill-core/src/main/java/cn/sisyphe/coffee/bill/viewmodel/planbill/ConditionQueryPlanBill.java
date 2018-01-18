@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.planbill;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 
 import java.io.Serializable;
@@ -11,10 +10,6 @@ import java.util.List;
  */
 public class ConditionQueryPlanBill extends ConditionQueryBill implements Serializable {
 
-    /**
-     * 单据种类
-     */
-    private BillTypeEnum specificBillType;
 
     /**
      * 单据名称
@@ -40,15 +35,6 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
      * 货物编号
      */
     private String cargoCode;
-
-
-    public BillTypeEnum getSpecificBillType() {
-        return specificBillType;
-    }
-
-    public void setSpecificBillType(BillTypeEnum specificBillType) {
-        this.specificBillType = specificBillType;
-    }
 
     public String getBillName() {
         return billName;

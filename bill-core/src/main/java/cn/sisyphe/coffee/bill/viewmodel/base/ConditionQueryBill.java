@@ -88,6 +88,12 @@ public class ConditionQueryBill extends BaseConditionQuery implements Serializab
      */
     private List<BillSubmitStateEnum> submitStates;
 
+
+    /**
+     * 调拨状态
+      */
+    private BillAllotStatusEnum billAllotState;
+
     /**
      * 审核状态
      */
@@ -273,5 +279,13 @@ public class ConditionQueryBill extends BaseConditionQuery implements Serializab
 
     public void setSpecificBillType(BillTypeEnum specificBillType) {
         this.specificBillType = specificBillType;
+    }
+
+    public BillAllotStatusEnum getBillAllotState() {
+        return billAllotState;
+    }
+
+    public void setBillAllotState(BillAllotStatusEnum billAllotState) {
+        this.billAllotState = billAllotState;
     }
 }
