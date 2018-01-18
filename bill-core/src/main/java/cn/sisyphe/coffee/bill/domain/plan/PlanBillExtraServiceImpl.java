@@ -20,6 +20,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -54,6 +57,13 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
     }
 
     @Override
+    protected void addExtraExpression(ConditionQueryPlanBill conditionQuery, List<Expression<Boolean>> expressions, Root<PlanBill> root, CriteriaBuilder criteriaBuilder) {
+        if (!conditionQuery.getHqBill()) {
+            expressions.add(criteriaBuilder.equal(root.get("hqBill").as(Boolean.class), false));
+        }
+    }
+
+    @Override
     protected Page<PlanBill> pageCondition(ConditionQueryPlanBill conditionQuery, Pageable pageable) {
         if (!conditionQuery.getHqBill()) {
             return super.pageCondition(conditionQuery, pageable);
@@ -64,7 +74,7 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
         StringBuilder sql = new StringBuilder("select p.bill_id, p.create_time, p.update_time, p.version, p.allot_status, p.audit_memo, p.audit_person_code," +
                 "p.audit_state, p.basic_enum, p.belong_station_code, p.bill_code, p.bill_purpose, p.bill_state, p.bill_type, p.in_or_out_state, p.in_ware_house_time, p.operator_code," +
                 " p.in_or_out_state, p.out_storage_memo, p.out_ware_house_time, p.plan_memo, p.root_code, p.source_code, p.submit_state, p.total_amount, p.total_variety_amount, p.bill_name, p.hq_bill," +
-                " p.operation_state, p.specific_bill_type, d.bill_detail_id, d.actual_amount, d.cargo_code, d.raw_material_code, d.package_code, d.shipped_amount, d.in_station_code, d.in_storage_code, d.out_station_code, d.out_storage_code, d.supplier_code, d.bill_code").append(" from plan_bill p left join plan_bill_detail d on p.bill_code = d.bill_code where 1=1 ");
+                " p.operation_state, p.specific_bill_type, d.bill_detail_id, d.actual_amount, d.cargo_code, d.raw_material_code, d.package_code, d.shipped_amount, d.in_station_code, d.in_storage_code, d.out_station_code, d.out_storage_code, d.supplier_code, d.bill_code").append(" from plan_bill p left join plan_bill_detail d on p.bill_code = d.bill_code where p.hq_bill=1 ");
         if (conditionQuery.getSpecificBillType() != null) {
             sql.append(" and p.specific_bill_type = '").append(conditionQuery.getSpecificBillType().name()).append("'");
         }
@@ -222,8 +232,7 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
                 return planBill;
             }
         });
-        Integer totalElements = jdbcTemplate.queryForObject("SELECT DISTINCT count(DISTINCT planbill0_.bill_id) AS col_0_0_ FROM plan_bill planbill0_", Integer.class);
-        return new PageImpl<>(planBills, pageable, totalElements);
+        return new PageImpl<>(planBills, pageable, planBills.size());
 
     }
 }
