@@ -1,11 +1,14 @@
 package cn.sisyphe.coffee.bill.domain.base.model.goods;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by heyong on 2017/12/21 10:45
  * Description: 原料
  *
  * @author heyong
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawMaterial extends AbstractGoods {
 
     /**
