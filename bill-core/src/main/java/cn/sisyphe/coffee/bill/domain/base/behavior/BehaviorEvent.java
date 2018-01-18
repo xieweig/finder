@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.domain.base.behavior;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.framework.ddd.events.BaseDomainEvent;
@@ -20,6 +21,8 @@ public class BehaviorEvent<T extends Bill> extends BaseDomainEvent<T> {
      * 状态
      */
     private BillStateEnum billState;
+
+    private BillInOrOutStateEnum billInOrOutState;
 
     /**
      * 种类
@@ -54,6 +57,14 @@ public class BehaviorEvent<T extends Bill> extends BaseDomainEvent<T> {
 
     public void setBillType(BillTypeEnum billType) {
         this.billType = billType;
+    }
+
+    public BillInOrOutStateEnum getBillInOrOutState() {
+        return billInOrOutState;
+    }
+
+    public void setBillInOrOutState(BillInOrOutStateEnum billInOrOutState) {
+        this.billInOrOutState = billInOrOutState;
     }
 
     @Override
