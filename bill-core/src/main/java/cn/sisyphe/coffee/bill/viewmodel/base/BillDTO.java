@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
+import static ch.lambdaj.Lambda.*;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
@@ -382,7 +383,7 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public void setTotalAmount(Integer totalAmount) {
-        this.totalAmount = totalAmount;
+        this.totalAmount = sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
     }
 
     public Integer getTotalVarietyAmount() {
@@ -390,7 +391,7 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public void setTotalVarietyAmount(Integer totalVarietyAmount) {
-        this.totalVarietyAmount = totalVarietyAmount;
+        this.totalVarietyAmount = billDetails.size();
     }
 
     public String getPlanMemo() {

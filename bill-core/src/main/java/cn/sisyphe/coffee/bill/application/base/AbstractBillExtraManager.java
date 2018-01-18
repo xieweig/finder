@@ -8,10 +8,10 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
@@ -28,7 +28,7 @@ import java.util.List;
 public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> extends AbstractBillManager<T> {
 
     private BillExtraService<T, Q> billExtraService;
-    private SharedManager sharedManager;
+    protected SharedManager sharedManager;
 
     protected BillExtraService<T, Q> getBillExtraService() {
         return billExtraService;
@@ -206,7 +206,8 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     protected D billToListDto(T bill) {
         // 清空明细
         bill.getBillDetails().clear();
-        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
+
+        return billToDto(bill);
     }
 
     /**
@@ -216,7 +217,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @param billDTO
      */
     protected T dtoToBill(T bill, D billDTO) {
-        return JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+        bill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass());
+        BeanUtils.copyProperties(billDTO, bill, "createTime", "billDetails");
+        return bill;
     }
 
     /**
@@ -226,7 +229,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-        return JSON.parseObject(JSON.toJSONString(bill), (Type) (new BillDTO().getClass()));
+        return JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass());
     }
 
 
