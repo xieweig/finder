@@ -4,8 +4,9 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.PlanBillExtraService;
+import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
@@ -36,5 +37,23 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
     public BillTypeEnum billType() {
         return BillTypeEnum.ALLOT;
     }
+
+
+    @Override
+    public AllotBillDTO saveBill(AllotBillDTO billDTO) {
+        AllotBill allotBill = prepareBill(billDTO);
+        allotBill = dtoToBill(allotBill, billDTO);
+        //TODO 生成误差单 唐华玲
+        MistakeBill mistakeBill = new MistakeBill();
+        allotBill.setMistakeBill(mistakeBill);
+
+        allotBill.setMistakeBillCode(mistakeBill.getBillCode());
+        allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
+        purpose(allotBill);
+
+        return billToDto(allotBill);
+    }
+
+
 }
 
