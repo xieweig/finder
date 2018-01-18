@@ -5,17 +5,20 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.deserializer.ExtraProcessable;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.alibaba.fastjson.parser.deserializer.ExtraTypeProvider;
+import com.alibaba.fastjson.parser.deserializer.FieldTypeResolver;
 
 import java.lang.reflect.Type;
 
 /**
  * Created by heyong on 2018/1/18 10:49
  * Description:
+ *
  * @author heyong
  */
-public class DtoToBillExtraProcessor implements ExtraProcessor , ExtraTypeProvider {
+public class DtoToBillExtraProcessor implements ExtraProcessor {
 
     @Override
     public void processExtra(Object target, String name, Object source) {
@@ -26,9 +29,11 @@ public class DtoToBillExtraProcessor implements ExtraProcessor , ExtraTypeProvid
 //            System.err.println(name + "-" + target + "-" + source);
         }
 
-        System.err.println(name + "-" + target + "-" + source);
+        //System.err.println("1 " + name + "-" + target + "-" + source);
     }
 
+
+    @SuppressWarnings("Duplicates")
     private RawMaterial getRawMaterial(JSONObject source) {
         if (source.containsKey("rawMaterialCode")) {
             return JSONObject.parseObject(source.toJSONString(), RawMaterial.class);
@@ -39,10 +44,4 @@ public class DtoToBillExtraProcessor implements ExtraProcessor , ExtraTypeProvid
         }
     }
 
-    @Override
-    public Type getExtraType(Object o, String s) {
-
-        System.out.println(s + " " + o);
-        return null;
-    }
 }

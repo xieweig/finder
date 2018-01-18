@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.base;
 
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
@@ -24,7 +23,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillOutStateEnum.NOT_OUTBOUND;
 
 /**
@@ -379,7 +379,7 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalAmount() {
-        return  sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
+        return sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
     }
 
     public void setTotalAmount(Integer totalAmount) {
@@ -387,7 +387,7 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalVarietyAmount() {
-        return  billDetails.size();
+        return billDetails.size();
     }
 
     public void setTotalVarietyAmount(Integer totalVarietyAmount) {
