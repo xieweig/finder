@@ -10,5 +10,5 @@ import cn.sisyphe.coffee.bill.infrastructure.base.jpa.JpaBillRepository;
  * @description
  */
 public interface JpaPlanBillRepository extends JpaBillRepository<PlanBill> {
-    PlanBill findByBillCodeAndBillType(String billCode, BillTypeEnum billType);
+    PlanBill findByBillCodeAndSpecificBillType(String billCode, BillTypeEnum billType);
 }
