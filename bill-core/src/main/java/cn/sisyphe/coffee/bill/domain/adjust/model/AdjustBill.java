@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.adjust.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -39,31 +38,4 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
     public String billCodePrefix() {
         return "TJCK";
     }
-
-//    /**
-//     * 反序列化单据详情
-//     *
-//     * @param abstractBillDetailDtos
-//     */
-//    @Override
-//    public void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos) {
-//        Set<AdjustBillDetail> adjustBillDetails = new HashSet<AdjustBillDetail>(16);
-//        for (AbstractBillDetailDTO abstractBillDetailDTO : abstractBillDetailDtos) {
-//            if (abstractBillDetailDTO != null) {
-//                AdjustBillDetail adjustBillDetail = new AdjustBillDetail();
-//                adjustBillDetail.unbuild(abstractBillDetailDTO);
-//                adjustBillDetails.add(adjustBillDetail);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 反序列化扩展
-//     *
-//     * @param abstractBillDTO
-//     */
-//    @Override
-//    protected void unbuildExcend(AbstractBillDTO abstractBillDTO) {
-//
-//    }
 }
