@@ -1,29 +1,19 @@
 package cn.sisyphe.coffee.allot;
 
-import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
-import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
-import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
-import cn.sisyphe.coffee.bill.util.BillCodeManager;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDetailDTO;
 import cn.sisyphe.coffee.restock.InstanceIter;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
+
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +23,7 @@ import java.util.Set;
  */
 public class InstanceFactory extends InstanceIter {
 
-    public static final String[] SOURCE_Restock_CODE_={"1516264416977","1516264417008","1516264416970"};
+    protected List<String> sourceRestockList = new ArrayList<>();
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
@@ -47,7 +37,7 @@ public class InstanceFactory extends InstanceIter {
 
 
         dto.setSpecificBillType(BillTypeEnum.RESTOCK);
-        dto.setSourceCode(SOURCE_Restock_CODE_[random.nextInt(SOURCE_Restock_CODE_.length)].trim());
+   //     dto.setSourceCode(SOURCE_Allot_CODE[random.nextInt(SOURCE_Allot_CODE.length)].trim());
 
 
         dto.setAllotStatus(BillAllotStatusEnum.values()[random.nextInt(BillAllotStatusEnum.values().length)]);
