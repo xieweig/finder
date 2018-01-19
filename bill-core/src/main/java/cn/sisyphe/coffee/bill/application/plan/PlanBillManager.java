@@ -93,10 +93,6 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
             conditionQueryPlanBill.setOperatorCodeList(userCodeList);
         }
 
-        if (specificBillType != null) {
-            // TODO: 2018/1/17 增加特别类型
-            //conditionQueryPlanBill
-        }
         //将specificType转为List
         List<BillTypeEnum> specificBillTypes = new ArrayList<>();
         specificBillTypes.add(specificBillType);
