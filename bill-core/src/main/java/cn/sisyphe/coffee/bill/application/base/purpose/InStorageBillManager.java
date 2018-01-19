@@ -44,7 +44,8 @@ public class InStorageBillManager {
      */
     @SuppressWarnings("unchecked")
     public Bill allotedForInStorageBill(Bill bill) {
-        AbstractBillManager billManager = BillManagerFactory.getManager(bill.getBillType());
+        //这里收到的是一个调拨单,但表单的specificBillType为入库单的类型
+        AbstractBillManager billManager = BillManagerFactory.getManager(bill.getSpecificBillType());
         //调拨单的sourceCode为入库单
         Bill foundBill = billManager.findOneByBillCode(bill.getSourceCode());
         billManager.committed(foundBill);
