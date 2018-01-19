@@ -3,6 +3,8 @@ package cn.sisyphe.coffee.bill.application.base.processor;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillManager;
 import cn.sisyphe.coffee.bill.application.base.BillManagerFactory;
 import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
+import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
@@ -21,6 +23,10 @@ public class BillEventProcessor {
 
     @Autowired
     private InStorageBillManager inStorageBillManager;
+
+
+    @Autowired
+    private MistakeBillManager mistakeBillManager;
 
     /**
      * 审核成功事件
@@ -81,12 +87,14 @@ public class BillEventProcessor {
      * @param event
      */
     @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'IN_SUCCESS'")
-    public void billInSuccess(BehaviorEvent<Bill<BillDetail>> event) {
-        Bill<BillDetail> bill = event.getBill();
+    public void billInSuccess(BehaviorEvent<Bill> event) {
+        Bill bill = event.getBill();
         if (bill != null) {
             if (!StringUtils.isEmpty(bill.getSourceCode())) {
                 //更改入库状态为已调拨
                 inStorageBillManager.allotedForInStorageBill(bill);
+                //更改误差单状态
+                mistakeBillManager.callbackMistakeBill(((AllotBill)bill).getMistakeBillCode());
 
             }
 
@@ -100,7 +108,7 @@ public class BillEventProcessor {
      * @param event
      */
     @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'IN_FAILURE'")
-    public void billInFail(BehaviorEvent<Bill<BillDetail>> event) {
+    public void billInFail(BehaviorEvent<Bill> event) {
         Bill<BillDetail> bill = event.getBill();
     }
 }
