@@ -20,5 +20,5 @@ public interface PlanBillExtraService extends BillExtraService<PlanBill, Conditi
 
     Page<PlanBill> findChildPlanBillBy(ConditionQueryPlanBill conditionQueryPlanBill);
 
-    PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType);
+    PlanBill findByBillCodeAndSpecificBillType(String billCode, BillTypeEnum billType);
 }

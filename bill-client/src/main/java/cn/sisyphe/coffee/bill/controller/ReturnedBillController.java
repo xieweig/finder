@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/bill/returned")
 @RestController
 @CrossOrigin(origins = "*")
-@Api(description = "退库相关操作")
+@Api(description = "退货相关操作")
 public class ReturnedBillController extends BillController<ReturnedBill, ReturnedBillDTO, ConditionQueryReturnedBill> {
 
     @Autowired

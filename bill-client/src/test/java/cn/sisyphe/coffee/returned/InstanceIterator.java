@@ -40,7 +40,7 @@ public class InstanceIterator extends InstanceIter{
         }
 
         else{
-            dto.setSpecificBillType(BillTypeEnum.NOPLAN);
+            dto.setSpecificBillType(BillTypeEnum.NO_PLAN);
         }
 
 

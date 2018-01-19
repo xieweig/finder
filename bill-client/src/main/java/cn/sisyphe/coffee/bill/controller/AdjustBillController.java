@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/bill/adjust")
-@Api(description = "调剂计划相关接口")
+@Api(description = "调剂相关接口")
 @CrossOrigin(origins = "*")
 public class AdjustBillController extends BillController<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill> {
 

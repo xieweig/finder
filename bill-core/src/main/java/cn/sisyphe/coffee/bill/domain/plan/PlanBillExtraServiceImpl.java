@@ -52,8 +52,8 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
     }
 
     @Override
-    public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
-        return ((PlanBillRepository) getBillRepository()).findByBillCodeAndType(billCode, billType);
+    public PlanBill findByBillCodeAndSpecificBillType(String billCode, BillTypeEnum billType) {
+        return ((PlanBillRepository) getBillRepository()).findByBillCodeAndSpecificBillType(billCode, billType);
     }
 
     @Override
