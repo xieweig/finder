@@ -40,10 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.by;
-import static ch.lambdaj.Lambda.group;
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sum;
+import static ch.lambdaj.Lambda.*;
 
 /**
  * 计划单据manager
@@ -72,7 +69,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 查询子计划单
      *
-     * @param billCode 单号
+     * @param billCode     单号
      * @param billTypeEnum 单据类型
      * @return 子计划单据
      */
@@ -100,7 +97,10 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
             // TODO: 2018/1/17 增加特别类型
             //conditionQueryPlanBill
         }
-
+        //将specificType转为List
+        List<BillTypeEnum> specificBillTypes = new ArrayList<>();
+        specificBillTypes.add(specificBillType);
+        conditionQueryPlanBill.setSpecificBillType(specificBillTypes);
         Page<PlanBill> billPage = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
 
         return billPage.map(planBill -> mapChildPlanBillToDTO(planBill));
@@ -114,9 +114,10 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 审核通过否
-     *  @param billCode        单据编码
+     *
+     * @param billCode        单据编码
      * @param auditPersonCode 审核人编码
-     * @param isSuccess 是否审核成功
+     * @param isSuccess       是否审核成功
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
@@ -134,7 +135,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 将前端传过来的数据进行转换
-     * @param planBill 计划单
+     *
+     * @param planBill    计划单
      * @param planBillDTO 前端DTO
      */
     private void map(PlanBill planBill, PlanBillDTO planBillDTO) {

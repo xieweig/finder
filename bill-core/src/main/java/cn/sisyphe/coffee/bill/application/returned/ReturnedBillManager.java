@@ -37,4 +37,6 @@ public class ReturnedBillManager extends AbstractBillExtraManager<ReturnedBill, 
     public BillTypeEnum billType() {
         return BillTypeEnum.RETURNED;
     }
+
+
 }

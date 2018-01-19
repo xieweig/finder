@@ -9,4 +9,6 @@ import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
  */
 public interface ReturnedBillExtraService extends BillExtraService<ReturnedBill, ConditionQueryReturnedBill> {
 
+
+
 }

@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.returned;
 
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
 
@@ -17,15 +18,15 @@ public class ReturnedBillDTO extends BillDTO<ReturnedBillDetailDTO> {
     }
 
     /**
-     * 总价
+     * 供应商
      */
-    private BigDecimal totalPrice;
+    private Supplier supplier;
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 }
