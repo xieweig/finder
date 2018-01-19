@@ -7,8 +7,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
 import cn.sisyphe.coffee.restock.InstanceIter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
@@ -46,7 +44,7 @@ public class InstanceIterat extends InstanceIter{
         }
 
         else{
-            dto.setSpecificBillType(BillTypeEnum.NOPLAN);
+            dto.setSpecificBillType(BillTypeEnum.NO_PLAN);
         }
 
 

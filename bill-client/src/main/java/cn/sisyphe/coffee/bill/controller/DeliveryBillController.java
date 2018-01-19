@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("/api/bill/delivery")
-@Api(description = "配送计划相关接口")
+@Api(description = "配送相关接口")
 @CrossOrigin(origins = "*")
 public class DeliveryBillController extends BillController<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> {
 

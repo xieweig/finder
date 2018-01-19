@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author bifenglin
  * @Date 2018/1/12
- * @description
+ * @description 只限于其它调拨功能，（流转相关调拨功能包含在 cn.sisyphe.coffee.bill.controller.base.BillController）
  */
 @RestController
 @RequestMapping("/api/bill/allot")

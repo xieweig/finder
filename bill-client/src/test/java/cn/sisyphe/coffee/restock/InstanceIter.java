@@ -1,13 +1,10 @@
 package cn.sisyphe.coffee.restock;
 
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-import cn.sisyphe.coffee.bill.domain.base.purpose.BillPurpose;
-import cn.sisyphe.coffee.bill.util.BillCodeManager;
 
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
@@ -15,8 +12,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -60,7 +55,7 @@ public class InstanceIter {
         }
 
         else{
-            dto.setSpecificBillType(BillTypeEnum.NOPLAN);
+            dto.setSpecificBillType(BillTypeEnum.NO_PLAN);
         }
 
 

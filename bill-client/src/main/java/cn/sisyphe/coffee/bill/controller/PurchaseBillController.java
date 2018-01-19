@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/api/bill/purchase")
 @RestController
-@Api(description = "进货入库单相关接口")
+@Api(description = "进货相关接口")
 @CrossOrigin(origins = "*")
 public class PurchaseBillController extends BillController<PurchaseBill, PurchaseBillDTO, ConditionQueryPurchaseBill> {
 
