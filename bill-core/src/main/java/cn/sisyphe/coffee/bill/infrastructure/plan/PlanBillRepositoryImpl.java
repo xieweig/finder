@@ -22,7 +22,7 @@ public class PlanBillRepositoryImpl extends AbstractBillRepository<PlanBill> imp
     }
 
     @Override
-    public PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType) {
+    public PlanBill findByBillCodeAndSpecificBillType(String billCode, BillTypeEnum billType) {
         return ((JpaPlanBillRepository) getJpaBillRepository()).findByBillCodeAndSpecificBillType(billCode, billType);
     }
 }

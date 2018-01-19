@@ -11,5 +11,5 @@ import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
  */
 public interface PlanBillRepository extends BillRepository<PlanBill> {
 
-    PlanBill findByBillCodeAndType(String billCode, BillTypeEnum billType);
+    PlanBill findByBillCodeAndSpecificBillType(String billCode, BillTypeEnum billType);
 }
