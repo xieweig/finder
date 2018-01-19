@@ -32,7 +32,7 @@ import static cn.sisyphe.coffee.bill.util.Constant.STORAGE_TYPE_WCK;
 
 /**
  * @author Amy on 2018/1/18.
- *         describe：
+ * describe：
  */
 @Service
 public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill> {
@@ -115,13 +115,6 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         if (allotBill == null) {
             throw new DataException("60006", "调拨单信息不能为空");
         }
-        if (StringUtils.isEmpty(allotBill.getBillCode())) {
-            throw new DataException("60007", "调拨单编号不能为空");
-        }
-        MistakeBill mistakeBill = getBillExtraService().findBySourceCode(allotBill.getBillCode());
-        if (mistakeBill != null) {
-            throw new DataException("60008", "该调拨单已存在关联误差单");
-        }
         if (allotBill.getBillDetails() == null || allotBill.getBillDetails().size() <= 0) {
             throw new DataException("60009", "调拨单明细不能为空");
         }
@@ -153,7 +146,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         Station inStation = new Station();
         Storage inStorage = new Storage();
         //查询出该站点的误差库位信息
-        TempStorage tempStorage = new TempStorage(STORAGE_NAME_WCK,STORAGE_TYPE_WCK);
+        TempStorage tempStorage = new TempStorage(STORAGE_NAME_WCK, STORAGE_TYPE_WCK);
         //设置库位信息
         inStorage.setStorageCode(tempStorage.getTempStorageCode());
         inStorage.setStorageName(tempStorage.getTempStorageName());
