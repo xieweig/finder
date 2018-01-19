@@ -23,7 +23,7 @@ public class NewDeliveryTest extends  InstanceIterat{
 
     @Test
     public void saveDTO(){
-        for (int i = 0; i <6; i++) {
+        for (int i = 0; i <16; i++) {
             deliveryBillManager.saveBill(this.nextRandomAddDeliveryBillDTO(random.nextInt(3)+1));
 
         }

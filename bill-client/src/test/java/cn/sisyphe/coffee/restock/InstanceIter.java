@@ -26,9 +26,9 @@ public class InstanceIter {
 
     public static final String[] STORAGES = {"NORMAL","STORAGE","IN_STORAGE","OUT_STORAGE",
             "ON_STORAGE","RESERVE_STORAGE","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL","NORMAL"};
-    public static  String[] ROOT_CODES = {"1516245948146","1516245948236","1516246340102"};
+    public static  String[] ROOT_CODES = {"1516332546264","1516332546238","1516332546228"};
 
-    public static final String[] SOURCE_CODES_FOR_RESTOCK = {"1516245948146","1516245948236","1516246340102"};
+    public static final String[] SOURCE_CODES_FOR_RESTOCK = {"1516332546264","1516332546238","1516332546228"};
     public static final String[] OPERATIONCODE={"YGADMIN"};
     //用来添加货物和原料对应名称 请如下添加 “原料=货物”
     public static final List<String> detailList = new ArrayList();

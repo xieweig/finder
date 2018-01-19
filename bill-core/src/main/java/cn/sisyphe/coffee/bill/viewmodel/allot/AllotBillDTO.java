@@ -38,6 +38,8 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
      */
     private String mistakeBillCode;
 
+    private Boolean otherAllot = false;
+
     public String getAllotMemo() {
         return allotMemo;
     }
@@ -77,5 +79,13 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
 
     public void setMistakeBillCode(String mistakeBillCode) {
         this.mistakeBillCode = mistakeBillCode;
+    }
+
+    public Boolean getOtherAllot() {
+        return otherAllot;
+    }
+
+    public void setOtherAllot(Boolean otherAllot) {
+        this.otherAllot = otherAllot;
     }
 }

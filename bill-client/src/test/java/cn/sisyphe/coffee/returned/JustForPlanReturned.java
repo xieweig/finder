@@ -2,15 +2,8 @@ package cn.sisyphe.coffee.returned;
 
 
 import cn.sisyphe.coffee.bill.CoreApplication;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 
-import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 import cn.sisyphe.coffee.restock.JustForPlan;
@@ -55,7 +48,7 @@ public class JustForPlanReturned extends JustForPlan {
     }
     @Test
     public void insertTest(){
-        for (int i = 0; i <6 ; i++) {
+        for (int i = 0; i <10 ; i++) {
             this.planBillRepository.save(this.returnedPlanBill());
         }
     }

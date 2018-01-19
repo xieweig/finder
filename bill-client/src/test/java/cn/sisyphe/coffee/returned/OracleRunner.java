@@ -23,7 +23,7 @@ public class OracleRunner extends InstanceIterator{
 
     @Test
     public void saveDTO(){
-        for (int i = 0; i <6; i++) {
+        for (int i = 0; i <16; i++) {
             returnedBillManager.saveBill(this.nextRandomAddReturnedBillDTO(random.nextInt(3)+1));
 
         }

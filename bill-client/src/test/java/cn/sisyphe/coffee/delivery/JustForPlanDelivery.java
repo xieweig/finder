@@ -37,7 +37,7 @@ public class JustForPlanDelivery extends JustForPlan {
     }
     @Test
     public void insertTest(){
-        for (int i = 0; i <6 ; i++) {
+        for (int i = 0; i <16 ; i++) {
             this.planBillRepository.save(this.deliveryPlanBill());
         }
     }
