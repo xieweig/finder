@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import static ch.lambdaj.Lambda.on;
@@ -106,7 +107,7 @@ public class BillDTO<T extends BillDetailDTO> {
     /**
      * 物品明细
      */
-    private Set<T> billDetails;
+    private Set<T> billDetails = new HashSet<>();
 
     /**
      * 单据状态

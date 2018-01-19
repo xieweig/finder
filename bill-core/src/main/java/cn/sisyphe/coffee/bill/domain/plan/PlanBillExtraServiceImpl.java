@@ -23,8 +23,6 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -201,38 +199,45 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
             sql.append(" and p.audit_state in (").append(auditStatesSql.toString()).append(")");
         }
         sql.append(" group by p.bill_id");
-        sql.append(" limit ");
-        if (conditionQuery.getPage() > 1) {
-            sql.append(conditionQuery.getPage() * conditionQuery.getPageSize() - conditionQuery.getPageSize());
-            sql.append(",");
-            sql.append(conditionQuery.getPage() * conditionQuery.getPageSize());
-        } else {
-            sql.append(conditionQuery.getPageSize());
-        }
-
+        String withoutPage = sql.toString();
         System.out.println(sql);
-        List<PlanBill> planBills = jdbcTemplate.query(sql.toString(), new RowMapper<PlanBill>() {
-            @Override
-            public PlanBill mapRow(ResultSet resultSet, int i) throws SQLException {
-                PlanBill planBill = new PlanBill();
-                planBill.setBillId(resultSet.getLong("p.bill_id"));
-                planBill.setCreateTime(resultSet.getDate("p.create_time"));
-                planBill.setUpdateTime(resultSet.getDate("p.update_time"));
-                planBill.setBillName(resultSet.getString("p.bill_name"));
-                planBill.setBillCode(resultSet.getString("p.bill_code"));
-                planBill.setOperatorCode(resultSet.getString("p.operator_code"));
-                planBill.setAuditPersonCode(resultSet.getString("p.audit_person_code"));
-                planBill.setSpecificBillType(BillTypeEnum.valueOf(resultSet.getString("p.specific_bill_type")));
-                planBill.setBasicEnum(BasicEnum.valueOf(resultSet.getString("p.basic_enum")));
-                planBill.setSubmitState(BillSubmitStateEnum.valueOf(resultSet.getString("p.submit_state")));
-                planBill.setAuditState(BillAuditStateEnum.valueOf(resultSet.getString("p.audit_state")));
-                planBill.setAuditMemo(resultSet.getString("p.audit_memo"));
-                planBill.setPlanMemo(resultSet.getString("p.plan_memo"));
-                planBill.setBillState(BillStateEnum.valueOf(resultSet.getString("p.bill_state")));
-                return planBill;
-            }
-        });
-        return new PageImpl<>(planBills, pageable, planBills.size());
+        List<PlanBill> planBills = jdbcTemplate.query(withPage(sql, conditionQuery), getRowMapper());
 
+        long total = jdbcTemplate.query(withoutPage, getRowMapper()).size();
+        return new PageImpl<>(planBills, pageable, total);
+
+    }
+
+    private RowMapper<PlanBill> getRowMapper() {
+        return (resultSet, i) -> {
+            PlanBill planBill = new PlanBill();
+            planBill.setBillId(resultSet.getLong("p.bill_id"));
+            planBill.setCreateTime(resultSet.getDate("p.create_time"));
+            planBill.setUpdateTime(resultSet.getDate("p.update_time"));
+            planBill.setBillName(resultSet.getString("p.bill_name"));
+            planBill.setBillCode(resultSet.getString("p.bill_code"));
+            planBill.setOperatorCode(resultSet.getString("p.operator_code"));
+            planBill.setAuditPersonCode(resultSet.getString("p.audit_person_code"));
+            if (resultSet.getString("p.specific_bill_type") != null) {
+                planBill.setSpecificBillType(BillTypeEnum.valueOf(resultSet.getString("p.specific_bill_type")));
+            }
+            if (resultSet.getString("p.bill_state") != null) {
+                planBill.setBillState(BillStateEnum.valueOf(resultSet.getString("p.bill_state")));
+            }
+            planBill.setBasicEnum(BasicEnum.valueOf(resultSet.getString("p.basic_enum")));
+            planBill.setSubmitState(BillSubmitStateEnum.valueOf(resultSet.getString("p.submit_state")));
+            planBill.setAuditState(BillAuditStateEnum.valueOf(resultSet.getString("p.audit_state")));
+            planBill.setAuditMemo(resultSet.getString("p.audit_memo"));
+            planBill.setPlanMemo(resultSet.getString("p.plan_memo"));
+            return planBill;
+        };
+    }
+
+    private String withPage(StringBuilder sql, ConditionQueryPlanBill conditionQuery) {
+        sql.append(" limit ");
+        sql.append(conditionQuery.getPage() * conditionQuery.getPageSize() - conditionQuery.getPageSize());
+        sql.append(",");
+        sql.append(conditionQuery.getPageSize());
+        return sql.toString();
     }
 }
