@@ -62,7 +62,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 单据类型
      *
-     * @return
+     * @return billType
      */
     @Override
     public BillTypeEnum billType() {
@@ -72,8 +72,9 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 查询子计划单
      *
-     * @param billCode
-     * @return
+     * @param billCode 单号
+     * @param billTypeEnum 单据类型
+     * @return 子计划单据
      */
     public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
         PlanBill planBill = ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
@@ -83,8 +84,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 多条件查询子计划查询
      *
-     * @param conditionQueryPlanBill
-     * @return
+     * @param conditionQueryPlanBill 计划条件查询
+     * @return 查询出来的子计划单据
      */
 
     public Page<ChildPlanBillDTO> findChildPlanBillByCondition(ConditionQueryPlanBill conditionQueryPlanBill, BillTypeEnum specificBillType) {
@@ -115,7 +116,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * 审核通过否
      *  @param billCode        单据编码
      * @param auditPersonCode 审核人编码
-     * @param isSuccess
+     * @param isSuccess 是否审核成功
      */
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
@@ -133,9 +134,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
 
     /**
      * 将前端传过来的数据进行转换
-     *
-     * @param
-     * @return
+     * @param planBill 计划单
+     * @param planBillDTO 前端DTO
      */
     private void map(PlanBill planBill, PlanBillDTO planBillDTO) {
         planBill.getBillDetails().clear();
@@ -162,8 +162,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 如果前端传递过来类型是供应商，则new供应商对象
      *
-     * @param station
-     * @return
+     * @param station 前端站点
+     * @return 供应商或站点
      */
     private AbstractLocation getLocation(Station station) {
         if (StationType.SUPPLIER.equals(station.getStationType())) {
@@ -177,7 +177,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 查询站点信息
      *
-     * @param planBill
+     * @param planBill 计划单
      */
     private void mapForSplit(PlanBill planBill) {
         for (PlanBillDetail planBillDetail : planBill.getBillDetails()) {
@@ -190,8 +190,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
     /**
      * 获取真实站点
      *
-     * @param abstractLocation
-     * @return
+     * @param abstractLocation 数据库站点station
+     * @return cloud查询出来的站点
      */
     private AbstractLocation getRealLocation(AbstractLocation abstractLocation) {
         if (abstractLocation instanceof Station) {
