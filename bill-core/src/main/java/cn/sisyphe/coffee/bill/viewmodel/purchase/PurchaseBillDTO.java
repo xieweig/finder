@@ -52,12 +52,6 @@ public class PurchaseBillDTO extends BillDTO<PurchaseBillDetailDTO> {
      */
     private BigDecimal totalPriceDifferenceAmount;
 
-    /**
-     * 设置单据类型
-     */
-    public PurchaseBillDTO() {
-        setBillType(BillTypeEnum.PURCHASE);
-    }
 
     public String getMemo() {
         return memo;

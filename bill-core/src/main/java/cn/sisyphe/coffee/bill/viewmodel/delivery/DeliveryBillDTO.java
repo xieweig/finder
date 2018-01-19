@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.delivery;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 
 /**
@@ -9,7 +8,4 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
  */
 public class DeliveryBillDTO extends BillDTO<DeliveryBillDetailDTO> {
 
-    public DeliveryBillDTO() {
-        setBillType(BillTypeEnum.DELIVERY);
-    }
 }

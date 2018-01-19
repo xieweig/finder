@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 
 /**
@@ -8,10 +7,6 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
  * Description:
  */
 public class PlanBillDTO extends BillDTO<PlanBillDetailDTO> {
-
-    public PlanBillDTO() {
-        setBillType(BillTypeEnum.PLAN);
-    }
 
     private String billName;
 

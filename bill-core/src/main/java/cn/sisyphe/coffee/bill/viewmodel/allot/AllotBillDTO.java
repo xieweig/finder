@@ -1,6 +1,5 @@
 package cn.sisyphe.coffee.bill.viewmodel.allot;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,10 +8,6 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
-
-    public AllotBillDTO() {
-        setBillType(BillTypeEnum.ALLOT);
-    }
 
     private String allotMemo;
 
