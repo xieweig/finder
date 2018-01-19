@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.inoutself.InOutSelfBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
@@ -44,7 +45,8 @@ public class BillDTOFactory {
                 .addCase(BillTypeEnum.RESTOCK, new RestockBillDTO())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillDTO())
                 .addCase(BillTypeEnum.ALLOT, new AllotBillDTO())
-                .addCase(BillTypeEnum.MISTAKE, new MistakeBillDTO());
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBillDTO())
+                .addCase(BillTypeEnum.IN_OUT_SELF_BILL, new InOutSelfBillDTO());
 
         return switcher.exec(billType);
     }

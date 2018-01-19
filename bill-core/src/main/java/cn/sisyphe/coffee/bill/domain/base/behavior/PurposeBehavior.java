@@ -62,8 +62,6 @@ public class PurposeBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillInOrOutStateEnum inOrOutState() {
-        BillTypeEnum type = getBillService().getBill().getBillType();
-
         return null;
     }
 
