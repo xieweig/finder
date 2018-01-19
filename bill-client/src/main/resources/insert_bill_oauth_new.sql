@@ -136,24 +136,24 @@
 -- 四级（操作）
 -- 总部计划中心BILL001 3001【添加总部计划-BILL001001 3020】
 -- BILL001001 3020<总部计划暂存-BILL001001001 3100>
- VALUES (3100, now(), now(), '0', '4', 'BILL001001001', '总部计划暂存', 'BILL,BILL001,BILL001001,BILL001001001', '/coffeeBill/api/bill/planBill/save', 3020, '\0');
+ VALUES (3100, now(), now(), '0', '4', 'BILL001001001', '总部计划暂存', 'BILL,BILL001,BILL001001,BILL001001001', '/coffeeBill/api/bill/plan/save', 3020, '\0');
 -- BILL001001 3020<总部计划提交-BILL001001002 3101>
- VALUES (3101, now(), now(), '0', '4', 'BILL001001002', '总部计划提交', 'BILL,BILL001,BILL001001,BILL001001002', '/coffeeBill/api/bill/planBill/submit', 3020, '\0');
+ VALUES (3101, now(), now(), '0', '4', 'BILL001001002', '总部计划提交', 'BILL,BILL001,BILL001001,BILL001001002', '/coffeeBill/api/bill/plan/submit', 3020, '\0');
 -- 总部计划中心BILL001 3001【查询总部计划-BILL001002 3021】
 -- BILL001002 3021<条件筛选查询-BILL001002001 3102>
- VALUES (3102, now(), now(), '0', '4', 'BILL001002001', '总部计划条件筛选查询', 'BILL,BILL001,BILL001002,BILL001002001', '/coffeeBill/api/bill/planBill/findPlanByConditions', 3021, '\0');
+ VALUES (3102, now(), now(), '0', '4', 'BILL001002001', '总部计划条件筛选查询', 'BILL,BILL001,BILL001002,BILL001002001', '/coffeeBill/api/bill/plan/hq/findByConditions', 3021, '\0');
 -- BILL001002 3021<查看-BILL001002002 3103>
- VALUES (3103, now(), now(), '0', '4', 'BILL001002002', '总部计划详情查询', 'BILL,BILL001,BILL001002,BILL001002002', '/coffeeBill/api/bill/planBill/findByBillCode', 3021, '\0');
+ VALUES (3103, now(), now(), '0', '4', 'BILL001002002', '总部计划详情查询', 'BILL,BILL001,BILL001002,BILL001002002', '/coffeeBill/api/bill/plan/hq/findByBillCode', 3021, '\0');
 -- BILL001002 3021<打开-BILL001002003 3104>
---  VALUES (3104, now(), now(), '0', '4', 'BILL001002003', '打开总部计划', 'BILL,BILL001,BILL001002,BILL001002003', '/coffeeBill/api/bill/planBill/open', 3021, '\0');
+--  VALUES (3104, now(), now(), '0', '4', 'BILL001002003', '打开总部计划', 'BILL,BILL001,BILL001002,BILL001002003', '/coffeeBill/api/bill/plan/open', 3021, '\0');
 -- BILL001002 3021<审核不通过-BILL001002004 3105>
- VALUES (3105, now(), now(), '0', '4', 'BILL001002004', '总部计划审核不通过', 'BILL,BILL001,BILL001002,BILL001002004', '/coffeeBill/api/bill/planBill/auditFailure', 3021, '\0');
+ VALUES (3105, now(), now(), '0', '4', 'BILL001002004', '总部计划审核不通过', 'BILL,BILL001,BILL001002,BILL001002004', '/coffeeBill/api/bill/plan/auditFailure', 3021, '\0');
 -- BILL001002 3021<审核通过-BILL001002005 3106>
- VALUES (3106, now(), now(), '0', '4', 'BILL001002005', '总部计划审核通过', 'BILL,BILL001,BILL001002,BILL001002005', '/coffeeBill/api/bill/planBill/auditSuccess', 3021, '\0');
+ VALUES (3106, now(), now(), '0', '4', 'BILL001002005', '总部计划审核通过', 'BILL,BILL001,BILL001002,BILL001002005', '/coffeeBill/api/bill/plan/auditSuccess', 3021, '\0');
 -- BILL001002 3021<删除-BILL001002006 3107>
- VALUES (3107, now(), now(), '0', '4', 'BILL001002006', '删除总部计划', 'BILL,BILL001,BILL001002,BILL001002006', '/coffeeBill/api/bill/planBill/delete', 3021, '\0');
+ VALUES (3107, now(), now(), '0', '4', 'BILL001002006', '删除总部计划', 'BILL,BILL001,BILL001002,BILL001002006', '/coffeeBill/api/bill/plan/delete', 3021, '\0');
 -- BILL001002 3021<导出-BILL001002007 3108>
- VALUES (3108, now(), now(), '0', '4', 'BILL001002007', '导出总部计划', 'BILL,BILL001,BILL001002,BILL001002007', '/coffeeBill/api/bill/planBill/downLoad', 3021, '\0');
+ VALUES (3108, now(), now(), '0', '4', 'BILL001002007', '导出总部计划', 'BILL,BILL001,BILL001002,BILL001002007', '/coffeeBill/api/bill/plan/downLoad', 3021, '\0');
 
 -- 进货BILL002 3002【进货录单-BILL002001 3022】
 -- BILL002001 3022<暂存-BILL002001001 3110>

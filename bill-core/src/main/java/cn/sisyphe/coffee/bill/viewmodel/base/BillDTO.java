@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import static ch.lambdaj.Lambda.on;
@@ -51,6 +52,7 @@ public class BillDTO<T extends BillDetailDTO> {
     /**
      * 单据种类
      */
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private BillTypeEnum billType;
     /**
@@ -106,7 +108,7 @@ public class BillDTO<T extends BillDetailDTO> {
     /**
      * 物品明细
      */
-    private Set<T> billDetails;
+    private Set<T> billDetails = new HashSet<>();
 
     /**
      * 单据状态
@@ -200,17 +202,6 @@ public class BillDTO<T extends BillDetailDTO> {
     @Enumerated(value = EnumType.STRING)
     private BillAllotStatusEnum allotStatus;
 
-    /**
-     * 单据编码前缀
-     */
-    private String billCodePrefix;
-
-
-    /**
-     * 差错单
-     */
-    @JsonIgnore
-    private MistakeBill mistakeBill;
 
     public Date getCreateTime() {
         return createTime;
@@ -381,7 +372,12 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalAmount() {
-        return sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
+        if (this.billDetails != null){
+            return sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
+        } else {
+            return 0;
+        }
+
     }
 
     public void setTotalAmount(Integer totalAmount) {
@@ -389,10 +385,15 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalVarietyAmount() {
-        return billDetails.size();
+        if (this.billDetails != null) {
+            return billDetails.size();
+        } else {
+            return 0;
+        }
     }
 
     public void setTotalVarietyAmount(Integer totalVarietyAmount) {
+
         this.totalVarietyAmount = totalVarietyAmount;
     }
 
@@ -452,19 +453,4 @@ public class BillDTO<T extends BillDetailDTO> {
         this.allotStatus = allotStatus;
     }
 
-    public String getBillCodePrefix() {
-        return billCodePrefix;
-    }
-
-    public void setBillCodePrefix(String billCodePrefix) {
-        this.billCodePrefix = billCodePrefix;
-    }
-
-    public MistakeBill getMistakeBill() {
-        return mistakeBill;
-    }
-
-    public void setMistakeBill(MistakeBill mistakeBill) {
-        this.mistakeBill = mistakeBill;
-    }
 }

@@ -1,7 +1,7 @@
 //package cn.sisyphe.coffee.bill;
 //
 //import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
-//import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+//import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.beans.factory.annotation.Autowired;

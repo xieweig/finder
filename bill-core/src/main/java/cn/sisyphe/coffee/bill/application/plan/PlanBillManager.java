@@ -24,9 +24,9 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.PlanBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -93,10 +93,6 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
             conditionQueryPlanBill.setOperatorCodeList(userCodeList);
         }
 
-        if (specificBillType != null) {
-            // TODO: 2018/1/17 增加特别类型
-            //conditionQueryPlanBill
-        }
         //将specificType转为List
         List<BillTypeEnum> specificBillTypes = new ArrayList<>();
         specificBillTypes.add(specificBillType);

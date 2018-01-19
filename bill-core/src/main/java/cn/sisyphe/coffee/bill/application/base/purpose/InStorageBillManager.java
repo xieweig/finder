@@ -12,8 +12,14 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.ADJUST;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.DELIVERY;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RESTOCK;
 
 /**
  * @author ncmao
@@ -28,12 +34,14 @@ public class InStorageBillManager {
      * @param outStorageBill 出库单
      */
     @SuppressWarnings("unchecked")
-    public Bill convertInStorageBill(Bill outStorageBill) {
+    public void convertInStorageBill(Bill outStorageBill) {
+        if (!fullFlow().contains(outStorageBill.getBillType())) {
+            return;
+        }
         Bill inBill = generateBill(outStorageBill, BillPurposeEnum.IN_STORAGE);
         inBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
         AbstractBillManager billManager = BillManagerFactory.getManager(inBill.getBillType());
         billManager.purpose(inBill);
-        return inBill;
     }
 
     /**
@@ -102,6 +110,10 @@ public class InStorageBillManager {
         bill.setBillDetails(details);
 
         return bill;
+    }
+
+    public static List<BillTypeEnum> fullFlow() {
+        return Arrays.asList(DELIVERY, ADJUST, RESTOCK);
     }
 
 }

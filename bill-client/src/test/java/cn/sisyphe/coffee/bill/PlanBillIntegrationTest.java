@@ -20,7 +20,7 @@
 //import cn.sisyphe.coffee.bill.infrastructure.plan.PlanBillRepository;
 //import cn.sisyphe.coffee.bill.viewmodel.plan.AuditPlanBillDTO;
 //import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
-//import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+//import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.beans.factory.annotation.Autowired;
