@@ -34,11 +34,6 @@ public class PurchaseBillDetail extends BillDetail {
     private BigDecimal unitPrice;
 
     /**
-     * 发货数量
-     */
-    private int shippedNumber;
-
-    /**
      * 数量差值
      */
     private int differenceNumber;
@@ -64,14 +59,6 @@ public class PurchaseBillDetail extends BillDetail {
         this.unitPrice = unitPrice;
     }
 
-    public int getShippedNumber() {
-        return shippedNumber;
-    }
-
-    public void setShippedNumber(int shippedNumber) {
-        this.shippedNumber = shippedNumber;
-    }
-
     public int getDifferenceNumber() {
         return differenceNumber;
     }
@@ -93,7 +80,6 @@ public class PurchaseBillDetail extends BillDetail {
         return "PurchaseBillDetail{" +
                 ", dateInProduced=" + dateInProduced +
                 ", unitPrice=" + unitPrice +
-                ", shippedNumber=" + shippedNumber +
                 ", differenceNumber=" + differenceNumber +
                 ", differencePrice=" + differencePrice +
                 "} " + super.toString();

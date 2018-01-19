@@ -41,4 +41,13 @@ public final class Constant {
      */
     public static final String IN_STORAGE_OFFSET_DONE = "IN_STORAGE_OFFSET_DONE";
 
+    /**
+     * 库位类型-误差库类型
+     */
+    public static final String STORAGE_TYPE_WCK = "WCK";
+    /**
+     * 库位名称-误差库名称
+     */
+    public static final String STORAGE_NAME_WCK = "误差库";
+
 }

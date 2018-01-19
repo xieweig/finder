@@ -8,6 +8,8 @@ import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
+import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
@@ -39,7 +41,8 @@ public class BillFactory {
                 .addCase(BillTypeEnum.RETURNED, new ReturnedBill())
                 .addCase(BillTypeEnum.RESTOCK, new RestockBill())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBill())
-                .addCase(BillTypeEnum.ALLOT, new AllotBill());
+                .addCase(BillTypeEnum.ALLOT, new AllotBill())
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBill());
 
         return switcher.exec(billType);
     }
@@ -53,7 +56,8 @@ public class BillFactory {
                 .addCase(BillTypeEnum.RETURNED, new ReturnedBillDetail())
                 .addCase(BillTypeEnum.RESTOCK, new RestockBillDetail())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillDetail())
-                .addCase(BillTypeEnum.ALLOT, new AllotBillDetail());
+                .addCase(BillTypeEnum.ALLOT, new AllotBillDetail())
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBillDetail());
 
         return switcher.exec(billType);
     }

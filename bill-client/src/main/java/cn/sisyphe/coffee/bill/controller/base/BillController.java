@@ -3,11 +3,8 @@ package cn.sisyphe.coffee.bill.controller.base;
 import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
-import cn.sisyphe.coffee.bill.application.restock.RestockBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
@@ -243,7 +240,11 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 //            billDTO.setOperatorCode(loginInfo.getOperatorCode());
         //测试使用
         //billDTO.setOperatorCode("test0001");
-        responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO).getBillCode());
+        try {
+            responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO).getBillCode());
+        }catch (DataException date){
+            responseResult.putException(date);
+        }
 
         return responseResult;
     }
@@ -273,8 +274,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult submit(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            billDTO.setOperatorCode(loginInfo.getOperatorCode());
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            billDTO.setOperatorCode("xxxxxx00001");
             //addAdjustBillDTO.setOperatorCode("test0001");
             responseResult.put("billCode", abstractBillExtraManager.submitBill(billDTO).getBillCode());
         } catch (DataException data) {
@@ -307,8 +308,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult open(HttpServletRequest request, @RequestParam(value = "billCode") String billCode) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            responseResult.put("bill", abstractBillExtraManager.openBill(billCode, loginInfo.getOperatorCode()));
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            responseResult.put("bill", abstractBillExtraManager.openBill(billCode, "hhhs"));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -326,8 +327,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult auditFailure(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), false));
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(),"auditFailure001", billDTO.getAuditMemo(), false));
         } catch (DataException data) {
             responseResult.putException(data);
         }
@@ -345,8 +346,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), true));
+//            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), "auditSuccess001", billDTO.getAuditMemo(), true));
         } catch (DataException data) {
             responseResult.putException(data);
         }
