@@ -39,15 +39,14 @@ public class InStorageBillManager {
     /**
      * 更新入库单状态为已调拨
      *
-     * @param bill 入库单
+     * @param inStorageBillCode 入库单
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill allotedForInStorageBill(Bill bill) {
-        //这里收到的是一个调拨单,但表单的specificBillType为入库单的类型
-        AbstractBillManager billManager = BillManagerFactory.getManager(bill.getSpecificBillType());
+    public Bill allotedForInStorageBill(String inStorageBillCode, BillTypeEnum inStorageBillType) {
+        AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
         //调拨单的sourceCode为入库单
-        Bill foundBill = billManager.findOneByBillCode(bill.getSourceCode());
+        Bill foundBill = billManager.findOneByBillCode(inStorageBillCode);
         billManager.committed(foundBill);
         return foundBill;
     }
@@ -55,14 +54,14 @@ public class InStorageBillManager {
     /**
      * 更新入库单状态为调拨中
      *
-     * @param billCode          入库单
+     * @param inStorageBillCode 入库单
      * @param inStorageBillType
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill committing(String billCode, BillTypeEnum inStorageBillType) {
+    public Bill committing(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
-        Bill foundBill = billManager.findOneByBillCode(billCode);
+        Bill foundBill = billManager.findOneByBillCode(inStorageBillCode);
         billManager.committing(foundBill);
         return foundBill;
     }

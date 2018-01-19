@@ -34,7 +34,7 @@ public class BillEventProcessor {
      * @param event
      */
     @EventListener(condition = "#event.billState.toString() == 'AUDIT_SUCCESS'")
-    public void billSuccess(BehaviorEvent<Bill<BillDetail>> event) {
+    public void billSuccess(BehaviorEvent<Bill> event) {
 
         System.err.println("AUDIT_SUCCESS:" + event.getBill());
 
@@ -52,7 +52,7 @@ public class BillEventProcessor {
      * @param event
      */
     @EventListener(condition = "#event.billInOrOutState != null && #event.billInOrOutState.toString() == 'OUT_SUCCESS'")
-    public void billOutSuccess(BehaviorEvent<Bill<BillDetail>> event) {
+    public void billOutSuccess(BehaviorEvent<Bill> event) {
         Bill<BillDetail> bill = event.getBill();
         if (bill != null) {
             AbstractBillManager<Bill> manager = BillManagerFactory.getManager(bill.getBillType());
@@ -92,7 +92,7 @@ public class BillEventProcessor {
         if (bill != null) {
             if (!StringUtils.isEmpty(bill.getSourceCode())) {
                 //更改入库状态为已调拨
-                inStorageBillManager.allotedForInStorageBill(bill);
+                inStorageBillManager.allotedForInStorageBill(bill.getSourceCode(), bill.getSpecificBillType());
                 //更改误差单状态
                 mistakeBillManager.callbackMistakeBill(((AllotBill)bill).getMistakeBillCode());
 

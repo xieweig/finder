@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
 import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,10 +46,10 @@ public class AdjustBillIntegrationTest {
     @Test
     public void shouldGenerateOutStorageBillAfterOffsetDone() {
 
-        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801206TK000001");
-        Bill inStorageBill = inStorageBillManager.convertInStorageBill(adjustBill);
-        inStorageBillManager.committing(inStorageBill.getBillCode(), inStorageBill.getBillType());
-        inStorageBillManager.allotedForInStorageBill(inStorageBill);
+        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCKGB01201801906GO000001");
+//        Bill inStorageBill = inStorageBillManager.convertInStorageBill(adjustBill);
+//        inStorageBillManager.committing(adjustBill.getBillCode(), adjustBill.getBillType());
+        inStorageBillManager.allotedForInStorageBill("TJCKCKGB01201801906GO000001", BillTypeEnum.ADJUST);
     }
 
 
@@ -58,6 +59,13 @@ public class AdjustBillIntegrationTest {
 
         BehaviorEvent<Bill> billBehaviorEvent = new BehaviorEvent<Bill>(allotBill);
         billEventProcessor.billInSuccess(billBehaviorEvent);
+    }
+
+    @Test
+    public void shouldUpdateOutStorageStatusToSuccessAndGenerateINstorageBill() {
+        Bill adjustBill = adjustBillManager.findOneByBillCode("TJCKnull20180190ABS000001");
+        BehaviorEvent<Bill> billBehaviorEvent = new BehaviorEvent<Bill>(adjustBill);
+        billEventProcessor.billOutSuccess(billBehaviorEvent);
     }
 //
 //
