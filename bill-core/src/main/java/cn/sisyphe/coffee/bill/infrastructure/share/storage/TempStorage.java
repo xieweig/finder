@@ -44,6 +44,14 @@ public class TempStorage {
      */
     private Long version;
 
+    public TempStorage() {
+    }
+
+    public TempStorage(String tempStorageName, String storageType) {
+        this.tempStorageName = tempStorageName;
+        this.storageType = storageType;
+    }
+
     public String getStorageType() {
         return storageType;
     }

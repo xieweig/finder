@@ -33,6 +33,11 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
      */
     private String inStorageBillOutStationCode;
 
+    /**
+     * 误差单号
+     */
+    private String mistakeBillCode;
+
     public String getAllotMemo() {
         return allotMemo;
     }
@@ -64,5 +69,13 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
 
     public void setInStorageBillOutStationCode(String inStorageBillOutStationCode) {
         this.inStorageBillOutStationCode = inStorageBillOutStationCode;
+    }
+
+    public String getMistakeBillCode() {
+        return mistakeBillCode;
+    }
+
+    public void setMistakeBillCode(String mistakeBillCode) {
+        this.mistakeBillCode = mistakeBillCode;
     }
 }
