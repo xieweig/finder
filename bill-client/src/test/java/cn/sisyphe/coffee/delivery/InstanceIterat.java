@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class InstanceIterat extends InstanceIter{
     //请先运行for plan 插入plan数据，之后替换下面，可能需要注释掉send event
-    public static final String[] SOURCE_CODE_FOR_DELIVERY={"1516264416977","1516264417008","1516264416970"};
+    public static final String[] SOURCE_CODE_FOR_DELIVERY={"1516333029581","1516333029561","1516333029539"};
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
