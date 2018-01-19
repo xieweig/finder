@@ -1,8 +1,5 @@
 package cn.sisyphe.coffee.bill.amqp;
 
-import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
-import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
-import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.util.Constant;
@@ -24,12 +21,7 @@ public class ReceiverService {
 
 
     @Autowired
-    private InStorageBillManager inStorageBillManager;
-
-    @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-    @Autowired
-    private MistakeBillManager mistakeBillManager;
 
     /**
      * 日志
@@ -65,8 +57,6 @@ public class ReceiverService {
             BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
             //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
             applicationEventPublisher.publishEvent(behaviorEvent);
-            //更改误差单状态
-            mistakeBillManager.callbackMistakeBill(((AllotBill)bill).getMistakeBillCode());
         }
     }
 }

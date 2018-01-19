@@ -1,65 +1,64 @@
-//package cn.sisyphe.coffee.adjust;
-//
-//import cn.sisyphe.coffee.bill.ClientApplication;
-//import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
-//import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
-//import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
-//import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
-//import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
-//import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-//import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
-//import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-//import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
-//import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
-//import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
-//import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDTO;
-//import cn.sisyphe.coffee.bill.viewmodel.adjust.AddAdjustBillDetailDTO;
-//import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
-//import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
-//import cn.sisyphe.coffee.bill.viewmodel.adjust.QueryOneAdjustDTO;
-//import cn.sisyphe.coffee.bill.domain.base.model.enums.SourcePlanTypeEnum;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.data.domain.Page;
-//import org.springframework.test.context.junit4.SpringRunner;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-///**
-// * @Date 2018/1/10 10:03
-// * @description
-// */
-//
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(classes = ClientApplication.class)
-//public class AdjustBillIntegrationTest {
-//
-//    @Autowired
-//    private InStorageBillManager inStorageBillManager;
-//
-//    @Autowired
-//    private AllotBillManager allotBillManager;
-//
-//    @Autowired
-//    private AdjustBillExtraService adjustBillExtraService;
-//
-//    @Autowired
-//    private AdjustBillManager adjustBillManager;
-//
-//    @Autowired
-//    private RestockBillExtraService restockBillExtraService;
-//
-//
-//    @Test
-//    public void shouldGenerateOutStorageBillAfterOffsetDone() {
-//        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801206TK000001");
-//        Bill inStorageBill = inStorageBillManager.convertInStorageBill(adjustBill);
-//        inStorageBillManager.committing(inStorageBill.getBillCode(), inStorageBill.getBillType());
-//        inStorageBillManager.allotedForInStorageBill(inStorageBill);
-//    }
+package cn.sisyphe.coffee.adjust;
+
+import cn.sisyphe.coffee.bill.ClientApplication;
+import cn.sisyphe.coffee.bill.application.adjust.AdjustBillManager;
+import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
+import cn.sisyphe.coffee.bill.application.base.processor.BillEventProcessor;
+import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
+import cn.sisyphe.coffee.bill.domain.adjust.AdjustBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
+import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.restock.RestockBillExtraService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+/**
+ * @Date 2018/1/10 10:03
+ * @description
+ */
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ClientApplication.class)
+public class AdjustBillIntegrationTest {
+
+    @Autowired
+    private InStorageBillManager inStorageBillManager;
+
+    @Autowired
+    private AllotBillManager allotBillManager;
+
+    @Autowired
+    private AdjustBillExtraService adjustBillExtraService;
+
+    @Autowired
+    private AdjustBillManager adjustBillManager;
+
+    @Autowired
+    private RestockBillExtraService restockBillExtraService;
+
+    @Autowired
+    private BillEventProcessor billEventProcessor;
+
+    @Test
+    public void shouldGenerateOutStorageBillAfterOffsetDone() {
+
+        Bill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801206TK000001");
+        Bill inStorageBill = inStorageBillManager.convertInStorageBill(adjustBill);
+        inStorageBillManager.committing(inStorageBill.getBillCode(), inStorageBill.getBillType());
+        inStorageBillManager.allotedForInStorageBill(inStorageBill);
+    }
+
+
+    @Test
+    public void shouldUpdateInStorageBillToAllot() {
+        Bill allotBill = allotBillManager.findOneByBillCode("ALLOnull20180190H28000002");
+
+        BehaviorEvent<Bill> billBehaviorEvent = new BehaviorEvent<Bill>(allotBill);
+        billEventProcessor.billInSuccess(billBehaviorEvent);
+    }
 //
 //
 //
@@ -553,4 +552,4 @@
 //        AdjustBill adjustBill = adjustBillExtraService.findByBillCode("TJCKCQ05201801105JC000001");
 //        System.out.println(adjustBill.getBillCode());
 //    }
-//}
+}
