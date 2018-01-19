@@ -381,7 +381,12 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalAmount() {
-        return sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
+        if (this.billDetails != null){
+            return sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
+        } else {
+            return 0;
+        }
+
     }
 
     public void setTotalAmount(Integer totalAmount) {
@@ -389,10 +394,15 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalVarietyAmount() {
-        return billDetails.size();
+        if (this.billDetails != null) {
+            return billDetails.size();
+        } else {
+            return 0;
+        }
     }
 
     public void setTotalVarietyAmount(Integer totalVarietyAmount) {
+
         this.totalVarietyAmount = totalVarietyAmount;
     }
 

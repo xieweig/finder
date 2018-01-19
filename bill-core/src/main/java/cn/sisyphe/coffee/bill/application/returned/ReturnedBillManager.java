@@ -51,18 +51,11 @@ public class ReturnedBillManager extends AbstractBillExtraManager<ReturnedBill, 
     }
 
     @Override
-    protected ReturnedBillDTO billToListDto(ReturnedBill bill) {
-        ReturnedBillDTO returnedBillDTO = super.billToListDto(bill);
-        returnedBillDTO.setSupplier((Supplier) bill.getInLocation());
+    protected ReturnedBillDTO billToDto(ReturnedBill bill) {
+        ReturnedBillDTO returnedBillDTO = super.billToDto(bill);
+       if (bill.getInLocation() instanceof Supplier){
+           returnedBillDTO.setSupplier((Supplier) bill.getInLocation());
+       }
         return returnedBillDTO;
     }
-//
-//    @Override
-//    protected ReturnedBillDTO billToDto(ReturnedBill bill) {
-//        ReturnedBillDTO returnedBillDTO = super.billToDto();
-//       if (bill.getInLocation() instanceof Supplier){
-//           returnedBillDTO.setSupplier((Supplier) bill.getInLocation());
-//       }
-//        return returnedBillDTO;
-//    }
 }
