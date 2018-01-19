@@ -28,6 +28,7 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
     public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, SharedManager sharedManager) {
         super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
     }
+
     @Autowired
     private MistakeBillManager mistakeBillManager;
 
@@ -46,15 +47,29 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
     public AllotBillDTO saveBill(AllotBillDTO billDTO) {
         AllotBill allotBill = prepareBill(billDTO);
         allotBill = dtoToBill(allotBill, billDTO);
+        attachMistakeBill(allotBill, billDTO);
+        allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
+        purpose(allotBill);
+
+        return billToDto(allotBill);
+    }
+
+    /**
+     * 将误差单attach到调拨单中
+     *
+     * @param allotBill 调拨单
+     * @param billDTO   调拨单DTO
+     */
+    private void attachMistakeBill(AllotBill allotBill, AllotBillDTO billDTO) {
+        //如果是其他调拨这不用生成误差单
+        if (billDTO.getOtherAllot()) {
+            return;
+        }
         //生成误差单
         MistakeBill mistakeBill = mistakeBillManager.submitByAllotBill(allotBill);
         allotBill.setMistakeBill(mistakeBill);
 
         allotBill.setMistakeBillCode(mistakeBill.getBillCode());
-        allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
-        purpose(allotBill);
-
-        return billToDto(allotBill);
     }
 
 
