@@ -10,7 +10,7 @@ public enum BillTypeEnum {
     /**
      * 无计划
      */
-    NOPLAN,
+    NO_PLAN,
     /**
      * 计划
      */
@@ -32,10 +32,6 @@ public enum BillTypeEnum {
      */
     RESTOCK,
     /**
-     * 运单
-     */
-    TRANSMIT,
-    /**
      * 退货
      */
     RETURNED,
@@ -47,5 +43,11 @@ public enum BillTypeEnum {
     /**
      * 流转误差
      */
-    MISTAKE;
+    MISTAKE,
+
+    /**
+     * 其它出入库
+     */
+    IN_OUT_SELF_BILL,
+    ;
 }

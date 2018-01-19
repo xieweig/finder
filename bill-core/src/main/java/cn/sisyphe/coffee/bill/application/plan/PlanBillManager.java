@@ -77,7 +77,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @return 子计划单据
      */
     public ChildPlanBillDTO findChildPlanBillByBillCode(String billCode, BillTypeEnum billTypeEnum) {
-        PlanBill planBill = ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndType(billCode, billTypeEnum);
+        PlanBill planBill = ((PlanBillExtraService) getBillExtraService()).findByBillCodeAndSpecificBillType(billCode, billTypeEnum);
         return mapChildPlanBillToDTO(planBill);
     }
 

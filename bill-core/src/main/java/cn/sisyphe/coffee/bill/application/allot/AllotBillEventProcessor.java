@@ -70,6 +70,7 @@ public class AllotBillEventProcessor {
 
         AllotBill allotBill = (AllotBill) event.getBill();
 
+        //更新入库单的状态为调拨中
         if (!StringUtils.isEmpty(allotBill.getSourceCode())) {
             inStorageBillManager.committing(allotBill.getSourceCode(), allotBill.getSpecificBillType());
         }
