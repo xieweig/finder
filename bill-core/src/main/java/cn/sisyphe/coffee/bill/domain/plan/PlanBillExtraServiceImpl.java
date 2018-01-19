@@ -218,13 +218,17 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
             planBill.setBillCode(resultSet.getString("p.bill_code"));
             planBill.setOperatorCode(resultSet.getString("p.operator_code"));
             planBill.setAuditPersonCode(resultSet.getString("p.audit_person_code"));
-            planBill.setSpecificBillType(BillTypeEnum.valueOf(resultSet.getString("p.specific_bill_type")));
+            if (resultSet.getString("p.specific_bill_type") != null) {
+                planBill.setSpecificBillType(BillTypeEnum.valueOf(resultSet.getString("p.specific_bill_type")));
+            }
+            if (resultSet.getString("p.bill_state") != null) {
+                planBill.setBillState(BillStateEnum.valueOf(resultSet.getString("p.bill_state")));
+            }
             planBill.setBasicEnum(BasicEnum.valueOf(resultSet.getString("p.basic_enum")));
             planBill.setSubmitState(BillSubmitStateEnum.valueOf(resultSet.getString("p.submit_state")));
             planBill.setAuditState(BillAuditStateEnum.valueOf(resultSet.getString("p.audit_state")));
             planBill.setAuditMemo(resultSet.getString("p.audit_memo"));
             planBill.setPlanMemo(resultSet.getString("p.plan_memo"));
-            planBill.setBillState(BillStateEnum.valueOf(resultSet.getString("p.bill_state")));
             return planBill;
         };
     }
