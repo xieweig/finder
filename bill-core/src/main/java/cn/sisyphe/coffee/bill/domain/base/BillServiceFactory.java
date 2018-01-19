@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.allot.AllotBillService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.DeliveryBillService;
+import cn.sisyphe.coffee.bill.domain.inoutself.InOutSelfBillService;
 import cn.sisyphe.coffee.bill.domain.mistake.MistakeBillService;
 import cn.sisyphe.coffee.bill.domain.plan.PlanBillService;
 import cn.sisyphe.coffee.bill.domain.purchase.PurchaseBillService;
@@ -39,7 +40,8 @@ public class BillServiceFactory {
                 .addCase(BillTypeEnum.RESTOCK, new RestockBillService(bill))
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillService(bill))
                 .addCase(BillTypeEnum.ALLOT, new AllotBillService(bill))
-                .addCase(BillTypeEnum.MISTAKE, new MistakeBillService(bill));
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBillService(bill))
+                .addCase(BillTypeEnum.IN_OUT_SELF_BILL, new InOutSelfBillService(bill));
 
         return switcher.exec(bill.getBillType());
 
