@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
+import cn.sisyphe.coffee.bill.domain.inoutself.model.InOutSelfBill;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
@@ -42,7 +43,9 @@ public class BillFactory {
                 .addCase(BillTypeEnum.RESTOCK, new RestockBill())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBill())
                 .addCase(BillTypeEnum.ALLOT, new AllotBill())
-                .addCase(BillTypeEnum.MISTAKE, new MistakeBill());
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBill())
+                .addCase(BillTypeEnum.IN_OUT_SELF_BILL
+                , new InOutSelfBill());
 
         return switcher.exec(billType);
     }
