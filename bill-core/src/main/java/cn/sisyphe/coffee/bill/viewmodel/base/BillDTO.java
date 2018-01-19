@@ -52,6 +52,7 @@ public class BillDTO<T extends BillDetailDTO> {
     /**
      * 单据种类
      */
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private BillTypeEnum billType;
     /**
@@ -201,17 +202,6 @@ public class BillDTO<T extends BillDetailDTO> {
     @Enumerated(value = EnumType.STRING)
     private BillAllotStatusEnum allotStatus;
 
-    /**
-     * 单据编码前缀
-     */
-    private String billCodePrefix;
-
-
-    /**
-     * 差错单
-     */
-    @JsonIgnore
-    private MistakeBill mistakeBill;
 
     public Date getCreateTime() {
         return createTime;
@@ -453,19 +443,4 @@ public class BillDTO<T extends BillDetailDTO> {
         this.allotStatus = allotStatus;
     }
 
-    public String getBillCodePrefix() {
-        return billCodePrefix;
-    }
-
-    public void setBillCodePrefix(String billCodePrefix) {
-        this.billCodePrefix = billCodePrefix;
-    }
-
-    public MistakeBill getMistakeBill() {
-        return mistakeBill;
-    }
-
-    public void setMistakeBill(MistakeBill mistakeBill) {
-        this.mistakeBill = mistakeBill;
-    }
 }
