@@ -15,9 +15,13 @@ import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.storage.TempStorage;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.ConditionQueryMistakeBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
+import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -32,7 +36,7 @@ import static cn.sisyphe.coffee.bill.util.Constant.STORAGE_TYPE_WCK;
 
 /**
  * @author Amy on 2018/1/18.
- * describe：
+ *         describe：
  */
 @Service
 public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill> {
@@ -186,5 +190,30 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
             }
         }
         return mistakeBillDetailSet;
+    }
+
+    /**
+     * 过滤无误差的明细（用于流转误差单的详情查询）
+     *
+     * @param responseResult
+     * @return
+     */
+    public ResponseResult allotBillFilter(ResponseResult responseResult) {
+        ResponseResult returnResponseResult = new ResponseResult();
+        if (responseResult != null && responseResult.getResult() != null && responseResult.getResult().get("bill") != null) {
+            AllotBillDTO allotBillDTO = JSON.parseObject(JSON.toJSONString(responseResult.getResult().get("bill"))).toJavaObject(AllotBillDTO.class);
+            Set<AllotBillDetailDTO> allotBillDetailDTOSet = new HashSet<>();
+            for (AllotBillDetailDTO allotBillDetailDTO : allotBillDTO.getBillDetails()) {
+                if (!allotBillDetailDTO.getActualAmount().equals(allotBillDetailDTO.getShippedAmount())) {
+                    allotBillDetailDTOSet.add(allotBillDetailDTO);
+                }
+            }
+            allotBillDTO.getBillDetails().clear();
+            allotBillDTO.getBillDetails().addAll(allotBillDetailDTOSet);
+            returnResponseResult.put("bill", allotBillDTO);
+        } else {
+            returnResponseResult.put("bill", new AllotBillDTO());
+        }
+        return returnResponseResult;
     }
 }

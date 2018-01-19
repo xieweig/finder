@@ -38,6 +38,14 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
      * 调入库位
      */
     private String inStorageCode;
+    /**
+     * 是否为误差单查询
+     */
+    private Boolean isMistakeBillQuery=false;
+    /**
+     * 误差单号
+     */
+    private String mistakeBillCode;
 
     public Date getAllotStartTime() {
         return allotStartTime;
@@ -69,5 +77,21 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
 
     public void setInStorageCode(String inStorageCode) {
         this.inStorageCode = inStorageCode;
+    }
+
+    public Boolean getMistakeBillQuery() {
+        return isMistakeBillQuery;
+    }
+
+    public void setMistakeBillQuery(Boolean mistakeBillQuery) {
+        isMistakeBillQuery = mistakeBillQuery;
+    }
+
+    public String getMistakeBillCode() {
+        return mistakeBillCode;
+    }
+
+    public void setMistakeBillCode(String mistakeBillCode) {
+        this.mistakeBillCode = mistakeBillCode;
     }
 }
