@@ -1,4 +1,4 @@
-package cn.sisyphe.coffee.bill.viewmodel.planbill;
+package cn.sisyphe.coffee.bill.viewmodel.plan;
 
 import cn.sisyphe.coffee.bill.domain.plan.dto.PlanBillStationDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;

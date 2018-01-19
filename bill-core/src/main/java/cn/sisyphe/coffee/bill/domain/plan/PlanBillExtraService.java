@@ -4,7 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.planbill.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import org.springframework.data.domain.Page;
 
 public interface PlanBillExtraService extends BillExtraService<PlanBill, ConditionQueryPlanBill> {
