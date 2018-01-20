@@ -59,7 +59,7 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
     protected AdjustBillDTO billToDto(AdjustBill bill) {
 
         AdjustBillDTO adjustBillDTO = super.billToDto(bill);
-        if (BasicEnum.BY_MATERIAL.equals(bill.getBasicEnum())) {
+        if (BasicEnum.BY_MATERIAL.equals(bill.getBasicEnum()) && !bill.getSelf()) {
             ChildPlanBillDTO childPlanBillDTO = planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(), BillTypeEnum.ADJUST);
             adjustBillDTO.setChildPlanBillDetailDTOS(childPlanBillDTO.getChildPlanBillDetails());
         }
