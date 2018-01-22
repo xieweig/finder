@@ -147,6 +147,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         planBill.setBillType(BillTypeEnum.PLAN);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
         planBill.setBelongStationCode(planBill.getBelongStationCode());
+        planBill.setOperatorCode(planBillDTO.getOperatorCode());
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getBillDetails()) {
             for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
                 PlanBillDetail planBillDetail = new PlanBillDetail();
