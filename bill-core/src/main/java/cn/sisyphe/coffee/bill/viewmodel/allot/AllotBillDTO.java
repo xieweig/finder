@@ -43,6 +43,9 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
      */
     private String mistakeBillCode;
 
+    /**
+     * 是否是其他调拨
+     */
     private Boolean otherAllot = false;
 
     public String getAllotMemo() {
