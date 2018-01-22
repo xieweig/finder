@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
@@ -183,6 +184,25 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
 
 
     //region --------------- 调拨单 ------------
+
+    /**
+     * 调拨单保存
+     *
+     * @param billDTO 调拨单DTO
+     * @return
+     */
+    @ApiOperation(value = "调拨单列表")
+    @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
+    //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
+    public ResponseResult allotSave(@RequestBody AllotBillDTO billDTO) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", allotBillManager.saveBill(billDTO));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
 
     /**
      * 调拨单列表
