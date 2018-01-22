@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.plan.strategy;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.plan.payload.PlanBillPayload;
@@ -55,6 +56,7 @@ public abstract class AbstractCastableStrategy {
         planBill.setBillState(BillStateEnum.SAVED);
         planBill.setSubmitState(UNCOMMITTED);
         planBill.setAuditState(UN_REVIEWED);
+        planBill.setOperationState(OperationStateEnum.NOOPERATION);
         executor.exec(planBill);
         return planBill;
     }
