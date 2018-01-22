@@ -218,8 +218,8 @@
 --配送-BILL003 3003【配送入库单查询-BILL003004 3027】
 --BILL003005 3027<条件查询>
  VALUES (3134, now(), now(), '0', '4', 'BILL003004001', '查询入库单_多条件查询', 'BILL,BILL003,BILL003004,BILL003004001', '/coffeeBill/api/bill/delivery/findInStorageByConditions', 3027, '\0');
---BILL005004 3027<调拨>--调拨是调用allot包里的controller？
--- VALUES (3135, now(), now(), '0', '4', 'BILL003004002', '查询入库单_调拨', 'BILL,BILL003,BILL003004,BILL003004002', '/coffeeBill/api/bill/allot/save', 3027, '\0');
+--BILL005004 3027<调拨>
+VALUES (3135, now(), now(), '0', '4', 'BILL003004002', '查询入库单_调拨', 'BILL,BILL003,BILL003004,BILL003004002', '/coffeeBill/api/bill/delivery/allotSave', 3027, '\0');
 --BILL005004 3027<查看>
 VALUES (3136, now(), now(), '0', '4', 'BILL003004003', '查询入库单_查看', 'BILL,BILL003,BILL003004,BILL003004003', '/coffeeBill/api/bill/delivery/findInStorageByBillCode', 3027, '\0');
 
@@ -311,8 +311,8 @@ VALUES (3218, now(), now(), '0', '4', 'BILL004005002', '查看调拨单', 'BILL,
 --退库-BILL005 3005【退库入库单查询-BILL005004 3037】
 --BILL005004 3037<条件查询>
  VALUES (3146, now(), now(), '0', '4', 'BILL005004001', '查询入库单_多条件查询', 'BILL,BILL005,BILL005004,BILL005004001', '/coffeeBill/api/bill/restock/findInStorageByConditions', 3037, '\0');
---BILL005004 3037<调拨>--调拨是调用allot包里的controller？
- VALUES (3147, now(), now(), '0', '4', 'BILL005004002', '查询入库单_调拨', 'BILL,BILL005,BILL005004,BILL005004002', '/coffeeBill/api/bill/allot/save', 3037, '\0');
+--BILL005004 3037<调拨>
+ VALUES (3147, now(), now(), '0', '4', 'BILL005004002', '查询入库单_调拨', 'BILL,BILL005,BILL005004,BILL005004002', '/coffeeBill/api/bill/restock/allotSave', 3037, '\0');
 --BILL005004 3037<查看>
  VALUES (3148, now(), now(), '0', '4', 'BILL005004003', '查询入库单_查看', 'BILL,BILL005,BILL005004,BILL005004003', '/coffeeBill/api/bill/restock/findInStorageByBillCode', 3037, '\0');
 --退库-BILL005 3005【退库调拨单查询-BILL005005 3038】
