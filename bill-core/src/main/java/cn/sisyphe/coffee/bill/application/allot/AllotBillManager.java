@@ -62,14 +62,15 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
      */
     private void attachMistakeBill(AllotBill allotBill, AllotBillDTO billDTO) {
         //如果是其他调拨这不用生成误差单
-        if (billDTO.getOtherAllot()) {
+        if (billDTO.getSelf()) {
             return;
         }
         //生成误差单
         MistakeBill mistakeBill = mistakeBillManager.submitByAllotBill(allotBill);
-        allotBill.setMistakeBill(mistakeBill);
-
-        allotBill.setMistakeBillCode(mistakeBill.getBillCode());
+        if (mistakeBill != null) {
+            allotBill.setMistakeBill(mistakeBill);
+            allotBill.setMistakeBillCode(mistakeBill.getBillCode());
+        }
     }
 
 

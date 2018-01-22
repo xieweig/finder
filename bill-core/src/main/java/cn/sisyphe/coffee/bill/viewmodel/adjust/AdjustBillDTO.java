@@ -16,13 +16,25 @@ import java.util.List;
  */
 public class AdjustBillDTO extends BillDTO<AdjustBillDetailDTO> {
 
+    /**
+     * 自主调剂
+     */
+    private Boolean self;
+
+    private List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS;
+
     public AdjustBillDTO() {
         setBillType(BillTypeEnum.ADJUST);
     }
 
 
-    public List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS;
+    public Boolean getSelf() {
+        return self;
+    }
 
+    public void setSelf(Boolean self) {
+        this.self = self;
+    }
 
     public List<ChildPlanBillDetailDTO> getChildPlanBillDetailDTOS() {
         return childPlanBillDetailDTOS;

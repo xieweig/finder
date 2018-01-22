@@ -33,11 +33,37 @@ public final class PurchaseBill extends Bill<PurchaseBillDetail> {
      */
     private String freightCode;
 
+    /**
+     * 发货件数
+     */
+    private Integer shippedAmount;
+
+    /**
+     * 实收件数
+     */
+    private Integer actualAmount;
+
     public String getFreightCode() {
         return freightCode;
     }
 
     public void setFreightCode(String freightCode) {
         this.freightCode = freightCode;
+    }
+
+    public Integer getShippedAmount() {
+        return shippedAmount;
+    }
+
+    public void setShippedAmount(Integer shippedAmount) {
+        this.shippedAmount = shippedAmount;
+    }
+
+    public Integer getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(Integer actualAmount) {
+        this.actualAmount = actualAmount;
     }
 }

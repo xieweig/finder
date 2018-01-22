@@ -5,9 +5,11 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
@@ -19,14 +21,14 @@ import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -40,7 +42,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -143,6 +148,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         planBill.setHqBill(true);
         planBill.setBillType(BillTypeEnum.PLAN);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
+        planBill.setBelongStationCode("HDQA00");
+        planBill.setOperatorCode(planBillDTO.getOperatorCode());
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getBillDetails()) {
             for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
                 PlanBillDetail planBillDetail = new PlanBillDetail();
@@ -254,6 +261,14 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      */
     public Page<ResultPlanBillDTO> findHqPlanBillByConditions(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
         conditionQueryPlanBill.setHqBill(true);
+        //通过前端查询出来的cargoname，模糊查询货物编码
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoName())) {
+            conditionQueryPlanBill.setCargoCodes(sharedManager.findCargoCodesByCargoName(conditionQueryPlanBill.getCargoName()));
+        }
+        //将操作人名字转成操作人编号
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
+            conditionQueryPlanBill.setOperatorCodeList(sharedManager.findByLikeUserName(conditionQueryPlanBill.getOperatorName()));
+        }
         Page<PlanBill> planBills = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
         return planBills.map(planBill -> planBillToResultPlanBillDTO(planBill));
     }
@@ -271,7 +286,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
 
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
-        childPlanBillDTO.setMemo(childPlanBill.getPlanMemo());
+        childPlanBillDTO.setPlanMemo(childPlanBill.getPlanMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
@@ -331,23 +346,26 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
         resultPlanBillDTO.setAuditState(planBill.getAuditState());
         resultPlanBillDTO.setBillState(planBill.getBillState());
-        resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
-        resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
-        resultPlanBillDTO.setMemo(planBill.getPlanMemo());
+        resultPlanBillDTO.setOperatorName(sharedManager.findOneByUserCode(planBill.getOperatorCode()));
+        resultPlanBillDTO.setAuditorName(sharedManager.findOneByUserCode(planBill.getAuditPersonCode()));
+        resultPlanBillDTO.setPlanMemo(planBill.getPlanMemo());
         resultPlanBillDTO.setAuditMemo(planBill.getAuditMemo());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
             return resultPlanBillDTO;
         }
-
-        Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
+        Group<PlanBillDetail> groupedPlanBillDetail;
+        groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getDbGoods().getRawMaterialCode()));
+        if (BasicEnum.BY_CARGO.equals(planBill.getBasicEnum())) {
+            groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getDbGoods().getCargoCode()));
+        }
         for (String head : groupedPlanBillDetail.keySet()) {
             ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
             if (firstPlanBillDetail.getGoods() != null && !"".equals(firstPlanBillDetail.getGoods().code())) {
-                resultPlanBillGoodsDTO.setGoodsCode(firstPlanBillDetail.getGoods().code());
+                resultPlanBillGoodsDTO.setGoodsCode(getGoodsCode(planBill.getBasicEnum(), firstPlanBillDetail.getGoods()));
             }
             Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
             for (PlanBillDetail planBillDetail : planBillDetails) {
@@ -362,5 +380,13 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         }
         resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
         return resultPlanBillDTO;
+    }
+
+    private String getGoodsCode(BasicEnum basicEnum, AbstractGoods abstractGoods) {
+        if (BasicEnum.BY_CARGO.equals(basicEnum)) {
+            return ((RawMaterial) abstractGoods).getCargo().getCargoCode();
+        }
+        return ((RawMaterial) abstractGoods).getRawMaterialCode();
+
     }
 }

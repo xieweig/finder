@@ -73,8 +73,18 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
                 "p.audit_state, p.basic_enum, p.belong_station_code, p.bill_code, p.bill_purpose, p.bill_state, p.bill_type, p.in_or_out_state, p.in_ware_house_time, p.operator_code," +
                 " p.in_or_out_state, p.out_storage_memo, p.out_ware_house_time, p.plan_memo, p.root_code, p.source_code, p.submit_state, p.total_amount, p.total_variety_amount, p.bill_name, p.hq_bill," +
                 " p.operation_state, p.specific_bill_type, d.bill_detail_id, d.actual_amount, d.cargo_code, d.raw_material_code, d.package_code, d.shipped_amount, d.in_station_code, d.in_storage_code, d.out_station_code, d.out_storage_code, d.supplier_code, d.bill_code").append(" from plan_bill p left join plan_bill_detail d on p.bill_code = d.bill_code where p.hq_bill=1 ");
-        if (conditionQuery.getSpecificBillType() != null) {
-            sql.append(" and p.specific_bill_type = '").append(conditionQuery.getSpecificBillType().get(0).name()).append("'");
+        if (conditionQuery.getSpecificBillType() != null && conditionQuery.getSpecificBillType().size() > 0) {
+
+            StringBuilder specificBillTypeSql = new StringBuilder();
+
+            for (int i = 0; i < conditionQuery.getSpecificBillType().size(); i++) {
+                specificBillTypeSql.append("'").append(conditionQuery.getSpecificBillType().get(i)).append("'");
+                if (i != conditionQuery.getSpecificBillType().size() - 1) {
+                    specificBillTypeSql.append(",");
+                }
+            }
+
+            sql.append(" and p.specific_bill_type in (").append(specificBillTypeSql.toString()).append(")");
         }
         if (conditionQuery.getCargoCodes() != null && conditionQuery.getCargoCodes().size() > 0) {
 
@@ -90,21 +100,21 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
             sql.append(" and d.cargo_code in (").append(cargoSql.toString()).append(")");
         }
         if (!StringUtils.isEmpty(conditionQuery.getCargoCode())) {
-            sql.append("and d.cargo_code like '").append("%").append(conditionQuery.getCargoCode()).append("%'");
+            sql.append(" and d.cargo_code like '").append("%").append(conditionQuery.getCargoCode()).append("%'");
         }
 
         /*
          * 单号查询条件
          */
         if (!StringUtils.isEmpty(conditionQuery.getBillCode())) {
-            sql.append("and p.bill_code like '").append("%").append(conditionQuery.getBillCode()).append("%'");
+            sql.append(" and p.bill_code like '").append("%").append(conditionQuery.getBillCode()).append("%'");
         }
 
         /*
          * 计划名称查询
          */
         if (!StringUtils.isEmpty(conditionQuery.getBillName())) {
-            sql.append("and p.bill_name like '").append("%").append(conditionQuery.getBillName()).append("%'");
+            sql.append(" and p.bill_name like '").append("%").append(conditionQuery.getBillName()).append("%'");
 
         }
 
@@ -154,14 +164,14 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
          * 录单开始时间
          */
         if (!StringUtils.isEmpty(conditionQuery.getCreateStartTime())) {
-            sql.append("and p.create_time >= '").append(dateFormat.format(conditionQuery.getCreateStartTime())).append("'");
+            sql.append(" and p.create_time >= '").append(dateFormat.format(conditionQuery.getCreateStartTime())).append("'");
         }
 
         /*
          * 录单结束时间
          */
         if (!StringUtils.isEmpty(conditionQuery.getCreateEndTime())) {
-            sql.append("and p.create_time <= '").append(dateFormat.format(conditionQuery.getCreateEndTime())).append("'");
+            sql.append(" and p.create_time <= '").append(dateFormat.format(conditionQuery.getCreateEndTime())).append("'");
 
         }
 

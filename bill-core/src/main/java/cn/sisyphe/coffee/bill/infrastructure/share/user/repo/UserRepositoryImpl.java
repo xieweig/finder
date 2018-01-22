@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,20 +36,20 @@ public class UserRepositoryImpl implements UserRepository {
         ResponseResult responseResult = userCloudRepository.findByLikeUserName(userName);
         Map<String, Object> resultMap = responseResult.getResult();
         if (!resultMap.containsKey("result")) {
-            return null;
+            return Collections.singletonList("NOT_EXISTS");
         }
         List<String> userCodeList = (ArrayList) resultMap.get("result");
         return userCodeList;
     }
 
     @Override
-    public String findOneByUserCode(String userCode){
+    public String findOneByUserCode(String userCode) {
         ResponseResult responseResult = userCloudRepository.findOneByUserCode(userCode);
         Map<String, Object> resultMap = responseResult.getResult();
-        if (!resultMap.containsKey("result")) {
-            return null;
+        if (resultMap.containsKey("user") && (resultMap.get("user")) != null) {
+            return (String) ((HashMap) resultMap.get("user")).get("userName");
         }
-        return (String) resultMap.get("result");
+        return null;
     }
 
 }

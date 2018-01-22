@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.infrastructure.share.user;
 
 import cn.sisyphe.framework.web.ResponseResult;
+import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author XiongJing
  */
+@FeignClient(value = "OAUTH-CLIENT", fallback = LocalUserCloudRepository.class)
 public interface UserCloudRepository {
     @RequestMapping(path = "/api/oauth/user/findByLikeUserName", method = RequestMethod.GET)
     ResponseResult findByLikeUserName(@RequestParam("userName") String supplierCode);

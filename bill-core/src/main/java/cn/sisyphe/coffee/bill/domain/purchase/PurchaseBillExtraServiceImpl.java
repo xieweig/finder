@@ -52,14 +52,14 @@ public class PurchaseBillExtraServiceImpl extends AbstractBillExtraService<Purch
         /**
          * 拼接供应商编码
          */
-        if (conditionQuery.getSupplierCodeList() != null && conditionQuery.getSupplierCodeList().size() > 0) {
-            expressions.add(root.get("supplierCode").as(String.class).in(conditionQuery.getSupplierCodeList()));
+        if (conditionQuery.getSupplierCodes() != null && conditionQuery.getSupplierCodes().size() > 0) {
+            expressions.add(root.get("dbStation").get("supplierCode").as(String.class).in(conditionQuery.getSupplierCodes()));
         }
         /**
          * 拼接入库库位
          */
-        if (conditionQuery.getInStorageCodeList() != null && conditionQuery.getInStorageCodeList().size() > 0) {
-            expressions.add(root.get("inStorageCode").as(String.class).in(conditionQuery.getInStorageCodeList()));
+        if (conditionQuery.getInStorageCodes() != null && conditionQuery.getInStorageCodes().size() > 0) {
+            expressions.add(root.get("dbStation").get("inStorageCode").as(String.class).in(conditionQuery.getInStorageCodes()));
         }
 
     }

@@ -69,6 +69,22 @@ public class DbGoods {
         return null;
     }
 
+    public String getCargoCode() {
+        return cargoCode;
+    }
+
+    public void setCargoCode(String cargoCode) {
+        this.cargoCode = cargoCode;
+    }
+
+    public String getRawMaterialCode() {
+        return rawMaterialCode;
+    }
+
+    public void setRawMaterialCode(String rawMaterialCode) {
+        this.rawMaterialCode = rawMaterialCode;
+    }
+
     @Override
     public String toString() {
         return "DbGoods{" +
