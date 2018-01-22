@@ -19,6 +19,7 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.ConditionQueryMistakeBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDetailDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
@@ -104,7 +105,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
 
     public MistakeBill submitByAllotBill(AllotBill allotBill) throws DataException {
         //检查参数
-        checkSubmitParam(allotBill);
+        checkMistakeSubmitParam(allotBill);
         Set<MistakeBillDetail> mistakeBillDetailSet = obtainMistakeBillDetail(allotBill.getBillDetails());
         if (mistakeBillDetailSet.size() <= 0) {
             return null;
@@ -115,7 +116,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         return submit(mistakeBill);
     }
 
-    private void checkSubmitParam(AllotBill allotBill) {
+    private void checkMistakeSubmitParam(AllotBill allotBill) {
         if (allotBill == null) {
             throw new DataException("60006", "调拨单信息不能为空");
         }
@@ -215,5 +216,201 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
             returnResponseResult.put("bill", new AllotBillDTO());
         }
         return returnResponseResult;
+    }
+
+    /**
+     * 提交报溢单
+     *
+     * @param billDTO
+     * @return
+     */
+    public String submitOverFlow(MistakeBillDTO billDTO) {
+        //检查参数
+        checkOverFlowSubmitParam(billDTO);
+        //设置初始值
+        billDTO = obtainOverFlowInfo(billDTO);
+        //提交操作
+        return super.submitBill(billDTO).getBillCode();
+    }
+
+    /**
+     * 提交报损单
+     *
+     * @param billDTO
+     * @return
+     */
+    public String submitLoss(MistakeBillDTO billDTO) {
+        //检查参数
+        checkLossSubmitParam(billDTO);
+        //设置初始值
+        billDTO = obtainLossInfo(billDTO);
+        return super.submitBill(billDTO).getBillCode();
+    }
+
+    /**
+     * 提交日常误差单
+     *
+     * @param billDTO
+     * @return
+     */
+    public String submitDayMistake(MistakeBillDTO billDTO) {
+        //检查参数
+        checkDayMistakeSubmitParam(billDTO);
+        //设置初始值
+        billDTO = obtainDayMistakeInfo(billDTO);
+        return super.submitBill(billDTO).getBillCode();
+    }
+
+    /**
+     * 检查报溢参数
+     *
+     * @param billDTO
+     */
+    private void checkOverFlowSubmitParam(MistakeBillDTO billDTO) throws DataException {
+        if (billDTO == null) {
+            throw new DataException("", "单据内容不能为空");
+        }
+        if (billDTO.getInLocation() == null) {
+            throw new DataException("", "报溢位置信息不能为空");
+        }
+        if (StringUtils.isEmpty(billDTO.getInLocation().getStationCode())) {
+            throw new DataException("", "报溢站点信息不能为空");
+        }
+        if (billDTO.getInLocation().getStorage() == null || StringUtils.isEmpty(billDTO.getInLocation().getStorage().getStorageCode())) {
+            throw new DataException("", "报溢库位不能为空");
+        }
+        if (StringUtils.isEmpty(billDTO.getMemo())) {
+            throw new DataException("", "备注信息不能为空");
+        }
+        if (billDTO.getBillDetails() == null || billDTO.getBillDetails().size() <= 0) {
+            throw new DataException("", "单据明细不能为空");
+        }
+
+        for(MistakeBillDetailDTO mistakeBillDetailDTO: billDTO.getBillDetails()){
+            if(mistakeBillDetailDTO.getActualAmount()<=0){
+                throw new DataException("", "报溢明细中的数量不能小于0");
+            }
+            if(mistakeBillDetailDTO.getRawMaterial()==null){
+                throw new DataException("", "报溢商品不能为空");
+            }
+        }
+    }
+
+    /**
+     * 设置报溢初始值
+     *
+     * @param billDTO
+     */
+    private MistakeBillDTO obtainOverFlowInfo(MistakeBillDTO billDTO) {
+        //单据作用
+        billDTO.setBillPurpose(BillPurposeEnum.IN_STORAGE);
+        billDTO.setSpecificBillType(BillTypeEnum.NO_PLAN);
+        return billDTO;
+    }
+
+    /**
+     * 检查报损单参数
+     *
+     * @param billDTO
+     */
+    private void checkLossSubmitParam(MistakeBillDTO billDTO) {
+        if (billDTO == null) {
+            throw new DataException("", "单据内容不能为空");
+        }
+        if (billDTO.getOutLocation() == null) {
+            throw new DataException("", "报损位置信息不能为空");
+        }
+        if (StringUtils.isEmpty(billDTO.getOutLocation().getStationCode())) {
+            throw new DataException("", "报损站点信息不能为空");
+        }
+        if (billDTO.getOutLocation().getStorage() == null || StringUtils.isEmpty(billDTO.getOutLocation().getStorage().getStorageCode())) {
+            throw new DataException("", "报损库位不能为空");
+        }
+        if (StringUtils.isEmpty(billDTO.getMemo())) {
+            throw new DataException("", "备注信息不能为空");
+        }
+        if (billDTO.getBillDetails() == null || billDTO.getBillDetails().size() <= 0) {
+            throw new DataException("", "单据明细不能为空");
+        }
+
+        for(MistakeBillDetailDTO mistakeBillDetailDTO: billDTO.getBillDetails()){
+            if(mistakeBillDetailDTO.getActualAmount()<=0){
+                throw new DataException("", "报损明细中的数量不能小于0");
+            }
+            if(mistakeBillDetailDTO.getRawMaterial()==null){
+                throw new DataException("", "报损商品不能为空");
+            }
+        }
+    }
+
+    /**
+     * 设置报损初始值
+     * @param billDTO
+     * @return
+     */
+    private MistakeBillDTO obtainLossInfo(MistakeBillDTO billDTO) {
+        //单据作用
+        billDTO.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
+        billDTO.setSpecificBillType(BillTypeEnum.NO_PLAN);
+        return billDTO;
+    }
+    /**
+     * 检查日常误差单参数
+     *
+     * @param billDTO
+     */
+    private void checkDayMistakeSubmitParam(MistakeBillDTO billDTO) {
+        if (billDTO == null) {
+            throw new DataException("", "单据内容不能为空");
+        }
+        if (billDTO.getOutLocation() == null) {
+            throw new DataException("", "误差位置信息不能为空");
+        }
+        if (StringUtils.isEmpty(billDTO.getOutLocation().getStationCode())) {
+            throw new DataException("", "误差站点信息不能为空");
+        }
+        if (billDTO.getOutLocation().getStorage() == null || StringUtils.isEmpty(billDTO.getOutLocation().getStorage().getStorageCode())) {
+            throw new DataException("", "误差库位不能为空");
+        }
+        if (StringUtils.isEmpty(billDTO.getMemo())) {
+            throw new DataException("", "备注信息不能为空");
+        }
+        if (billDTO.getBillDetails() == null || billDTO.getBillDetails().size() <= 0) {
+            throw new DataException("", "单据明细不能为空");
+        }
+
+        for(MistakeBillDetailDTO mistakeBillDetailDTO: billDTO.getBillDetails()){
+            if(mistakeBillDetailDTO.getActualAmount()==null){
+                throw new DataException("", "误差明细中的数量不能为空");
+            }
+            if(mistakeBillDetailDTO.getRawMaterial()==null){
+                throw new DataException("", "误差商品不能为空");
+            }
+        }
+    }
+
+    /**
+     * 设置日常误差初始值
+     * @param billDTO
+     * @return
+     */
+    private MistakeBillDTO obtainDayMistakeInfo(MistakeBillDTO billDTO) {
+        //单据作用
+        billDTO.setBillPurpose(BillPurposeEnum.MOVE_STORAGE);
+        billDTO.setSpecificBillType(BillTypeEnum.NO_PLAN);
+        Station inStation = new Station();
+        Storage inStorage = new Storage();
+        //查询出该站点的误差库位信息
+        TempStorage tempStorage = new TempStorage(STORAGE_NAME_WCK, STORAGE_TYPE_WCK);
+        //设置库位信息
+        inStorage.setStorageCode(tempStorage.getTempStorageCode());
+        inStorage.setStorageName(tempStorage.getTempStorageName());
+        //设置入站点信息
+        inStation.setStationCode(billDTO.getOutLocation().getStationCode());
+        inStation.setStationName(billDTO.getOutLocation().getStationName());
+        inStation.setStationType(billDTO.getOutLocation().getStationType());
+        inStation.setStorage(inStorage);
+        billDTO.setInLocation(inStation);
+        return billDTO;
     }
 }
