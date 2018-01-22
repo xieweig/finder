@@ -64,7 +64,7 @@ public class PurchaseBillController extends BillController<PurchaseBill, Purchas
         ResponseResult responseResult = new ResponseResult();
         try {
             PurchaseBillDTO purchaseBillDTO = abstractBillExtraManager.findBillDtoByBillCode(billCode);
-            responseResult.put("purchase", purchaseBillDTO);
+            responseResult.put("bill", purchaseBillDTO);
         } catch (DataException e) {
             responseResult.putException(e);
         }

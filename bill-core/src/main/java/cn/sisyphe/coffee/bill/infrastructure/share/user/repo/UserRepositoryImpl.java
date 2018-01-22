@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
         ResponseResult responseResult = userCloudRepository.findByLikeUserName(userName);
         Map<String, Object> resultMap = responseResult.getResult();
         if (!resultMap.containsKey("result")) {
-            return null;
+            return Collections.singletonList("NOT_EXISTS");
         }
         List<String> userCodeList = (ArrayList) resultMap.get("result");
         return userCodeList;

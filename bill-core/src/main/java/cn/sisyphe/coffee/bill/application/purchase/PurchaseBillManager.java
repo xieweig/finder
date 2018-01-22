@@ -20,6 +20,9 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
+
 
 /**
  * Created by XiongJing on 2017/12/27.
@@ -48,10 +51,7 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
 
         PurchaseBillDTO purchaseBillDTO = super.billToListDto(bill);
         Set<PurchaseBillDetailDTO> billDetails = purchaseBillDTO.getBillDetails();
-        // 实收数量
-        Integer totalAmount = 0;
-        // 数量差值
-        Integer differenceAmount = 0;
+
         // 进货实洋
         BigDecimal totalPriceAmount = BigDecimal.ZERO;
         // 总价差值
@@ -59,14 +59,6 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
 
         if (billDetails != null && billDetails.size() > 0) {
             for (PurchaseBillDetailDTO detailDTO : billDetails) {
-                // 累加实收数量
-                if (detailDTO.getActualAmount() != null && detailDTO.getActualAmount() > 0) {
-                    totalAmount += detailDTO.getActualAmount();
-                }
-                // 累加数量差值
-                if (detailDTO.getDifferenceNumber() != null && detailDTO.getDifferenceNumber() > 0) {
-                    differenceAmount += detailDTO.getDifferenceNumber();
-                }
                 // 累加进货实洋
                 if (detailDTO.getUnitPrice() != null && detailDTO.getUnitPrice().compareTo(BigDecimal.ZERO) > 0
                         && detailDTO.getShippedAmount() != null && detailDTO.getShippedAmount() > 0) {
@@ -77,6 +69,10 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
                     totalPriceDifferenceAmount = totalPriceDifferenceAmount.add(detailDTO.getTotalDifferencePrice());
                 }
             }
+            // 实收数量
+            Integer totalAmount = sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getActualAmount());
+            // 数量差值
+            Integer differenceAmount = sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getDifferenceNumber());
             // 设置实收数量
             purchaseBillDTO.setTotalAmount(totalAmount);
             // 设置数量差值

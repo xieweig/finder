@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.purchase.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -25,7 +24,6 @@ public class PurchaseBillDetail extends BillDetail {
     /**
      * 生产日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date dateInProduced;
 
     /**

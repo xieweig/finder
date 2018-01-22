@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author XiongJing
  */
+@CrossOrigin(origins = "*")
 public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
 
     protected AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
@@ -352,7 +354,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
             responseResult.putException(data);
         }
         return responseResult;
-    }
 
-    //endregion
+
+        //endregion
+    }
 }
