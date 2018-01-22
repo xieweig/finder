@@ -55,7 +55,7 @@ public class AllotBill extends Bill<AllotBillDetail> {
     /**
      * 自主调拨
      */
-    private Boolean self;
+    private Boolean self = false;
 
 
     @Override
