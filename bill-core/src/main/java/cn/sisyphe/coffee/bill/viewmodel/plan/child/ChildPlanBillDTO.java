@@ -27,9 +27,9 @@ public class ChildPlanBillDTO {
     private String billCode;
 
     /**
-     * 计划单编码
+     * 计划单编码(默认未拣货)
      */
-    private OperationStateEnum operationState;
+    private OperationStateEnum operationState = OperationStateEnum.NOOPERATION;
 
     /**
      * 状态
