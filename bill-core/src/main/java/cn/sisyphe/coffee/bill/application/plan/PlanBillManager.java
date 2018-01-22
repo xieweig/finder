@@ -19,14 +19,14 @@ import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
+import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillGoodsDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ResultPlanBillLocationDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
-import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
-import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -40,7 +40,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.*;
+import static ch.lambdaj.Lambda.by;
+import static ch.lambdaj.Lambda.group;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sum;
 
 /**
  * 计划单据manager
@@ -143,6 +146,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         planBill.setHqBill(true);
         planBill.setBillType(BillTypeEnum.PLAN);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
+        planBill.setBelongStationCode(planBill.getBelongStationCode());
+        planBill.setOperatorCode(planBillDTO.getOperatorCode());
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getBillDetails()) {
             for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
                 PlanBillDetail planBillDetail = new PlanBillDetail();
@@ -254,6 +259,14 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      */
     public Page<ResultPlanBillDTO> findHqPlanBillByConditions(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
         conditionQueryPlanBill.setHqBill(true);
+        //通过前端查询出来的cargoname，模糊查询货物编码
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoName())) {
+            conditionQueryPlanBill.setCargoCodes(sharedManager.findCargoCodesByCargoName(conditionQueryPlanBill.getCargoName()));
+        }
+        //将操作人名字转成操作人编号
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
+            conditionQueryPlanBill.setOperatorCodeList(sharedManager.findByLikeUserName(conditionQueryPlanBill.getOperatorName()));
+        }
         Page<PlanBill> planBills = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
         return planBills.map(planBill -> planBillToResultPlanBillDTO(planBill));
     }
