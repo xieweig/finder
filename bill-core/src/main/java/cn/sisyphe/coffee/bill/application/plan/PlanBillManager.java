@@ -257,8 +257,13 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      */
     public Page<ResultPlanBillDTO> findHqPlanBillByConditions(ConditionQueryPlanBill conditionQueryPlanBill) throws DataException {
         conditionQueryPlanBill.setHqBill(true);
+        //通过前端查询出来的cargoname，模糊查询货物编码
         if (!StringUtils.isEmpty(conditionQueryPlanBill.getCargoName())) {
             conditionQueryPlanBill.setCargoCodes(sharedManager.findCargoCodesByCargoName(conditionQueryPlanBill.getCargoName()));
+        }
+        //将操作人名字转成操作人编号
+        if (!StringUtils.isEmpty(conditionQueryPlanBill.getOperatorName())) {
+            conditionQueryPlanBill.setOperatorCodeList(sharedManager.findByLikeUserName(conditionQueryPlanBill.getOperatorName()));
         }
         Page<PlanBill> planBills = getBillExtraService().findPageByCondition(conditionQueryPlanBill);
         return planBills.map(planBill -> planBillToResultPlanBillDTO(planBill));
