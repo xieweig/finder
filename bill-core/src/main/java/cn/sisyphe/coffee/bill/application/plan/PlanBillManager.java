@@ -344,8 +344,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
         resultPlanBillDTO.setAuditState(planBill.getAuditState());
         resultPlanBillDTO.setBillState(planBill.getBillState());
-        resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
-        resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
+        resultPlanBillDTO.setOperatorName(sharedManager.findOneByUserCode(planBill.getOperatorCode()));
+        resultPlanBillDTO.setAuditorName(sharedManager.findOneByUserCode(planBill.getAuditPersonCode()));
         resultPlanBillDTO.setMemo(planBill.getPlanMemo());
         resultPlanBillDTO.setAuditMemo(planBill.getAuditMemo());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
