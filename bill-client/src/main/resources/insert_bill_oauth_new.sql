@@ -226,7 +226,7 @@ VALUES (3136, now(), now(), '0', '4', 'BILL003004003', '查询入库单_查看',
 
 -- 配送-BILL003 3003【配送调拨单查询-BILL003005 3028】
 -- BILL003006 3028<条件查询>
- VALUES (3137, now(), now(), '0', '4', 'BILL003005001', '查询调拨单_多条件查询', 'BILL,BILL003,BILL003005,BILL003005001', '/coffeeBill/api/bill/delivery/findAllotByConditions', 3028, '\0');
+ VALUES (3137, now(), now(), '0', '4', 'BILL003005001', '查询调 拨单_多条件查询', 'BILL,BILL003,BILL003005,BILL003005001', '/coffeeBill/api/bill/delivery/findAllotByConditions', 3028, '\0');
 --BILL005005 3028<查看>
  VALUES (3138, now(), now(), '0', '4', 'BILL003005002', '查询调拨单_查看', 'BILL,BILL003,BILL003005,BILL003005002', '/coffeeBill/api/bill/delivery/findAllotByBillCode', 3028, '\0');
 -- BILL003006 3028<导出>
