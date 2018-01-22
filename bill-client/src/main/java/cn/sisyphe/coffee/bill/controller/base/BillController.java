@@ -355,7 +355,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         }
         return responseResult;
 
+    }
 
         //endregion
-    }
 }
