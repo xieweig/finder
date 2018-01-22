@@ -61,27 +61,23 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
             for (PurchaseBillDetailDTO detailDTO : billDetails) {
                 // 累加进货实洋
                 if (detailDTO.getUnitPrice() != null && detailDTO.getUnitPrice().compareTo(BigDecimal.ZERO) > 0
-                        && detailDTO.getShippedAmount() != null && detailDTO.getShippedAmount() > 0) {
-                    totalPriceAmount = totalPriceAmount.add(detailDTO.getUnitPrice().multiply(BigDecimal.valueOf(detailDTO.getShippedAmount())));
+                        && detailDTO.getActualAmount() != null && detailDTO.getActualAmount() > 0) {
+                    totalPriceAmount = totalPriceAmount.add(detailDTO.getUnitPrice().multiply(BigDecimal.valueOf(detailDTO.getActualAmount())));
                 }
                 // 累加总价差值
-                if (detailDTO.getTotalDifferencePrice() != null && detailDTO.getTotalDifferencePrice().compareTo(BigDecimal.ZERO) > 0) {
-                    totalPriceDifferenceAmount = totalPriceDifferenceAmount.add(detailDTO.getTotalDifferencePrice());
+                if (detailDTO.getDifferencePrice() != null && detailDTO.getDifferencePrice().compareTo(BigDecimal.ZERO) > 0) {
+                    totalPriceDifferenceAmount = totalPriceDifferenceAmount.add(detailDTO.getDifferencePrice());
                 }
             }
-            // 实收数量
-            Integer totalAmount = sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getActualAmount());
-            // 数量差值
-            Integer differenceAmount = sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getDifferenceNumber());
-            // 设置实收数量
-            purchaseBillDTO.setTotalAmount(totalAmount);
-            // 设置数量差值
-            purchaseBillDTO.setDifferenceAmount(differenceAmount);
             // 设置进货实洋
             purchaseBillDTO.setTotalPriceAmount(totalPriceAmount);
             // 设置总价差值
             purchaseBillDTO.setTotalPriceDifferenceAmount(totalPriceDifferenceAmount);
 
+            // 设置实收数量
+            purchaseBillDTO.setTotalAmount(sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getActualAmount()));
+            // 设置数量差值
+            purchaseBillDTO.setDifferenceAmount(sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getDifferenceNumber()));
         }
         return purchaseBillDTO;
     }
@@ -131,6 +127,7 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
 
     /**
      * 重写bill转换DTO
+     *
      * @param bill
      * @return
      */

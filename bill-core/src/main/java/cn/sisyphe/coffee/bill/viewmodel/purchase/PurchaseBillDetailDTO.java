@@ -22,7 +22,7 @@ public class PurchaseBillDetailDTO extends BillDetailDTO {
     /**
      * 总价差值
      */
-    private BigDecimal totalDifferencePrice;
+    private BigDecimal differencePrice;
 
     /**
      * 单位进价
@@ -52,12 +52,12 @@ public class PurchaseBillDetailDTO extends BillDetailDTO {
         this.differenceNumber = differenceNumber;
     }
 
-    public BigDecimal getTotalDifferencePrice() {
-        return totalDifferencePrice;
+    public BigDecimal getDifferencePrice() {
+        return differencePrice;
     }
 
-    public void setTotalDifferencePrice(BigDecimal totalDifferencePrice) {
-        this.totalDifferencePrice = totalDifferencePrice;
+    public void setDifferencePrice(BigDecimal differencePrice) {
+        this.differencePrice = differencePrice;
     }
 
     public Date getDateInProduced() {
