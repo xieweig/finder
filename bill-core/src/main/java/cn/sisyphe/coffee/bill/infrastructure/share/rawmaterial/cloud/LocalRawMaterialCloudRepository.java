@@ -3,11 +3,8 @@ import cn.sisyphe.framework.web.ResponseResult;
 import org.springframework.stereotype.Component;
 
 /**
- * @author ncmao
- * @Date 2017/12/29 10:18
- * @description
+ * @author Amy
  */
-
 @Component
 public class LocalRawMaterialCloudRepository implements RawMaterialCloudRepository {
 

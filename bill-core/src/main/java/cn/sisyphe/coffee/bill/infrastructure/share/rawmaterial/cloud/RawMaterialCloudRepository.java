@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 /**
- * @author ncmao
- * @Date 2017/12/29 10:16
- * @description
+ * @author Amy
  */
 @FeignClient(value = "COFFEE-BASEINFO", fallback = LocalRawMaterialCloudRepository.class)
 public interface RawMaterialCloudRepository {
@@ -20,6 +19,7 @@ public interface RawMaterialCloudRepository {
      * @param rawMaterialName
      * @return
      */
+    //TODO 需要调用易川补充基础资料的接口
     @RequestMapping(path = "/api/v1/baseInfo/cargo/findCargoCodeListByCargoName", method = RequestMethod.GET)
     ResponseResult findRawMaterialCodesByRawMaterialName(@RequestParam("rawMaterialName") String rawMaterialName);
 }
