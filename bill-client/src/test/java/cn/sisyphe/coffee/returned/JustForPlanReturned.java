@@ -43,7 +43,6 @@ public class JustForPlanReturned extends JustForPlan {
         PlanBill planBill = this.createPlanBill();
 
         planBill.setSpecificBillType(billType);
-
         return  planBill;
     }
     @Test

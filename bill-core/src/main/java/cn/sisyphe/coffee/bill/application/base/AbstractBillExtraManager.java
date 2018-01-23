@@ -243,7 +243,15 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return
      */
     protected D billToDto(T bill) {
-        return JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass(), new BillToDtoExtraProcessor());
+        D billDto = JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass(), new BillToDtoExtraProcessor());
+        if (!StringUtils.isEmpty(bill.getOperatorCode())){
+            billDto.setOperatorName(sharedManager.findOneByUserCode(bill.getOperatorCode()));
+        }
+        if (!StringUtils.isEmpty(bill.getAuditPersonCode())) {
+            billDto.setAuditPersonName(sharedManager.findOneByUserCode(bill.getAuditPersonCode()));
+
+        }
+        return billDto;
     }
 
 

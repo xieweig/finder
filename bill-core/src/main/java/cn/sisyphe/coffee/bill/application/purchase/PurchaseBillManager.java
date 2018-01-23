@@ -86,6 +86,8 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
         PurchaseBillDTO purchaseBillDTO = super.billToDto(bill);
         Supplier supplier = (Supplier) bill.getOutLocation();
         purchaseBillDTO.setSupplier(supplier);
+
+
         return purchaseBillDTO;
     }
 

@@ -39,6 +39,10 @@ public class UserRepositoryImpl implements UserRepository {
             return Collections.singletonList("NOT_EXISTS");
         }
         List<String> userCodeList = (ArrayList) resultMap.get("result");
+        if (userCodeList == null || userCodeList.size() <= 0) {
+            userCodeList.add("NOT_EXISTS");
+            return userCodeList;
+        }
         return userCodeList;
     }
 
