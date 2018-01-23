@@ -6,4 +6,17 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
  * describe：
  */
 public class MistakeBillDTO extends BillDTO<MistakeBillDetailDTO> {
+
+    /**
+     * 备注信息
+     */
+    private String memo;
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 }

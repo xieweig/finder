@@ -79,6 +79,8 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
             // 设置数量差值
             purchaseBillDTO.setDifferenceAmount(sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getDifferenceNumber()));
         }
+        // 手动去掉明细信息，减少json传值大小
+        purchaseBillDTO.getBillDetails().clear();
         return purchaseBillDTO;
     }
 
