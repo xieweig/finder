@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -41,7 +40,7 @@ public abstract class BillDetail {
      */
     public void update() {
         if (goods == null) {
-         return;
+            return;
         }
 
         dbGoods.setGoods(goods);
@@ -69,6 +68,11 @@ public abstract class BillDetail {
      * 实拣数量
      */
     private int actualAmount;
+
+    /**
+     * 实拣总量（原料的）
+     */
+    private int actualTotalAmount;
 
 
 //    public void unbuild(AbstractBillDetailDTO abstractBillDetailDTO){
@@ -127,6 +131,14 @@ public abstract class BillDetail {
 
     public void setDbGoods(DbGoods dbGoods) {
         this.dbGoods = dbGoods;
+    }
+
+    public int getActualTotalAmount() {
+        return actualTotalAmount;
+    }
+
+    public void setActualTotalAmount(int actualTotalAmount) {
+        this.actualTotalAmount = actualTotalAmount;
     }
 
     @Override

@@ -5,9 +5,11 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.StationType;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
@@ -146,7 +148,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         planBill.setHqBill(true);
         planBill.setBillType(BillTypeEnum.PLAN);
         planBill.setBasicEnum(planBillDTO.getBasicEnum());
-        planBill.setBelongStationCode(planBill.getBelongStationCode());
+        planBill.setBelongStationCode("HDQA00");
         planBill.setOperatorCode(planBillDTO.getOperatorCode());
         for (PlanBillDetailDTO planBillDetailDTO : planBillDTO.getBillDetails()) {
             for (PlanBillStationDTO planBillStationDTO : planBillDetailDTO.getPlanBillStationDTOS()) {
@@ -284,7 +286,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
 
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
-        childPlanBillDTO.setMemo(childPlanBill.getPlanMemo());
+        childPlanBillDTO.setPlanMemo(childPlanBill.getPlanMemo());
         childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
         /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
@@ -344,23 +346,26 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         resultPlanBillDTO.setBillSubmitState(planBill.getSubmitState());
         resultPlanBillDTO.setAuditState(planBill.getAuditState());
         resultPlanBillDTO.setBillState(planBill.getBillState());
-        resultPlanBillDTO.setOperatorName(planBill.getOperatorCode());
-        resultPlanBillDTO.setAuditorName(planBill.getAuditPersonCode());
-        resultPlanBillDTO.setMemo(planBill.getPlanMemo());
+        resultPlanBillDTO.setOperatorName(sharedManager.findOneByUserCode(planBill.getOperatorCode()));
+        resultPlanBillDTO.setAuditorName(sharedManager.findOneByUserCode(planBill.getAuditPersonCode()));
+        resultPlanBillDTO.setPlanMemo(planBill.getPlanMemo());
         resultPlanBillDTO.setAuditMemo(planBill.getAuditMemo());
         Set<ResultPlanBillGoodsDTO> resultPlanBillGoodsDTOSet = new HashSet<>();
         if (planBill.getBillDetails() == null) {
             resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
             return resultPlanBillDTO;
         }
-
-        Group<PlanBillDetail> groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getGoods().code()));
+        Group<PlanBillDetail> groupedPlanBillDetail;
+        groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getDbGoods().getRawMaterialCode()));
+        if (BasicEnum.BY_CARGO.equals(planBill.getBasicEnum())) {
+            groupedPlanBillDetail = group(planBill.getBillDetails(), by(on(PlanBillDetail.class).getDbGoods().getCargoCode()));
+        }
         for (String head : groupedPlanBillDetail.keySet()) {
             ResultPlanBillGoodsDTO resultPlanBillGoodsDTO = new ResultPlanBillGoodsDTO();
             List<PlanBillDetail> planBillDetails = groupedPlanBillDetail.find(head);
             PlanBillDetail firstPlanBillDetail = planBillDetails.get(0);
             if (firstPlanBillDetail.getGoods() != null && !"".equals(firstPlanBillDetail.getGoods().code())) {
-                resultPlanBillGoodsDTO.setGoodsCode(firstPlanBillDetail.getGoods().code());
+                resultPlanBillGoodsDTO.setGoodsCode(getGoodsCode(planBill.getBasicEnum(), firstPlanBillDetail.getGoods()));
             }
             Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
             for (PlanBillDetail planBillDetail : planBillDetails) {
@@ -375,5 +380,13 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         }
         resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
         return resultPlanBillDTO;
+    }
+
+    private String getGoodsCode(BasicEnum basicEnum, AbstractGoods abstractGoods) {
+        if (BasicEnum.BY_CARGO.equals(basicEnum)) {
+            return ((RawMaterial) abstractGoods).getCargo().getCargoCode();
+        }
+        return ((RawMaterial) abstractGoods).getRawMaterialCode();
+
     }
 }

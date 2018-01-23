@@ -57,13 +57,13 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
 
     /**
-     * 暂存调剂计划
+     * 暂存计划
      *
      * @param billDTO 前端dto
      * @return billCode 单据编码
      */
     public D saveBill(D billDTO) {
-        T bill = prepareBill(billDTO);
+        T bill = prepareBill(billDTO.getBillCode());
         bill = dtoToBill(bill, billDTO);
         save(bill);
 
@@ -72,13 +72,13 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
 
     /**
-     * 提交调剂计划
+     * 提交计划
      *
      * @param billDTO 前端dto
      * @return billCode 单据编码
      */
     public D submitBill(D billDTO) {
-        T bill = prepareBill(billDTO);
+        T bill = prepareBill(billDTO.getBillCode());
         bill = dtoToBill(bill, billDTO);
         submit(bill);
 
@@ -135,16 +135,16 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     /**
      * 初始化bill
      *
-     * @param billDTO 前端dto
+     * @param billCode 前端dto
      * @return AdjustBill 调剂计划实体
      */
-    protected T prepareBill(D billDTO) {
+    protected T prepareBill(String billCode) {
 
-        if (StringUtils.isEmpty(billDTO.getBillCode())) {
-            return (T) new BillFactory().createBill(billDTO.getBillType());
+        if (StringUtils.isEmpty(billCode)) {
+            return (T) new BillFactory().createBill(billType());
         }
 
-        T bill = billExtraService.findByBillCode(billDTO.getBillCode());
+        T bill = billExtraService.findByBillCode(billCode);
 
         if (bill == null) {
             throw new DataException("432434", "没有找到该计划单");

@@ -11,6 +11,7 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnu
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.OUT_FAILURE;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.OUT_ING;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.SUBMITTED;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.UNCOMMITTED;
 
 /**
  * Created by XiongJing on 2017/12/27.
@@ -50,7 +51,7 @@ public class AuditBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillSubmitStateEnum submitState() {
-        return SUBMITTED;
+        return isSuccess ? SUBMITTED : UNCOMMITTED;
     }
 
     /**

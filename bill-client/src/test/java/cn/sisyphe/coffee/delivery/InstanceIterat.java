@@ -33,7 +33,6 @@ public class InstanceIterat extends InstanceIter{
         //可能有误
 
 
-        dto.setBillType(BillTypeEnum.DELIVERY);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         Integer sign = random.nextInt(10);
 

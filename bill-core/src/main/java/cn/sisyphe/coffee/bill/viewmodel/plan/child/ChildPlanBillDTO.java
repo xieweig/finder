@@ -41,7 +41,7 @@ public class ChildPlanBillDTO {
     /**
      * 备注
      */
-    private String memo;
+    private String planMemo;
     /**
      * 录单时间
      */
@@ -123,12 +123,12 @@ public class ChildPlanBillDTO {
         this.billCode = billCode;
     }
 
-    public String getMemo() {
-        return memo;
+    public String getPlanMemo() {
+        return planMemo;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setPlanMemo(String planMemo) {
+        this.planMemo = planMemo;
     }
 
     public Date getCreateTime() {
