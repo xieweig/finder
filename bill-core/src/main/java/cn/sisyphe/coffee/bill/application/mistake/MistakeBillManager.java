@@ -25,12 +25,11 @@ import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static cn.sisyphe.coffee.bill.util.Constant.STORAGE_NAME_WCK;
 import static cn.sisyphe.coffee.bill.util.Constant.STORAGE_TYPE_WCK;
@@ -286,11 +285,11 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
             throw new DataException("", "单据明细不能为空");
         }
 
-        for(MistakeBillDetailDTO mistakeBillDetailDTO: billDTO.getBillDetails()){
-            if(mistakeBillDetailDTO.getActualAmount()<=0){
+        for (MistakeBillDetailDTO mistakeBillDetailDTO : billDTO.getBillDetails()) {
+            if (mistakeBillDetailDTO.getActualAmount() <= 0) {
                 throw new DataException("", "报溢明细中的数量不能小于0");
             }
-            if(mistakeBillDetailDTO.getRawMaterial()==null){
+            if (mistakeBillDetailDTO.getRawMaterial() == null) {
                 throw new DataException("", "报溢商品不能为空");
             }
         }
@@ -333,11 +332,11 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
             throw new DataException("", "单据明细不能为空");
         }
 
-        for(MistakeBillDetailDTO mistakeBillDetailDTO: billDTO.getBillDetails()){
-            if(mistakeBillDetailDTO.getActualAmount()<=0){
+        for (MistakeBillDetailDTO mistakeBillDetailDTO : billDTO.getBillDetails()) {
+            if (mistakeBillDetailDTO.getActualAmount() <= 0) {
                 throw new DataException("", "报损明细中的数量不能小于0");
             }
-            if(mistakeBillDetailDTO.getRawMaterial()==null){
+            if (mistakeBillDetailDTO.getRawMaterial() == null) {
                 throw new DataException("", "报损商品不能为空");
             }
         }
@@ -345,6 +344,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
 
     /**
      * 设置报损初始值
+     *
      * @param billDTO
      * @return
      */
@@ -354,6 +354,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         billDTO.setSpecificBillType(BillTypeEnum.NO_PLAN);
         return billDTO;
     }
+
     /**
      * 检查日常误差单参数
      *
@@ -379,11 +380,11 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
             throw new DataException("", "单据明细不能为空");
         }
 
-        for(MistakeBillDetailDTO mistakeBillDetailDTO: billDTO.getBillDetails()){
-            if(mistakeBillDetailDTO.getActualAmount()==null){
+        for (MistakeBillDetailDTO mistakeBillDetailDTO : billDTO.getBillDetails()) {
+            if (mistakeBillDetailDTO.getActualAmount() == null) {
                 throw new DataException("", "误差明细中的数量不能为空");
             }
-            if(mistakeBillDetailDTO.getRawMaterial()==null){
+            if (mistakeBillDetailDTO.getRawMaterial() == null) {
                 throw new DataException("", "误差商品不能为空");
             }
         }
@@ -391,6 +392,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
 
     /**
      * 设置日常误差初始值
+     *
      * @param billDTO
      * @return
      */
@@ -412,5 +414,35 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         inStation.setStorage(inStorage);
         billDTO.setInLocation(inStation);
         return billDTO;
+    }
+
+    /**
+     * 条件查询报溢单
+     *
+     * @param conditionQueryMistakeBill
+     * @return
+     */
+    public Page<MistakeBillDTO> findOverFlowByConditions(ConditionQueryMistakeBill conditionQueryMistakeBill) {
+        return super.findBillByCondition(conditionQueryMistakeBill, BillPurposeEnum.IN_STORAGE);
+    }
+
+    /**
+     * 条件查询报损单
+     *
+     * @param conditionQueryMistakeBill
+     * @return
+     */
+    public Page<MistakeBillDTO> findLossByConditions(ConditionQueryMistakeBill conditionQueryMistakeBill) {
+        return super.findBillByCondition(conditionQueryMistakeBill, BillPurposeEnum.OUT_STORAGE);
+    }
+
+    /**
+     * 条件查询日常误差单
+     *
+     * @param conditionQueryMistakeBill
+     * @return
+     */
+    public Page<MistakeBillDTO> findDayMistakeByConditions(ConditionQueryMistakeBill conditionQueryMistakeBill) {
+        return super.findBillByCondition(conditionQueryMistakeBill, BillPurposeEnum.MOVE_STORAGE);
     }
 }

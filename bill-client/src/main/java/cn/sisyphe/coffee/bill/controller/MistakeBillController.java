@@ -53,6 +53,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
 
     /**
      * 提交报溢单
+     *
      * @param request
      * @param billDTO
      * @return
@@ -65,7 +66,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
         billDTO.setBelongStationCode(loginInfo.getStationCode());
         try {
             responseResult.put("billCode", mistakeBillManager.submitOverFlow(billDTO));
-        }catch (DataException date){
+        } catch (DataException date) {
             responseResult.putException(date);
         }
 
@@ -74,6 +75,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
 
     /**
      * 提交报损单
+     *
      * @param request
      * @param billDTO
      * @return
@@ -86,7 +88,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
         billDTO.setBelongStationCode(loginInfo.getStationCode());
         try {
             responseResult.put("billCode", mistakeBillManager.submitLoss(billDTO));
-        }catch (DataException date){
+        } catch (DataException date) {
             responseResult.putException(date);
         }
 
@@ -95,6 +97,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
 
     /**
      * 提交日常流转单
+     *
      * @param request
      * @param billDTO
      * @return
@@ -107,10 +110,42 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
         billDTO.setBelongStationCode(loginInfo.getStationCode());
         try {
             responseResult.put("billCode", mistakeBillManager.submitDayMistake(billDTO));
-        }catch (DataException date){
+        } catch (DataException date) {
             responseResult.putException(date);
         }
+        return responseResult;
+    }
 
+    @RequestMapping(path = "/findOverFlowByConditions", method = RequestMethod.POST)
+    public ResponseResult findOverFlowByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("billList", mistakeBillManager.findOverFlowByConditions(conditionQueryMistakeBill));
+        } catch (DataException date) {
+            responseResult.putException(date);
+        }
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/findLossByConditions", method = RequestMethod.POST)
+    public ResponseResult findLossByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("billList", mistakeBillManager.findLossByConditions(conditionQueryMistakeBill));
+        } catch (DataException date) {
+            responseResult.putException(date);
+        }
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/findDayMistakeByConditions", method = RequestMethod.POST)
+    public ResponseResult findDayMistakeByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("billList", mistakeBillManager.findDayMistakeByConditions(conditionQueryMistakeBill));
+        } catch (DataException date) {
+            responseResult.putException(date);
+        }
         return responseResult;
     }
 }
