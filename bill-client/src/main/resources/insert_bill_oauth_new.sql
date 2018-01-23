@@ -177,82 +177,103 @@
 
 --  配送-BILL003 3003【查询站点配送计划-BILL003001 3024】
 -- BILL003001 3024<条件查询-BILL003001001 3118>
- VALUES (3118, now(), now(), '0', '4', 'BILL003001001', '条件筛选查询站点配送计划', 'BILL,BILL003,BILL003001,BILL003001001', '补充内容1', 3024, '\0');
+ VALUES (3118, now(), now(), '0', '4', 'BILL003001001', '条件筛选查询站点配送计划', 'BILL,BILL003,BILL003001,BILL003001001', '/coffeeBill/api/bill/delivery/findPlanByConditions', 3024, '\0');
 -- BILL003001 3024<拣货-BILL003001002 3119>
- VALUES (3119, now(), now(), '0', '4', 'BILL003001002', '拣货', 'BILL,BILL003,BILL003001,BILL003001002', '补充内容2', 3024, '\0');
+ VALUES (3119, now(), now(), '0', '4', 'BILL003001002', '计划界面_查看配送计划单_根据单号查询', 'BILL,BILL003,BILL003001,BILL003001002', '/coffeeBill/api/bill/delivery/findPlanByBillCode', 3024, '\0');
 -- BILL003001 3024<根据站点计划号查询-BILL003001003 3120>
- VALUES (3120, now(), now(), '0', '4', 'BILL003001003', '根据站点计划号查询', 'BILL,BILL003,BILL003001,BILL003001003', '补充内容3', 3024, '\0');
+ VALUES (3120, now(), now(), '0', '4', 'BILL003001003', '计划界面_查看配送出库单_列表中拣货按钮消失后的查看按钮', 'BILL,BILL003,BILL003001,BILL003001003', '/coffeeBill/api/bill/delivery/findBySourceCode', 3024, '\0');
 -- BILL003001 3024<导出-BILL003001004 3121>
- VALUES (3121, now(), now(), '0', '4', 'BILL003001004', '导出', 'BILL,BILL003,BILL003001,BILL003001004', '补充内容4', 3024, '\0');
+-- VALUES (3121, now(), now(), '0', '4', 'BILL003001004', '导出', 'BILL,BILL003,BILL003001,BILL003001004', '补充内容4', 3024, '\0');
+
+-- BILL003001 3024<拣货保存>
+ VALUES (3122, now(), now(), '0', '4', 'BILL003001004', '计划配送拣货保存', 'BILL,BILL003,BILL003001,BILL003001004', '/coffeeBill/api/bill/delivery/save', 3024, '\0');
+-- BILL003001 3024<拣货提交>
+ VALUES (3123, now(), now(), '0', '4', 'BILL003001005', '计划配送拣货提交', 'BILL,BILL003,BILL003001,BILL003001005', '/coffeeBill/api/bill/delivery/submit', 3024, '\0');
+
+
 
 -- 配送-BILL003 3003【站点配送拣货-BILL003002 3025自主】
--- BILL003002 3025<提交-BILL003002001 3122>
- VALUES (3122, now(), now(), '0', '4', 'BILL003002001', '提交', 'BILL,BILL003,BILL003002,BILL003002001', '补充内容5', 3025, '\0');
+-- BILL003002 3025<自主拣货保存>
+ VALUES (3125, now(), now(), '0', '4', 'BILL003002001', '站点自主拣货保存', 'BILL,BILL003,BILL003002,BILL003002001', '/coffeeBill/api/bill/delivery/saveBySelf', 3025, '\0');
+-- BILL003002 3025<自主拣货提交>
+ VALUES (3126, now(), now(), '0', '4', 'BILL003002002', '站点自主拣货提交', 'BILL,BILL003,BILL003002,BILL003002002', '/coffeeBill/api/bill/delivery/submitBySelf', 3025, '\0');
+
+
 -- 配送-BILL003 3003【查询配送出库单-BILL003003 3026】
--- BILL003004 3026<条件查询-BILL003003001 3123>
- VALUES (3123, now(), now(), '0', '4', 'BILL003003001', '提交', 'BILL,BILL003,BILL003003,BILL003003001', '补充内容6', 3026, '\0');
--- BILL003004 3026<查看-BILL003003002 3124>
- VALUES (3124, now(), now(), '0', '4', 'BILL003003002', '查看', 'BILL,BILL003,BILL003003,BILL003003002', '补充内容7', 3026, '\0');
--- BILL003004 3026<修改-BILL003003003 3125>
- VALUES (3125, now(), now(), '0', '4', 'BILL003003003', '修改', 'BILL,BILL003,BILL003003,BILL003003003', '补充内容8', 3026, '\0');
--- BILL003004 3026<审核通过>
- VALUES (3126, now(), now(), '0', '4', 'BILL003003004', '审核通过', 'BILL,BILL003,BILL003003,BILL003003004', '补充内容9', 3026, '\0');
--- BILL003004 3026<审核不通过>
- VALUES (3127, now(), now(), '0', '4', 'BILL003003005', '审核不通过', 'BILL,BILL003,BILL003003,BILL003003005', '补充内容10', 3026, '\0');
--- BILL003004 3026<导出>
- VALUES (3128, now(), now(), '0', '4', 'BILL003003006', '导出', 'BILL,BILL003,BILL003003,BILL003003006', '补充内容11', 3026, '\0');
+-- BILL003003 3026<条件查询-BILL003003001 3127>
+ VALUES (3127, now(), now(), '0', '4', 'BILL003003001', '查询出库单_配送出库单条件筛选查询', 'BILL,BILL003,BILL003003,BILL003003001', '/coffeeBill/api/bill/delivery/findOutStorageByConditions', 3026, '\0');
+-- BILL003003 3026<查看>
+ VALUES (3128, now(), now(), '0', '4', 'BILL003003002', '查询出库单_查看', 'BILL,BILL003,BILL003003,BILL003003002', '/coffeeBill/api/bill/delivery/findOutStorageByBillCode', 3026, '\0');
+-- BILL003003 3026<修改保存>
+-- VALUES (3129, now(), now(), '0', '4', 'BILL003003005', '查询出库单_修改保存', 'BILL,BILL003,BILL003003,BILL003003005', '/coffeeBill/api/bill/delivery/save', 3026, '\0');
+-- BILL003003 3026<修改提交>
+-- VALUES (3130, now(), now(), '0', '4', 'BILL003003006', '查询出库单_修改提交', 'BILL,BILL003,BILL003003,BILL003003006', '/coffeeBill/api/bill/delivery/submit', 3026, '\0');
+-- BILL003003 3026<审核通过>
+ VALUES (3131, now(), now(), '0', '4', 'BILL003003007', '查询出库单_审核通过', 'BILL,BILL003,BILL003003,BILL003003007', '/coffeeBill/api/bill/delivery/auditSuccess', 3026, '\0');
+-- BILL003003 3026<审核不通过>
+ VALUES (3132, now(), now(), '0', '4', 'BILL003003008', '查询出库单_审核不通过', 'BILL,BILL003,BILL003003,BILL003003008', '/coffeeBill/api/bill/delivery/auditFailure', 3026, '\0');
+-- BILL003003 3026<审核打开>
+ VALUES (3133, now(), now(), '0', '4', 'BILL003003009', '查询出库单_审核打开', 'BILL,BILL003,BILL003003,BILL003003009', '/coffeeBill/api/bill/delivery/open', 3026, '\0');
 
 --配送-BILL003 3003【配送入库单查询-BILL003004 3027】
 --BILL003005 3027<条件查询>
---补充内容
---BILL003005 3027<查看>
---补充内容
---BILL003005 3027<调拨>
---补充内容
---BILL003005 3027<导出>
---补充内容
+ VALUES (3134, now(), now(), '0', '4', 'BILL003004001', '查询入库单_多条件查询', 'BILL,BILL003,BILL003004,BILL003004001', '/coffeeBill/api/bill/delivery/findInStorageByConditions', 3027, '\0');
+--BILL005004 3027<调拨>
+VALUES (3135, now(), now(), '0', '4', 'BILL003004002', '查询入库单_调拨', 'BILL,BILL003,BILL003004,BILL003004002', '/coffeeBill/api/bill/delivery/allotSave', 3027, '\0');
+--BILL005004 3027<查看>
+VALUES (3136, now(), now(), '0', '4', 'BILL003004003', '查询入库单_查看', 'BILL,BILL003,BILL003004,BILL003004003', '/coffeeBill/api/bill/delivery/findInStorageByBillCode', 3027, '\0');
+
 
 -- 配送-BILL003 3003【配送调拨单查询-BILL003005 3028】
 -- BILL003006 3028<条件查询>
---补充内容
--- BILL003006 3028<查看>
---补充内容
+ VALUES (3137, now(), now(), '0', '4', 'BILL003005001', '查询调 拨单_多条件查询', 'BILL,BILL003,BILL003005,BILL003005001', '/coffeeBill/api/bill/delivery/findAllotByConditions', 3028, '\0');
+--BILL005005 3028<查看>
+ VALUES (3138, now(), now(), '0', '4', 'BILL003005002', '查询调拨单_查看', 'BILL,BILL003,BILL003005,BILL003005002', '/coffeeBill/api/bill/delivery/findAllotByBillCode', 3028, '\0');
 -- BILL003006 3028<导出>
---补充内容
+
 
 -- 调剂-BILL004 3004【查询站点调剂计划-BILL004001 3029】
--- BILL004001 3029<拣货>
---补充内容
+VALUES (3200, now(), now(), '0', '4', 'BILL004001001', '调剂计划条件查询', 'BILL,BILL004,BILL004001,BILL004001001', '/coffeeBill/api/bill/adjust/findPlanByConditions', 3029, '\0');
 -- BILL004001 3029<根据站点计划好查询>
---补充内容
+VALUES (3201, now(), now(), '0', '4', 'BILL004001002', '查看单个调剂计划', 'BILL,BILL004,BILL004001,BILL004001002', '/coffeeBill/api/bill/adjust/findPlanByBillCode', 3029, '\0');
+# -- BILL004001 3029<拣货保存>
+# VALUES (3202, now(), now(), '0', '4', 'BILL004001003', '保存拣货', 'BILL,BILL004,BILL004001,BILL004001003', '/coffeeBill/api/bill/adjust/save', 3029, '\0');
+# -- BILL004001 3029<拣货保存>
+# VALUES (3203, now(), now(), '0', '4', 'BILL004001004', '提交拣货', 'BILL,BILL004,BILL004001,BILL004001004', '/coffeeBill/api/bill/adjust/submit', 3029, '\0');
 -- BILL004001 3029<导出>
 --补充内容
 -- 调剂-BILL004 3004【站点调剂拣货-BILL004002 3030自主】
+-- BILL004002 3030<保存>
+VALUES (3205, now(), now(), '0', '4', 'BILL004002001', '自主拣货保存', 'BILL,BILL004,BILL004002,BILL004002001', '/coffeeBill/api/bill/adjust/saveBySelf', 3030, '\0');
 -- BILL004002 3030<提交>
---补充内容
+VALUES (3206, now(), now(), '0', '4', 'BILL004002002', '自主拣货提交', 'BILL,BILL004,BILL004002,BILL004002002', '/coffeeBill/api/bill/adjust/submitBySelf', 3030, '\0');
 -- 调剂-BILL004 3004【查询调剂出库单-BILL004003 3031】
 -- BILL004003 3031<件筛选查询>
---补充内容
+VALUES (3207, now(), now(), '0', '4', 'BILL004003001', '调剂出库单查询', 'BILL,BILL004,BILL004003,BILL004003001', '/coffeeBill/api/bill/adjust/findOutStorageByConditions', 3031, '\0');
 -- BILL004003 3031<查看>
---补充内容
--- BILL004003 3031<修改>
---补充内容
+VALUES (3208, now(), now(), '0', '4', 'BILL004003002', '调剂出库单单个查看', 'BILL,BILL004,BILL004003,BILL004003002', '/coffeeBill/api/bill/adjust/findOutStorageByBillCode', 3031, '\0');
+-- BILL004003 3031<保存>
+VALUES (3209, now(), now(), '0', '4', 'BILL004003003', '保存调剂出库单', 'BILL,BILL004,BILL004003,BILL004003003', '/coffeeBill/coffeeBill/api/bill/adjust/save', 3031, '\0');
+-- BILL004003 3031<提交>
+VALUES (3210, now(), now(), '0', '4', 'BILL004003004', '提交调剂出库单', 'BILL,BILL004,BILL004003,BILL004003004', '/coffeeBill/coffeeBill/api/bill/adjust/submit', 3031, '\0');
 -- BILL004003 3031<审核通过>
---补充内容
+VALUES (3211, now(), now(), '0', '4', 'BILL004003005', '审核通过', 'BILL,BILL004,BILL004003,BILL004003005', '/coffeeBill/api/bill/adjust/auditSuccess', 3031, '\0');
 -- BILL004003 3031<审核不通过>
---补充内容
+VALUES (3212, now(), now(), '0', '4', 'BILL004003006', '审核不通过', 'BILL,BILL004,BILL004003,BILL004003006', '/coffeeBill/api/bill/adjust/auditFailure', 3031, '\0');
+-- BILL004003 3031<OPEN>
+VALUES (3213, now(), now(), '0', '4', 'BILL004003007', '调剂出库单open', 'BILL,BILL004,BILL004003,BILL004003007', '/coffeeBill/api/bill/adjust/open', 3031, '\0');
 -- 调剂-BILL004 3004【调剂入库单查询-BILL004004 3032】
 -- BILL004004 3032<件筛选查询>
---补充内容
+VALUES (3214, now(), now(), '0', '4', 'BILL004004001', '查询入库单', 'BILL,BILL004,BILL004004,BILL004004001', '/coffeeBill/api/bill/adjust/findInStorageByConditions', 3032, '\0');
 -- BILL004004 3032<调拨>
---补充内容
+VALUES (3215, now(), now(), '0', '4', 'BILL004004002', '调拨', 'BILL,BILL004,BILL004004,BILL004004002', '/coffeeBill/api/bill/allot/save', 3032, '\0');
 -- BILL004004 3032<查看>
---补充内容
+VALUES (3216, now(), now(), '0', '4', 'BILL004004003', '查看入库单', 'BILL,BILL004,BILL004004,BILL004004003', '/coffeeBill/api/bill/adjust/findInStorageByBillCode', 3032, '\0');
 -- 调剂-BILL004 3004【调剂调拨单查询-BILL004005 3033】
 -- BILL004005 3033<件筛选查询>
---补充内容
+VALUES (3217, now(), now(), '0', '4', 'BILL004005001', '查询调拨单', 'BILL,BILL004,BILL004005,BILL004005001', '/coffeeBill/api/bill/adjust/findAllotByConditions', 3033, '\0');
 -- BILL004005 3033<查看>
---补充内容
+VALUES (3218, now(), now(), '0', '4', 'BILL004005002', '查看调拨单', 'BILL,BILL004,BILL004005,BILL004005002', '/coffeeBill/api/bill/adjust/findAllotByBillCode', 3033, '\0');
 
 
 -- 退库-BILL005 3005【查询退站点库计划-BILL005001 3034】
@@ -290,8 +311,8 @@
 --退库-BILL005 3005【退库入库单查询-BILL005004 3037】
 --BILL005004 3037<条件查询>
  VALUES (3146, now(), now(), '0', '4', 'BILL005004001', '查询入库单_多条件查询', 'BILL,BILL005,BILL005004,BILL005004001', '/coffeeBill/api/bill/restock/findInStorageByConditions', 3037, '\0');
---BILL005004 3037<调拨>--调拨是调用allot包里的controller？
- VALUES (3147, now(), now(), '0', '4', 'BILL005004002', '查询入库单_调拨', 'BILL,BILL005,BILL005004,BILL005004002', '/coffeeBill/api/bill/allot/save', 3037, '\0');
+--BILL005004 3037<调拨>
+ VALUES (3147, now(), now(), '0', '4', 'BILL005004002', '查询入库单_调拨', 'BILL,BILL005,BILL005004,BILL005004002', '/coffeeBill/api/bill/restock/allotSave', 3037, '\0');
 --BILL005004 3037<查看>
  VALUES (3148, now(), now(), '0', '4', 'BILL005004003', '查询入库单_查看', 'BILL,BILL005,BILL005004,BILL005004003', '/coffeeBill/api/bill/restock/findInStorageByBillCode', 3037, '\0');
 --退库-BILL005 3005【退库调拨单查询-BILL005005 3038】
@@ -303,35 +324,35 @@
 
 --退货-BILL006 3006【查询站点退货计划-BILL006001 3039】
 --BILL006001 3039<条件筛选查询>
-VALUES (3151, now(), now(), '0', '4', 'BILL006001001', '计划界面_多条件查询', 'BILL,BILL005,BILL006001,BILL006001001', '/coffeeBill/api/bill/returned/findPlanByConditions', 3039, '\0');
+VALUES (3151, now(), now(), '0', '4', 'BILL006001001', '计划界面_多条件查询', 'BILL,BILL006,BILL006001,BILL006001001', '/coffeeBill/api/bill/returned/findPlanByConditions', 3039, '\0');
 --BILL006001 3039<查看>
-VALUES (3152, now(), now(), '0', '4', 'BILL006001002', '计划界面_查看退货计划单_根据单号查询', 'BILL,BILL005,BILL006001,BILL006001002', '/coffeeBill/api/bill/returned/findPlanByBillCode', 3039, '\0');
+VALUES (3152, now(), now(), '0', '4', 'BILL006001002', '计划界面_查看退货计划单_根据单号查询', 'BILL,BILL006,BILL006001,BILL006001002', '/coffeeBill/api/bill/returned/findPlanByBillCode', 3039, '\0');
 --BILL006001 3039<根据站点计划号查询>
-VALUES (3153, now(), now(), '0', '4', 'BILL006001003', '计划界面_查看退货出库单_列表中拣货按钮消失后的查看按钮', 'BILL,BILL005,BILL006001,BILL006001003', '/coffeeBill/api/bill/returned/findBySourceCode', 3039, '\0');
+VALUES (3153, now(), now(), '0', '4', 'BILL006001003', '计划界面_查看退货出库单_列表中拣货按钮消失后的查看按钮', 'BILL,BILL006,BILL006001,BILL006001003', '/coffeeBill/api/bill/returned/findBySourceCode', 3039, '\0');
 
 -- BILL006001 3039<拣货保存>
- VALUES (3133, now(), now(), '0', '4', 'BILL006001004', '计划退货拣货保存', 'BILL,BILL005,BILL006001,BILL006001004', '/coffeeBill/api/bill/returned/save', 3039, '\0');
+ VALUES (3133, now(), now(), '0', '4', 'BILL006001004', '计划退货拣货保存', 'BILL,BILL006,BILL006001,BILL006001004', '/coffeeBill/api/bill/returned/save', 3039, '\0');
 -- BILL006001 3039<拣货提交>
- VALUES (3134, now(), now(), '0', '4', 'BILL006001005', '计划退货拣货提交', 'BILL,BILL005,BILL006001,BILL006001005', '/coffeeBill/api/bill/returned/submit', 3039, '\0');
+ VALUES (3134, now(), now(), '0', '4', 'BILL006001005', '计划退货拣货提交', 'BILL,BILL006,BILL006001,BILL006001005', '/coffeeBill/api/bill/returned/submit', 3039, '\0');
 
 --退货-BILL006 3006【站点退货拣货-BILL006002 3040】
 --BILL006002 3040<保存>
-VALUES (3154, now(), now(), '0', '4', 'BILL006002001', '退货拣货保存', 'BILL,BILL005,BILL006002,BILL006002001', '/coffeeBill/api/bill/returned/save', 3040, '\0');
+VALUES (3154, now(), now(), '0', '4', 'BILL006002001', '退货拣货保存', 'BILL,BILL006,BILL006002,BILL006002001', '/coffeeBill/api/bill/returned/save', 3040, '\0');
 --BILL006002 3040<提交>
-VALUES (3155, now(), now(), '0', '4', 'BILL006002002', '退货拣货保存', 'BILL,BILL005,BILL006002,BILL006002002', '/coffeeBill/api/bill/returned/submit', 3040, '\0');
+VALUES (3155, now(), now(), '0', '4', 'BILL006002002', '退货拣货保存', 'BILL,BILL006,BILL006002,BILL006002002', '/coffeeBill/api/bill/returned/submit', 3040, '\0');
 
 --退货-BILL006 3006【查询退货出库单-BILL006003 3041】
 --BILL006003 3041<条件筛选查询>
  VALUES (3156, now(), now(), '0', '4', 'BILL006003001', '查询出库单_退库出库单条件筛选查询', 'BILL,BILL006,BILL006003,BILL006003001', '/coffeeBill/api/bill/returned/findOutStorageByConditions', 3041, '\0');
--- BILL005003 3036<查看>
+--BILL006003 3041<查看>
  VALUES (3157, now(), now(), '0', '4', 'BILL006003002', '查询出库单_查看', 'BILL,BILL006,BILL006003,BILL006003002', '/coffeeBill/api/bill/returned/findOutStorageByBillCode', 3041, '\0');
 
 --BILL006003 3041<审核通过>
-VALUES (3158, now(), now(), '0', '4', 'BILL006003003', '查询出库单_审核通过', 'BILL,BILL005,BILL006003,BILL006003003', '/coffeeBill/api/bill/returned/auditSuccess', 3041, '\0');
+VALUES (3158, now(), now(), '0', '4', 'BILL006003003', '查询出库单_审核通过', 'BILL,BILL006,BILL006003,BILL006003003', '/coffeeBill/api/bill/returned/auditSuccess', 3041, '\0');
 --BILL006003 3041<审核不通过>
-VALUES (3159, now(), now(), '0', '4', 'BILL006003004', '查询出库单_审核不通过', 'BILL,BILL005,BILL006003,BILL006003004', '/coffeeBill/api/bill/returned/auditFailure', 3041, '\0');
+VALUES (3159, now(), now(), '0', '4', 'BILL006003004', '查询出库单_审核不通过', 'BILL,BILL006,BILL006003,BILL006003004', '/coffeeBill/api/bill/returned/auditFailure', 3041, '\0');
 --BILL006003 3041<审核打开>
-VALUES (3160, now(), now(), '0', '4', 'BILL006003005', '查询出库单_审核打开', 'BILL,BILL005,BILL006003,BILL006003005', '/coffeeBill/api/bill/returned/open', 3041, '\0');
+VALUES (3160, now(), now(), '0', '4', 'BILL006003005', '查询出库单_审核打开', 'BILL,BILL006,BILL006003,BILL006003005', '/coffeeBill/api/bill/returned/open', 3041, '\0');
 
 
 

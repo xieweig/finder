@@ -12,6 +12,11 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
     private String allotMemo;
 
     /**
+     * 自主调拨
+     */
+    private Boolean self;
+
+    /**
      * 入库单入库时间
      */
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,7 +38,6 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
      */
     private String mistakeBillCode;
 
-    private Boolean otherAllot = false;
 
     public String getAllotMemo() {
         return allotMemo;
@@ -76,11 +80,12 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
         this.mistakeBillCode = mistakeBillCode;
     }
 
-    public Boolean getOtherAllot() {
-        return otherAllot;
+
+    public Boolean getSelf() {
+        return self;
     }
 
-    public void setOtherAllot(Boolean otherAllot) {
-        this.otherAllot = otherAllot;
+    public void setSelf(Boolean self) {
+        this.self = self;
     }
 }

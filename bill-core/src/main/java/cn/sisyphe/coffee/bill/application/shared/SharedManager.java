@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.application.shared;
 
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
+import cn.sisyphe.coffee.bill.infrastructure.share.cargo.repo.CargoRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.station.repo.StationRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.supplier.repo.SupplierRepository;
 import cn.sisyphe.coffee.bill.infrastructure.share.user.repo.UserRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 
 /**
  * @author Amy on 2018/1/4.
- *         describe：
+ * describe：
  */
 @Service
 public class SharedManager {
@@ -24,6 +25,9 @@ public class SharedManager {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CargoRepository cargoRepository;
 
 
     public String findLogisticCodeByStationCode(String stationCode) {
@@ -54,7 +58,12 @@ public class SharedManager {
      * @param userCode 用户名称
      * @return
      */
-    public String findOneByUserCode(String userCode){
+    public String findOneByUserCode(String userCode) {
         return userRepository.findOneByUserCode(userCode);
+    }
+
+
+    public List<String> findCargoCodesByCargoName(String cargoName) {
+        return cargoRepository.findCargoCodesByCargoName(cargoName);
     }
 }

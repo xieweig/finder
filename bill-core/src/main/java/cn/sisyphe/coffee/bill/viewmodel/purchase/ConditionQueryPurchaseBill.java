@@ -14,26 +14,26 @@ public class ConditionQueryPurchaseBill extends ConditionQueryBill  {
     /**
      * 供应商编码集合
      */
-    private List<String> supplierCodeList;
+    private List<String> supplierCodes;
 
     /**
      * 入库库位编码集合
      */
-    private List<String> inStorageCodeList;
+    private List<String> inStorageCodes;
 
-    public List<String> getSupplierCodeList() {
-        return supplierCodeList;
+    public List<String> getSupplierCodes() {
+        return supplierCodes;
     }
 
-    public void setSupplierCodeList(List<String> supplierCodeList) {
-        this.supplierCodeList = supplierCodeList;
+    public void setSupplierCodes(List<String> supplierCodes) {
+        this.supplierCodes = supplierCodes;
     }
 
-    public List<String> getInStorageCodeList() {
-        return inStorageCodeList;
+    public List<String> getInStorageCodes() {
+        return inStorageCodes;
     }
 
-    public void setInStorageCodeList(List<String> inStorageCodeList) {
-        this.inStorageCodeList = inStorageCodeList;
+    public void setInStorageCodes(List<String> inStorageCodes) {
+        this.inStorageCodes = inStorageCodes;
     }
 }

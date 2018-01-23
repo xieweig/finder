@@ -50,6 +50,13 @@ public class AllotBillExtraServiceImpl extends AbstractBillExtraService<AllotBil
             expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class), conditionQuery.getAllotEndTime()));
         }
 
-
+        //追加误差单查询条件
+        if (conditionQuery.getMistakeBillQuery()) {
+            expressions.add(criteriaBuilder.isNotNull(root.get("mistakeBillCode").as(String.class)));
+            //误差单号
+            if (conditionQuery.getMistakeBillQuery()) {
+                expressions.add(criteriaBuilder.like(root.get("mistakeBillCode").as(String.class), "%" + conditionQuery.getMistakeBillCode() + "%"));
+            }
+        }
     }
 }

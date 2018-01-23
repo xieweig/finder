@@ -26,12 +26,27 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
         setBillType(BillTypeEnum.ADJUST);
     }
 
+
+    /**
+     * 自主调剂
+     */
+    private Boolean self;
+
     /**
      * 是否是自主调剂
      */
 
     public boolean isSelfAdjust() {
         return StringUtils.isEmpty(getRootCode());
+    }
+
+
+    public Boolean getSelf() {
+        return self;
+    }
+
+    public void setSelf(Boolean self) {
+        this.self = self;
     }
 
     @Override

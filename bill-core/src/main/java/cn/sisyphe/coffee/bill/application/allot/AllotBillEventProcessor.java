@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.purpose.InStorageBillManager;
+import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class AllotBillEventProcessor {
 
     @Autowired
     private InStorageBillManager inStorageBillManager;
+
+    @Autowired
+    private MistakeBillManager mistakeBillManager;
 
     /**
      * 已创建事件
@@ -73,6 +77,9 @@ public class AllotBillEventProcessor {
         //更新入库单的状态为调拨中
         if (!StringUtils.isEmpty(allotBill.getSourceCode())) {
             inStorageBillManager.committing(allotBill.getSourceCode(), allotBill.getSpecificBillType());
+        }
+        if (!allotBill.getSelf()) {
+            mistakeBillManager.callBackToAddAllotBillCode(allotBill.getMistakeBillCode(), allotBill.getBillCode());
         }
     }
 

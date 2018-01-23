@@ -114,7 +114,7 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             /**
              * 增加操作人条件查询
              */
-            if (conditionQuery.getOperatorCodeList() != null && conditionQuery.getOperatorCodeList().size() > 0) {
+            if (!StringUtils.isEmpty(conditionQuery.getOperatorName())) {
                 expressions.add(root.get("operatorCode").as(String.class).in(conditionQuery.getOperatorCodeList()));
             }
 
