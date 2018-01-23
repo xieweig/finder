@@ -129,7 +129,8 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
                 }
             }
 
-            sql.append(" and d.in_station_code in (").append(inStationCodesSql.toString()).append(")");
+            sql.append(" and (d.in_station_code in (").append(inStationCodesSql.toString()).append(") or ");
+            sql.append(" d.supplier_code in (").append(inStationCodesSql.toString()).append("))");
         }
 
         if (conditionQuery.getOutStationCodes() != null && conditionQuery.getOutStationCodes().size() > 0) {
