@@ -10,9 +10,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
-import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.EnumType;
@@ -49,7 +47,6 @@ public class BillDTO<T extends BillDetailDTO> {
      */
     private String billCode;
 
-
     /**
      * 单据作用
      */
@@ -70,6 +67,7 @@ public class BillDTO<T extends BillDetailDTO> {
      * 入库位置
      */
     private Station inLocation;
+
     /**
      * 源单号
      */

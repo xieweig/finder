@@ -10,18 +10,11 @@ import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
-import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.math.BigDecimal;
-import java.util.Set;
-
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sum;
 
 
 /**
@@ -37,50 +30,6 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
     @Autowired
     public PurchaseBillManager(BillRepository<PurchaseBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<PurchaseBill, ConditionQueryPurchaseBill> billExtraService, SharedManager sharedManager) {
         super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
-    }
-
-
-    /**
-     * 重写转换方法
-     *
-     * @param bill
-     * @return
-     */
-    @Override
-    protected PurchaseBillDTO billToListDto(PurchaseBill bill) {
-
-        PurchaseBillDTO purchaseBillDTO = super.billToListDto(bill);
-        Set<PurchaseBillDetailDTO> billDetails = purchaseBillDTO.getBillDetails();
-
-        // 进货实洋
-        BigDecimal totalPriceAmount = BigDecimal.ZERO;
-        // 总价差值
-        BigDecimal totalPriceDifferenceAmount = BigDecimal.ZERO;
-
-        if (billDetails != null && billDetails.size() > 0) {
-            for (PurchaseBillDetailDTO detailDTO : billDetails) {
-                // 累加进货实洋
-                if (detailDTO.getUnitPrice() != null && detailDTO.getUnitPrice().compareTo(BigDecimal.ZERO) > 0
-                        && detailDTO.getActualAmount() != null && detailDTO.getActualAmount() > 0) {
-                    totalPriceAmount = totalPriceAmount.add(detailDTO.getUnitPrice().multiply(BigDecimal.valueOf(detailDTO.getActualAmount())));
-                }
-                // 累加总价差值
-                if (detailDTO.getDifferencePrice() != null && detailDTO.getDifferencePrice().compareTo(BigDecimal.ZERO) > 0) {
-                    totalPriceDifferenceAmount = totalPriceDifferenceAmount.add(detailDTO.getDifferencePrice());
-                }
-            }
-            // 设置进货实洋
-            purchaseBillDTO.setTotalPriceAmount(totalPriceAmount);
-            // 设置总价差值
-            purchaseBillDTO.setTotalPriceDifferenceAmount(totalPriceDifferenceAmount);
-
-            // 设置实收数量
-            purchaseBillDTO.setTotalAmount(sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getActualAmount()));
-            // 设置数量差值
-            purchaseBillDTO.setDifferenceAmount(sum(purchaseBillDTO.getBillDetails(), on(PurchaseBillDetailDTO.class).getDifferenceNumber()));
-        }
-        // 手动去掉明细信息，减少json传值大小
-        return purchaseBillDTO;
     }
 
     /**

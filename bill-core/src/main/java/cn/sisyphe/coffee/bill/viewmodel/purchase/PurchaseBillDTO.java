@@ -1,10 +1,7 @@
 package cn.sisyphe.coffee.bill.viewmodel.purchase;
 
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
-
-import java.math.BigDecimal;
 
 /**
  * Created by heyong on 2018/1/17 11:41
@@ -36,22 +33,6 @@ public class PurchaseBillDTO extends BillDTO<PurchaseBillDetailDTO> {
      * 备注
      */
     private String memo;
-
-    /**
-     * 数量差值
-     */
-    private Integer differenceAmount;
-
-    /**
-     * 进货实洋
-     */
-    private BigDecimal totalPriceAmount;
-
-    /**
-     * 总价差值
-     */
-    private BigDecimal totalPriceDifferenceAmount;
-
 
     public String getMemo() {
         return memo;
@@ -93,27 +74,4 @@ public class PurchaseBillDTO extends BillDTO<PurchaseBillDetailDTO> {
         this.actualAmount = actualAmount;
     }
 
-    public Integer getDifferenceAmount() {
-        return differenceAmount;
-    }
-
-    public void setDifferenceAmount(Integer differenceAmount) {
-        this.differenceAmount = differenceAmount;
-    }
-
-    public BigDecimal getTotalPriceAmount() {
-        return totalPriceAmount;
-    }
-
-    public void setTotalPriceAmount(BigDecimal totalPriceAmount) {
-        this.totalPriceAmount = totalPriceAmount;
-    }
-
-    public BigDecimal getTotalPriceDifferenceAmount() {
-        return totalPriceDifferenceAmount;
-    }
-
-    public void setTotalPriceDifferenceAmount(BigDecimal totalPriceDifferenceAmount) {
-        this.totalPriceDifferenceAmount = totalPriceDifferenceAmount;
-    }
 }
