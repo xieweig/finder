@@ -117,7 +117,8 @@ public abstract class AbstractBillManager<T extends Bill> {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
-        bill.setOutWareHouseTime(new Date());
+        // TODO: 2018/1/23 冲减完成后重写出库时间
+//        bill.setOutWareHouseTime(new Date());
         billRepository.save(bill);
     }
 
@@ -129,7 +130,7 @@ public abstract class AbstractBillManager<T extends Bill> {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setInOrOutState(BillInOrOutStateEnum.OUT_FAILURE);
-        bill.setOutWareHouseTime(new Date());
+//        bill.setOutWareHouseTime(new Date());
         billRepository.save(bill);
     }
 
@@ -143,7 +144,8 @@ public abstract class AbstractBillManager<T extends Bill> {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setAllotStatus(BillAllotStatusEnum.ALLOT);
-        bill.setInWareHouseTime(new Date());
+        // TODO: 2018/1/23 冲减完成后重写出库时间
+//        bill.setInWareHouseTime(new Date());
         billRepository.save(bill);
     }
 
