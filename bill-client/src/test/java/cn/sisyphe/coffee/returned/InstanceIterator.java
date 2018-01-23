@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.Cargo;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
 import cn.sisyphe.coffee.restock.InstanceIter;
@@ -33,6 +34,9 @@ public class InstanceIterator extends InstanceIter{
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         Integer sign = random.nextInt(10);
 
+        Supplier supplier = new Supplier();
+        supplier.setSupplierCode("GYSBM0"+(random.nextInt(4)+1));
+        dto.setSupplier(supplier);
 
         if (sign>4){
             dto.setSpecificBillType(BillTypeEnum.RETURNED);
@@ -79,7 +83,6 @@ public class InstanceIterator extends InstanceIter{
         Cargo cargo = new Cargo(strings[1]);
         rawMaterial.setCargo(cargo);
         DetailDTO.setRawMaterial(rawMaterial);
-        System.err.println(ToStringBuilder.reflectionToString(DetailDTO));
         return DetailDTO;
     }
 
