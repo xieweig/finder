@@ -4,6 +4,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.framework.message.core.MessagingHelper;
+import cn.sisyphe.framework.web.ResponseResult;
 
 import java.text.MessageFormat;
 
@@ -25,7 +26,10 @@ public class OutStoragePurpose extends AbstractBillPurpose {
 
         Bill bill = getBillService().getBill();
         bill.setInOrOutState(BillInOrOutStateEnum.OUT_ING);
-        MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), bill);
+        ResponseResult responseResult = new ResponseResult();
+        responseResult.put("bill", bill);
+        responseResult.setCommandName(Constant.OUT_STORAGE_OFFSET_DONE);
+        MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), responseResult);
 
     }
 

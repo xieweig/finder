@@ -1,8 +1,6 @@
 package cn.sisyphe.coffee.bill.application.delivery;
 
-import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
-import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -65,7 +63,5 @@ public class DeliveryBillEventProcessor {
     @EventListener(condition = "#event.billType.toString() ==  'DELIVERY' and #event.billState.toString() == 'DONE'")
     public void billDone(BehaviorEvent event) {
         //冲减完成之后需要生成调剂入库单
-        AdjustBill adjustBill = (AdjustBill) event.getBill();
-        System.out.println("DONE:" + adjustBill);
     }
 }

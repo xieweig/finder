@@ -370,8 +370,8 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
             Set<ResultPlanBillLocationDTO> resultPlanBillLocationDTOSet = new HashSet<>();
             for (PlanBillDetail planBillDetail : planBillDetails) {
                 ResultPlanBillLocationDTO resultPlanBillLocationDTO = new ResultPlanBillLocationDTO();
-                resultPlanBillLocationDTO.setOutLocation(planBillDetail.getOutLocation());
-                resultPlanBillLocationDTO.setInLocation(planBillDetail.getInLocation());
+                resultPlanBillLocationDTO.setOutLocation(renderLocation(planBillDetail.getOutLocation()));
+                resultPlanBillLocationDTO.setInLocation(renderLocation(planBillDetail.getInLocation()));
                 resultPlanBillLocationDTO.setAmount(planBillDetail.getShippedAmount());
                 resultPlanBillLocationDTOSet.add(resultPlanBillLocationDTO);
             }
@@ -380,6 +380,21 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         }
         resultPlanBillDTO.setPlanBillDetails(resultPlanBillGoodsDTOSet);
         return resultPlanBillDTO;
+    }
+
+    /**
+     * 为前端转换地址
+     *
+     * @param abstractLocation 地址
+     * @return station
+     */
+    private Station renderLocation(AbstractLocation abstractLocation) {
+        if (abstractLocation instanceof Supplier) {
+            Station supplier = new Station(abstractLocation.code());
+            supplier.setStationType(StationType.SUPPLIER);
+            return supplier;
+        }
+        return new Station(abstractLocation.code());
     }
 
     private String getGoodsCode(BasicEnum basicEnum, AbstractGoods abstractGoods) {

@@ -33,7 +33,7 @@ public class ReceiverService {
      *
      * @param responseResult
      */
-    @RabbitListener(queues = "#{'${rabbit.listener.queue}'}")
+    @RabbitListener(queues = "${rabbit.listener.queue}")
     public void receiveQueue(ResponseResult responseResult) {
 
         if (Constant.COMMON_NAME.equals(responseResult.getCommandName())) {
@@ -45,9 +45,10 @@ public class ReceiverService {
         //接收到入库冲减完成将，出库单转存一份入库单
         if (Constant.OUT_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
             Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
-            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
+            throw new RuntimeException();
+//            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
             //TODO 这里的出入库状态应该在冲减系统变成出库成功或者失败
-            applicationEventPublisher.publishEvent(behaviorEvent);
+//            applicationEventPublisher.publishEvent(behaviorEvent);
 
         }
 

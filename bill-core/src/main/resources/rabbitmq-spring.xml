@@ -3,10 +3,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
     <rabbit:queue name="bill-stock-done"/>
+    <rabbit:queue name="out-storage-to-stock"/>
 
     <rabbit:topic-exchange name="cn_sisyphe_bill">
         <rabbit:bindings>
             <rabbit:binding queue="bill-stock-done" pattern="member.yh.sync.fromServer.create.or.update"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+
+    <rabbit:topic-exchange name="cn_sisyphe_coffee_bill">
+        <rabbit:bindings>
+            <rabbit:binding queue="out-storage-to-stock" pattern="bill.*.*.*"/>
         </rabbit:bindings>
     </rabbit:topic-exchange>
 
