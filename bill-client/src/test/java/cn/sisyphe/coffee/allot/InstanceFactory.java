@@ -32,7 +32,6 @@ public class InstanceFactory extends InstanceIter {
         AllotBillDTO dto = new AllotBillDTO();
 
         //可能有误
-        dto.setBillType(BillTypeEnum.ALLOT);
         dto.setBillPurpose(BillPurposeEnum.MOVE_STORAGE);
 
 

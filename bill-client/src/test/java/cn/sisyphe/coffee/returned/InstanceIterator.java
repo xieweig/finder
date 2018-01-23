@@ -29,7 +29,6 @@ public class InstanceIterator extends InstanceIter{
         //可能有误
 
 
-        dto.setBillType(BillTypeEnum.RETURNED);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         Integer sign = random.nextInt(10);
 

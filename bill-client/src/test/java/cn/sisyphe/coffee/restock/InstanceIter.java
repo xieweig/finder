@@ -44,7 +44,6 @@ public class InstanceIter {
         //可能有误
 
 
-        dto.setBillType(BillTypeEnum.RESTOCK);
         dto.setBillPurpose(BillPurposeEnum.OUT_STORAGE);
         Integer sign = random.nextInt(10);
         dto.setRootCode(ROOT_CODES[random.nextInt(ROOT_CODES.length)]);

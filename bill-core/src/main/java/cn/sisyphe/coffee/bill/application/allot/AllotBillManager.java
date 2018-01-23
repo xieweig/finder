@@ -45,7 +45,7 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
 
     @Override
     public AllotBillDTO saveBill(AllotBillDTO billDTO) {
-        AllotBill allotBill = prepareBill(billDTO);
+        AllotBill allotBill = prepareBill(billDTO.getBillCode());
         allotBill = dtoToBill(allotBill, billDTO);
         attachMistakeBill(allotBill, billDTO);
         allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);
