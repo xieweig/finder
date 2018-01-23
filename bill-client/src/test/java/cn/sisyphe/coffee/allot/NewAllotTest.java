@@ -34,7 +34,7 @@ public class NewAllotTest extends InstanceFactory {
 
     @Test
     public void saveRestockSource(){
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
 
             RestockBillDTO restockBillDTO = this.nextRandomAddRestockBillDTO(random.nextInt(2)+1);
             restockBillDTO.setBillPurpose(BillPurposeEnum.IN_STORAGE);

@@ -108,7 +108,7 @@ public class JustForPlan {
         planBill.setOutWareHouseTime(new Date());
 
         Set<PlanBillDetail> details = new HashSet<>();
-        for (int i = 0; i < random.nextInt(3); i++) {
+        for (int i = 0; i < 3; i++) {
 
             details.add(this.createPlanBillDetail());
         }
@@ -125,7 +125,7 @@ public class JustForPlan {
     }
     @Test
     public void insertTest(){
-        for (int i = 0; i <6 ; i++) {
+        for (int i = 0; i <16 ; i++) {
             this.planBillRepository.save(this.createPlanBill());
 //            if (i < InstanceIter.ROOT_CODES.length){
 //                InstanceIter.ROOT_CODES[i]=
