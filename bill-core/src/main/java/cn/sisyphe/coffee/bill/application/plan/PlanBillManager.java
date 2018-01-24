@@ -203,7 +203,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
             return getSharedManager().findStationByStationCode(abstractLocation.code());
         }
         if (abstractLocation instanceof Supplier) {
-            return getSharedManager().findSupplierBySupplierCode(abstractLocation.code());
+            return abstractLocation;
         }
         throw new DataException("xxx", "站点转换错误");
     }
