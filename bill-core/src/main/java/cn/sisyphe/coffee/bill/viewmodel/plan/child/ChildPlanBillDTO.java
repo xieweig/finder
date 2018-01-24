@@ -73,7 +73,17 @@ public class ChildPlanBillDTO {
 
     private BigDecimal progress;
 
+    private BillTypeEnum specificBillType;
+
     private List<ChildPlanBillDetailDTO> childPlanBillDetails;
+
+    public BillTypeEnum getSpecificBillType() {
+        return specificBillType;
+    }
+
+    public void setSpecificBillType(BillTypeEnum specificBillType) {
+        this.specificBillType = specificBillType;
+    }
 
     public OperationStateEnum getOperationState() {
         return operationState;
