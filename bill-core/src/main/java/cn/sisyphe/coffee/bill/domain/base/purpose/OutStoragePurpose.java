@@ -28,6 +28,7 @@ public class OutStoragePurpose extends AbstractBillPurpose {
         bill.setInOrOutState(BillInOrOutStateEnum.OUT_ING);
         ResponseResult responseResult = new ResponseResult();
         responseResult.put("bill", bill);
+        //TODO 这里需要更改，应该由冲减系统设置值
         responseResult.setCommandName(Constant.OUT_STORAGE_OFFSET_DONE);
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(bill), responseResult);
 

@@ -17,8 +17,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.context.ApplicationEventPublisher;
 
-import java.util.Date;
-
 /**
  * Created by heyong on 2018/1/2 17:47
  * Description: 单据基础管理器
@@ -112,26 +110,30 @@ public abstract class AbstractBillManager<T extends Bill> {
     /**
      * 出库成功
      */
-    public void outStorageSuccess(T bill) {
+    public T outStorageSuccess(T bill) {
         if (!BillPurposeEnum.OUT_STORAGE.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
-        bill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
+        T foundBill = billRepository.findOneByBillCode(bill.getBillCode());
+        foundBill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
         // TODO: 2018/1/23 冲减完成后重写出库时间
 //        bill.setOutWareHouseTime(new Date());
-        billRepository.save(bill);
+        billRepository.save(foundBill);
+        return foundBill;
     }
 
     /**
      * 出库失败
      */
-    public void outStorageFail(T bill) {
+    public T outStorageFail(T bill) {
         if (!BillPurposeEnum.OUT_STORAGE.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
-        bill.setInOrOutState(BillInOrOutStateEnum.OUT_FAILURE);
+        T foundBill = billRepository.findOneByBillCode(bill.getBillCode());
+        foundBill.setInOrOutState(BillInOrOutStateEnum.OUT_FAILURE);
 //        bill.setOutWareHouseTime(new Date());
-        billRepository.save(bill);
+        billRepository.save(foundBill);
+        return foundBill;
     }
 
     /**
@@ -201,13 +203,13 @@ public abstract class AbstractBillManager<T extends Bill> {
 
     /**
      * 查询
+     *
      * @param billCode
      * @return
      */
     public Bill findOneByBillCode(String billCode) {
         return billRepository.findOneByBillCode(billCode);
     }
-
 
 
 }

@@ -94,7 +94,7 @@ public class BillEventProcessor {
                 //更改入库状态为已调拨
                 inStorageBillManager.allotedForInStorageBill(bill.getSourceCode(), bill.getSpecificBillType());
                 //更改误差单状态
-                mistakeBillManager.callbackMistakeBill(((AllotBill)bill).getMistakeBillCode());
+                mistakeBillManager.callbackMistakeBill(((AllotBill) bill).getMistakeBillCode());
 
             }
 

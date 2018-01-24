@@ -2,7 +2,9 @@ package cn.sisyphe.coffee.bill.amqp;
 
 import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.util.Constant;
+import cn.sisyphe.coffee.bill.util.ResponseResultMapUtil;
 import cn.sisyphe.framework.web.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,21 +44,26 @@ public class ReceiverService {
             return;
         }
 
+        Bill bill = new ResponseResultMapUtil().convertBillFromResponse(responseResult);
         //接收到入库冲减完成将，出库单转存一份入库单
         if (Constant.OUT_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
-            Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
-            throw new RuntimeException();
-//            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
             //TODO 这里的出入库状态应该在冲减系统变成出库成功或者失败
-//            applicationEventPublisher.publishEvent(behaviorEvent);
+            //---------------------------------------------------
+            bill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
+            //---------------------------------------------------
+            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
+            applicationEventPublisher.publishEvent(behaviorEvent);
 
         }
 
         //接收到入库冲减完成，更新入库单和差错单的状态的状态
         if (Constant.IN_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
-            Bill bill = responseResult.toClassObject(responseResult.getResult().get("bill"), Bill.class);
-            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
             //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
+            //---------------------------------------------------
+            bill.setInOrOutState(BillInOrOutStateEnum.IN_SUCCESS);
+            //---------------------------------------------------
+
+            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
             applicationEventPublisher.publishEvent(behaviorEvent);
         }
     }
