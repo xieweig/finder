@@ -302,6 +302,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         childPlanBillDTO.setSubmitState(childPlanBill.getSubmitState());
         childPlanBillDTO.setAuditState(childPlanBill.getAuditState());
         childPlanBillDTO.setRootCode(childPlanBill.getRootCode());
+        childPlanBillDTO.setSpecificBillType(childPlanBill.getSpecificBillType());
 
         childPlanBillDTO.setChildPlanBillDetails(mapChildPlanBillDetails(childPlanBill));
         return childPlanBillDTO;

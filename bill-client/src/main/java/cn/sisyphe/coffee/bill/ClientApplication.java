@@ -24,12 +24,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableFeignClients
 @EnableS2Messaging
 @Import(GlobalExceptionHandler.class)
-//@EnableScopeAuth
+@EnableScopeAuth
 public class ClientApplication implements CommandLineRunner {
 
 
     @Autowired
     private PurchaseBillRepository purchaseBillRepository;
+
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
