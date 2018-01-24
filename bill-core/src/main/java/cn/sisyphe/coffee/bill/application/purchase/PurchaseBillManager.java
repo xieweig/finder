@@ -72,6 +72,10 @@ public class PurchaseBillManager extends AbstractBillExtraManager<PurchaseBill, 
         PurchaseBill purchaseBill = super.dtoToBill(bill, billDTO);
         Supplier supplier = billDTO.getSupplier();
         purchaseBill.setOutLocation(supplier);
+        // 当进货单编码不为空时，则把编码设置到sourceCode中
+        if (!StringUtils.isEmpty(bill.getBillCode())) {
+            purchaseBill.setSourceCode(bill.getBillCode());
+        }
         return purchaseBill;
     }
 

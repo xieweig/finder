@@ -395,7 +395,7 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
             supplier.setStationType(StationType.SUPPLIER);
             return supplier;
         }
-        return new Station(abstractLocation.code());
+        return sharedManager.findStationByStationCode(abstractLocation.code());
     }
 
     private String getGoodsCode(BasicEnum basicEnum, AbstractGoods abstractGoods) {
