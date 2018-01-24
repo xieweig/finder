@@ -37,12 +37,12 @@ public class ReturnedStrategy extends AbstractCastableStrategy {
         if (outLocation instanceof Station && StationType.STORE.equals(((Station) outLocation).getStationType())) {
             PlanBill restockBill = generatePlanBill(planBillPayload, BillTypeEnum.RESTOCK, planBill -> {
                 planBill.setInLocation(planBillPayload.getTransferLocation());
-                planBill.setOutLocation(planBillPayload.getInLocation());
+                planBill.setOutLocation(planBillPayload.getOutLocation());
                 planBill.setBillCode(planBillPayload.getBillCode() + "_0");
             });
 
             PlanBill returnedBill = generatePlanBill(planBillPayload, BillTypeEnum.RETURNED, planBill -> {
-                planBill.setInLocation(planBillPayload.getOutLocation());
+                planBill.setInLocation(planBillPayload.getInLocation());
                 planBill.setOutLocation(planBillPayload.getTransferLocation());
                 planBill.setBillCode(planBillPayload.getBillCode() + "_1");
             });
