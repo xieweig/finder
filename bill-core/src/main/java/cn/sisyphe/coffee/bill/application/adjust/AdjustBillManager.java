@@ -61,7 +61,9 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
         AdjustBillDTO adjustBillDTO = super.billToDto(bill);
         if (BasicEnum.BY_MATERIAL.equals(bill.getBasicEnum()) && !bill.getSelf()) {
             ChildPlanBillDTO childPlanBillDTO = planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(), BillTypeEnum.ADJUST);
-            adjustBillDTO.setChildPlanBillDetailDTOS(childPlanBillDTO.getChildPlanBillDetails());
+            if (childPlanBillDTO != null) {
+                adjustBillDTO.setChildPlanBillDetailDTOS(childPlanBillDTO.getChildPlanBillDetails());
+            }
         }
         return adjustBillDTO;
     }
@@ -73,6 +75,7 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
 //    }
 
     //***************************以防万一，千万不要删除该文件的任何代码***********************************
+
     /**
      * map数据
      *
