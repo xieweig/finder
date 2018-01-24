@@ -99,6 +99,7 @@ public class PlanBillDetail extends BillDetail {
         this.dbStation = dbStation;
     }
 
+    @JsonIgnore
     public String getInOutStationCode() {
         return inLocation.code() + outLocation.code();
     }

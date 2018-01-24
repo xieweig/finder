@@ -36,7 +36,7 @@ import static cn.sisyphe.coffee.bill.util.Constant.STORAGE_TYPE_WCK;
 
 /**
  * @author Amy on 2018/1/18.
- *         describe：
+ * describe：
  */
 @Service
 public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill> {
@@ -65,6 +65,9 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
      * @param mistakeBillCode
      */
     public void callbackMistakeBill(String mistakeBillCode) throws DataException {
+        if (StringUtils.isEmpty(mistakeBillCode)) {
+            return;
+        }
         MistakeBill mistakeBill = getBillExtraService().findByBillCode(mistakeBillCode);
         if (mistakeBill == null) {
             throw new DataException("60010", "单据不存在");
@@ -84,6 +87,9 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
      * @param allotBillCode
      */
     public void callBackToAddAllotBillCode(String billCode, String allotBillCode) {
+        if (StringUtils.isEmpty(billCode)) {
+            return;
+        }
         AllotBill allotBill = allotBillExtraService.findByBillCode(allotBillCode);
         MistakeBill mistakeBill = getBillExtraService().findByBillCode(billCode);
         MistakeBill allotBillMistake = getBillExtraService().findBySourceCode(allotBillCode);

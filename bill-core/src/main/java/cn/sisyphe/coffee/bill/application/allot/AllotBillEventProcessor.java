@@ -69,7 +69,7 @@ public class AllotBillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'ALLOT' and #event.billState.toString() == 'DONE'")
+    @EventListener(condition = "#event.billType.toString() ==  'ALLOT' and #event.billState.toString() == 'DONE' and #event.billInOrOutState == null")
     public void billDone(BehaviorEvent event) {
 
         AllotBill allotBill = (AllotBill) event.getBill();

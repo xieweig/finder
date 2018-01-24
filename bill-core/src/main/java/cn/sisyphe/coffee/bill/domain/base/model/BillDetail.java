@@ -4,7 +4,13 @@ import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.Transient;
 
 /**
  * 单据明细
@@ -95,6 +101,14 @@ public abstract class BillDetail {
 
     public AbstractGoods getGoods() {
         return goods;
+    }
+
+    public AbstractGoods alwaysCanGetGoods() {
+        if (dbGoods == null) {
+            return null;
+        }
+
+        return dbGoods.getGoods();
     }
 
     public void setGoods(AbstractGoods goods) {

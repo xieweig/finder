@@ -98,13 +98,14 @@ public class InStorageBillManager {
         bill.setTotalVarietyAmount(sourceBill.getTotalVarietyAmount());
         bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
         bill.setOperatorCode(sourceBill.getOperatorCode());
+        bill.setAuditPersonCode(sourceBill.getAuditPersonCode());
 
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
             BillDetail desBillDetail = new BillFactory().createBillDetail(sourceBill.getBillType());
             desBillDetail.setActualAmount(billDetail.getActualAmount());
             desBillDetail.setShippedAmount(billDetail.getShippedAmount());
-            desBillDetail.setGoods(billDetail.getGoods());
+            desBillDetail.setGoods(billDetail.alwaysCanGetGoods());
             details.add(desBillDetail);
         }
         bill.setBillDetails(details);

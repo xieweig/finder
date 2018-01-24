@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +52,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "子计划单列表")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -92,6 +94,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "出库单列表")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findOutStorageByConditions", method = RequestMethod.POST)
     public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -151,6 +154,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "入库单列表")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findInStorageByConditions", method = RequestMethod.POST)
 //    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findInStorageByConditions(@RequestBody Q conditionQueryBill) {
@@ -192,6 +196,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @param billDTO 调拨单DTO
      * @return
      */
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.inStationCodes", token = "userCode")
     @ApiOperation(value = "调拨单列表")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
@@ -212,6 +217,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "调拨单列表")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
@@ -255,11 +261,16 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "保存单据")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/save", method = RequestMethod.POST)
     public ResponseResult save(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            //若是修改则判断录单人有没有权限
+            if (billDTO.getBillCode() != null && !loginInfo.getOperatorCode().equals(billDTO.getOperatorCode())) {
+                throw new DataException("100001", "录单人无权限");
+            }
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
             responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO).getBillCode());
         } catch (DataException date) {
@@ -276,6 +287,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "保存单据--自主拣货保存")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/saveBySelf", method = RequestMethod.POST)
     public ResponseResult saveBySelf(HttpServletRequest request, @RequestBody D billDTO) {
 
@@ -342,6 +354,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "审核不通过")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
@@ -361,6 +374,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "审核通过")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
     public ResponseResult auditSuccess(HttpServletRequest request, @RequestBody D billDTO) {
         ResponseResult responseResult = new ResponseResult();
