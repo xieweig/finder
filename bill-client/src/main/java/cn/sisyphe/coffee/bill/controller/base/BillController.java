@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -223,6 +225,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
+            //设置调拨单查询种类条件
+            List specificType = new ArrayList();
+            specificType.add(abstractBillExtraManager.billType());
+            conditionQueryAllotBill.setSpecificBillType(specificType);
             responseResult.put("bill", allotBillManager.findBillByCondition(conditionQueryAllotBill, BillPurposeEnum.MOVE_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);
