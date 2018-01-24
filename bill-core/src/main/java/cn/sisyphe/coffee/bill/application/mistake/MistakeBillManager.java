@@ -189,9 +189,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         for (AllotBillDetail allotBillDetail : billDetails) {
             if (allotBillDetail.getShippedAmount() != allotBillDetail.getActualAmount()) {
                 MistakeBillDetail mistakeBillDetail = new MistakeBillDetail();
-                mistakeBillDetail.setActualAmount(allotBillDetail.getActualAmount());
-                mistakeBillDetail.setShippedAmount(allotBillDetail.getShippedAmount());
-                mistakeBillDetail.setActualAmount(allotBillDetail.getActualTotalAmount());
+                mistakeBillDetail.setActualAmount(allotBillDetail.getShippedAmount()-allotBillDetail.getActualAmount());
                 mistakeBillDetail.setGoods(allotBillDetail.getGoods());
                 mistakeBillDetailSet.add(mistakeBillDetail);
             }
