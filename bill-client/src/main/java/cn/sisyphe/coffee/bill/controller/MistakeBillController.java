@@ -56,12 +56,13 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
     /**
      * 提交报溢单
      *
-     * @param request
      * @param billDTO
+     * @param request
      * @return
      */
+    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "#userCode")
     @RequestMapping(path = "/submitOverFlow", method = RequestMethod.POST)
-    public ResponseResult submitOverFlow(HttpServletRequest request, @RequestBody MistakeBillDTO billDTO) {
+    public ResponseResult submitOverFlow(@RequestBody MistakeBillDTO billDTO,HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
@@ -82,8 +83,9 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param billDTO
      * @return
      */
+    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "#userCode")
     @RequestMapping(path = "/submitLoss", method = RequestMethod.POST)
-    public ResponseResult submitLoss(HttpServletRequest request, @RequestBody MistakeBillDTO billDTO) {
+    public ResponseResult submitLoss(@RequestBody MistakeBillDTO billDTO,HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
@@ -104,8 +106,9 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param billDTO
      * @return
      */
+    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "#userCode")
     @RequestMapping(path = "/submitDayMistake", method = RequestMethod.POST)
-    public ResponseResult submitDayMistake(HttpServletRequest request, @RequestBody MistakeBillDTO billDTO) {
+    public ResponseResult submitDayMistake(@RequestBody MistakeBillDTO billDTO,HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
@@ -124,6 +127,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
+    @ScopeAuth(scope = "#conditionQueryMistakeBill.inStationCodes", token = "#userCode")
     @RequestMapping(path = "/findOverFlowByConditions", method = RequestMethod.POST)
     public ResponseResult findOverFlowByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -141,7 +145,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
-    @ScopeAuth(scopes={"#ConditionQueryMistakeBill.inStationCodes"},token = "userCode")
+    @ScopeAuth(scope = "#ConditionQueryMistakeBill.outStationCodes", token = "#userCode")
     @RequestMapping(path = "/findLossByConditions", method = RequestMethod.POST)
     public ResponseResult findLossByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -159,6 +163,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
+    @ScopeAuth(scopes = {"#ConditionQueryMistakeBill.inStationCodes", "#ConditionQueryMistakeBill.outStationCodes"}, token = "#userCode")
     @RequestMapping(path = "/findDayMistakeByConditions", method = RequestMethod.POST)
     public ResponseResult findDayMistakeByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
