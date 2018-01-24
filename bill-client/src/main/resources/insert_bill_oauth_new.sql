@@ -104,8 +104,8 @@
  VALUES (3048, now(), now(), '0', '3', 'BILL008005', '添加日常误差单', 'BILL,BILL008,BILL008005', 'app.bill.mistake.adyMistakeAdd', 3008, '\0');
 -- BILL008 3008<查询日常误差单-BILL008006 3049>
  VALUES (3049, now(), now(), '0', '3', 'BILL008006', '查询日常误差单', 'BILL,BILL008,BILL008006', 'app.bill.mistake.adyMistakeList', 3008, '\0');
--- BILL008 3008<查询流转误差单-BILL008006 3050>
- VALUES (3050, now(), now(), '0', '3', 'BILL008006', '查询流转误差单', 'BILL,BILL008,BILL008008', 'app.bill.mistake.list', 3008, '\0');
+-- BILL008 3008<查询流转误差单-BILL008007 3050>
+ VALUES (3050, now(), now(), '0', '3', 'BILL008007', '查询流转误差单', 'BILL,BILL008,BILL008008', 'app.bill.mistake.list', 3008, '\0');
 
 -- 运单跟踪-BILL009 3009
 -- BILL009 3009<添加运单-BILL009001 3051>
@@ -371,33 +371,33 @@ VALUES (3160, now(), now(), '0', '4', 'BILL006003005', '查询出库单_审核�
 
 -- 误差管理-BILL008 3008【添加报溢单-BILL008001 3044】
 -- BILL008001 3044<提交>
---补充内容
+VALUES (3165, now(), now(), '0', '4', 'BILL008001001', '提交报溢单', 'BILL,BILL008,BILL008001,BILL008001001', '/coffeeBill/api/bill/mistake/submitOverFlow', 3044, '\0');
 -- 误差管理-BILL008 3008【查询报溢单-BILL008002 3045】
 -- BILL008002 3045<条件筛选查询>
---补充内容
+VALUES (3166, now(), now(), '0', '4', 'BILL008002001', '条件筛选报溢单', 'BILL,BILL008,BILL008002,BILL008002001', '/coffeeBill/api/bill/mistake/findOverFlowByConditions', 3045, '\0');
 -- BILL008002 3045<查看>
---补充内容
+VALUES (3167, now(), now(), '0', '4', 'BILL008002002', '查看报溢单详情', 'BILL,BILL008,BILL008002,BILL008002002', '/coffeeBill/api/bill/mistake/findOverFlowByBillCode', 3045, '\0');
 -- 误差管理-BILL008 3008【添加报损单-BILL008003 3046】
 -- BILL008003 3046<提交>
---补充内容
+VALUES (3168, now(), now(), '0', '4', 'BILL008003001', '提交报损单', 'BILL,BILL008,BILL008003,BILL008003001', '/coffeeBill/api/bill/mistake/submitLoss', 3046, '\0');
 -- 误差管理-BILL008 3008【查询报损单-BILL008004 3047】
 -- BILL008004 3047<条件查询>
---补充内容
+VALUES (3169, now(), now(), '0', '4', 'BILL008004001', '条件筛选报损单', 'BILL,BILL008,BILL008004,BILL008004001', '/coffeeBill/api/bill/mistake/findLossByConditions', 3047, '\0');
 -- BILL008004 3047<查看>
---补充内容
+VALUES (3170, now(), now(), '0', '4', 'BILL008004002', '查看报损单详情', 'BILL,BILL008,BILL008004,BILL008004001', '/coffeeBill/api/bill/mistake/findLossByBillCode', 3047, '\0');
 -- 误差管理-BILL008 3008【添加日常误差单-BILL008005 3048】
 -- BILL008005 3048<提交>
---补充内容
+VALUES (3171, now(), now(), '0', '4', 'BILL008005001', '提交日常误差单', 'BILL,BILL008,BILL008005,BILL008005001', '/coffeeBill/api/bill/mistake/submitDayMistake', 3048, '\0');
 -- 误差管理-BILL008 3008【查询日常误差单-BILL008006 3049】
 -- BILL008006 3049<条件筛选查询>
---补充内容
+VALUES (3172, now(), now(), '0', '4', 'BILL008006001', '条件筛选日常误差单', 'BILL,BILL008,BILL008006,BILL008006001', '/coffeeBill/api/bill/mistake/findDayMistakeByConditions', 3049, '\0');
 -- BILL008006 3049<查看>
---补充内容
--- 误差管理-BILL008 3008【查询流转误差单-BILL008006 3050】
--- BILL008006 3050<条件筛选查询>
---补充内容
--- BILL008006 3050<查看>
---补充内容
+VALUES (3173, now(), now(), '0', '4', 'BILL008006002', '查看日常误差单详情', 'BILL,BILL008,BILL008006,BILL008006002', '/coffeeBill/api/bill/mistake/findDayMistakeByBillCode', 3049, '\0');
+-- 误差管理-BILL008 3008【查询流转误差单-BILL008007 3050】
+-- BILL008007 3050<条件筛选查询>
+VALUES (3174, now(), now(), '0', '4', 'BILL008007001', '条件筛选流转误差单', 'BILL,BILL008,BILL008007,BILL008007001', '/coffeeBill/api/bill/mistake/findAllotByConditions', 3050, '\0');
+-- BILL008007 3050<查看>
+VALUES (3175, now(), now(), '0', '4', 'BILL008007002', '查看流转误差单详情', 'BILL,BILL008,BILL008007,BILL008007002', '/coffeeBill/api/bill/mistake/findAllotByBillCode', 3050, '\0');
 
 -- 运单跟踪-BILL009 3009【添加运单-BILL009001 3051】
 -- BILL009001 3051<提交>

@@ -98,7 +98,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
     }
 
     /**
-     * 提交日常流转单
+     * 提交日常误差单
      *
      * @param request
      * @param billDTO
