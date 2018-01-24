@@ -38,6 +38,9 @@ public class MistakeBillTest {
     @Autowired
     private MistakeBillManager mistakeBillManager;
 
+    /**
+     * 提交流转误差单
+     */
     @Test
     public void submitMistake() {
         String allotBillCode = "AL201801181818006789";
@@ -45,12 +48,18 @@ public class MistakeBillTest {
         mistakeBillManager.submitByAllotBill(allotBill);
     }
 
+    /**
+     * 流转误差单的回调-修改流转误差单的状态
+     */
     @Test
     public void callBack() {
         String mistakeBillCode = "TMCKCQ1120180180EES000001";
         mistakeBillManager.callbackMistakeBill(mistakeBillCode);
     }
 
+    /**
+     * 流转误差单的回调-追加调拨单号至流转误差单中
+     */
     @Test
     public void callBackToAddAllotBillCode() {
         String mistakeBillCode = "TMCKCQ1120180180EES000001";
@@ -58,6 +67,9 @@ public class MistakeBillTest {
         mistakeBillManager.callBackToAddAllotBillCode(mistakeBillCode, allotBillCode);
     }
 
+    /**
+     * 条件筛选流转误差单
+     */
     @Test
     public void findByConditions() {
         ConditionQueryAllotBill conditionQueryAllotBill = new ConditionQueryAllotBill();
@@ -67,6 +79,9 @@ public class MistakeBillTest {
         System.out.println(page);
     }
 
+    /**
+     * 查询流转误差单的详情
+     */
     @Test
     public void findOne() {
         String allotBillCode = "AL201801181818006789";
@@ -84,7 +99,9 @@ public class MistakeBillTest {
         System.out.println(mistakeBillDTO.getBillDetails());
     }
 
-    //报溢
+    /**
+     * 提交报溢单
+     */
     @Test
     public void submitOverFlow() {
         MistakeBillDTO mistakeBill = new MistakeBillDTO();
@@ -124,7 +141,9 @@ public class MistakeBillTest {
 
     }
 
-    //报损
+    /**
+     * 提交报损单
+     */
     @Test
     public void submitLoss() {
         MistakeBillDTO mistakeBill = new MistakeBillDTO();
@@ -163,7 +182,9 @@ public class MistakeBillTest {
     }
 
 
-    //日常误差
+    /**
+     * 提交日常误差单
+     */
     @Test
     public void submitDayMistake() {
         MistakeBillDTO mistakeBill = new MistakeBillDTO();
@@ -203,6 +224,9 @@ public class MistakeBillTest {
 
     }
 
+    /**
+     * 条件筛选报溢单
+     */
     @Test
     public void findOverFlowByConditions() {
         ConditionQueryMistakeBill conditionQueryMistakeBill = new ConditionQueryMistakeBill();
@@ -212,6 +236,9 @@ public class MistakeBillTest {
         System.out.println(page);
     }
 
+    /**
+     * 条件筛选报损单
+     */
     @Test
     public void findLossByConditions() {
         ConditionQueryMistakeBill conditionQueryMistakeBill = new ConditionQueryMistakeBill();
@@ -221,6 +248,9 @@ public class MistakeBillTest {
         System.out.println(page);
     }
 
+    /**
+     * 条件筛选日常误差单
+     */
     @Test
     public void findDayMistakeByConditions() {
         ConditionQueryMistakeBill conditionQueryMistakeBill = new ConditionQueryMistakeBill();
@@ -228,5 +258,35 @@ public class MistakeBillTest {
         conditionQueryMistakeBill.setPageSize(100);
         Page<MistakeBillDTO> page = mistakeBillManager.findDayMistakeByConditions(conditionQueryMistakeBill);
         System.out.println(page);
+    }
+
+    /**
+     * 查询报溢单详情
+     */
+    @Test
+    public void findOverFlowByBillCode() {
+        String billCode = "TMCKCQ112018022086G000001";
+        MistakeBillDTO mistakeBillDTO = mistakeBillManager.findMistakeBillDTOByBillCode(billCode, BillPurposeEnum.IN_STORAGE);
+        System.out.println(mistakeBillDTO);
+    }
+
+    /**
+     * 查询报损单详情
+     */
+    @Test
+    public void findLossByByBillCode() {
+        String billCode = "TMCKCQ1120180220A90000001";
+        MistakeBillDTO mistakeBillDTO = mistakeBillManager.findMistakeBillDTOByBillCode(billCode, BillPurposeEnum.OUT_STORAGE);
+        System.out.println(mistakeBillDTO);
+    }
+
+    /**
+     * 查询日常误差单详情
+     */
+    @Test
+    public void findDayMistakeByByBillCode() {
+        String billCode = "TMCKCQ1120180220DJ8000001";
+        MistakeBillDTO mistakeBillDTO = mistakeBillManager.findMistakeBillDTOByBillCode(billCode, BillPurposeEnum.MOVE_STORAGE);
+        System.out.println(mistakeBillDTO);
     }
 }

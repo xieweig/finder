@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * 后续所有用到单据明细的dto都必须继承自本类
  * 本类不能直接被实例化，避免在使用中错误，本类实现基础的单据明细信息
  * 需要为单据明细增加数据时必须继承本类来实现，在使用中必须使用子类来逻辑操作
+ *
  * @author bifenglin
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,6 +27,11 @@ public class BillDetailDTO {
      * 原料
      */
     private RawMaterial rawMaterial;
+
+    /**
+     * 实拣总量（原料的）
+     */
+    private Integer actualTotalAmount;
 
     public Integer getShippedAmount() {
         return shippedAmount;
@@ -49,5 +55,13 @@ public class BillDetailDTO {
 
     public void setRawMaterial(RawMaterial rawMaterial) {
         this.rawMaterial = rawMaterial;
+    }
+
+    public Integer getActualTotalAmount() {
+        return actualTotalAmount;
+    }
+
+    public void setActualTotalAmount(Integer actualTotalAmount) {
+        this.actualTotalAmount = actualTotalAmount;
     }
 }

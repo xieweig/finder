@@ -191,6 +191,7 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
                 MistakeBillDetail mistakeBillDetail = new MistakeBillDetail();
                 mistakeBillDetail.setActualAmount(allotBillDetail.getActualAmount());
                 mistakeBillDetail.setShippedAmount(allotBillDetail.getShippedAmount());
+                mistakeBillDetail.setActualAmount(allotBillDetail.getActualTotalAmount());
                 mistakeBillDetail.setGoods(allotBillDetail.getGoods());
                 mistakeBillDetailSet.add(mistakeBillDetail);
             }
@@ -273,30 +274,33 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
      */
     private void checkOverFlowSubmitParam(MistakeBillDTO billDTO) throws DataException {
         if (billDTO == null) {
-            throw new DataException("", "单据内容不能为空");
+            throw new DataException("60012", "单据内容不能为空");
         }
         if (billDTO.getInLocation() == null) {
-            throw new DataException("", "报溢位置信息不能为空");
+            throw new DataException("60013", "报溢位置信息不能为空");
         }
         if (StringUtils.isEmpty(billDTO.getInLocation().getStationCode())) {
-            throw new DataException("", "报溢站点信息不能为空");
+            throw new DataException("60014", "报溢站点信息不能为空");
         }
         if (billDTO.getInLocation().getStorage() == null || StringUtils.isEmpty(billDTO.getInLocation().getStorage().getStorageCode())) {
-            throw new DataException("", "报溢库位不能为空");
+            throw new DataException("60015", "报溢库位不能为空");
         }
         if (StringUtils.isEmpty(billDTO.getMemo())) {
-            throw new DataException("", "备注信息不能为空");
+            throw new DataException("60031", "备注信息不能为空");
         }
         if (billDTO.getBillDetails() == null || billDTO.getBillDetails().size() <= 0) {
-            throw new DataException("", "单据明细不能为空");
+            throw new DataException("60032", "单据明细不能为空");
         }
 
         for (MistakeBillDetailDTO mistakeBillDetailDTO : billDTO.getBillDetails()) {
             if (mistakeBillDetailDTO.getActualAmount() <= 0) {
-                throw new DataException("", "报溢明细中的数量不能小于0");
+                throw new DataException("60016", "报溢明细中的数量不能小于0");
+            }
+            if (mistakeBillDetailDTO.getActualTotalAmount() <= 0) {
+                throw new DataException("60017", "报溢明细中的总数量不能小于0");
             }
             if (mistakeBillDetailDTO.getRawMaterial() == null) {
-                throw new DataException("", "报溢商品不能为空");
+                throw new DataException("60018", "报溢商品不能为空");
             }
         }
     }
@@ -320,30 +324,33 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
      */
     private void checkLossSubmitParam(MistakeBillDTO billDTO) {
         if (billDTO == null) {
-            throw new DataException("", "单据内容不能为空");
+            throw new DataException("60012", "单据内容不能为空");
         }
         if (billDTO.getOutLocation() == null) {
-            throw new DataException("", "报损位置信息不能为空");
+            throw new DataException("60019", "报损位置信息不能为空");
         }
         if (StringUtils.isEmpty(billDTO.getOutLocation().getStationCode())) {
-            throw new DataException("", "报损站点信息不能为空");
+            throw new DataException("60020", "报损站点信息不能为空");
         }
         if (billDTO.getOutLocation().getStorage() == null || StringUtils.isEmpty(billDTO.getOutLocation().getStorage().getStorageCode())) {
-            throw new DataException("", "报损库位不能为空");
+            throw new DataException("60021", "报损库位不能为空");
         }
         if (StringUtils.isEmpty(billDTO.getMemo())) {
-            throw new DataException("", "备注信息不能为空");
+            throw new DataException("60031", "备注信息不能为空");
         }
         if (billDTO.getBillDetails() == null || billDTO.getBillDetails().size() <= 0) {
-            throw new DataException("", "单据明细不能为空");
+            throw new DataException("60032", "单据明细不能为空");
         }
 
         for (MistakeBillDetailDTO mistakeBillDetailDTO : billDTO.getBillDetails()) {
             if (mistakeBillDetailDTO.getActualAmount() <= 0) {
-                throw new DataException("", "报损明细中的数量不能小于0");
+                throw new DataException("60022", "报损明细中的数量不能小于0");
+            }
+            if (mistakeBillDetailDTO.getActualTotalAmount() <= 0) {
+                throw new DataException("60023", "报损明细中的总数量不能小于0");
             }
             if (mistakeBillDetailDTO.getRawMaterial() == null) {
-                throw new DataException("", "报损商品不能为空");
+                throw new DataException("60024", "报损商品不能为空");
             }
         }
     }
@@ -368,30 +375,33 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
      */
     private void checkDayMistakeSubmitParam(MistakeBillDTO billDTO) {
         if (billDTO == null) {
-            throw new DataException("", "单据内容不能为空");
+            throw new DataException("60012", "单据内容不能为空");
         }
         if (billDTO.getOutLocation() == null) {
-            throw new DataException("", "误差位置信息不能为空");
+            throw new DataException("60025", "日常误差位置信息不能为空");
         }
         if (StringUtils.isEmpty(billDTO.getOutLocation().getStationCode())) {
-            throw new DataException("", "误差站点信息不能为空");
+            throw new DataException("60026", "日常误差站点信息不能为空");
         }
         if (billDTO.getOutLocation().getStorage() == null || StringUtils.isEmpty(billDTO.getOutLocation().getStorage().getStorageCode())) {
-            throw new DataException("", "误差库位不能为空");
+            throw new DataException("60027", "日常误差库位不能为空");
         }
         if (StringUtils.isEmpty(billDTO.getMemo())) {
-            throw new DataException("", "备注信息不能为空");
+            throw new DataException("60031", "备注信息不能为空");
         }
         if (billDTO.getBillDetails() == null || billDTO.getBillDetails().size() <= 0) {
-            throw new DataException("", "单据明细不能为空");
+            throw new DataException("60032", "日常误差单据明细不能为空");
         }
 
         for (MistakeBillDetailDTO mistakeBillDetailDTO : billDTO.getBillDetails()) {
-            if (mistakeBillDetailDTO.getActualAmount() == null) {
-                throw new DataException("", "误差明细中的数量不能为空");
+            if (mistakeBillDetailDTO.getActualAmount() == null || mistakeBillDetailDTO.getActualAmount() <= 0) {
+                throw new DataException("60028", "日常误差明细中的数量不能小于0");
+            }
+            if (mistakeBillDetailDTO.getActualTotalAmount() <= 0) {
+                throw new DataException("60029", "日常误差明细中的总数量不能小于0");
             }
             if (mistakeBillDetailDTO.getRawMaterial() == null) {
-                throw new DataException("", "误差商品不能为空");
+                throw new DataException("60030", "日常误差商品不能为空");
             }
         }
     }
@@ -450,5 +460,21 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
      */
     public Page<MistakeBillDTO> findDayMistakeByConditions(ConditionQueryMistakeBill conditionQueryMistakeBill) {
         return super.findBillByCondition(conditionQueryMistakeBill, BillPurposeEnum.MOVE_STORAGE);
+    }
+
+    /**
+     * 查询误差单的详情
+     *
+     * @param billCode
+     * @param billPurposeEnum
+     * @return
+     */
+    public MistakeBillDTO findMistakeBillDTOByBillCode(String billCode, BillPurposeEnum billPurposeEnum) {
+        MistakeBillDTO mistakeBillDTO = super.findBillDtoByBillCode(billCode);
+        if (mistakeBillDTO != null && BillTypeEnum.NO_PLAN.equals(mistakeBillDTO.getSpecificBillType()) && billPurposeEnum.equals(mistakeBillDTO.getBillPurpose())) {
+            return mistakeBillDTO;
+        } else {
+            return new MistakeBillDTO();
+        }
     }
 }

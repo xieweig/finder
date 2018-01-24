@@ -5,10 +5,12 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.ConditionQueryMistakeBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -116,6 +118,12 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
         return responseResult;
     }
 
+    /**
+     * 条件筛选报溢单
+     *
+     * @param conditionQueryMistakeBill
+     * @return
+     */
     @RequestMapping(path = "/findOverFlowByConditions", method = RequestMethod.POST)
     public ResponseResult findOverFlowByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -127,6 +135,13 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
         return responseResult;
     }
 
+    /**
+     * 条件筛选报损单
+     *
+     * @param conditionQueryMistakeBill
+     * @return
+     */
+    @ScopeAuth(scopes={"#ConditionQueryMistakeBill.inStationCodes"},token = "userCode")
     @RequestMapping(path = "/findLossByConditions", method = RequestMethod.POST)
     public ResponseResult findLossByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -138,11 +153,68 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
         return responseResult;
     }
 
+    /**
+     * 条件筛选日常误差单
+     *
+     * @param conditionQueryMistakeBill
+     * @return
+     */
     @RequestMapping(path = "/findDayMistakeByConditions", method = RequestMethod.POST)
     public ResponseResult findDayMistakeByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
             responseResult.put("billList", mistakeBillManager.findDayMistakeByConditions(conditionQueryMistakeBill));
+        } catch (DataException date) {
+            responseResult.putException(date);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 根据单号查询报溢单详情
+     *
+     * @param billCode
+     * @return
+     */
+    @RequestMapping(path = "/findOverFlowByBillCode", method = RequestMethod.GET)
+    public ResponseResult findOverFlowByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", mistakeBillManager.findMistakeBillDTOByBillCode(billCode, BillPurposeEnum.IN_STORAGE));
+        } catch (DataException date) {
+            responseResult.putException(date);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 根据单号查询报损单详情
+     *
+     * @param billCode
+     * @return
+     */
+    @RequestMapping(path = "/findLossByBillCode", method = RequestMethod.GET)
+    public ResponseResult findLossByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", mistakeBillManager.findMistakeBillDTOByBillCode(billCode, BillPurposeEnum.OUT_STORAGE));
+        } catch (DataException date) {
+            responseResult.putException(date);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 根据单号查询日常误差单的详情
+     *
+     * @param billCode
+     * @return
+     */
+    @RequestMapping(path = "/findDayMistakeByBillCode", method = RequestMethod.GET)
+    public ResponseResult findDayMistakeByBillCode(@RequestParam("billCode") String billCode) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.put("bill", mistakeBillManager.findMistakeBillDTOByBillCode(billCode, BillPurposeEnum.MOVE_STORAGE));
         } catch (DataException date) {
             responseResult.putException(date);
         }

@@ -78,7 +78,7 @@ public abstract class BillDetail {
     /**
      * 实拣总量（原料的）
      */
-    private int actualTotalAmount;
+    private Integer actualTotalAmount;
 
 
 //    public void unbuild(AbstractBillDetailDTO abstractBillDetailDTO){
@@ -147,11 +147,11 @@ public abstract class BillDetail {
         this.dbGoods = dbGoods;
     }
 
-    public int getActualTotalAmount() {
+    public Integer getActualTotalAmount() {
         return actualTotalAmount;
     }
 
-    public void setActualTotalAmount(int actualTotalAmount) {
+    public void setActualTotalAmount(Integer actualTotalAmount) {
         this.actualTotalAmount = actualTotalAmount;
     }
 
