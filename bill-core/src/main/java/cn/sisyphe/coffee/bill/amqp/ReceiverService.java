@@ -8,7 +8,6 @@ import cn.sisyphe.coffee.bill.util.ResponseResultMapUtil;
 import cn.sisyphe.framework.web.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -35,7 +34,7 @@ public class ReceiverService {
      *
      * @param responseResult
      */
-    @RabbitListener(queues = "${rabbit.listener.queue}")
+//    @RabbitListener(queues = "${rabbit.listener.queue}")
     public void receiveQueue(ResponseResult responseResult) {
 
         if (Constant.COMMON_NAME.equals(responseResult.getCommandName())) {
