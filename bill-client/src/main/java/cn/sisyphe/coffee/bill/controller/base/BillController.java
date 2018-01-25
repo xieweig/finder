@@ -202,8 +202,10 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     @ApiOperation(value = "调拨单列表")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
-    public ResponseResult allotSave(@RequestBody AllotBillDTO billDTO) {
+    public ResponseResult allotSave(HttpServletRequest request, @RequestBody AllotBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
+        LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+        billDTO.setOperatorCode(loginInfo.getOperatorCode());
         try {
             responseResult.put("bill", allotBillManager.saveBill(billDTO));
         } catch (DataException data) {
