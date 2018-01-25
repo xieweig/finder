@@ -16,10 +16,9 @@ public interface RawMaterialCloudRepository {
     /**
      * 根据原料名称模糊查询原料编号集合
      *
-     * @param rawMaterialName
+     * @param materialName
      * @return
      */
-    //TODO 需要调用易川补充基础资料的接口
-    @RequestMapping(path = "/api/v1/baseInfo/cargo/findCargoCodeListByCargoName", method = RequestMethod.GET)
-    ResponseResult findRawMaterialCodesByRawMaterialName(@RequestParam("rawMaterialName") String rawMaterialName);
+    @RequestMapping(path = "/api/v1/baseInfo/rawMaterial/findCodesByMaterialNameLike", method = RequestMethod.GET)
+    ResponseResult findRawMaterialCodesByRawMaterialName(@RequestParam("materialName") String materialName);
 }

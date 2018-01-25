@@ -105,8 +105,6 @@ public class MistakeBillTest {
     @Test
     public void submitOverFlow() {
         MistakeBillDTO mistakeBill = new MistakeBillDTO();
-        mistakeBill.setBelongStationCode("CQ11");
-        mistakeBill.setOperatorCode("YGADMIN");
         //入库位置信息
         Station inStation = new Station();
         Storage inStorage = new Storage();
@@ -147,8 +145,6 @@ public class MistakeBillTest {
     @Test
     public void submitLoss() {
         MistakeBillDTO mistakeBill = new MistakeBillDTO();
-        mistakeBill.setBelongStationCode("CQ11");
-        mistakeBill.setOperatorCode("YGADMIN");
         //出库位置信息
         Station outStation = new Station();
         Storage outStorage = new Storage();
@@ -188,8 +184,6 @@ public class MistakeBillTest {
     @Test
     public void submitDayMistake() {
         MistakeBillDTO mistakeBill = new MistakeBillDTO();
-        mistakeBill.setBelongStationCode("CQ11");
-        mistakeBill.setOperatorCode("YGADMIN");
         //出库位置信息
         Station outStation = new Station();
         Storage outStorage = new Storage();
