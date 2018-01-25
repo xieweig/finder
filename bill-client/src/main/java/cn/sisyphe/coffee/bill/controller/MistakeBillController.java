@@ -8,6 +8,7 @@ import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
+import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.ConditionQueryMistakeBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
 import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
@@ -37,6 +38,17 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
 
     @Autowired
     private MistakeBillManager mistakeBillManager;
+
+    /**
+     * 流转误差单的条件筛选
+     * @param conditionQueryAllotBill 查询条件DTO
+     * @return
+     */
+    @Override
+    public ResponseResult findAllotByConditions(ConditionQueryAllotBill conditionQueryAllotBill) {
+        conditionQueryAllotBill.setMistakeBillQuery(true);
+        return super.findAllotByConditions(conditionQueryAllotBill);
+    }
 
     /**
      * 查询流转误差单详情（实质为调拨单信息）
