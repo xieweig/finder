@@ -99,6 +99,7 @@ public class InStorageBillManager {
         bill.setAllotStatus(BillAllotStatusEnum.NOT_ALLOT);
         bill.setOperatorCode(sourceBill.getOperatorCode());
         bill.setAuditPersonCode(sourceBill.getAuditPersonCode());
+        bill.setAuditMemo(sourceBill.getAuditMemo());
 
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
