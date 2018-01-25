@@ -16,6 +16,12 @@ import java.util.List;
 public class AdjustBillDTO extends BillDTO<AdjustBillDetailDTO> {
 
 
+    /**
+     * 是否自主调剂
+     */
+    private Boolean self;
+
+
     public List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS;
 
 
@@ -25,5 +31,13 @@ public class AdjustBillDTO extends BillDTO<AdjustBillDetailDTO> {
 
     public void setChildPlanBillDetailDTOS(List<ChildPlanBillDetailDTO> childPlanBillDetailDTOS) {
         this.childPlanBillDetailDTOS = childPlanBillDetailDTOS;
+    }
+
+    public Boolean getSelf() {
+        return self;
+    }
+
+    public void setSelf(Boolean self) {
+        this.self = self;
     }
 }

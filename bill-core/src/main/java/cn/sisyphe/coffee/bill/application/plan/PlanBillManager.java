@@ -281,6 +281,9 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
      * @return 子计划单DTO
      */
     private ChildPlanBillDTO mapChildPlanBillToDTO(PlanBill childPlanBill) {
+        if (childPlanBill == null) {
+            return null;
+        }
         ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
         //拣货状态
         childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
