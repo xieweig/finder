@@ -20,9 +20,9 @@ public class RawMaterialRepositoryImpl implements RawMaterialRepository {
     @Override
     public List<String> findRawMaterialCodesByRawMaterialName(String rawMaterialName) {
         Map<String, Object> response = rawMaterialCloudRepository.findRawMaterialCodesByRawMaterialName(rawMaterialName).getResult();
-        if (!response.containsKey("rawMaterialList")) {
+        if (!response.containsKey("materialCodeList")) {
             return Arrays.asList("NOT_EXISTS");
         }
-        return (List<String>) response.get("rawMaterialList");
+        return (List<String>) response.get("materialCodeList");
     }
 }
