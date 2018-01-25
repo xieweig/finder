@@ -17,6 +17,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import org.springframework.context.ApplicationEventPublisher;
 
+import java.util.Date;
+
 /**
  * Created by heyong on 2018/1/2 17:47
  * Description: 单据基础管理器
@@ -116,8 +118,7 @@ public abstract class AbstractBillManager<T extends Bill> {
         }
         T foundBill = billRepository.findOneByBillCode(bill.getBillCode());
         foundBill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
-        // TODO: 2018/1/23 冲减完成后重写出库时间
-//        bill.setOutWareHouseTime(new Date());
+        bill.setOutWareHouseTime(new Date());
         billRepository.save(foundBill);
         return foundBill;
     }

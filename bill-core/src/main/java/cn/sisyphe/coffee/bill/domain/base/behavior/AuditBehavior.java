@@ -6,10 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.IN_FAILURE;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.IN_ING;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.OUT_FAILURE;
-import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.OUT_ING;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.*;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.SUBMITTED;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.UNCOMMITTED;
 
@@ -75,7 +72,7 @@ public class AuditBehavior extends AbstractBillBehavior {
         if (isSuccess && BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return IN_ING;
         }
-        // 审核失败并且是入库单，那么就是入库失败
+        // 审核失败并且是入库单，那么就是出库失败
         else if (!isSuccess && BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return IN_FAILURE;
         }
@@ -83,9 +80,9 @@ public class AuditBehavior extends AbstractBillBehavior {
         else if (isSuccess && BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
             return OUT_ING;
         }
-        // 审核失败并且是出库单，那么就是出库失败
+        // 审核失败并且是出库单，那么就是未出库
         else if (!isSuccess && BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
-            return OUT_FAILURE;
+            return NOT_OUT;
         }
         return null;
     }
