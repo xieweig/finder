@@ -277,7 +277,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
             billDto.setAuditPersonName(sharedManager.findOneByUserCode(bill.getAuditPersonCode()));
         }
         //若是不是自主拣货则判断计划中未拣货的
-        if (!bill.getSpecificBillType().equals(BillTypeEnum.NO_PLAN) && (planBillManager != null)) {
+        if (!bill.getSpecificBillType().equals(BillTypeEnum.NO_PLAN) && (planBillManager != null) && !billType().equals(BillTypeEnum.PLAN)) {
             setNoOperation(billDto, bill);
         }
 
@@ -296,6 +296,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         //差异
         List<ChildPlanBillDetailDTO> diff = new ArrayList<>();
         ChildPlanBillDTO childPlanBillDTO = planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(), billType());
+        if (childPlanBillDTO == null){
+            return;
+        }
         List<ChildPlanBillDetailDTO> planDetails = childPlanBillDTO.getChildPlanBillDetails();
         Set<V> details = billDto.getBillDetails();
 
@@ -334,13 +337,12 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
                 }
             }
             if (flag) {
-                if (bill.getBasicEnum().equals(BasicEnum.BY_MATERIAL) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_CARGO)){
+                if (bill.getBasicEnum().equals(BasicEnum.BY_MATERIAL) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_CARGO)) {
                     ChildPlanBillDetailDTO tempDto = diff.remove(index);
                     tempDto.setAmount(tempDto.getAmount() + childPlanBillDetailDTO.getAmount());
                     diff.add(tempDto);
                 } else {
                     diff.add(childPlanBillDetailDTO);
-
                 }
             }
         }

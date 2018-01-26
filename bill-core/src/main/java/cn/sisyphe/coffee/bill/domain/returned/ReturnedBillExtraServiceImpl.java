@@ -31,7 +31,7 @@ public class ReturnedBillExtraServiceImpl extends AbstractBillExtraService<Retur
          * 拼接供应商编码
          */
         if (conditionQuery.getSupplierCodeList() != null && conditionQuery.getSupplierCodeList().size() > 0) {
-            expressions.add(root.get("supplierCode").as(String.class).in(conditionQuery.getSupplierCodeList()));
+            expressions.add(root.get("dbStation").get("supplierCode").as(String.class).in(conditionQuery.getSupplierCodeList()));
         }
     }
 }
