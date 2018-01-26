@@ -1,10 +1,10 @@
 package cn.sisyphe.coffee.bill.viewmodel.plan.child;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -74,6 +74,11 @@ public class ChildPlanBillDTO {
     private BigDecimal progress;
 
     private BillTypeEnum specificBillType;
+
+    /**
+     * 来源计划类型
+     */
+    private BillTypeEnum sourceBillType;
 
     private List<ChildPlanBillDetailDTO> childPlanBillDetails;
 
@@ -227,5 +232,13 @@ public class ChildPlanBillDTO {
 
     public void setSubmitState(BillSubmitStateEnum submitState) {
         this.submitState = submitState;
+    }
+
+    public BillTypeEnum getSourceBillType() {
+        return sourceBillType;
+    }
+
+    public void setSourceBillType(BillTypeEnum sourceBillType) {
+        this.sourceBillType = sourceBillType;
     }
 }

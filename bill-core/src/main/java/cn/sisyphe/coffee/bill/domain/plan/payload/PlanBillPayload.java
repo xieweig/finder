@@ -1,9 +1,9 @@
 package cn.sisyphe.coffee.bill.domain.plan.payload;
 
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.plan.strategy.AbstractCastableStrategy;
 
 import java.util.ArrayList;
@@ -42,6 +42,9 @@ public class PlanBillPayload {
     private AbstractCastableStrategy castableStrategy;
 
     private String operatorCode;
+
+    //来源总部计划类型
+    private BillTypeEnum sourceBillType;
 
 
     public BillTypeEnum getBillType() {
@@ -147,5 +150,13 @@ public class PlanBillPayload {
 
     public void setOperatorCode(String operatorCode) {
         this.operatorCode = operatorCode;
+    }
+
+    public BillTypeEnum getSourceBillType() {
+        return sourceBillType;
+    }
+
+    public void setSourceBillType(BillTypeEnum sourceBillType) {
+        this.sourceBillType = sourceBillType;
     }
 }

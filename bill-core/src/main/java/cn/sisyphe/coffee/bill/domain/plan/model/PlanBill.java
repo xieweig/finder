@@ -40,6 +40,11 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private Boolean hqBill;
 
+    //来源总部计划类型
+    @Enumerated(value = EnumType.STRING)
+    private BillTypeEnum sourceBillType;
+
+
 
     public OperationStateEnum getOperationState() {
         return operationState;
@@ -63,5 +68,13 @@ public class PlanBill extends Bill<PlanBillDetail> {
 
     public void setHqBill(Boolean hqBill) {
         this.hqBill = hqBill;
+    }
+
+    public BillTypeEnum getSourceBillType() {
+        return sourceBillType;
+    }
+
+    public void setSourceBillType(BillTypeEnum sourceBillType) {
+        this.sourceBillType = sourceBillType;
     }
 }

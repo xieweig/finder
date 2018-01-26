@@ -37,7 +37,7 @@ public class AdjustBill extends Bill<AdjustBillDetail> {
      */
 
     public boolean isSelfAdjust() {
-        return StringUtils.isEmpty(getRootCode());
+        return StringUtils.isEmpty(getSourceCode());
     }
 
 
