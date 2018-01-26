@@ -8,7 +8,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.util.BillToDtoExtraProcessor;
 import cn.sisyphe.coffee.bill.util.DtoToBillExtraProcessor;
@@ -271,9 +270,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
             billDto.setAuditPersonName(sharedManager.findOneByUserCode(bill.getAuditPersonCode()));
         }
         //若是不是自主拣货则判断计划中未拣货的
-        if (!BillTypeEnum.NO_PLAN.equals(bill.getSpecificBillType()) && (planBillManager != null) && !BillTypeEnum.PLAN.equals(billType())) {
-            setNoOperation(billDto, bill);
-        }
+//        if (!BillTypeEnum.NO_PLAN.equals(bill.getSpecificBillType()) && (planBillManager != null) && !BillTypeEnum.PLAN.equals(billType())) {
+//            setNoOperation(billDto, bill);
+//        }
 
 
         return billDto;
