@@ -287,12 +287,11 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         ChildPlanBillDTO childPlanBillDTO = new ChildPlanBillDTO();
         //拣货状态
         childPlanBillDTO.setOperationState(childPlanBill.getOperationState());
-
+        childPlanBillDTO.setSourceBillType(childPlanBill.getSourceBillType());
         childPlanBillDTO.setBillCode(childPlanBill.getBillCode());
         childPlanBillDTO.setPlanMemo(childPlanBill.getPlanMemo());
-        childPlanBillDTO.setBillType(childPlanBill.getSpecificBillType());
+        childPlanBillDTO.setBillType(childPlanBill.getBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
-        /*        childPlanBillDTO.setReceiveBillCode(childPlanBill.getReceiveBillCode());*/
         childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
         childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());

@@ -7,7 +7,6 @@ import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 /**
  * Created by heyong on 2018/1/16 13:52
@@ -74,11 +73,9 @@ public class AllotBillEventProcessor {
 
         AllotBill allotBill = (AllotBill) event.getBill();
 
-        //更新入库单的状态为调拨中
-        if (!StringUtils.isEmpty(allotBill.getSourceCode())) {
-            inStorageBillManager.committing(allotBill.getSourceCode(), allotBill.getSpecificBillType());
-        }
+        //只有计划调拨才会更新入库单的状态为调拨中
         if (!allotBill.getSelf()) {
+            inStorageBillManager.committing(allotBill.getSourceCode(), allotBill.getSpecificBillType());
             mistakeBillManager.callBackToAddAllotBillCode(allotBill.getMistakeBillCode(), allotBill.getBillCode());
         }
     }

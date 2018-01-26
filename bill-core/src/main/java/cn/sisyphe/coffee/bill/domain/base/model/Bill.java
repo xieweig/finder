@@ -35,9 +35,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sum;
-
 /**
  * 单据基础类
  * 封装了单据公共的属性，和dto序列化和反序列化方法。
@@ -221,9 +218,6 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @JsonIgnore
     @Transient
     private MistakeBill mistakeBill;
-
-
-
 
 
 //    /**
@@ -551,5 +545,9 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
                 ", allotStatus=" + allotStatus +
                 ", mistakeBill=" + mistakeBill +
                 "} " + super.toString();
+    }
+
+    public Boolean getSelf() {
+        return BillTypeEnum.NO_PLAN.equals(getSpecificBillType());
     }
 }

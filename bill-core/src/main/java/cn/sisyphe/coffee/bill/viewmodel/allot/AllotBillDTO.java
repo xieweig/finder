@@ -7,6 +7,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.NO_PLAN;
+
 public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
 
     private String allotMemo;
@@ -82,7 +84,7 @@ public class AllotBillDTO extends BillDTO<AllotBillDetailDTO> {
 
 
     public Boolean getSelf() {
-        return self;
+        return NO_PLAN.equals(getSpecificBillType());
     }
 
     public void setSelf(Boolean self) {

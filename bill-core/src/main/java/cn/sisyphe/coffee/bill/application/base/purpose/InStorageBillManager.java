@@ -12,7 +12,11 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.ADJUST;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.DELIVERY;
@@ -82,7 +86,7 @@ public class InStorageBillManager {
         Bill<BillDetail> bill = new BillFactory().createBill(sourceBill.getBillType());
         bill.setInOrOutState(BillInOrOutStateEnum.NOT_IN);
         bill.setBillPurpose(billPurpose);
-        bill.setSpecificBillType(sourceBill.getBillType());
+        bill.setBillType(sourceBill.getBillType());
         bill.setSourceCode(sourceBill.getBillCode());
         bill.setRootCode(sourceBill.getRootCode());
         bill.setBelongStationCode(sourceBill.getInLocation().code());
@@ -98,6 +102,7 @@ public class InStorageBillManager {
         bill.setAuditPersonCode(sourceBill.getAuditPersonCode());
         bill.setAuditMemo(sourceBill.getAuditMemo());
         bill.setInWareHouseTime(new Date());
+        bill.setSpecificBillType(bill.getSpecificBillType());
 
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {

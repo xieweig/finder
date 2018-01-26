@@ -11,7 +11,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 /**
  * @author heyong
@@ -90,7 +89,7 @@ public class BillEventProcessor {
     public void billInSuccess(BehaviorEvent<Bill> event) {
         Bill bill = event.getBill();
         if (bill != null) {
-            if (!StringUtils.isEmpty(bill.getSourceCode())) {
+            if (!bill.getSelf()) {
                 //更改入库状态为已调拨
                 inStorageBillManager.allotedForInStorageBill(bill.getSourceCode(), bill.getSpecificBillType());
                 //更改误差单状态
