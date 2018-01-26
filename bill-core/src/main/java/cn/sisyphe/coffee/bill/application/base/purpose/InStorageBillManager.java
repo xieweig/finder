@@ -102,7 +102,11 @@ public class InStorageBillManager {
         bill.setAuditPersonCode(sourceBill.getAuditPersonCode());
         bill.setAuditMemo(sourceBill.getAuditMemo());
         bill.setInWareHouseTime(new Date());
-        bill.setSpecificBillType(bill.getSpecificBillType());
+        bill.setSpecificBillType(sourceBill.getSpecificBillType());
+        bill.setSourceBillType(sourceBill.getSourceBillType());
+        bill.setPlanMemo(sourceBill.getPlanMemo());
+        bill.setOutStorageMemo(sourceBill.getOutStorageMemo());
+        bill.setAuditMemo(sourceBill.getAuditMemo());
 
         Set<BillDetail> details = new HashSet<>();
         for (BillDetail billDetail : sourceBill.getBillDetails()) {
