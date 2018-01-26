@@ -24,6 +24,7 @@ import java.util.Set;
 
 import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.sum;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.selfPickGoods;
 
 /**
  * Created by XiongJing on 2018/1/8.
@@ -57,7 +58,7 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
         return BillTypeEnum.ADJUST;
     }
 
-   /* @Override
+    @Override
     protected AdjustBillDTO billToDto(AdjustBill bill) {
 
         AdjustBillDTO adjustBillDTO = super.billToDto(bill);
@@ -68,7 +69,7 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
             }
         }
         return adjustBillDTO;
-    }*/
+    }
 
     //    @Override
 //    protected AdjustBill dtoToBill(AdjustBill bill, AdjustBillDTO billDTO) {
