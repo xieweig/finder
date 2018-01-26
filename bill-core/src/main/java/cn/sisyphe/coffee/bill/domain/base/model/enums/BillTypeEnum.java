@@ -48,5 +48,13 @@ public enum BillTypeEnum {
     /**
      * 其它出入库
      */
-    IN_OUT_SELF_BILL
+    IN_OUT_SELF_BILL;
+
+
+    /**
+     * 是否是自主拣货
+     */
+    public static Boolean selfPickGoods(BillTypeEnum billType) {
+        return NO_PLAN.equals(billType);
+    }
 }
