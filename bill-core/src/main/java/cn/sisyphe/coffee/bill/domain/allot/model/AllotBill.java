@@ -97,8 +97,4 @@ public class AllotBill extends Bill<AllotBillDetail> {
     public void setMistakeBillCode(String mistakeBillCode) {
         this.mistakeBillCode = mistakeBillCode;
     }
-
-    public Boolean getSelf() {
-        return BillTypeEnum.NO_PLAN.equals(getSpecificBillType());
-    }
 }

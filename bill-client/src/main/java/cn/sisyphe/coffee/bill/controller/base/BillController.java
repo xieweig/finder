@@ -5,13 +5,13 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
-import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
@@ -199,13 +199,18 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
 //    @ScopeAuth(scopes = "#AllotBillDTO.inStationCodes", token = "userCode")
-    @ApiOperation(value = "调拨单列表")
+    @ApiOperation(value = "调拨单保存")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult allotSave(HttpServletRequest request, @RequestBody AllotBillDTO billDTO) {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
+        BillTypeEnum specificBillType = abstractBillExtraManager.billType();
+        billDTO.setSpecificBillType(specificBillType);
+        if (specificBillType == null) {
+            billDTO.setSpecificBillType(BillTypeEnum.NO_PLAN);
+        }
         try {
             responseResult.put("bill", allotBillManager.saveBill(billDTO));
         } catch (DataException data) {
