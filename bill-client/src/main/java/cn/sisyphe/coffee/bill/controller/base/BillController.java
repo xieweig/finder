@@ -4,9 +4,7 @@ import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
@@ -208,11 +206,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
         billDTO.setOperatorCode(loginInfo.getOperatorCode());
-        BillTypeEnum specificBillType = abstractBillExtraManager.billType();
-        billDTO.setSpecificBillType(specificBillType);
-        if (specificBillType == null) {
-            billDTO.setSpecificBillType(BillTypeEnum.NO_PLAN);
-        }
         try {
             responseResult.put("bill", allotBillManager.saveBill(billDTO));
         } catch (DataException data) {
