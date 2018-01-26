@@ -334,12 +334,13 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
                 }
             }
             if (flag) {
-                if (!(bill.getBasicEnum().equals(BasicEnum.BY_MATERIAL) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_CARGO))){
-                    diff.add(childPlanBillDetailDTO);
-                } else {
+                if (bill.getBasicEnum().equals(BasicEnum.BY_MATERIAL) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_CARGO)){
                     ChildPlanBillDetailDTO tempDto = diff.remove(index);
                     tempDto.setAmount(tempDto.getAmount() + childPlanBillDetailDTO.getAmount());
                     diff.add(tempDto);
+                } else {
+                    diff.add(childPlanBillDetailDTO);
+
                 }
             }
         }
