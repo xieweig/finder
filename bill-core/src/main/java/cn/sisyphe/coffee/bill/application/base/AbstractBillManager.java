@@ -117,8 +117,9 @@ public abstract class AbstractBillManager<T extends Bill> {
             throw new UnsupportedOperationException("不支持此操作");
         }
         T foundBill = billRepository.findOneByBillCode(bill.getBillCode());
+        //设置出库时间
         foundBill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
-        bill.setOutWareHouseTime(new Date());
+        foundBill.setOutWareHouseTime(new Date());
         billRepository.save(foundBill);
         return foundBill;
     }
