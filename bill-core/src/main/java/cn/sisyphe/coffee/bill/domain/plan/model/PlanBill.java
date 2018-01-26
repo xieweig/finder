@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.plan.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -40,12 +39,6 @@ public class PlanBill extends Bill<PlanBillDetail> {
     @Column
     private Boolean hqBill;
 
-    //来源总部计划类型
-    @Enumerated(value = EnumType.STRING)
-    private BillTypeEnum sourceBillType;
-
-
-
     public OperationStateEnum getOperationState() {
         return operationState;
     }
@@ -70,11 +63,4 @@ public class PlanBill extends Bill<PlanBillDetail> {
         this.hqBill = hqBill;
     }
 
-    public BillTypeEnum getSourceBillType() {
-        return sourceBillType;
-    }
-
-    public void setSourceBillType(BillTypeEnum sourceBillType) {
-        this.sourceBillType = sourceBillType;
-    }
 }

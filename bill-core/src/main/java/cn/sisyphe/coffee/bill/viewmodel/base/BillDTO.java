@@ -196,6 +196,11 @@ public class BillDTO<T extends BillDetailDTO> {
      */
     @Enumerated(value = EnumType.STRING)
     private BillAllotStatusEnum allotStatus;
+    
+    /**
+     * 来源单据类型
+     */
+    private BillTypeEnum sourceBillType;
 
     private List<ChildPlanBillDetailDTO> noOperationDetails;
 
@@ -368,7 +373,7 @@ public class BillDTO<T extends BillDetailDTO> {
     }
 
     public Integer getTotalAmount() {
-        if (this.billDetails != null){
+        if (this.billDetails != null) {
             return sum(this.billDetails, on(BillDetailDTO.class).getActualAmount());
         } else {
             return 0;
@@ -449,4 +454,11 @@ public class BillDTO<T extends BillDetailDTO> {
         this.allotStatus = allotStatus;
     }
 
+    public BillTypeEnum getSourceBillType() {
+        return sourceBillType;
+    }
+
+    public void setSourceBillType(BillTypeEnum sourceBillType) {
+        this.sourceBillType = sourceBillType;
+    }
 }

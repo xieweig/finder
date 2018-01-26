@@ -220,30 +220,9 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     private MistakeBill mistakeBill;
 
 
-//    /**
-//     * 反序列化，DTO转换成实体
-//     * @param abstractBillDTO
-//     * @param billDetails
-//     */
-//    public void unbuild(AbstractBillDTO abstractBillDTO, Set<AbstractBillDetailDTO> billDetails){
-//            this.setBillCode(abstractBillDTO.getBillCode());
-//
-//            //解析子类的订单详情信息
-//            unbuildDetails(billDetails);
-//    }
-//
-//    /**
-//     * 子类扩展的反序列化方法
-//     * 子类必须实现
-//     * @param abstractBillDetailDtos
-//     */
-//    public abstract void unbuildDetails(Set<AbstractBillDetailDTO> abstractBillDetailDtos);
-//
-//    /**
-//     * 具体单据传输自定义但序列化扩展
-//     * @param abstractBillDTO
-//     */
-//    protected abstract void unbuildExcend(AbstractBillDTO abstractBillDTO);
+    //来源总部计划类型
+    @Enumerated(value = EnumType.STRING)
+    private BillTypeEnum sourceBillType;
 
 
     /**
@@ -511,6 +490,14 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
 
     public void setAllotStatus(BillAllotStatusEnum allotStatus) {
         this.allotStatus = allotStatus;
+    }
+
+    public BillTypeEnum getSourceBillType() {
+        return sourceBillType;
+    }
+
+    public void setSourceBillType(BillTypeEnum sourceBillType) {
+        this.sourceBillType = sourceBillType;
     }
 
     @Override
