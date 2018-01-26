@@ -59,6 +59,13 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
         if (!conditionQuery.getHqBill()) {
             expressions.add(criteriaBuilder.equal(root.get("hqBill").as(Boolean.class), false));
         }
+
+        /**
+         * 拼接供应商编码
+         */
+        if (conditionQuery.getSupplierCodeList() != null && conditionQuery.getSupplierCodeList().size() > 0) {
+            expressions.add(root.get("dbStation").get("supplierCode").as(String.class).in(conditionQuery.getSupplierCodeList()));
+        }
     }
 
     @Override
