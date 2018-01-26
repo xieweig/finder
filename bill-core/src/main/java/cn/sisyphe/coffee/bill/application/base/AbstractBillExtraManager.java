@@ -4,15 +4,11 @@ import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.util.BillToDtoExtraProcessor;
 import cn.sisyphe.coffee.bill.util.DtoToBillExtraProcessor;
@@ -20,12 +16,10 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
-import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
-import org.mockito.internal.util.collections.ListUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -277,7 +271,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
             billDto.setAuditPersonName(sharedManager.findOneByUserCode(bill.getAuditPersonCode()));
         }
         //若是不是自主拣货则判断计划中未拣货的
-        if (!bill.getSpecificBillType().equals(BillTypeEnum.NO_PLAN) && (planBillManager != null) && !billType().equals(BillTypeEnum.PLAN)) {
+        if (!BillTypeEnum.NO_PLAN.equals(bill.getSpecificBillType()) && (planBillManager != null) && !BillTypeEnum.PLAN.equals(billType())) {
             setNoOperation(billDto, bill);
         }
 
