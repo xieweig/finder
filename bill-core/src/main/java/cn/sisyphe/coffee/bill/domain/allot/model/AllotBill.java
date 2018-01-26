@@ -52,11 +52,6 @@ public class AllotBill extends Bill<AllotBillDetail> {
      */
     private String mistakeBillCode;
 
-    /**
-     * 自主调拨
-     */
-    private Boolean self = false;
-
 
     @Override
     public String billCodePrefix() {
@@ -104,10 +99,6 @@ public class AllotBill extends Bill<AllotBillDetail> {
     }
 
     public Boolean getSelf() {
-        return self;
-    }
-
-    public void setSelf(Boolean self) {
-        this.self = self;
+        return BillTypeEnum.NO_PLAN.equals(getSpecificBillType());
     }
 }
