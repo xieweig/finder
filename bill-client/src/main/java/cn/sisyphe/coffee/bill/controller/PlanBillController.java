@@ -5,8 +5,10 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -28,10 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/bill/plan")
 @Api(description = "总部计划中心")
 @CrossOrigin(origins = "*")
-public class PlanBillController extends BillController<PlanBill, PlanBillDTO, ConditionQueryPlanBill> {
+public class PlanBillController extends BillController<PlanBill, PlanBillDTO, ConditionQueryPlanBill, PlanBillDetailDTO> {
 
     @Autowired
-    public PlanBillController(AbstractBillExtraManager<PlanBill, PlanBillDTO, ConditionQueryPlanBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public PlanBillController(AbstractBillExtraManager<PlanBill, PlanBillDTO, ConditionQueryPlanBill, PlanBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 

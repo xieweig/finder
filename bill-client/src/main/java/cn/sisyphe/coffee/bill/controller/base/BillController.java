@@ -4,11 +4,13 @@ import cn.sisyphe.coffee.bill.application.allot.AllotBillManager;
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
@@ -33,13 +35,13 @@ import java.util.List;
  * @author XiongJing
  */
 @CrossOrigin(origins = "*")
-public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> {
+public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill,V extends BillDetailDTO> {
 
-    protected AbstractBillExtraManager<T, D, Q> abstractBillExtraManager;
+    protected AbstractBillExtraManager<T, D, Q, V> abstractBillExtraManager;
     private PlanBillManager planBillManager;
     private AllotBillManager allotBillManager;
 
-    public BillController(AbstractBillExtraManager<T, D, Q> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public BillController(AbstractBillExtraManager<T, D, Q, V> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         this.abstractBillExtraManager = abstractBillExtraManager;
         this.planBillManager = planBillManager;
         this.allotBillManager = allotBillManager;

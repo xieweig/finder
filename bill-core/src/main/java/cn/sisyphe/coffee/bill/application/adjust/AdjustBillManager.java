@@ -34,15 +34,17 @@ import static ch.lambdaj.Lambda.sum;
  */
 
 @Service
-public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill> {
+public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill, AdjustBillDetailDTO> {
 
+/*
 
     @Autowired
     private PlanBillManager planBillManager;
+*/
 
     @Autowired
-    public AdjustBillManager(BillRepository<AdjustBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AdjustBill, ConditionQueryAdjustBill> billExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
+    public AdjustBillManager(BillRepository<AdjustBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AdjustBill, ConditionQueryAdjustBill> billExtraService, SharedManager sharedManager, PlanBillManager planBillManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager, planBillManager);
     }
 
     /**
@@ -55,7 +57,7 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
         return BillTypeEnum.ADJUST;
     }
 
-    @Override
+  /*  @Override
     protected AdjustBillDTO billToDto(AdjustBill bill) {
 
         AdjustBillDTO adjustBillDTO = super.billToDto(bill);
@@ -66,7 +68,7 @@ public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, Adju
             }
         }
         return adjustBillDTO;
-    }
+    }*/
 
     //    @Override
 //    protected AdjustBill dtoToBill(AdjustBill bill, AdjustBillDTO billDTO) {

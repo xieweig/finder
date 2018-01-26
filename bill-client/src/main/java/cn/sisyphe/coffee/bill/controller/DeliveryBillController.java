@@ -6,8 +6,10 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBill;
+import cn.sisyphe.coffee.bill.domain.delivery.model.DeliveryBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.ConditionQueryDeliveryBill;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDetailDTO;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,10 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/bill/delivery")
 @Api(description = "配送相关接口")
 @CrossOrigin(origins = "*")
-public class DeliveryBillController extends BillController<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> {
+public class DeliveryBillController extends BillController<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill, DeliveryBillDetailDTO> {
 
     @Autowired
-    public DeliveryBillController(AbstractBillExtraManager<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public DeliveryBillController(AbstractBillExtraManager<DeliveryBill, DeliveryBillDTO, ConditionQueryDeliveryBill, DeliveryBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }

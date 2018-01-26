@@ -7,10 +7,12 @@ import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
+import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBillDetail;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.ConditionQueryMistakeBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDetailDTO;
 import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
@@ -29,10 +31,10 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "误差相关接口")
 @RequestMapping("/api/bill/mistake")
 @CrossOrigin(origins = "*")
-public class MistakeBillController extends BillController<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill> {
+public class MistakeBillController extends BillController<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill, MistakeBillDetailDTO> {
 
     @Autowired
-    public MistakeBillController(AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public MistakeBillController(AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill, MistakeBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 

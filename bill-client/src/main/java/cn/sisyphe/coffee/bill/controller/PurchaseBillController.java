@@ -6,8 +6,10 @@ import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBill;
+import cn.sisyphe.coffee.bill.domain.purchase.model.PurchaseBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.ConditionQueryPurchaseBill;
 import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.purchase.PurchaseBillDetailDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -28,10 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(description = "进货相关接口")
 @CrossOrigin(origins = "*")
-public class PurchaseBillController extends BillController<PurchaseBill, PurchaseBillDTO, ConditionQueryPurchaseBill> {
+public class PurchaseBillController extends BillController<PurchaseBill, PurchaseBillDTO, ConditionQueryPurchaseBill, PurchaseBillDetailDTO> {
 
     @Autowired
-    public PurchaseBillController(AbstractBillExtraManager<PurchaseBill, PurchaseBillDTO, ConditionQueryPurchaseBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public PurchaseBillController(AbstractBillExtraManager<PurchaseBill, PurchaseBillDTO, ConditionQueryPurchaseBill, PurchaseBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 

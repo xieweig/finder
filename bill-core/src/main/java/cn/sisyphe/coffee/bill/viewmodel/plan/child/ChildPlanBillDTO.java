@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.plan.enums.OperationStateEnum;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Temporal;
@@ -13,6 +14,7 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ncmao
@@ -76,6 +78,19 @@ public class ChildPlanBillDTO {
     private BillTypeEnum specificBillType;
 
     private List<ChildPlanBillDetailDTO> childPlanBillDetails;
+
+    /**
+     * 计划中未拣货的detail
+     */
+    private List<ChildPlanBillDetailDTO> noOperationPlanBillDetails;
+
+    public List<ChildPlanBillDetailDTO> getNoOperationPlanBillDetails() {
+        return noOperationPlanBillDetails;
+    }
+
+    public void setNoOperationPlanBillDetails(List<ChildPlanBillDetailDTO> noOperationPlanBillDetails) {
+        this.noOperationPlanBillDetails = noOperationPlanBillDetails;
+    }
 
     public BillTypeEnum getSpecificBillType() {
         return specificBillType;

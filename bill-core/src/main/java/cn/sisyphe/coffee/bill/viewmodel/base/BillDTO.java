@@ -10,6 +10,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -20,6 +21,7 @@ import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static ch.lambdaj.Lambda.on;
@@ -195,6 +197,15 @@ public class BillDTO<T extends BillDetailDTO> {
     @Enumerated(value = EnumType.STRING)
     private BillAllotStatusEnum allotStatus;
 
+    private List<ChildPlanBillDetailDTO> noOperationDetails;
+
+    public List<ChildPlanBillDetailDTO> getNoOperationDetails() {
+        return noOperationDetails;
+    }
+
+    public void setNoOperationDetails(List<ChildPlanBillDetailDTO> noOperationDetails) {
+        this.noOperationDetails = noOperationDetails;
+    }
 
     public Date getCreateTime() {
         return createTime;

@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.base.model;
 
 import cn.sisyphe.coffee.bill.domain.base.model.db.DbGoods;
 import cn.sisyphe.coffee.bill.domain.base.model.goods.AbstractGoods;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.Transient;
+import java.util.Objects;
 
 /**
  * 单据明细
@@ -155,15 +157,4 @@ public abstract class BillDetail {
         this.actualTotalAmount = actualTotalAmount;
     }
 
-    @Override
-    public String toString() {
-        return "AbstractBillDetail{" +
-                "billDetailId=" + billDetailId +
-                ", goods=" + goods +
-                ", packageCode='" + packageCode + '\'' +
-                ", dbGoods=" + dbGoods +
-                ", shippedAmount=" + shippedAmount +
-                ", actualAmount=" + actualAmount +
-                '}';
-    }
 }

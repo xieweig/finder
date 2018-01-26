@@ -1,26 +1,40 @@
 package cn.sisyphe.coffee.bill.application.base;
 
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
+import cn.sisyphe.coffee.bill.domain.base.model.BillDetail;
 import cn.sisyphe.coffee.bill.domain.base.model.BillFactory;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.goods.RawMaterial;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.util.BillToDtoExtraProcessor;
 import cn.sisyphe.coffee.bill.util.DtoToBillExtraProcessor;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
+import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
+import org.mockito.internal.util.collections.ListUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by heyong on 2018/1/16 16:01
@@ -28,10 +42,11 @@ import java.util.List;
  *
  * @author heyong
  */
-public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill> extends AbstractBillManager<T> {
+public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill, V extends BillDetailDTO> extends AbstractBillManager<T> {
 
     private BillExtraService<T, Q> billExtraService;
     protected SharedManager sharedManager;
+    protected PlanBillManager planBillManager;
 
     protected BillExtraService<T, Q> getBillExtraService() {
         return billExtraService;
@@ -45,8 +60,19 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         return sharedManager;
     }
 
+    public PlanBillManager getPlanBillManager() {
+        return planBillManager;
+    }
+
     public void setSharedManager(SharedManager sharedManager) {
         this.sharedManager = sharedManager;
+    }
+
+    public AbstractBillExtraManager(BillRepository<T> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<T, Q> billExtraService, SharedManager sharedManager, PlanBillManager planBillManager) {
+        super(billRepository, applicationEventPublisher);
+        this.billExtraService = billExtraService;
+        this.sharedManager = sharedManager;
+        this.planBillManager = planBillManager;
     }
 
     public AbstractBillExtraManager(BillRepository<T> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<T, Q> billExtraService, SharedManager sharedManager) {
@@ -54,7 +80,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         this.billExtraService = billExtraService;
         this.sharedManager = sharedManager;
     }
-
 
     /**
      * 暂存计划
@@ -163,7 +188,8 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     public D findBillDtoByBillCode(String billCode) {
 
         T bill = billExtraService.findByBillCode(billCode);
-        if(bill == null){
+        //查找计划单中未查到的details
+        if (bill == null) {
             return null;
         }
         return billToDto(bill);
@@ -202,7 +228,6 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     }
 
 
-
     /**
      * bill 转换 dto - 条件查询 dto list
      *
@@ -226,7 +251,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         T newBill = JSON.parseObject(JSON.toJSONString(billDTO), (Class<T>) bill.getClass(), new DtoToBillExtraProcessor());
 
         // 重复提交
-        if (bill.getBillId() != null){
+        if (bill.getBillId() != null) {
             newBill.setBillId(bill.getBillId());
             newBill.setVersion(bill.getVersion());
         }
@@ -244,15 +269,81 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      */
     protected D billToDto(T bill) {
         D billDto = JSON.parseObject(JSON.toJSONString(bill), (Type) new BillDTOFactory().createBillDTO(bill.getBillType()).getClass(), new BillToDtoExtraProcessor());
-        if (!StringUtils.isEmpty(bill.getOperatorCode())){
+        //人员的code转name
+        if (!StringUtils.isEmpty(bill.getOperatorCode())) {
             billDto.setOperatorName(sharedManager.findOneByUserCode(bill.getOperatorCode()));
         }
         if (!StringUtils.isEmpty(bill.getAuditPersonCode())) {
             billDto.setAuditPersonName(sharedManager.findOneByUserCode(bill.getAuditPersonCode()));
-
         }
+        //若是不是自主拣货则判断计划中未拣货的
+        if (!bill.getSpecificBillType().equals(BillTypeEnum.NO_PLAN) && (planBillManager != null)) {
+            setNoOperation(billDto, bill);
+        }
+
+
         return billDto;
     }
 
+
+    /**
+     * 设置未拣货的数量
+     *
+     * @param billDto
+     * @param bill
+     */
+    private void setNoOperation(D billDto, T bill) {
+        //差异
+        List<ChildPlanBillDetailDTO> diff = new ArrayList<>();
+        ChildPlanBillDTO childPlanBillDTO = planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(), billType());
+        List<ChildPlanBillDetailDTO> planDetails = childPlanBillDTO.getChildPlanBillDetails();
+        Set<V> details = billDto.getBillDetails();
+
+
+        for (ChildPlanBillDetailDTO childPlanBillDetailDTO : planDetails) {
+            boolean flag = true;
+            int index = 0;
+            for (V detail : details) {
+                //若都是按原料
+                if (bill.getBasicEnum().equals(BasicEnum.BY_MATERIAL) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_MATERIAL)) {
+                    if (childPlanBillDetailDTO.getRawMaterial().getRawMaterialCode().equals(detail.getRawMaterial().getRawMaterialCode())) {
+                        flag = false;
+                        break;
+                    }
+                    //若都是按货物
+                } else if (bill.getBasicEnum().equals(BasicEnum.BY_CARGO) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_CARGO)) {
+                    if (!childPlanBillDetailDTO.getRawMaterial().getCargo().getCargoCode().equals(detail.getRawMaterial().getCargo().getCargoCode())) {
+                        for (ChildPlanBillDetailDTO diffChildPlanDetailDTO : diff) {
+                            if (diffChildPlanDetailDTO.getRawMaterial().getRawMaterialCode().equals(detail.getRawMaterial().getRawMaterialCode())) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                    //若计划按货物 单据按原料 合并原料
+                } else {
+                    if (!childPlanBillDetailDTO.getRawMaterial().getCargo().getCargoCode().equals(detail.getRawMaterial().getCargo().getCargoCode())) {
+                        for (ChildPlanBillDetailDTO diffChildPlanDetailDTO : diff) {
+                            if (diffChildPlanDetailDTO.getRawMaterial().getRawMaterialCode().equals(detail.getRawMaterial().getRawMaterialCode())) {
+                                flag = false;
+                                index = diff.indexOf(diffChildPlanDetailDTO);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (flag) {
+                if (!(bill.getBasicEnum().equals(BasicEnum.BY_MATERIAL) && childPlanBillDTO.getBasicEnum().equals(BasicEnum.BY_CARGO))){
+                    diff.add(childPlanBillDetailDTO);
+                } else {
+                    ChildPlanBillDetailDTO tempDto = diff.remove(index);
+                    tempDto.setAmount(tempDto.getAmount() + childPlanBillDetailDTO.getAmount());
+                    diff.add(tempDto);
+                }
+            }
+        }
+        billDto.setNoOperationDetails(diff);
+    }
 
 }

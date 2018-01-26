@@ -5,7 +5,9 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBill;
+import cn.sisyphe.coffee.bill.domain.adjust.model.AdjustBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.adjust.AdjustBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.adjust.ConditionQueryAdjustBill;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/bill/adjust")
 @Api(description = "调剂相关接口")
 @CrossOrigin(origins = "*")
-public class AdjustBillController extends BillController<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill> {
+public class AdjustBillController extends BillController<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill, AdjustBillDetailDTO> {
 
 
     @Autowired
-    public AdjustBillController(AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public AdjustBillController(AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill, AdjustBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }

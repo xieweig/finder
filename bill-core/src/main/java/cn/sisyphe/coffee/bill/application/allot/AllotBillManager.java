@@ -2,14 +2,17 @@ package cn.sisyphe.coffee.bill.application.allot;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,12 +24,12 @@ import org.springframework.stereotype.Service;
  * @author ncmao
  */
 @Service
-public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotBillDTO, ConditionQueryAllotBill> {
+public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotBillDTO, ConditionQueryAllotBill, AllotBillDetailDTO> {
 
 
     @Autowired
-    public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
+    public AllotBillManager(BillRepository<AllotBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AllotBill, ConditionQueryAllotBill> billExtraService, SharedManager sharedManager, PlanBillManager planBillManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager, planBillManager);
     }
 
     @Autowired

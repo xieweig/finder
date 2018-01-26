@@ -53,7 +53,7 @@ import static ch.lambdaj.Lambda.sum;
  * @author ncmao
  */
 @Service
-public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBillDTO, ConditionQueryPlanBill> {
+public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBillDTO, ConditionQueryPlanBill, PlanBillDetailDTO> {
 
 
     @Autowired

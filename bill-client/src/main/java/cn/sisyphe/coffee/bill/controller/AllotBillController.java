@@ -5,7 +5,9 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
+import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/bill/allot")
 @Api(description = "调拨相关接口")
 @CrossOrigin(origins = "*")
-public class AllotBillController extends BillController<AllotBill, AllotBillDTO, ConditionQueryAllotBill> {
+public class AllotBillController extends BillController<AllotBill, AllotBillDTO, ConditionQueryAllotBill, AllotBillDetailDTO> {
 
     @Autowired
-    public AllotBillController(AbstractBillExtraManager<AllotBill, AllotBillDTO, ConditionQueryAllotBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public AllotBillController(AbstractBillExtraManager<AllotBill, AllotBillDTO, ConditionQueryAllotBill, AllotBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }

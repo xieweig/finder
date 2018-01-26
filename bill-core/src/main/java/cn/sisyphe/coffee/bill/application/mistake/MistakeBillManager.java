@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.application.mistake;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.AllotBillExtraService;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
@@ -39,11 +40,11 @@ import static cn.sisyphe.coffee.bill.util.Constant.STORAGE_TYPE_WCK;
  * describe：
  */
 @Service
-public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill> {
+public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, MistakeBillDTO, ConditionQueryMistakeBill,MistakeBillDetailDTO> {
 
     @Autowired
-    public MistakeBillManager(BillRepository<MistakeBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<MistakeBill, ConditionQueryMistakeBill> billExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
+    public MistakeBillManager(BillRepository<MistakeBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<MistakeBill, ConditionQueryMistakeBill> billExtraService, SharedManager sharedManager, PlanBillManager planBillManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager,planBillManager);
     }
 
     @Autowired

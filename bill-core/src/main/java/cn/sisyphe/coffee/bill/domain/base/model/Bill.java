@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
+import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -220,6 +221,9 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
     @JsonIgnore
     @Transient
     private MistakeBill mistakeBill;
+
+
+
 
 
 //    /**

@@ -1,16 +1,19 @@
 package cn.sisyphe.coffee.bill.application.returned;
 
 import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
+import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBill;
+import cn.sisyphe.coffee.bill.domain.returned.model.ReturnedBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.util.BillToDtoExtraProcessor;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDTOFactory;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ConditionQueryReturnedBill;
 import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDetailDTO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,12 +28,12 @@ import java.lang.reflect.Type;
  * @author：xieweiguang
  */
 @Service
-public class ReturnedBillManager extends AbstractBillExtraManager<ReturnedBill, ReturnedBillDTO, ConditionQueryReturnedBill> {
+public class ReturnedBillManager extends AbstractBillExtraManager<ReturnedBill, ReturnedBillDTO, ConditionQueryReturnedBill,ReturnedBillDetailDTO> {
 
 
     @Autowired
-    public ReturnedBillManager(BillRepository<ReturnedBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<ReturnedBill, ConditionQueryReturnedBill> billExtraService, SharedManager sharedManager) {
-        super(billRepository, applicationEventPublisher, billExtraService, sharedManager);
+    public ReturnedBillManager(BillRepository<ReturnedBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<ReturnedBill, ConditionQueryReturnedBill> billExtraService, SharedManager sharedManager, PlanBillManager planBillManager) {
+        super(billRepository, applicationEventPublisher, billExtraService, sharedManager, planBillManager);
     }
 
     /**

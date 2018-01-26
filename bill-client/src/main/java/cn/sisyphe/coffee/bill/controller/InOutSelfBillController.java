@@ -5,8 +5,10 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.inoutself.model.InOutSelfBill;
+import cn.sisyphe.coffee.bill.domain.inoutself.model.InOutSelfBillDetail;
 import cn.sisyphe.coffee.bill.viewmodel.inoutself.ConditionQueryInOutSelfBill;
 import cn.sisyphe.coffee.bill.viewmodel.inoutself.InOutSelfBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.inoutself.InOutSelfBillDetailDTO;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,10 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "其它出入库业相关操作")
-public class InOutSelfBillController extends BillController<InOutSelfBill, InOutSelfBillDTO, ConditionQueryInOutSelfBill> {
+public class InOutSelfBillController extends BillController<InOutSelfBill, InOutSelfBillDTO, ConditionQueryInOutSelfBill, InOutSelfBillDetailDTO> {
 
     @Autowired
-    public InOutSelfBillController(AbstractBillExtraManager<InOutSelfBill, InOutSelfBillDTO, ConditionQueryInOutSelfBill> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
+    public InOutSelfBillController(AbstractBillExtraManager<InOutSelfBill, InOutSelfBillDTO, ConditionQueryInOutSelfBill, InOutSelfBillDetailDTO> abstractBillExtraManager, PlanBillManager planBillManager, AllotBillManager allotBillManager) {
         super(abstractBillExtraManager, planBillManager, allotBillManager);
     }
 }
