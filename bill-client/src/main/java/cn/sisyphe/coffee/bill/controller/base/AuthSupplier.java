@@ -12,7 +12,7 @@ import static cn.sisyphe.coffee.bill.util.Constant.OAUTH_USER_MANAGEMENT_SCOPE;
 
 /**
  * @author Amy on 2017/12/27.
- *         describe：管理范围
+ * describe：管理范围
  */
 @Service
 public class AuthSupplier implements AuthenticationSupplier {
@@ -26,12 +26,13 @@ public class AuthSupplier implements AuthenticationSupplier {
         //读取缓存
         JSONArray jsonArray = (JSONArray) CacheHelper.cache().hashPop(OAUTH_USER_MANAGEMENT_SCOPE, s);
         Set<String> stationCodeSet = new HashSet<>();
-        if(jsonArray==null){
+        if (jsonArray == null) {
             return stationCodeSet;
         }
         for (Object object : jsonArray.getJSONArray(1)) {
             stationCodeSet.add(object.toString());
         }
+        System.out.println("-----" + stationCodeSet.size());
         return stationCodeSet;
     }
 }
