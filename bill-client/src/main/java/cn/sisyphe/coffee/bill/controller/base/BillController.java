@@ -198,7 +198,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @param billDTO 调拨单DTO
      * @return
      */
-    @ScopeAuth(scopes = "#AllotBillDTO.inStationCodes", token = "userCode")
+//    @ScopeAuth(scopes = "#AllotBillDTO.inStationCodes", token = "userCode")
     @ApiOperation(value = "调拨单保存")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
@@ -223,7 +223,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     @ApiOperation(value = "调拨单列表")
 //    @ScopeAuth(scopes = "#conditionQueryAllotBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
-    //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
