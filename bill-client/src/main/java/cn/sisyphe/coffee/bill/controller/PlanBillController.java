@@ -6,9 +6,11 @@ import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ncmao
@@ -73,5 +77,29 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
         return responseResult;
     }
 
+    @Override
+    @ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
+    public ResponseResult auditFailure(PlanBillDTO billDTO, HttpServletRequest request) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), false));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
 
+    @Override
+    @ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
+    public ResponseResult auditSuccess(PlanBillDTO billDTO, HttpServletRequest request) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
+            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), true));
+        } catch (DataException data) {
+            responseResult.putException(data);
+        }
+        return responseResult;
+    }
 }
