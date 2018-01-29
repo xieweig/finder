@@ -178,7 +178,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
-    @ScopeAuth(scopes = {"#conditionQueryMistakeBill.inStationCodes", "#ConditionQueryMistakeBill.outStationCodes"}, token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryMistakeBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findDayMistakeByConditions", method = RequestMethod.POST)
     public ResponseResult findDayMistakeByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
