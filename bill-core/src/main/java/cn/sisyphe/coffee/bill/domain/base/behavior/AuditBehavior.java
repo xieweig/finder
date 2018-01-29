@@ -70,7 +70,7 @@ public class AuditBehavior extends AbstractBillBehavior {
     public BillInOrOutStateEnum inOrOutState() {
         // 审核成功并且是入库单据，那么就是入库中
         if (isSuccess && BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
-            return IN_ING;
+            return NOT_IN;
         }
         // 审核失败并且是入库单，那么就是出库失败
         else if (!isSuccess && BillPurposeEnum.IN_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
@@ -78,7 +78,7 @@ public class AuditBehavior extends AbstractBillBehavior {
         }
         // 审核成功并且是出库单，那么就是出库中
         else if (isSuccess && BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
-            return OUT_ING;
+            return NOT_OUT;
         }
         // 审核失败并且是出库单，那么就是未出库
         else if (!isSuccess && BillPurposeEnum.OUT_STORAGE.equals(getBillService().getBill().getBillPurpose())) {
