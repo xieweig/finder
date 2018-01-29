@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
