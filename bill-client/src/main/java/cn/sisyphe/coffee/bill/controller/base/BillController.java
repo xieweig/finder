@@ -34,7 +34,7 @@ import java.util.List;
  * @author XiongJing
  */
 @CrossOrigin(origins = "*")
-public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill,V extends BillDetailDTO> {
+public class BillController<T extends Bill, D extends BillDTO, Q extends ConditionQueryBill, V extends BillDetailDTO> {
 
     protected AbstractBillExtraManager<T, D, Q, V> abstractBillExtraManager;
     private PlanBillManager planBillManager;
@@ -55,7 +55,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "子计划单列表")
-//    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
+    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -199,7 +199,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ScopeAuth(scopes = "#AllotBillDTO.inStationCodes", token = "userCode")
-//    @ApiOperation(value = "调拨单保存")
+    @ApiOperation(value = "调拨单保存")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult allotSave(HttpServletRequest request, @RequestBody AllotBillDTO billDTO) {
@@ -223,6 +223,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     @ApiOperation(value = "调拨单列表")
 //    @ScopeAuth(scopes = "#conditionQueryAllotBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
+    //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
