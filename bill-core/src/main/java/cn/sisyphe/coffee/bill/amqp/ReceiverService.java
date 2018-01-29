@@ -1,8 +1,8 @@
 package cn.sisyphe.coffee.bill.amqp;
 
-import cn.sisyphe.coffee.bill.domain.base.behavior.BehaviorEvent;
+import cn.sisyphe.coffee.bill.application.base.handler.InStorageOffsetCallbackHandler;
+import cn.sisyphe.coffee.bill.application.base.handler.OutStorageOffsetCallbackHandler;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.coffee.bill.util.ResponseResultMapUtil;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 
@@ -23,7 +22,10 @@ public class ReceiverService {
 
 
     @Autowired
-    private ApplicationEventPublisher applicationEventPublisher;
+    private OutStorageOffsetCallbackHandler outStorageOffsetCallbackHandler;
+
+    @Autowired
+    private InStorageOffsetCallbackHandler inStorageOffsetCallbackHandler;
 
     /**
      * 日志
@@ -49,11 +51,7 @@ public class ReceiverService {
         //接收到入库冲减完成将，出库单转存一份入库单
         if (Constant.OUT_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
             //TODO 这里的出入库状态应该在冲减系统变成出库成功或者失败
-            //---------------------------------------------------
-            bill.setInOrOutState(BillInOrOutStateEnum.OUT_SUCCESS);
-            //---------------------------------------------------
-            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
-            applicationEventPublisher.publishEvent(behaviorEvent);
+            outStorageOffsetCallbackHandler.handleOutStockSuccess(bill);
 
         }
 
@@ -61,11 +59,8 @@ public class ReceiverService {
         if (Constant.IN_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
             //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
             //---------------------------------------------------
-            bill.setInOrOutState(BillInOrOutStateEnum.IN_SUCCESS);
-            //---------------------------------------------------
+            inStorageOffsetCallbackHandler.handleInStockSuccess(bill);
 
-            BehaviorEvent behaviorEvent = new BehaviorEvent(bill);
-            applicationEventPublisher.publishEvent(behaviorEvent);
         }
     }
 }
