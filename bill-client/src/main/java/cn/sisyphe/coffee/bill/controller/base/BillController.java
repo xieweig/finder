@@ -55,7 +55,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "子计划单列表")
-    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
+//    @ScopeAuth(scopes = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
