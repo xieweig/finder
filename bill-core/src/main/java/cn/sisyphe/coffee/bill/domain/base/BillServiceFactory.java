@@ -41,7 +41,7 @@ public class BillServiceFactory {
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillService(bill))
                 .addCase(BillTypeEnum.ALLOT, new AllotBillService(bill))
                 .addCase(BillTypeEnum.MISTAKE, new MistakeBillService(bill))
-                .addCase(BillTypeEnum.IN_OUT_SELF_BILL, new InOutSelfBillService(bill));
+                .addCase(BillTypeEnum.IN_OUT_SELF, new InOutSelfBillService(bill));
 
         return switcher.exec(bill.getBillType());
 

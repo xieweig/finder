@@ -44,7 +44,7 @@ public class BillFactory {
                 .addCase(BillTypeEnum.ADJUST, new AdjustBill())
                 .addCase(BillTypeEnum.ALLOT, new AllotBill())
                 .addCase(BillTypeEnum.MISTAKE, new MistakeBill())
-                .addCase(BillTypeEnum.IN_OUT_SELF_BILL
+                .addCase(BillTypeEnum.IN_OUT_SELF
                 , new InOutSelfBill());
 
         return switcher.exec(billType);

@@ -48,7 +48,7 @@ public enum BillTypeEnum {
     /**
      * 其它出入库
      */
-    IN_OUT_SELF_BILL;
+    IN_OUT_SELF;
 
 
     /**

@@ -34,6 +34,6 @@ public class InOutSelfBillEventManager extends AbstractBillExtraManager<InOutSel
      */
     @Override
     public BillTypeEnum billType() {
-        return BillTypeEnum.IN_OUT_SELF_BILL;
+        return BillTypeEnum.IN_OUT_SELF;
     }
 }

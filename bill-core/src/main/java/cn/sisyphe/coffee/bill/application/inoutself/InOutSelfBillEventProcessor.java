@@ -16,7 +16,7 @@ public class InOutSelfBillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF_BILL' and #event.billState.toString() == 'SAVED'")
+    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF' and #event.billState.toString() == 'SAVED'")
     public void billSave(BehaviorEvent event) {
         System.err.println("SAVED:" + event.getBill());
     }
@@ -26,7 +26,7 @@ public class InOutSelfBillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF_BILL' and #event.billState.toString() == 'SUBMITTED'")
+    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF' and #event.billState.toString() == 'SUBMITTED'")
     public void billSubmit(BehaviorEvent event) {
         System.err.println("SUBMITTED:" + event.getBill());
     }
@@ -36,7 +36,7 @@ public class InOutSelfBillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF_BILL' and #event.billState.toString() == 'AUDIT_FAILURE'")
+    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF' and #event.billState.toString() == 'AUDIT_FAILURE'")
     public void billFailure(BehaviorEvent event) {
         System.err.println("AUDIT_FAILURE:" + event.getBill());
     }
@@ -46,7 +46,7 @@ public class InOutSelfBillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF_BILL' and #event.billState.toString() == 'AUDIT_SUCCESS'")
+    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF' and #event.billState.toString() == 'AUDIT_SUCCESS'")
     public void billSuccess(BehaviorEvent event) {
 
     }
@@ -56,7 +56,7 @@ public class InOutSelfBillEventProcessor {
      *
      * @param event
      */
-    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF_BILL' and #event.billState.toString() == 'DONE'")
+    @EventListener(condition = "#event.billType.toString() ==  'IN_OUT_SELF' and #event.billState.toString() == 'DONE'")
     public void billDone(BehaviorEvent event) {
 
     }

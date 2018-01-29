@@ -11,6 +11,7 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.delivery.DeliveryBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.inoutself.InOutSelfBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.inoutself.InOutSelfBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
@@ -46,7 +47,7 @@ public class BillDTOFactory {
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillDTO())
                 .addCase(BillTypeEnum.ALLOT, new AllotBillDTO())
                 .addCase(BillTypeEnum.MISTAKE, new MistakeBillDTO())
-                .addCase(BillTypeEnum.IN_OUT_SELF_BILL, new InOutSelfBillDTO());
+                .addCase(BillTypeEnum.IN_OUT_SELF, new InOutSelfBillDTO());
 
         return switcher.exec(billType);
     }
@@ -61,7 +62,8 @@ public class BillDTOFactory {
                 .addCase(BillTypeEnum.RESTOCK, new RestockBillDetailDTO())
                 .addCase(BillTypeEnum.ADJUST, new AdjustBillDetailDTO())
                 .addCase(BillTypeEnum.ALLOT, new AllotBillDetailDTO())
-                .addCase(BillTypeEnum.MISTAKE, new MistakeBillDetailDTO());
+                .addCase(BillTypeEnum.MISTAKE, new MistakeBillDetailDTO())
+                .addCase(BillTypeEnum.IN_OUT_SELF, new InOutSelfBillDetailDTO());
 
         return switcher.exec(billType);
     }

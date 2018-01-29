@@ -25,6 +25,6 @@ public class InOutSelfBill extends Bill<InOutSelfBillDetail> {
     }
 
     public InOutSelfBill() {
-        setBillType(BillTypeEnum.IN_OUT_SELF_BILL);
+        setBillType(BillTypeEnum.IN_OUT_SELF);
     }
 }
