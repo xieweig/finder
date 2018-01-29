@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Supplier;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBill;
 import cn.sisyphe.coffee.bill.domain.mistake.model.MistakeBillDetail;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
@@ -21,6 +22,7 @@ import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.ConditionQueryMistakeBill;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.mistake.MistakeBillDetailDTO;
+import cn.sisyphe.coffee.bill.viewmodel.returned.ReturnedBillDTO;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import com.alibaba.fastjson.JSON;
@@ -475,5 +477,19 @@ public class MistakeBillManager extends AbstractBillExtraManager<MistakeBill, Mi
         } else {
             return new MistakeBillDTO();
         }
+    }
+
+    @Override
+    protected MistakeBillDTO billToDto(MistakeBill bill) {
+        MistakeBillDTO mistakeBillDTO = super.billToDto(bill);
+        if (bill.getDbStation()!=null){
+            if(bill.getDbStation().getOutLocation() instanceof Station){
+                mistakeBillDTO.setOutLocation((Station) bill.getDbStation().getOutLocation());
+            }
+            if(bill.getDbStation().getInLocation() instanceof Station){
+                mistakeBillDTO.setInLocation((Station)bill.getDbStation().getInLocation());
+            }
+        }
+        return mistakeBillDTO;
     }
 }
