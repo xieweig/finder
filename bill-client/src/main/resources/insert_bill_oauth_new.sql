@@ -470,10 +470,10 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 -- 退货-BILL006 3006【站点退货拣货-BILL006002 3040】
 -- BILL006002 3040<保存>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (3180, now(), now(), '0', '4', 'BILL006002001', '退货拣货保存', 'BILL,BILL006,BILL006002,BILL006002001', '/coffeeBill/api/bill/returned/selfSave', 3040, '\0');
+VALUES (3180, now(), now(), '0', '4', 'BILL006002001', '退货拣货保存', 'BILL,BILL006,BILL006002,BILL006002001', '/coffeeBill/api/bill/returned/saveBySelf', 3040, '\0');
 -- BILL006002 3040<提交>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (3181, now(), now(), '0', '4', 'BILL006002002', '退货拣货保存', 'BILL,BILL006,BILL006002,BILL006002002', '/coffeeBill/api/bill/returned/selfSubmit', 3040, '\0');
+VALUES (3181, now(), now(), '0', '4', 'BILL006002002', '退货拣货保存', 'BILL,BILL006,BILL006002,BILL006002002', '/coffeeBill/api/bill/returned/submitBySelf', 3040, '\0');
 
 -- 退货-BILL006 3006【查询退货出库单-BILL006003 3041】
 -- BILL006003 3041<条件筛选查询>
