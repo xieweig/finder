@@ -25,11 +25,11 @@ public class ConditionQueryMistakeBill extends ConditionQueryBill {
     /**
      * 出库站点
      */
-    private String outStorageCode;
+    private Set<String> outStorageCodeSet;
     /**
      * 入库站点
      */
-    private String inStorageCode;
+    private Set<String> inStorageCodeSet;
 
 
     public Set<BasicEnum> getTargetEnumSet() {
@@ -56,24 +56,24 @@ public class ConditionQueryMistakeBill extends ConditionQueryBill {
         this.targetName = targetName;
     }
 
-    public String getOutStorageCode() {
-        return outStorageCode;
+    public Set<String> getOutStorageCodeSet() {
+        return outStorageCodeSet;
     }
 
-    public void setOutStorageCode(String outStorageCode) {
-        this.outStorageCode = outStorageCode;
+    public void setOutStorageCodeSet(Set<String> outStorageCodeSet) {
+        this.outStorageCodeSet = outStorageCodeSet;
     }
 
-    public String getInStorageCode() {
-        return inStorageCode;
+    public Set<String> getInStorageCodeSet() {
+        return inStorageCodeSet;
     }
 
-    public void setInStorageCode(String inStorageCode) {
-        this.inStorageCode = inStorageCode;
+    public void setInStorageCodeSet(Set<String> inStorageCodeSet) {
+        this.inStorageCodeSet = inStorageCodeSet;
     }
 
     public boolean obtainTarget(Set<BasicEnum> targetEnumSet) {
-        if (targetEnumSet == null) {
+        if (targetEnumSet == null || targetEnumSet.size()<=0) {
             return true;
         } else if (targetEnumSet.size() == 2) {
             return true;

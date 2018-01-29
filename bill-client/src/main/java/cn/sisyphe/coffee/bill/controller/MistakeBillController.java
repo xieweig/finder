@@ -46,8 +46,9 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryAllotBill 查询条件DTO
      * @return
      */
-    @Override
-    public ResponseResult findAllotByConditions(ConditionQueryAllotBill conditionQueryAllotBill) {
+//    @ScopeAuth(scope = "#conditionQueryAllotBill.inStationCodes", token = "userCode")
+    @RequestMapping(path = "/findMistakeByConditions", method = RequestMethod.POST)
+    public ResponseResult findMistakeByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         conditionQueryAllotBill.setMistakeBillQuery(true);
         return super.findAllotByConditions(conditionQueryAllotBill);
     }
@@ -74,7 +75,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param request
      * @return
      */
-    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "#userCode")
+    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/submitOverFlow", method = RequestMethod.POST)
     public ResponseResult submitOverFlow(@RequestBody MistakeBillDTO billDTO,HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
@@ -97,7 +98,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param billDTO
      * @return
      */
-    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "#userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/submitLoss", method = RequestMethod.POST)
     public ResponseResult submitLoss(@RequestBody MistakeBillDTO billDTO,HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
@@ -120,7 +121,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param billDTO
      * @return
      */
-    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "#userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/submitDayMistake", method = RequestMethod.POST)
     public ResponseResult submitDayMistake(@RequestBody MistakeBillDTO billDTO,HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
@@ -141,7 +142,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
-    @ScopeAuth(scope = "#conditionQueryMistakeBill.inStationCodes", token = "#userCode")
+    @ScopeAuth(scope = "#conditionQueryMistakeBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findOverFlowByConditions", method = RequestMethod.POST)
     public ResponseResult findOverFlowByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -159,7 +160,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
-    @ScopeAuth(scope = "#ConditionQueryMistakeBill.outStationCodes", token = "#userCode")
+    @ScopeAuth(scope = "#conditionQueryMistakeBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findLossByConditions", method = RequestMethod.POST)
     public ResponseResult findLossByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -177,7 +178,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryMistakeBill
      * @return
      */
-    @ScopeAuth(scopes = {"#ConditionQueryMistakeBill.inStationCodes", "#ConditionQueryMistakeBill.outStationCodes"}, token = "#userCode")
+    @ScopeAuth(scopes = {"#conditionQueryMistakeBill.inStationCodes", "#ConditionQueryMistakeBill.outStationCodes"}, token = "userCode")
     @RequestMapping(path = "/findDayMistakeByConditions", method = RequestMethod.POST)
     public ResponseResult findDayMistakeByConditions(@RequestBody ConditionQueryMistakeBill conditionQueryMistakeBill) {
         ResponseResult responseResult = new ResponseResult();
