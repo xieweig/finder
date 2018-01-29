@@ -36,7 +36,8 @@ public class ReceiverService {
      * @param responseResult
      */
     @RabbitListener(queues = "${rabbit.listener.queue}")
-    public void receiveQueue(ResponseResult responseResult) {
+    public void receiveQueue(ResponseResult responseResult) throws InterruptedException {
+        Thread.sleep(2000);
 
         if (Constant.COMMON_NAME.equals(responseResult.getCommandName())) {
             log.info("接收到库存系统冲减后的单据消息：", responseResult.getResult());

@@ -129,6 +129,16 @@ public class ConditionQueryBill extends BaseConditionQuery implements Serializab
      */
     private BillStateEnum billStateEnum;
 
+    private List<BillTypeEnum> sourceBillType;
+
+    public List<BillTypeEnum> getSourceBillType() {
+        return sourceBillType;
+    }
+
+    public void setSourceBillType(List<BillTypeEnum> sourceBillType) {
+        this.sourceBillType = sourceBillType;
+    }
+
     public String getOperatorName() {
         return operatorName;
     }

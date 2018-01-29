@@ -10,6 +10,8 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
+import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.child.ChildPlanBillDetailDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -202,14 +204,19 @@ public class BillDTO<T extends BillDetailDTO> {
      */
     private BillTypeEnum sourceBillType;
 
-    private List<ChildPlanBillDetailDTO> noOperationDetails;
+    //未拣货的明细
+//    private List<ChildPlanBillDetailDTO> noOperationDetails;
+    /**
+     * 计划Bil
+     */
+    private ChildPlanBillDTO planBill;
 
-    public List<ChildPlanBillDetailDTO> getNoOperationDetails() {
-        return noOperationDetails;
+    public ChildPlanBillDTO getPlanBill() {
+        return planBill;
     }
 
-    public void setNoOperationDetails(List<ChildPlanBillDetailDTO> noOperationDetails) {
-        this.noOperationDetails = noOperationDetails;
+    public void setPlanBill(ChildPlanBillDTO planBill) {
+        this.planBill = planBill;
     }
 
     public Date getCreateTime() {

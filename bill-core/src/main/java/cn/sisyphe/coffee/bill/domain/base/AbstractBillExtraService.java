@@ -226,6 +226,12 @@ public abstract class AbstractBillExtraService<T extends Bill, Q extends Conditi
             if (conditionQuery.getVarietyEnd() != null && conditionQuery.getVarietyEnd() > 0) {
                 expressions.add(criteriaBuilder.lessThanOrEqualTo(root.get("totalVarietyAmount").as(Integer.class), conditionQuery.getVarietyEnd()));
             }
+            /**
+             * 配送品种结束数量
+             */
+            if (conditionQuery.getSourceBillType() != null && conditionQuery.getSourceBillType().size() > 0) {
+                expressions.add(root.get("sourceBillType").as(BillTypeEnum.class).in(conditionQuery.getSourceBillType()));
+            }
 
             addExtraExpression(conditionQuery, expressions, root, criteriaBuilder);
             return predicate;

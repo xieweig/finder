@@ -9,8 +9,6 @@ import java.util.List;
  * @author bifenglin
  */
 public class ConditionQueryPlanBill extends ConditionQueryBill implements Serializable {
-
-
     /**
      * 单据名称
      */
@@ -35,6 +33,19 @@ public class ConditionQueryPlanBill extends ConditionQueryBill implements Serial
      * 货物编号
      */
     private String cargoCode;
+
+    /**
+     * 供应商
+     */
+    private List<String> supplierCodeList;
+
+    public List<String> getSupplierCodeList() {
+        return supplierCodeList;
+    }
+
+    public void setSupplierCodeList(List<String> supplierCodeList) {
+        this.supplierCodeList = supplierCodeList;
+    }
 
     public String getBillName() {
         return billName;

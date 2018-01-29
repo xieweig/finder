@@ -533,7 +533,7 @@ public abstract class Bill<T extends BillDetail> extends BaseEntity {
                 ", mistakeBill=" + mistakeBill +
                 "} " + super.toString();
     }
-
+    @JsonIgnore
     public Boolean getSelf() {
         return BillTypeEnum.NO_PLAN.equals(getSpecificBillType());
     }

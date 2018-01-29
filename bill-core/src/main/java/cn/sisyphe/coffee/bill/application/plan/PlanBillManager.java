@@ -292,8 +292,12 @@ public class PlanBillManager extends AbstractBillExtraManager<PlanBill, PlanBill
         childPlanBillDTO.setPlanMemo(childPlanBill.getPlanMemo());
         childPlanBillDTO.setBillType(childPlanBill.getBillType());
         childPlanBillDTO.setCreateTime(childPlanBill.getCreateTime());
-        childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
-        childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        if (childPlanBill.getOutLocation() != null) {
+            childPlanBillDTO.setOutStationCode(childPlanBill.getOutLocation().code());
+        }
+        if (childPlanBill.getInLocation() != null) {
+            childPlanBillDTO.setInStationCode(childPlanBill.getInLocation().code());
+        }
         childPlanBillDTO.setBasicEnum(childPlanBill.getBasicEnum());
         //通过springCloud设置operatorName
         String userName = sharedManager.findOneByUserCode(childPlanBill.getOperatorCode());
