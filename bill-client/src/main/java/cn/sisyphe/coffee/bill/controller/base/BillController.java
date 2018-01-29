@@ -198,7 +198,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @param billDTO 调拨单DTO
      * @return
      */
-    @ScopeAuth(scopes = {"#billDTO.inStationCodes", "#billDTO.outStationCodes"}, token = "userCode")
+    @ScopeAuth(scopes = {"#billDTO.inLocation.stationCode", "#billDTO.outLocation.stationCode"}, token = "userCode")
     @ApiOperation(value = "调拨单保存")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
