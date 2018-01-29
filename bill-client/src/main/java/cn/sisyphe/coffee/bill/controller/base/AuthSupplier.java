@@ -32,7 +32,6 @@ public class AuthSupplier implements AuthenticationSupplier {
         for (Object object : jsonArray.getJSONArray(1)) {
             stationCodeSet.add(object.toString());
         }
-        System.out.println("-----" + stationCodeSet.size());
         return stationCodeSet;
     }
 }

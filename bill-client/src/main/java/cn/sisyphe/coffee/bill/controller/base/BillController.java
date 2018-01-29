@@ -60,10 +60,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            System.out.println("----------------------");
-            System.out.println(conditionQueryPlanBill.getOutStationCodes().size());
-            System.out.println(conditionQueryPlanBill.getInStationCodes().size());
-            System.out.println("----------------------");
             responseResult.put("billList", planBillManager.findChildPlanBillByCondition(conditionQueryPlanBill, abstractBillExtraManager.billType()));
         } catch (DataException e) {
             responseResult.putException(e);
