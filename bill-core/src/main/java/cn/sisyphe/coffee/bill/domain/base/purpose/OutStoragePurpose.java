@@ -1,7 +1,6 @@
 package cn.sisyphe.coffee.bill.domain.base.purpose;
 
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.framework.message.core.MessagingHelper;
 import cn.sisyphe.framework.web.ResponseResult;
@@ -25,7 +24,6 @@ public class OutStoragePurpose extends AbstractBillPurpose {
         System.err.println("out Storage");
 
         Bill bill = getBillService().getBill();
-        bill.setInOrOutState(BillInOrOutStateEnum.OUT_ING);
         ResponseResult responseResult = new ResponseResult();
         responseResult.put("bill", bill);
         //TODO 这里需要更改，应该由冲减系统设置值
