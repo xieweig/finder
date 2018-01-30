@@ -28,11 +28,11 @@ public class AllotBillExtraServiceImpl extends AbstractBillExtraService<AllotBil
 
     @Override
     protected void addExtraExpression(ConditionQueryAllotBill conditionQuery, List<Expression<Boolean>> expressions, Root<AllotBill> root, CriteriaBuilder criteriaBuilder) {
-        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillInStationCode())) {
+        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillInStationCode()) && conditionQuery.getInStorageBillInStationCode().size() > 0) {
             expressions.add(root.get("inStorageBillInStationCode").as(String.class).in(conditionQuery.getInStorageBillInStationCode()));
         }
 
-        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillOutStationCode())) {
+        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillOutStationCode()) && conditionQuery.getInStorageBillOutStationCode().size() > 0) {
             expressions.add(root.get("inStorageBillOutStationCode").as(String.class).in(conditionQuery.getInStorageBillOutStationCode()));
         }
 
