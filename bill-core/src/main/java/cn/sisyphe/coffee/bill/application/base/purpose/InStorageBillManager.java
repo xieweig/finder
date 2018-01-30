@@ -55,12 +55,10 @@ public class InStorageBillManager {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill allotedForInStorageBill(String inStorageBillCode, BillTypeEnum inStorageBillType) {
+    public void allotedForInStorageBill(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
         //调拨单的sourceCode为入库单
-        Bill foundBill = billManager.findOneByBillCode(inStorageBillCode);
-        billManager.committed(foundBill);
-        return foundBill;
+        billManager.committed(inStorageBillCode);
     }
 
     /**
@@ -71,11 +69,9 @@ public class InStorageBillManager {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill committing(String inStorageBillCode, BillTypeEnum inStorageBillType) {
+    public void committing(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
-        Bill foundBill = billManager.findOneByBillCode(inStorageBillCode);
-        billManager.committing(foundBill);
-        return foundBill;
+        billManager.committing(inStorageBillCode);
     }
 
     /**
