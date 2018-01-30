@@ -5,6 +5,7 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.allot.AllotBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
@@ -225,10 +226,12 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
-            //设置调拨单查询种类条件
-            List specificType = new ArrayList();
-            specificType.add(abstractBillExtraManager.billType());
-            conditionQueryAllotBill.setSpecificBillType(specificType);
+            //设置调拨单查询种类条件-误差单除外
+            List<BillTypeEnum> specificType = new ArrayList<>();
+            if (!BillTypeEnum.MISTAKE.equals(abstractBillExtraManager.billType())) {
+                specificType.add(abstractBillExtraManager.billType());
+                conditionQueryAllotBill.setSpecificBillType(specificType);
+            }
             responseResult.put("bill", allotBillManager.findBillByCondition(conditionQueryAllotBill, BillPurposeEnum.MOVE_STORAGE));
         } catch (DataException data) {
             responseResult.putException(data);

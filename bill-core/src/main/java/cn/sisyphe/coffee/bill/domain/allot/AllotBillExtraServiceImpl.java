@@ -54,7 +54,7 @@ public class AllotBillExtraServiceImpl extends AbstractBillExtraService<AllotBil
         if (conditionQuery.getMistakeBillQuery()) {
             expressions.add(criteriaBuilder.isNotNull(root.get("mistakeBillCode").as(String.class)));
             //误差单号
-            if (conditionQuery.getMistakeBillQuery()) {
+            if (!StringUtils.isEmpty(conditionQuery.getMistakeBillCode())) {
                 expressions.add(criteriaBuilder.like(root.get("mistakeBillCode").as(String.class), "%" + conditionQuery.getMistakeBillCode() + "%"));
             }
         }
