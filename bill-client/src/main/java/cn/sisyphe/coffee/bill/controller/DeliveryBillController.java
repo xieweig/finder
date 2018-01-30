@@ -40,8 +40,8 @@ public class DeliveryBillController extends BillController<DeliveryBill, Deliver
 
     @Override
     @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
-    public ResponseResult save(HttpServletRequest request, DeliveryBillDTO billDTO) {
-        return super.save(request, billDTO);
+    public ResponseResult save(DeliveryBillDTO billDTO, HttpServletRequest request) {
+        return super.save(billDTO, request);
     }
 
     @Override

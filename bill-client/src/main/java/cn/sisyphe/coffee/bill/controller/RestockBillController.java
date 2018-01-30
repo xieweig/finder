@@ -37,8 +37,8 @@ public class RestockBillController extends BillController<RestockBill, RestockBi
 
     @Override
     @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
-    public ResponseResult save(HttpServletRequest request, RestockBillDTO billDTO) {
-        return super.save(request, billDTO);
+    public ResponseResult save(RestockBillDTO billDTO, HttpServletRequest request) {
+        return super.save(billDTO, request);
     }
 
     @Override

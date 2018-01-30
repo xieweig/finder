@@ -37,8 +37,8 @@ public class ReturnedBillController extends BillController<ReturnedBill, Returne
 
     @Override
     @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
-    public ResponseResult save(HttpServletRequest request, ReturnedBillDTO billDTO) {
-        return super.save(request, billDTO);
+    public ResponseResult save(ReturnedBillDTO billDTO, HttpServletRequest request) {
+        return super.save(billDTO, request);
     }
 
     @Override
