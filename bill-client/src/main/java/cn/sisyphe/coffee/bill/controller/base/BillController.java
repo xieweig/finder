@@ -199,7 +199,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @param billDTO 调拨单DTO
      * @return
      */
-    //@ScopeAuth(scopes = {"#billDTO.inLocation.stationCode", "#billDTO.outLocation.stationCode"}, token = "userCode")
+    @ScopeAuth(scope = "#billDTO.inLocation.stationCode", token = "userCode")
     @ApiOperation(value = "调拨单保存")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
     public ResponseResult allotSave(@RequestBody AllotBillDTO billDTO, HttpServletRequest request) {
