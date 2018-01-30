@@ -31,14 +31,26 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
 
 
     /**
-     * 调出库位
+     * 入库单调出库位
      */
     private List<String> inStorageBillOutStationCode;
 
     /**
-     * 调入库位
+     * 入库单调入库位
      */
     private List<String> inStorageBillInStationCode;
+
+    /**
+     * 调出库位
+     */
+    private String inStorageCode;
+
+    /**
+     * 调入库位
+     */
+    private String outStorageCode;
+
+
     /**
      * 是否为误差单查询
      */
@@ -94,5 +106,21 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
 
     public void setMistakeBillCode(String mistakeBillCode) {
         this.mistakeBillCode = mistakeBillCode;
+    }
+
+    public String getInStorageCode() {
+        return inStorageCode;
+    }
+
+    public void setInStorageCode(String inStorageCode) {
+        this.inStorageCode = inStorageCode;
+    }
+
+    public String getOutStorageCode() {
+        return outStorageCode;
+    }
+
+    public void setOutStorageCode(String outStorageCode) {
+        this.outStorageCode = outStorageCode;
     }
 }

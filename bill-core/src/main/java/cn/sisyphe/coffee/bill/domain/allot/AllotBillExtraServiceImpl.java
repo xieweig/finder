@@ -2,6 +2,7 @@ package cn.sisyphe.coffee.bill.domain.allot;
 
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillExtraService;
+import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,12 @@ public class AllotBillExtraServiceImpl extends AbstractBillExtraService<AllotBil
         if (!StringUtils.isEmpty(conditionQuery.getInStorageBillOutStationCode()) && conditionQuery.getInStorageBillOutStationCode().size() > 0) {
             expressions.add(root.get("inStorageBillOutStationCode").as(String.class).in(conditionQuery.getInStorageBillOutStationCode()));
         }
-
+        if (!StringUtils.isEmpty(conditionQuery.getInStorageCode())){
+            expressions.add(criteriaBuilder.equal(root.get("dbStation").get("inStorageCode").as(String.class), conditionQuery.getInStorageCode()));
+        }
+        if (!StringUtils.isEmpty(conditionQuery.getOutStorageCode())){
+            expressions.add(criteriaBuilder.equal(root.get("dbStation").get("outStorageCode").as(String.class), conditionQuery.getOutStorageCode()));
+        }
         /*
          * 调拨开始时间
          */
