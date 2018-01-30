@@ -36,25 +36,25 @@ public class RestockBillController extends BillController<RestockBill, RestockBi
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult save(RestockBillDTO billDTO, HttpServletRequest request) {
         return super.save(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult saveBySelf(RestockBillDTO billDTO, HttpServletRequest request) {
         return super.saveBySelf(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submit(RestockBillDTO billDTO, HttpServletRequest request) {
         return super.submit(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submitBySelf(RestockBillDTO billDTO, HttpServletRequest request) {
         return super.submitBySelf(billDTO, request);
     }

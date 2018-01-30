@@ -39,25 +39,25 @@ public class DeliveryBillController extends BillController<DeliveryBill, Deliver
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult save(DeliveryBillDTO billDTO, HttpServletRequest request) {
         return super.save(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult saveBySelf(DeliveryBillDTO billDTO, HttpServletRequest request) {
         return super.saveBySelf(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submit(DeliveryBillDTO billDTO, HttpServletRequest request) {
         return super.submit(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submitBySelf(DeliveryBillDTO billDTO, HttpServletRequest request) {
         return super.submitBySelf(billDTO, request);
     }
