@@ -10,6 +10,9 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
+import cn.sisyphe.coffee.bill.domain.base.model.location.AbstractLocation;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Station;
+import cn.sisyphe.coffee.bill.domain.base.model.location.Storage;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -90,7 +93,7 @@ public class InStorageBillManager {
         bill.setSourceCode(sourceBill.getBillCode());
         bill.setRootCode(sourceBill.getRootCode());
         bill.setBelongStationCode(sourceBill.getInLocation().code());
-        bill.setInLocation(sourceBill.getInLocation());
+        setInLocation(bill, sourceBill.getInLocation());
         bill.setOutLocation(sourceBill.getOutLocation());
         bill.setPlanMemo(sourceBill.getPlanMemo());
         bill.setOutStorageMemo(sourceBill.getOutStorageMemo());
@@ -119,6 +122,17 @@ public class InStorageBillManager {
         bill.setBillDetails(details);
 
         return bill;
+    }
+
+    private void setInLocation(Bill bill, AbstractLocation abstractLocation) {
+        if (abstractLocation instanceof Station) {
+            Station station = new Station();
+            station.setStationCode(((Station) abstractLocation).getStationCode());
+            station.setStorage(new Storage("ON_STORAGE"));
+            bill.setInLocation(station);
+            return;
+        }
+        bill.setInLocation(abstractLocation);
     }
 
     public static List<BillTypeEnum> fullFlow() {
