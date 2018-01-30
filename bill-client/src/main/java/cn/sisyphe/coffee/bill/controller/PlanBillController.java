@@ -5,12 +5,10 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBillDetail;
 import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
-import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -78,8 +76,8 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
-    public ResponseResult auditFailure(PlanBillDTO billDTO, HttpServletRequest request) {
+    //@ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
+    public ResponseResult auditFailure(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
@@ -91,8 +89,8 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
     }
 
     @Override
-    @ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
-    public ResponseResult auditSuccess(PlanBillDTO billDTO, HttpServletRequest request) {
+    //@ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
+    public ResponseResult auditSuccess(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);

@@ -198,10 +198,9 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @param billDTO 调拨单DTO
      * @return
      */
-    @ScopeAuth(scopes = {"#billDTO.inLocation.stationCode", "#billDTO.outLocation.stationCode"}, token = "userCode")
+    //@ScopeAuth(scopes = {"#billDTO.inLocation.stationCode", "#billDTO.outLocation.stationCode"}, token = "userCode")
     @ApiOperation(value = "调拨单保存")
     @RequestMapping(path = "/allotSave", method = RequestMethod.POST)
-    //@ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodeArray", "#conditionQueryPlanBill.inStationCodeArray"}, token = "userCode")
     public ResponseResult allotSave(@RequestBody AllotBillDTO billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
@@ -268,16 +267,12 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "保存单据")
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public ResponseResult save(HttpServletRequest request, @RequestBody D billDTO) {
+    public ResponseResult save(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            //若是修改则判断录单人有没有权限
-//            if (billDTO.getBillCode() != null && !loginInfo.getOperatorCode().equals(billDTO.getOperatorCode())) {
-//                throw new DataException("100001", "录单人无权限");
-//            }
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
             responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO).getBillCode());
         } catch (DataException date) {
@@ -294,11 +289,11 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "保存单据--自主拣货保存")
-    @ScopeAuth(scope = "#billDTO.outStationCodes", token = "userCode")
+    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/saveBySelf", method = RequestMethod.POST)
     public ResponseResult saveBySelf(@RequestBody D billDTO, HttpServletRequest request) {
 
-        return save(request, billDTO);
+        return save(billDTO, request);
     }
 
 
@@ -310,6 +305,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "提交单据")
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
+    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submit(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -330,6 +326,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "提交单据--自主拣货")
     @RequestMapping(path = "/submitBySelf", method = RequestMethod.POST)
+    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submitBySelf(@RequestBody D billDTO, HttpServletRequest request) {
 
         return submit(billDTO, request);
@@ -361,7 +358,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "审核不通过")
-    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
+    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
@@ -381,7 +378,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "审核通过")
-    @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
+    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
     public ResponseResult auditSuccess(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
