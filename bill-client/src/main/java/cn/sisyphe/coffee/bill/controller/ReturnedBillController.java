@@ -14,6 +14,7 @@ import cn.sisyphe.framework.web.ResponseResult;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,37 +38,37 @@ public class ReturnedBillController extends BillController<ReturnedBill, Returne
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult save(ReturnedBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult save(@RequestBody ReturnedBillDTO billDTO, HttpServletRequest request) {
         return super.save(billDTO, request);
     }
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult saveBySelf(ReturnedBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult saveBySelf(@RequestBody ReturnedBillDTO billDTO, HttpServletRequest request) {
         return super.saveBySelf(billDTO, request);
     }
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult submit(ReturnedBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult submit(@RequestBody ReturnedBillDTO billDTO, HttpServletRequest request) {
         return super.submit(billDTO, request);
     }
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult submitBySelf(ReturnedBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult submitBySelf(@RequestBody ReturnedBillDTO billDTO, HttpServletRequest request) {
         return super.submitBySelf(billDTO, request);
     }
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult auditFailure(ReturnedBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult auditFailure(@RequestBody ReturnedBillDTO billDTO, HttpServletRequest request) {
         return super.auditFailure(billDTO, request);
     }
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult auditSuccess(ReturnedBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult auditSuccess(@RequestBody ReturnedBillDTO billDTO, HttpServletRequest request) {
         return super.auditSuccess(billDTO, request);
     }
 }
