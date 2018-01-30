@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @date: 2018/1/12
@@ -32,12 +33,12 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
     /**
      * 调出库位
      */
-    private String outStorageCode;
+    private List<String> inStorageBillOutStationCode;
 
     /**
      * 调入库位
      */
-    private String inStorageCode;
+    private List<String> inStorageBillInStationCode;
     /**
      * 是否为误差单查询
      */
@@ -63,20 +64,20 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
         this.allotEndTime = allotEndTime;
     }
 
-    public String getOutStorageCode() {
-        return outStorageCode;
+    public List<String> getInStorageBillOutStationCode() {
+        return inStorageBillOutStationCode;
     }
 
-    public void setOutStorageCode(String outStorageCode) {
-        this.outStorageCode = outStorageCode;
+    public void setInStorageBillOutStationCode(List<String> inStorageBillOutStationCode) {
+        this.inStorageBillOutStationCode = inStorageBillOutStationCode;
     }
 
-    public String getInStorageCode() {
-        return inStorageCode;
+    public List<String> getInStorageBillInStationCode() {
+        return inStorageBillInStationCode;
     }
 
-    public void setInStorageCode(String inStorageCode) {
-        this.inStorageCode = inStorageCode;
+    public void setInStorageBillInStationCode(List<String> inStorageBillInStationCode) {
+        this.inStorageBillInStationCode = inStorageBillInStationCode;
     }
 
     public Boolean getMistakeBillQuery() {

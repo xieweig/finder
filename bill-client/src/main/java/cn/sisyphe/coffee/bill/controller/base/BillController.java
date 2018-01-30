@@ -220,7 +220,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "调拨单列表")
-    @ScopeAuth(scope = "#conditionQueryAllotBill.inStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryAllotBill.inStorageBillInStationCode", token = "userCode")
     @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
