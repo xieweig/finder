@@ -12,6 +12,7 @@ import cn.sisyphe.coffee.bill.viewmodel.base.BillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.BillDetailDTO;
 import cn.sisyphe.coffee.bill.viewmodel.base.ConditionQueryBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +55,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "子计划单列表")
-    //@ScopeAuth(scope = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryPlanBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findPlanByConditions", method = RequestMethod.POST)
     public ResponseResult findPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -96,7 +97,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "出库单列表")
-    //@ScopeAuth(scope = "#conditionQueryBill.outStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryBill.outStationCodes", token = "userCode")
     @RequestMapping(path = "/findOutStorageByConditions", method = RequestMethod.POST)
     public ResponseResult findOutStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -156,7 +157,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "入库单列表")
-    //@ScopeAuth(scope = "#conditionQueryBill.inStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findInStorageByConditions", method = RequestMethod.POST)
     public ResponseResult findInStorageByConditions(@RequestBody Q conditionQueryBill) {
         ResponseResult responseResult = new ResponseResult();
@@ -219,7 +220,7 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "调拨单列表")
-    //@ScopeAuth(scope = "#conditionQueryAllotBill.inStationCodes", token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryAllotBill.inStationCodes", token = "userCode")
     @RequestMapping(path = "/findAllotByConditions", method = RequestMethod.POST)
     public ResponseResult findAllotByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         ResponseResult responseResult = new ResponseResult();
