@@ -270,7 +270,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "保存单据")
-    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/save", method = RequestMethod.POST)
     public ResponseResult save(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
@@ -292,7 +291,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "保存单据--自主拣货保存")
-    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/saveBySelf", method = RequestMethod.POST)
     public ResponseResult saveBySelf(@RequestBody D billDTO, HttpServletRequest request) {
 
@@ -308,7 +306,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "提交单据")
     @RequestMapping(path = "/submit", method = RequestMethod.POST)
-    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submit(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -329,7 +326,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      */
     @ApiOperation(value = "提交单据--自主拣货")
     @RequestMapping(path = "/submitBySelf", method = RequestMethod.POST)
-    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     public ResponseResult submitBySelf(@RequestBody D billDTO, HttpServletRequest request) {
 
         return submit(billDTO, request);
@@ -361,7 +357,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "审核不通过")
-    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/auditFailure", method = RequestMethod.POST)
     public ResponseResult auditFailure(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();
@@ -381,7 +376,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
      * @return
      */
     @ApiOperation(value = "审核通过")
-    //@ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
     @RequestMapping(path = "/auditSuccess", method = RequestMethod.POST)
     public ResponseResult auditSuccess(@RequestBody D billDTO, HttpServletRequest request) {
         ResponseResult responseResult = new ResponseResult();

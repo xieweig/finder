@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author ncmao
  * @Date 2017/12/27 11:31
@@ -72,5 +74,30 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
             responseResult.putException(e);
         }
         return responseResult;
+    }
+
+    @Override
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    public ResponseResult save(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.save(billDTO, request);
+    }
+
+    @Override
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    public ResponseResult submit(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.submit(billDTO, request);
+    }
+
+
+    @Override
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    public ResponseResult auditFailure(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.auditFailure(billDTO, request);
+    }
+
+    @Override
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    public ResponseResult auditSuccess(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.auditSuccess(billDTO, request);
     }
 }
