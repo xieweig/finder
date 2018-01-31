@@ -33,4 +33,16 @@ public class OutStorageOffsetCallbackHandler {
 
         }
     }
+
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void handleOutStockFail(Bill bill) {
+        if (bill != null) {
+            AbstractBillManager<Bill> manager = BillManagerFactory.getManager(bill.getBillType());
+            //设置出库单出库失败
+            manager.outStorageFail(bill);
+
+        }
+    }
+
+
 }

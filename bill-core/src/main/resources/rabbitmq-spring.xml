@@ -4,21 +4,40 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
 
 
+    <!--入库冲减成功-->
     <rabbit:queue name="offset-stock-done-in-success"/>
+    <!--入库冲减失败-->
     <rabbit:queue name="offset-stock-done-in-fail"/>
-    <rabbit:queue name="out-storage-to-stock"/>
+
+    <!--出库冲减成功-->
+    <rabbit:queue name="offset-stock-done-out-success"/>
+    <!--出库冲减失败-->
+    <rabbit:queue name="offset-stock-done-out-fail"/>
+
+
+    <!--调拨冲减成功-->
+    <rabbit:queue name="offset-stock-done-move-success"/>
+    <!--调拨冲减失败-->
+    <rabbit:queue name="offset-stock-done-move-fail"/>
+
+    <!--TODO 测试接收消息-->
+    <rabbit:queue name="bill-to-stock"/>
 
 
     <rabbit:topic-exchange name="cn_sisyphe_coffee_bill">
         <rabbit:bindings>
             <rabbit:binding queue="offset-stock-done-in-success" pattern="offset.in.stock.success"/>
             <rabbit:binding queue="offset-stock-done-in-fail" pattern="offset.in.stock.fail"/>
+            <rabbit:binding queue="offset-stock-done-out-success" pattern="offset.out.stock.success"/>
+            <rabbit:binding queue="offset-stock-done-out-fail" pattern="offset.out.stock.fail"/>
+            <rabbit:binding queue="offset-stock-done-move-success" pattern="offset.move.stock.success"/>
+            <rabbit:binding queue="offset-stock-done-move-fail" pattern="offset.move.stock.fail"/>
         </rabbit:bindings>
     </rabbit:topic-exchange>
 
     <rabbit:topic-exchange name="cn_sisyphe_coffee_bill">
         <rabbit:bindings>
-            <rabbit:binding queue="out-storage-to-stock" pattern="bill.*.*.*"/>
+            <rabbit:binding queue="bill-to-stock" pattern="bill.*.*.*"/>
         </rabbit:bindings>
     </rabbit:topic-exchange>
 

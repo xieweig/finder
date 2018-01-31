@@ -133,7 +133,6 @@ public abstract class AbstractBillManager<T extends Bill> {
         }
         T foundBill = billRepository.findOneByBillCode(bill.getBillCode());
         foundBill.setInOrOutState(BillInOrOutStateEnum.OUT_FAILURE);
-//        bill.setOutWareHouseTime(new Date());
         billRepository.save(foundBill);
         return foundBill;
     }
