@@ -227,23 +227,22 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 -- 进货BILL002 3002【查询进货入库单-BILL002002 3023】
 -- BILL002002 3023<条件筛选查询-BILL002002001 3112>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3111, now(), now(), '0', '4', 'BILL002002001', '进货单条件筛选查询', 'BILL,BILL002,BILL002002,BILL002002001', '/coffeeBill/api/bill/purchase/findPurchaseByConditions', 2023, '\0');
+   VALUES (3111, now(), now(), '0', '4', 'BILL002002001', '进货单条件筛选查询', 'BILL,BILL002,BILL002002,BILL002002001', '/coffeeBill/api/bill/purchase/findPurchaseByConditions', 3023, '\0');
 -- BILL002002 3023<导出-BILL002002002 3113>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3112, now(), now(), '0', '4', 'BILL002002002', '进货单导出', 'BILL,BILL002,BILL002002,BILL002002002', '/coffeeBill/api/bill/purchase/downLoad', 2023, '\0');
+   VALUES (3112, now(), now(), '0', '4', 'BILL002002002', '进货单导出', 'BILL,BILL002,BILL002002,BILL002002002', '/coffeeBill/api/bill/purchase/downLoad', 3023, '\0');
 -- BILL002002 3023<查看-BILL002002003 3114>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3113, now(), now(), '0', '4', 'BILL002002003', '查看进货单详情', 'BILL,BILL002,BILL002002,BILL002002003', '/coffeeBill/api/bill/purchase/findPurchaseBill', 2023, '\0');
+   VALUES (3113, now(), now(), '0', '4', 'BILL002002003', '查看进货单详情', 'BILL,BILL002,BILL002002,BILL002002003', '/coffeeBill/api/bill/purchase/findPurchaseBill', 3023, '\0');
 -- BILL002002 3023<打开-BILL002002004 3115>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3114, now(), now(), '0', '4', 'BILL002002004', '打开进货单', 'BILL,BILL002,BILL002002,BILL002002004', '/coffeeBill/api/bill/purchase/open', 2023, '\0');
+   VALUES (3114, now(), now(), '0', '4', 'BILL002002004', '打开进货单', 'BILL,BILL002,BILL002002,BILL002002004', '/coffeeBill/api/bill/purchase/open', 3023, '\0');
 -- BILL002002 3023<审核不通过-BILL002002005 3116>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3115, now(), now(), '0', '4', 'BILL002002005', '进货单审核不通过', 'BILL,BILL002,BILL002002,BILL002002005', '/coffeeBill/api/bill/purchase/auditFailure', 2023, '\0');
+   VALUES (3115, now(), now(), '0', '4', 'BILL002002005', '进货单审核不通过', 'BILL,BILL002,BILL002002,BILL002002005', '/coffeeBill/api/bill/purchase/auditFailure', 3023, '\0');
 -- BILL002002 3023<通过-BILL002002006 3117>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3116, now(), now(), '0', '4', 'BILL002002006', '进货单审核通过', 'BILL,BILL002,BILL002002,BILL002002006', '/coffeeBill/api/bill/purchase/auditSuccess', 2023, '\0');
-
+   VALUES (3116, now(), now(), '0', '4', 'BILL002002006', '进货单审核通过', 'BILL,BILL002,BILL002002,BILL002002006', '/coffeeBill/api/bill/purchase/auditSuccess', 3023, '\0');
 
 --  配送-BILL003 3003【查询站点配送计划-BILL003001 3024】
 -- BILL003001 3024<条件查询-BILL003001001 3118>
