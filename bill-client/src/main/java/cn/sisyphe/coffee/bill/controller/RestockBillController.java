@@ -6,6 +6,7 @@ import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBill;
 import cn.sisyphe.coffee.bill.domain.restock.model.RestockBillDetail;
+import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.restock.ConditionQueryRestockBill;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.restock.RestockBillDetailDTO;
