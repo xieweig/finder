@@ -36,10 +36,10 @@ public class AllotBillExtraServiceImpl extends AbstractBillExtraService<AllotBil
         if (!StringUtils.isEmpty(conditionQuery.getInStorageBillOutStationCode()) && conditionQuery.getInStorageBillOutStationCode().size() > 0) {
             expressions.add(root.get("inStorageBillOutStationCode").as(String.class).in(conditionQuery.getInStorageBillOutStationCode()));
         }
-        if (!StringUtils.isEmpty(conditionQuery.getInStorageCode())){
+        if (!StringUtils.isEmpty(conditionQuery.getInStorageCode())) {
             expressions.add(criteriaBuilder.equal(root.get("dbStation").get("inStorageCode").as(String.class), conditionQuery.getInStorageCode()));
         }
-        if (!StringUtils.isEmpty(conditionQuery.getOutStorageCode())){
+        if (!StringUtils.isEmpty(conditionQuery.getOutStorageCode())) {
             expressions.add(criteriaBuilder.equal(root.get("dbStation").get("outStorageCode").as(String.class), conditionQuery.getOutStorageCode()));
         }
         /*

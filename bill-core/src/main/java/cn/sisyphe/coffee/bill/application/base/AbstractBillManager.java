@@ -165,7 +165,10 @@ public abstract class AbstractBillManager<T extends Bill> {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setAllotStatus(BillAllotStatusEnum.ALLOTTING);
+
         billRepository.save(bill);
+
+
     }
 
 
