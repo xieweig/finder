@@ -46,7 +46,7 @@ public class MistakeBillController extends BillController<MistakeBill, MistakeBi
      * @param conditionQueryAllotBill 查询条件DTO
      * @return
      */
-    @ScopeAuth(scope = "#conditionQueryAllotBill.inStorageBillInStationCode", token = "userCode")
+    @ScopeAuth(scope = "#conditionQueryAllotBill.inStorageBillInStationCodes", token = "userCode")
     @RequestMapping(path = "/findMistakeByConditions", method = RequestMethod.POST)
     public ResponseResult findMistakeByConditions(@RequestBody ConditionQueryAllotBill conditionQueryAllotBill) {
         conditionQueryAllotBill.setMistakeBillQuery(true);
