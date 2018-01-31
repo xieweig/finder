@@ -50,11 +50,7 @@ public class AbstractBillRepository<T extends Bill> implements BillRepository<T>
             BillDetail detail = (BillDetail) object;
             detail.update();
         }
-        if (bill.getBillId() == null){
-            jpaBillRepository.save(bill);
-        }else {
-            jpaBillRepository.saveAndFlush(bill);
-        }
+        jpaBillRepository.save(bill);
 
     }
 

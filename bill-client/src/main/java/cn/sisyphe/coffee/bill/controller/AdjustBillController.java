@@ -65,13 +65,13 @@ public class AdjustBillController extends BillController<AdjustBill, AdjustBillD
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult auditFailure(AdjustBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult auditFailure(@RequestBody AdjustBillDTO billDTO, HttpServletRequest request) {
         return super.auditFailure(billDTO, request);
     }
 
     @Override
     @ScopeAuth(scope = "#billDTO.outLocation.stationCode", token = "userCode")
-    public ResponseResult auditSuccess(AdjustBillDTO billDTO, HttpServletRequest request) {
+    public ResponseResult auditSuccess(@RequestBody AdjustBillDTO billDTO, HttpServletRequest request) {
         return super.auditSuccess(billDTO, request);
     }
 }
