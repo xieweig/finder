@@ -2,7 +2,6 @@ package cn.sisyphe.coffee.bill.domain.allot;
 
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
 import cn.sisyphe.coffee.bill.domain.base.AbstractBillExtraService;
-import cn.sisyphe.coffee.bill.domain.base.model.enums.BillAllotStatusEnum;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.viewmodel.allot.ConditionQueryAllotBill;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,12 @@ public class AllotBillExtraServiceImpl extends AbstractBillExtraService<AllotBil
 
     @Override
     protected void addExtraExpression(ConditionQueryAllotBill conditionQuery, List<Expression<Boolean>> expressions, Root<AllotBill> root, CriteriaBuilder criteriaBuilder) {
-        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillInStationCode()) && conditionQuery.getInStorageBillInStationCode().size() > 0) {
-            expressions.add(root.get("inStorageBillInStationCode").as(String.class).in(conditionQuery.getInStorageBillInStationCode()));
+        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillInStationCodes()) && conditionQuery.getInStorageBillInStationCodes().size() > 0) {
+            expressions.add(root.get("inStorageBillInStationCode").as(String.class).in(conditionQuery.getInStorageBillInStationCodes()));
         }
 
-        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillOutStationCode()) && conditionQuery.getInStorageBillOutStationCode().size() > 0) {
-            expressions.add(root.get("inStorageBillOutStationCode").as(String.class).in(conditionQuery.getInStorageBillOutStationCode()));
+        if (!StringUtils.isEmpty(conditionQuery.getInStorageBillOutStationCodes()) && conditionQuery.getInStorageBillOutStationCodes().size() > 0) {
+            expressions.add(root.get("inStorageBillOutStationCode").as(String.class).in(conditionQuery.getInStorageBillOutStationCodes()));
         }
         if (!StringUtils.isEmpty(conditionQuery.getInStorageCode())) {
             expressions.add(criteriaBuilder.equal(root.get("dbStation").get("inStorageCode").as(String.class), conditionQuery.getInStorageCode()));

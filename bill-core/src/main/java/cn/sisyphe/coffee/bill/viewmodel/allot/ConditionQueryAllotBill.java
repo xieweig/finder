@@ -33,12 +33,12 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
     /**
      * 入库单调出库位
      */
-    private List<String> inStorageBillOutStationCode;
+    private List<String> inStorageBillOutStationCodes;
 
     /**
      * 入库单调入库位
      */
-    private List<String> inStorageBillInStationCode;
+    private List<String> inStorageBillInStationCodes;
 
     /**
      * 调出库位
@@ -76,20 +76,20 @@ public class ConditionQueryAllotBill extends ConditionQueryBill {
         this.allotEndTime = allotEndTime;
     }
 
-    public List<String> getInStorageBillOutStationCode() {
-        return inStorageBillOutStationCode;
+    public List<String> getInStorageBillOutStationCodes() {
+        return inStorageBillOutStationCodes;
     }
 
-    public void setInStorageBillOutStationCode(List<String> inStorageBillOutStationCode) {
-        this.inStorageBillOutStationCode = inStorageBillOutStationCode;
+    public void setInStorageBillOutStationCodes(List<String> inStorageBillOutStationCodes) {
+        this.inStorageBillOutStationCodes = inStorageBillOutStationCodes;
     }
 
-    public List<String> getInStorageBillInStationCode() {
-        return inStorageBillInStationCode;
+    public List<String> getInStorageBillInStationCodes() {
+        return inStorageBillInStationCodes;
     }
 
-    public void setInStorageBillInStationCode(List<String> inStorageBillInStationCode) {
-        this.inStorageBillInStationCode = inStorageBillInStationCode;
+    public void setInStorageBillInStationCodes(List<String> inStorageBillInStationCodes) {
+        this.inStorageBillInStationCodes = inStorageBillInStationCodes;
     }
 
     public Boolean getMistakeBillQuery() {
