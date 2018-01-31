@@ -279,8 +279,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
             String currentUserCode= loginInfo.getOperatorCode();
             if (!StringUtils.isEmpty(billDTO.getBillCode())){
-                if (currentUserCode.equals(billDTO.getOperatorCode())){
-                    responseResult.putException(new Exception("无修改权限"));
+                if (!currentUserCode.equals(billDTO.getOperatorCode())){
+                    responseResult.putException(new DataException("60033","无修改该单据的权限"));
                     return responseResult;
                 }
             }
@@ -321,8 +321,8 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
             String currentUserCode= loginInfo.getOperatorCode();
             if (!StringUtils.isEmpty(billDTO.getBillCode())){
-                if (currentUserCode.equals(billDTO.getOperatorCode())){
-                    responseResult.putException(new Exception("无修改权限"));
+                if (!currentUserCode.equals(billDTO.getOperatorCode())){
+                    responseResult.putException(new DataException("60033","无修改该单据的权限"));
                     return responseResult;
                 }
             }
