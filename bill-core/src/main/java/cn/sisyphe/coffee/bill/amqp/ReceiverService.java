@@ -1,6 +1,7 @@
 package cn.sisyphe.coffee.bill.amqp;
 
 import cn.sisyphe.coffee.bill.application.base.handler.InStorageOffsetCallbackHandler;
+import cn.sisyphe.coffee.bill.application.base.handler.MoveStorageOffsetCallbackHandler;
 import cn.sisyphe.coffee.bill.application.base.handler.OutStorageOffsetCallbackHandler;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
 import cn.sisyphe.coffee.bill.util.Constant;
@@ -26,6 +27,9 @@ public class ReceiverService {
 
     @Autowired
     private InStorageOffsetCallbackHandler inStorageOffsetCallbackHandler;
+
+    @Autowired
+    private MoveStorageOffsetCallbackHandler moveStorageOffsetCallbackHandler;
 
     /**
      * 日志
@@ -87,6 +91,8 @@ public class ReceiverService {
      */
     @RabbitListener(queues = "offset-stock-done-in-success")
     public void inStockSuccess(ResponseResult responseResult) {
+        Bill bill = new ResponseResultMapUtil().convertBillFromResponse(responseResult);
+        inStorageOffsetCallbackHandler.handleInStockSuccess(bill);
     }
 
     /**
@@ -106,7 +112,7 @@ public class ReceiverService {
     @RabbitListener(queues = "offset-stock-done-move-success")
     public void moveStockSuccess(ResponseResult responseResult) {
         Bill bill = new ResponseResultMapUtil().convertBillFromResponse(responseResult);
-        inStorageOffsetCallbackHandler.handleInStockSuccess(bill);
+        moveStorageOffsetCallbackHandler.handleMoveStockSuccess(bill);
     }
 
     /**
