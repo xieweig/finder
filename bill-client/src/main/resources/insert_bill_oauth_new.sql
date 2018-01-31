@@ -350,12 +350,6 @@ VALUES (3144, now(), now(), '0', '4', 'BILL004003001', '调剂出库单查询', 
 -- BILL004003 3031<查看>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
 VALUES (3145, now(), now(), '0', '4', 'BILL004003002', '调剂出库单单个查看', 'BILL,BILL004,BILL004003,BILL004003002', '/coffeeBill/api/bill/adjust/findOutStorageByBillCode', 3031, '\0');
--- BILL004003 3031<保存>
-INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (3146, now(), now(), '0', '4', 'BILL004003003', '保存调剂出库单', 'BILL,BILL004,BILL004003,BILL004003003', '/coffeeBill/coffeeBill/api/bill/adjust/save', 3031, '\0');
--- BILL004003 3031<提交>
-INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (3147, now(), now(), '0', '4', 'BILL004003004', '提交调剂出库单', 'BILL,BILL004,BILL004003,BILL004003004', '/coffeeBill/coffeeBill/api/bill/adjust/submit', 3031, '\0');
 -- BILL004003 3031<审核通过>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
 VALUES (3148, now(), now(), '0', '4', 'BILL004003005', '审核通过', 'BILL,BILL004,BILL004003,BILL004003005', '/coffeeBill/api/bill/adjust/auditSuccess', 3031, '\0');

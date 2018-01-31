@@ -2,15 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
-    <rabbit:queue name="bill-stock-done"/>
+
+
+    <rabbit:queue name="offset-stock-done-in-success"/>
+    <rabbit:queue name="offset-stock-done-in-fail"/>
     <rabbit:queue name="out-storage-to-stock"/>
 
-    <rabbit:topic-exchange name="cn_sisyphe_bill">
+
+    <rabbit:topic-exchange name="cn_sisyphe_coffee_bill">
         <rabbit:bindings>
-            <rabbit:binding queue="bill-stock-done" pattern="member.yh.sync.fromServer.create.or.update"/>
+            <rabbit:binding queue="offset-stock-done-in-success" pattern="offset.in.stock.success"/>
+            <rabbit:binding queue="offset-stock-done-in-fail" pattern="offset.in.stock.fail"/>
         </rabbit:bindings>
     </rabbit:topic-exchange>
-
 
     <rabbit:topic-exchange name="cn_sisyphe_coffee_bill">
         <rabbit:bindings>

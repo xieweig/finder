@@ -29,11 +29,6 @@ import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.selfPi
 @Service
 public class AdjustBillManager extends AbstractBillExtraManager<AdjustBill, AdjustBillDTO, ConditionQueryAdjustBill, AdjustBillDetailDTO> {
 
-/*
-
-    @Autowired
-    private PlanBillManager planBillManager;
-*/
 
     @Autowired
     public AdjustBillManager(BillRepository<AdjustBill> billRepository, ApplicationEventPublisher applicationEventPublisher, BillExtraService<AdjustBill, ConditionQueryAdjustBill> billExtraService, SharedManager sharedManager, PlanBillManager planBillManager) {
