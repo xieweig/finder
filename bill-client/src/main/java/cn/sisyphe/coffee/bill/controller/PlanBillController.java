@@ -77,26 +77,26 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
     }
 
     @Override
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
     public ResponseResult save(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
         return super.save(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
     public ResponseResult submit(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
         return super.submit(billDTO, request);
     }
 
 
     @Override
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
     public ResponseResult auditFailure(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
         return super.auditFailure(billDTO, request);
     }
 
     @Override
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
     public ResponseResult auditSuccess(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
         return super.auditSuccess(billDTO, request);
     }
