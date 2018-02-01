@@ -9,7 +9,6 @@ import cn.sisyphe.coffee.bill.domain.base.model.enums.BasicEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillPurposeEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
-import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
 import cn.sisyphe.coffee.bill.infrastructure.base.BillRepository;
 import cn.sisyphe.coffee.bill.util.BillToDtoExtraProcessor;
 import cn.sisyphe.coffee.bill.util.DtoToBillExtraProcessor;
@@ -83,7 +82,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return billCode 单据编码
      */
     public D saveBill(D billDTO) {
-        T bill = prepareBill(billDTO.getBillCode());
+        T bill = prepareBill(billDTO);
         bill = dtoToBill(bill, billDTO);
         save(bill);
 
@@ -98,7 +97,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
      * @return billCode 单据编码
      */
     public D submitBill(D billDTO) {
-        T bill = prepareBill(billDTO.getBillCode());
+        T bill = prepareBill(billDTO);
         bill = dtoToBill(bill, billDTO);
         submit(bill);
 
@@ -155,22 +154,31 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
     /**
      * 初始化bill
      *
-     * @param billCode 前端dto
+     * @param billDTO 前端dto
      * @return AdjustBill 调剂计划实体
      */
-    protected T prepareBill(String billCode) {
+    protected T prepareBill(D billDTO) {
 
-        if (StringUtils.isEmpty(billCode)) {
+        if (StringUtils.isEmpty(billDTO.getBillCode())) {
             return (T) new BillFactory().createBill(billType());
         }
 
-        T bill = billExtraService.findByBillCode(billCode);
+        T bill = billExtraService.findByBillCode(billDTO.getBillCode());
 
         if (bill == null) {
             throw new DataException("432434", "没有找到该计划单");
         }
 
+        validateOperator(billDTO, bill);
         return bill;
+    }
+
+    protected void validateOperator(D billDTO, T bill) {
+        if (!StringUtils.isEmpty(bill.getBillCode())) {
+            if (!bill.getOperatorCode().equals(billDTO.getOperatorCode())) {
+                throw new DataException("60033", "无修改该单据的权限");
+            }
+        }
     }
 
 
@@ -273,9 +281,9 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         }
 
         //若是不是自主拣货则判断计划中未拣货的
-        if (bill.getSpecificBillType() != null && !BillTypeEnum.PLAN.equals(billType())){
+        if (bill.getSpecificBillType() != null && !BillTypeEnum.PLAN.equals(billType())) {
             if (!BillTypeEnum.NO_PLAN.equals(bill.getSpecificBillType())) {
-                billDto.setPlanBill(planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(),billType()));
+                billDto.setPlanBill(planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(), billType()));
             }
         }
 
@@ -298,7 +306,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
         //差异
         List<ChildPlanBillDetailDTO> diff = new ArrayList<>();
         ChildPlanBillDTO childPlanBillDTO = planBillManager.findChildPlanBillByBillCode(bill.getSourceCode(), billType());
-        if (childPlanBillDTO == null){
+        if (childPlanBillDTO == null) {
             return;
         }
         List<ChildPlanBillDetailDTO> planDetails = childPlanBillDTO.getChildPlanBillDetails();

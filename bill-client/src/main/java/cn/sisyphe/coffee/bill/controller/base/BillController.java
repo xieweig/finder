@@ -17,7 +17,6 @@ import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -277,13 +276,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
-            String currentUserCode= loginInfo.getOperatorCode();
-            if (!StringUtils.isEmpty(billDTO.getBillCode())){
-                if (!currentUserCode.equals(billDTO.getOperatorCode())){
-                    responseResult.putException(new DataException("60033","无修改该单据的权限"));
-                    return responseResult;
-                }
-            }
             responseResult.put("billCode", abstractBillExtraManager.saveBill(billDTO).getBillCode());
         } catch (DataException date) {
             responseResult.putException(date);
@@ -319,13 +311,6 @@ public class BillController<T extends Bill, D extends BillDTO, Q extends Conditi
         try {
             LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
             billDTO.setOperatorCode(loginInfo.getOperatorCode());
-            String currentUserCode= loginInfo.getOperatorCode();
-            if (!StringUtils.isEmpty(billDTO.getBillCode())){
-                if (!currentUserCode.equals(billDTO.getOperatorCode())){
-                    responseResult.putException(new DataException("60033","无修改该单据的权限"));
-                    return responseResult;
-                }
-            }
             responseResult.put("billCode", abstractBillExtraManager.submitBill(billDTO).getBillCode());
         } catch (DataException data) {
             responseResult.putException(data);
