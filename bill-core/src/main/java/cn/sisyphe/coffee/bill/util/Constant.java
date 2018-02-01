@@ -50,4 +50,9 @@ public final class Constant {
      */
     public static final String STORAGE_NAME_WCK = "误差库";
 
+    /**
+     * 在途库
+     */
+    public static final String SHIPPING_STORAGE = "ON_STORAGE";
+
 }

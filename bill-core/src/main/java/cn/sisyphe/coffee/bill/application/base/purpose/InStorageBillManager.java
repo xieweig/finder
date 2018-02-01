@@ -24,6 +24,7 @@ import java.util.Set;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.ADJUST;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.DELIVERY;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RESTOCK;
+import static cn.sisyphe.coffee.bill.util.Constant.SHIPPING_STORAGE;
 
 /**
  * @author ncmao
@@ -128,7 +129,7 @@ public class InStorageBillManager {
         if (abstractLocation instanceof Station) {
             Station station = new Station();
             station.setStationCode(((Station) abstractLocation).getStationCode());
-            station.setStorage(new Storage("ON_STORAGE"));
+            station.setStorage(new Storage(SHIPPING_STORAGE));
             bill.setInLocation(station);
             return;
         }
