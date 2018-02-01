@@ -364,7 +364,7 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 VALUES (3151, now(), now(), '0', '4', 'BILL004004001', '查询入库单', 'BILL,BILL004,BILL004004,BILL004004001', '/coffeeBill/api/bill/adjust/findInStorageByConditions', 3032, '\0');
 -- BILL004004 3032<调拨>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-VALUES (3152, now(), now(), '0', '4', 'BILL004004002', '调拨', 'BILL,BILL004,BILL004004,BILL004004002', '/coffeeBill/api/bill/allot/save', 3032, '\0');
+VALUES (3152, now(), now(), '0', '4', 'BILL004004002', '调拨', 'BILL,BILL004,BILL004004,BILL004004002', '/coffeeBill/api/bill/adjust/allotSave', 3032, '\0');
 -- BILL004004 3032<查看>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
 VALUES (3153, now(), now(), '0', '4', 'BILL004004003', '查看入库单', 'BILL,BILL004,BILL004004,BILL004004003', '/coffeeBill/api/bill/adjust/findInStorageByBillCode', 3032, '\0');
