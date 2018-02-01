@@ -59,6 +59,14 @@ public class ReceiverService {
             inStorageOffsetCallbackHandler.handleInStockSuccess(bill);
 
         }
+
+        //接收到入库冲减完成，更新入库单和差错单的状态的状态
+        if (Constant.MOVE_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
+            //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
+            //---------------------------------------------------
+            moveStorageOffsetCallbackHandler.handleMoveStockSuccess(bill);
+
+        }
     }
 
 
