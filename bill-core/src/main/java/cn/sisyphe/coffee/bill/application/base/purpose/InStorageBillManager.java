@@ -58,7 +58,9 @@ public class InStorageBillManager {
     public void allotedForInStorageBill(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
         //调拨单的sourceCode为入库单
-        billManager.committed(inStorageBillCode);
+        if(null != inStorageBillCode){
+            billManager.committed(inStorageBillCode);
+        }
     }
 
     /**
@@ -71,7 +73,9 @@ public class InStorageBillManager {
     @SuppressWarnings("unchecked")
     public void committing(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
-        billManager.committing(inStorageBillCode);
+        if(null != inStorageBillCode) {
+            billManager.committing(inStorageBillCode);
+        }
     }
 
     /**
