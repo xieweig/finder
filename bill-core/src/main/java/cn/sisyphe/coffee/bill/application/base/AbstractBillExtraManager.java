@@ -142,7 +142,7 @@ public abstract class AbstractBillExtraManager<T extends Bill, D extends BillDTO
 
         // 如果单据是提交状态，则进行打开动作
         if (bill.getBillState().equals(BillStateEnum.SUBMITTED)) {
-            bill.setOperatorCode(operatorCode);
+            bill.setAuditPersonCode(operatorCode);
             // 打开单据
             open(bill);
         }
