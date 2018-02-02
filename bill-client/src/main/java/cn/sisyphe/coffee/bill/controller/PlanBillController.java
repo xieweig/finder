@@ -65,7 +65,7 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
      */
     @ApiOperation(value = "多条件分页查询计划单据")
     @RequestMapping(path = "/hq/findByConditions", method = RequestMethod.POST)
-    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes", "#conditionQueryPlanBill.inStationCodes"}, token = "userCode")
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes"}, token = "userCode")
     public ResponseResult findHqPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
