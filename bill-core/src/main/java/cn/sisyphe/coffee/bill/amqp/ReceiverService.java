@@ -4,7 +4,6 @@ import cn.sisyphe.coffee.bill.application.base.handler.InStorageOffsetCallbackHa
 import cn.sisyphe.coffee.bill.application.base.handler.MoveStorageOffsetCallbackHandler;
 import cn.sisyphe.coffee.bill.application.base.handler.OutStorageOffsetCallbackHandler;
 import cn.sisyphe.coffee.bill.domain.base.model.Bill;
-import cn.sisyphe.coffee.bill.util.Constant;
 import cn.sisyphe.coffee.bill.util.ResponseResultMapUtil;
 import cn.sisyphe.framework.web.ResponseResult;
 import org.slf4j.Logger;
@@ -41,33 +40,33 @@ public class ReceiverService {
      *
      * @param responseResult
      */
-    @RabbitListener(queues = "${rabbit.listener.queue}")
-    public void receiveQueue(ResponseResult responseResult) {
-
-        Bill bill = new ResponseResultMapUtil().convertBillFromResponse(responseResult);
-        //接收到入库冲减完成将，出库单转存一份入库单
-        if (Constant.OUT_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
-            //TODO 这里的出入库状态应该在冲减系统变成出库成功或者失败
-            outStorageOffsetCallbackHandler.handleOutStockSuccess(bill);
-
-        }
-
-        //接收到入库冲减完成，更新入库单和差错单的状态的状态
-        if (Constant.IN_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
-            //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
-            //---------------------------------------------------
-            inStorageOffsetCallbackHandler.handleInStockSuccess(bill);
-
-        }
-
-        //接收到入库冲减完成，更新入库单和差错单的状态的状态
-        if (Constant.MOVE_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
-            //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
-            //---------------------------------------------------
-            moveStorageOffsetCallbackHandler.handleMoveStockSuccess(bill);
-
-        }
-    }
+//    @RabbitListener(queues = "${rabbit.listener.queue}")
+//    public void receiveQueue(ResponseResult responseResult) {
+//
+//        Bill bill = new ResponseResultMapUtil().convertBillFromResponse(responseResult);
+//        //接收到入库冲减完成将，出库单转存一份入库单
+//        if (Constant.OUT_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
+//            //TODO 这里的出入库状态应该在冲减系统变成出库成功或者失败
+//            outStorageOffsetCallbackHandler.handleOutStockSuccess(bill);
+//
+//        }
+//
+//        //接收到入库冲减完成，更新入库单和差错单的状态的状态
+//        if (Constant.IN_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
+//            //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
+//            //---------------------------------------------------
+//            inStorageOffsetCallbackHandler.handleInStockSuccess(bill);
+//
+//        }
+//
+//        //接收到入库冲减完成，更新入库单和差错单的状态的状态
+//        if (Constant.MOVE_STORAGE_OFFSET_DONE.equals(responseResult.getCommandName())) {
+//            //TODO 这里的出入库状态应该在冲减系统变成入库成功或者失败
+//            //---------------------------------------------------
+//            moveStorageOffsetCallbackHandler.handleMoveStockSuccess(bill);
+//
+//        }
+//    }
 
 
     /**
