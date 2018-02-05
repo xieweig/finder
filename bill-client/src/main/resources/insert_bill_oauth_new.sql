@@ -177,6 +177,11 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 -- BILL011 3011<查询其他入库单-BILL011003 3057>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
    VALUES (3057, now(), now(), '0', '3', 'BILL011003', '查询其他入库单', 'BILL,BILL011,BILL011003', 'app.bill.otherOutStorage.otherList', 3011, '\0');
+-- 在日结 上面 后来添加的
+-- BILL011 3011<退库调拨单查询-BILL011003 3059>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3059, now(), now(), '0', '3', 'BILL011004', '其他入库调拨单查询', 'BILL,BILL011,BILL011004', 'app.bill.otherOutStorage.transferList', 3011, '\0');
+
 
 -- 日结-BILL012 3012
 -- BILL012 3012<查询日结-BILL012001 3058>
@@ -497,15 +502,19 @@ VALUES (3186, now(), now(), '0', '4', 'BILL006003005', '查询出库单_审核�
 
 -- 其他调拨
 -- 其他调拨-BILL007 3007【添加其他调拨单-BILL007001 3042】
--- BILL007001 3042<提交>
--- 补充内容 3187
+-- BILL007001 3042<调拨提交>
+
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3187, now(), now(), '0', '4', 'BILL007001001', '查询入库单_调拨', 'BILL,BILL007,BILL007001,BILL007001001', '/coffeeBill/api/bill/allot/allotSave', 3042, '\0');
+
 -- 其他调拨-BILL007 3007【查询其他调拨单-BILL007002 3043】
--- BILL007002 3043<条件筛选>
--- 补充内容 3188
--- BILL007002 3043<详情>
--- 补充内容3189
--- BILL007002 3043<导出>
--- 补充内容3190
+-- BILL007002 3043<多条件查询>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3188, now(), now(), '0', '4', 'BILL007002001', '查询调拨单_多条件查询', 'BILL,BILL007,BILL007002,BILL007002001', '/coffeeBill/api/bill/allot/findAllotByConditions', 3043, '\0');
+-- BILL007002 3043<查看>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3189, now(), now(), '0', '4', 'BILL007002002', '查询调拨单_查看', 'BILL,BILL007,BILL007002,BILL007002002', '/coffeeBill/api/bill/allot/findAllotByBillCode', 3043, '\0');
+
 
 
 -- 误差管理-BILL008 3008【添加报溢单-BILL008001 3044】
@@ -573,21 +582,54 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 -- 库存查询-BILL010 3010【库存流水查询-BILL010002 3054】
 -- BILL010002 3054<条件筛选查询>
 -- 补充内容3208
+
+
+
 -- 其他出入库-BILL011 3011【其他出库拣货-BILL011001 3055自主】
--- BILL011001 3055<提交>
--- 补充内容3209
--- BILL011001 3055<暂存>
--- 补充内容3210
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3209, now(), now(), '0', '4', 'BILL011001001', '站点自主拣货保存', 'BILL,BILL011,BILL011001,BILL011001001', '/coffeeBill/api/bill/inOutSelf/saveBySelf', 3055, '\0');
+-- BILL005002 3035<自主拣货提交>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3210, now(), now(), '0', '4', 'BILL011001001', '站点自主拣货提交', 'BILL,BILL011,BILL011001,BILL011001002', '/coffeeBill/api/bill/inOutSelf/submitBySelf', 3055, '\0');
+
 -- 其他出入库-BILL011 3011【查询其他出库单-BILL011002 3056】
 -- BILL011002 3056<条件筛选查询>
--- 补充内容3211
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3211, now(), now(), '0', '4', 'BILL011002001', '查询出库单_多条件筛选查询', 'BILL,BILL011,BILL011002,BILL011002001', '/coffeeBill/api/bill/inOutSelf/findOutStorageByConditions', 3056, '\0');
 -- BILL011002 3056<查看>
--- 补充内容3212
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3212, now(), now(), '0', '4', 'BILL011002002', '查询出库单_查看', 'BILL,BILL011,BILL011002,BILL011002002', '/coffeeBill/api/bill/inOutSelf/findOutStorageByBillCode', 3056, '\0');
+-- BILL011002 3056<审核通过>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3213, now(), now(), '0', '4', 'BILL011002007', '查询出库单_审核通过', 'BILL,BILL011,BILL011002,BILL011002007', '/coffeeBill/api/bill/inOutSelf/auditSuccess', 3056, '\0');
+-- BILL011002 3056<审核不通过>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3214, now(), now(), '0', '4', 'BILL011002008', '查询出库单_审核不通过', 'BILL,BILL011,BILL011002,BILL011002008', '/coffeeBill/api/bill/inOutSelf/auditFailure', 3056, '\0');
+-- BILL011002 3056<审核打开>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3215, now(), now(), '0', '4', 'BILL011002009', '查询出库单_审核打开', 'BILL,BILL011,BILL011002,BILL011002009', '/coffeeBill/api/bill/inOutSelf/open', 3056, '\0');
+
 -- 其他出入库-BILL011 3011【查询其他入库单-BILL011003 3057】
 -- BILL011003 3057<条件筛选查询>
--- 补充内容3213
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3216, now(), now(), '0', '4', 'BILL011003001', '查询入库单_多条件查询', 'BILL,BILL005,BILL011003,BILL011003001', '/coffeeBill/api/bill/inOutSelf/findInStorageByConditions', 3057, '\0');
+-- BILL011003 3057<调拨>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3217, now(), now(), '0', '4', 'BILL011003002', '查询入库单_调拨', 'BILL,BILL005,BILL011003,BILL011003002', '/coffeeBill/api/bill/inOutSelf/allotSave', 3057, '\0');
 -- BILL011003 3057<查看>
--- 补充内容3214
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3218, now(), now(), '0', '4', 'BILL011003003', '查询入库单_查看', 'BILL,BILL005,BILL011003,BILL011003003', '/coffeeBill/api/bill/inOutSelf/findInStorageByBillCode', 3057, '\0');
+-- 调拨单-BILL005 3059【退库调拨单查询-BILL011004 3059】
+-- BILL011004 3059<多条件查询>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3219, now(), now(), '0', '4', 'BILL011004001', '查询调拨单_多条件查询', 'BILL,BILL005,BILL011004,BILL011004001', '/coffeeBill/api/bill/inOutSelf/findAllotByConditions', 3059, '\0');
+-- BILL011004 3059<查看>
+INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
+   VALUES (3220, now(), now(), '0', '4', 'BILL011004002', '查询调拨单_查看', 'BILL,BILL005,BILL011004,BILL011004002', '/coffeeBill/api/bill/inOutSelf/findAllotByBillCode', 3059, '\0');
+
+
+
+
 
 -- 日结-BILL012 3012【查询日结-BILL012001 3058】
 -- BILL012001 3058<日结>
