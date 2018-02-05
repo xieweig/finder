@@ -133,7 +133,6 @@ public abstract class AbstractBillManager<T extends Bill> {
         }
         T foundBill = billRepository.findOneByBillCode(bill.getBillCode());
         foundBill.setInOrOutState(BillInOrOutStateEnum.OUT_FAILURE);
-//        bill.setOutWareHouseTime(new Date());
         billRepository.save(foundBill);
         return foundBill;
     }
@@ -141,28 +140,33 @@ public abstract class AbstractBillManager<T extends Bill> {
     /**
      * 已调拨
      *
-     * @param bill
+     * @param billCode
      */
-    public void committed(T bill) {
+    public void committed(String billCode) {
+
+        T bill = billRepository.findOneByBillCode(billCode);
         if (!BillPurposeEnum.IN_STORAGE.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setAllotStatus(BillAllotStatusEnum.ALLOT);
-        bill.setInWareHouseTime(new Date());
         billRepository.save(bill);
     }
 
     /**
      * 调拨中
      *
-     * @param bill
+     * @param billCode
      */
-    public void committing(T bill) {
+    public void committing(String billCode) {
+        T bill = billRepository.findOneByBillCode(billCode);
         if (!BillPurposeEnum.IN_STORAGE.equals(bill.getBillPurpose())) {
             throw new UnsupportedOperationException("不支持此操作");
         }
         bill.setAllotStatus(BillAllotStatusEnum.ALLOTTING);
+
         billRepository.save(bill);
+
+
     }
 
 

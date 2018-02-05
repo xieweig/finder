@@ -50,8 +50,8 @@ public class AbstractBillRepository<T extends Bill> implements BillRepository<T>
             BillDetail detail = (BillDetail) object;
             detail.update();
         }
-
         jpaBillRepository.save(bill);
+
     }
 
     /**

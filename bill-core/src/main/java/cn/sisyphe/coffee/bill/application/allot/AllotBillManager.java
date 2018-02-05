@@ -5,7 +5,6 @@ import cn.sisyphe.coffee.bill.application.mistake.MistakeBillManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.application.shared.SharedManager;
 import cn.sisyphe.coffee.bill.domain.allot.model.AllotBill;
-import cn.sisyphe.coffee.bill.domain.allot.model.AllotBillDetail;
 import cn.sisyphe.coffee.bill.domain.base.BillExtraService;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum;
@@ -48,7 +47,7 @@ public class AllotBillManager extends AbstractBillExtraManager<AllotBill, AllotB
 
     @Override
     public AllotBillDTO saveBill(AllotBillDTO billDTO) {
-        AllotBill allotBill = prepareBill(billDTO.getBillCode());
+        AllotBill allotBill = prepareBill(billDTO);
         allotBill = dtoToBill(allotBill, billDTO);
         attachMistakeBill(allotBill, billDTO);
         allotBill.setBillState(BillStateEnum.AUDIT_SUCCESS);

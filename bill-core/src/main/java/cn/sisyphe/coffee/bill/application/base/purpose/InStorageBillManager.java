@@ -24,6 +24,7 @@ import java.util.Set;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.ADJUST;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.DELIVERY;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillTypeEnum.RESTOCK;
+import static cn.sisyphe.coffee.bill.util.Constant.SHIPPING_STORAGE;
 
 /**
  * @author ncmao
@@ -55,12 +56,12 @@ public class InStorageBillManager {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill allotedForInStorageBill(String inStorageBillCode, BillTypeEnum inStorageBillType) {
+    public void allotedForInStorageBill(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
         //调拨单的sourceCode为入库单
-        Bill foundBill = billManager.findOneByBillCode(inStorageBillCode);
-        billManager.committed(foundBill);
-        return foundBill;
+        if(null != inStorageBillCode){
+            billManager.committed(inStorageBillCode);
+        }
     }
 
     /**
@@ -71,11 +72,11 @@ public class InStorageBillManager {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Bill committing(String inStorageBillCode, BillTypeEnum inStorageBillType) {
+    public void committing(String inStorageBillCode, BillTypeEnum inStorageBillType) {
         AbstractBillManager billManager = BillManagerFactory.getManager(inStorageBillType);
-        Bill foundBill = billManager.findOneByBillCode(inStorageBillCode);
-        billManager.committing(foundBill);
-        return foundBill;
+        if(null != inStorageBillCode) {
+            billManager.committing(inStorageBillCode);
+        }
     }
 
     /**
@@ -128,7 +129,7 @@ public class InStorageBillManager {
         if (abstractLocation instanceof Station) {
             Station station = new Station();
             station.setStationCode(((Station) abstractLocation).getStationCode());
-            station.setStorage(new Storage("ON_STORAGE"));
+            station.setStorage(new Storage(SHIPPING_STORAGE));
             bill.setInLocation(station);
             return;
         }

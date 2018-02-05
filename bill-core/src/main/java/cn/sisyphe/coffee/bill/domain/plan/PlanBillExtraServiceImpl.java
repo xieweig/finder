@@ -218,7 +218,6 @@ public class PlanBillExtraServiceImpl extends AbstractBillExtraService<PlanBill,
         }
         sql.append(" group by p.bill_id");
         String withoutPage = sql.toString();
-        System.out.println(sql);
         List<PlanBill> planBills = jdbcTemplate.query(withPage(sql, conditionQuery), getRowMapper());
 
         long total = jdbcTemplate.query(withoutPage, getRowMapper()).size();

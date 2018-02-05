@@ -27,7 +27,7 @@ public class MoveStoragePurpose extends AbstractBillPurpose {
         ResponseResult responseResult = new ResponseResult();
         responseResult.put("bill", allotBill);
         //TODO 这里需要更改，应该由冲减系统设置值
-        responseResult.setCommandName(Constant.IN_STORAGE_OFFSET_DONE);
+        responseResult.setCommandName(Constant.MOVE_STORAGE_OFFSET_DONE);
         MessagingHelper.messaging().convertAndSend(Constant.BILL_EXCHANGE, getRoutingKey(allotBill), responseResult);
 
     }

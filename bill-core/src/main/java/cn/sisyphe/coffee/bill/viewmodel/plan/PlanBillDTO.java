@@ -15,15 +15,11 @@ public class PlanBillDTO extends BillDTO<PlanBillDetailDTO> {
     /**
      * 站点站点验证
      */
-    private List<String> outLocationCodes;
+    private List<String> outStationCodes;
 
-    public List<String> getOutLocationCodes() {
-        return outLocationCodes;
-    }
 
-    public void setOutLocationCodes(List<String> outLocationCodes) {
-        this.outLocationCodes = outLocationCodes;
-    }
+    private List<String> inStationCodes;
+
 
     public String getBillName() {
         return billName;
@@ -31,5 +27,21 @@ public class PlanBillDTO extends BillDTO<PlanBillDetailDTO> {
 
     public void setBillName(String billName) {
         this.billName = billName;
+    }
+
+    public List<String> getOutStationCodes() {
+        return outStationCodes;
+    }
+
+    public void setOutStationCodes(List<String> outStationCodes) {
+        this.outStationCodes = outStationCodes;
+    }
+
+    public List<String> getInStationCodes() {
+        return inStationCodes;
+    }
+
+    public void setInStationCodes(List<String> inStationCodes) {
+        this.inStationCodes = inStationCodes;
     }
 }

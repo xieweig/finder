@@ -5,10 +5,10 @@ import cn.sisyphe.coffee.bill.application.base.AbstractBillExtraManager;
 import cn.sisyphe.coffee.bill.application.plan.PlanBillManager;
 import cn.sisyphe.coffee.bill.controller.base.BillController;
 import cn.sisyphe.coffee.bill.domain.plan.model.PlanBill;
-import cn.sisyphe.coffee.bill.domain.shared.LoginInfo;
 import cn.sisyphe.coffee.bill.viewmodel.plan.ConditionQueryPlanBill;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDTO;
 import cn.sisyphe.coffee.bill.viewmodel.plan.PlanBillDetailDTO;
+import cn.sisyphe.framework.auth.logic.annotation.ScopeAuth;
 import cn.sisyphe.framework.web.ResponseResult;
 import cn.sisyphe.framework.web.exception.DataException;
 import io.swagger.annotations.Api;
@@ -65,6 +65,7 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
      */
     @ApiOperation(value = "多条件分页查询计划单据")
     @RequestMapping(path = "/hq/findByConditions", method = RequestMethod.POST)
+    @ScopeAuth(scopes = {"#conditionQueryPlanBill.outStationCodes"}, token = "userCode")
     public ResponseResult findHqPlanByConditions(@RequestBody ConditionQueryPlanBill conditionQueryPlanBill) {
         ResponseResult responseResult = new ResponseResult();
         try {
@@ -76,28 +77,27 @@ public class PlanBillController extends BillController<PlanBill, PlanBillDTO, Co
     }
 
     @Override
-    //@ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
-    public ResponseResult auditFailure(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), false));
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
+    public ResponseResult save(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.save(billDTO, request);
     }
 
     @Override
-    //@ScopeAuth(scope = "#billDTO.outLocationCodes", token = "userCode")
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
+    public ResponseResult submit(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.submit(billDTO, request);
+    }
+
+
+    @Override
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
+    public ResponseResult auditFailure(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
+        return super.auditFailure(billDTO, request);
+    }
+
+    @Override
+    @ScopeAuth(scopes = {"#billDTO.outStationCodes", "#billDTO.inStationCodes"}, token = "userCode")
     public ResponseResult auditSuccess(@RequestBody PlanBillDTO billDTO, HttpServletRequest request) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            LoginInfo loginInfo = LoginInfo.getLoginInfo(request);
-            responseResult.put("bill", abstractBillExtraManager.auditBill(billDTO.getBillCode(), loginInfo.getOperatorCode(), billDTO.getAuditMemo(), true));
-        } catch (DataException data) {
-            responseResult.putException(data);
-        }
-        return responseResult;
+        return super.auditSuccess(billDTO, request);
     }
 }

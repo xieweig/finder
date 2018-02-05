@@ -41,6 +41,12 @@ public final class Constant {
      */
     public static final String IN_STORAGE_OFFSET_DONE = "IN_STORAGE_OFFSET_DONE";
 
+
+    /**
+     *调拨冲减完成
+     */
+    public static final String MOVE_STORAGE_OFFSET_DONE = "MOVE_STORAGE_OFFSET_DONE";
+
     /**
      * 库位类型-误差库类型
      */
@@ -49,5 +55,10 @@ public final class Constant {
      * 库位名称-误差库名称
      */
     public static final String STORAGE_NAME_WCK = "误差库";
+
+    /**
+     * 在途库
+     */
+    public static final String SHIPPING_STORAGE = "ON_STORAGE";
 
 }
