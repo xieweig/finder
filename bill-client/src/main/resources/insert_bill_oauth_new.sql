@@ -123,10 +123,10 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 -- 其他调拨-BILL007 3007
 -- BILL007 3007<添加其他调拨单-BILL007001 3042>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3042, now(), now(), '0', '3', 'BILL007001', '添加其他调拨单', 'BILL,BILL007,BILL007001', 'app.bill.otherTransfer.add', 3007, '\0');
+   VALUES (3042, now(), now(), '0', '3', 'BILL007001', '添加其他调拨单', 'BILL,BILL007,BILL007001', 'app.bill.allotself.allot', 3007, '\0');
 -- BILL007 3007<查询其他调拨单-BILL007002 3043>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3043, now(), now(), '0', '3', 'BILL007002', '查询其他调拨单', 'BILL,BILL007,BILL007002', 'app.bill.otherTransfer.list', 3007, '\0');
+   VALUES (3043, now(), now(), '0', '3', 'BILL007002', '查询其他调拨单', 'BILL,BILL007,BILL007002', 'app.bill.allotself.transferList', 3007, '\0');
 
 -- 误差管理-BILL008 3008
 -- BILL008 3008<添加报溢单-BILL008001 3044>
@@ -167,20 +167,21 @@ INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, updat
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
    VALUES (3054, now(), now(), '0', '3', 'BILL010002', '库存流水查询', 'BILL,BILL010,BILL010002', 'app.bill.stock.accountList', 3010, '\0');
 
+--xwg为了方便前端更改 把三级菜单 其他出入库 和其他调拨 的url更改了 并且增添了3059
 -- 其他出入库-BILL011 3011
 -- BILL011 3011<其他出库拣货-BILL011001 3055自主>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3055, now(), now(), '0', '3', 'BILL011001', '其他出库拣货', 'BILL,BILL011,BILL011001', 'app.bill.otherOutStorage.pick', 3011, '\0');
+   VALUES (3055, now(), now(), '0', '3', 'BILL011001', '其他出库拣货', 'BILL,BILL011,BILL011001', 'app.bill.inoutself.pick', 3011, '\0');
 -- BILL011 3011<查询其他出库单-BILL011002 3056>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3056, now(), now(), '0', '3', 'BILL011002', '查询其他出库单', 'BILL,BILL011,BILL011002', 'app.bill.otherOutStorage.list', 3011, '\0');
+   VALUES (3056, now(), now(), '0', '3', 'BILL011002', '查询其他出库单', 'BILL,BILL011,BILL011002', 'app.bill.inoutself.outStorageList', 3011, '\0');
 -- BILL011 3011<查询其他入库单-BILL011003 3057>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3057, now(), now(), '0', '3', 'BILL011003', '查询其他入库单', 'BILL,BILL011,BILL011003', 'app.bill.otherOutStorage.otherList', 3011, '\0');
+   VALUES (3057, now(), now(), '0', '3', 'BILL011003', '查询其他入库单', 'BILL,BILL011,BILL011003', 'app.bill.inoutself.inStorageList', 3011, '\0');
 -- 在日结 上面 后来添加的
 -- BILL011 3011<退库调拨单查询-BILL011003 3059>
 INSERT INTO oauth_database.`jurisdiction` (`jurisdiction_id`, create_time, update_time, version, `depth`, `jurisdiction_code`, `jurisdiction_name`, `path`, `url_address`, `parent_id`, `need_token`)
-   VALUES (3059, now(), now(), '0', '3', 'BILL011004', '其他入库调拨单查询', 'BILL,BILL011,BILL011004', 'app.bill.otherOutStorage.transferList', 3011, '\0');
+   VALUES (3059, now(), now(), '0', '3', 'BILL011004', '其他入库调拨单查询', 'BILL,BILL011,BILL011004', 'app.bill.inoutself.transferList', 3011, '\0');
 
 
 -- 日结-BILL012 3012
