@@ -3,6 +3,7 @@ package cn.sisyphe.coffee.bill.domain.base.behavior;
 import cn.sisyphe.coffee.bill.domain.base.model.enums.*;
 
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillAuditStateEnum.AUDIT_SUCCESS;
+import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillInOrOutStateEnum.OUT_SUCCESS;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillStateEnum.DONE;
 import static cn.sisyphe.coffee.bill.domain.base.model.enums.BillSubmitStateEnum.SUBMITTED;
 
@@ -62,7 +63,7 @@ public class PurposeBehavior extends AbstractBillBehavior {
      */
     @Override
     public BillInOrOutStateEnum inOrOutState() {
-        return null;
+        return OUT_SUCCESS;
     }
 
     /**
